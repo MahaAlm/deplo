@@ -1,0 +1,24 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Qusasa Page</title>
+    <!-- Linking CSS -->
+    <link rel="stylesheet" href="{% static 'qusasa/css/style.css' %}">
+</head>
+<body>
+    <div class="header">
+        <img src="{% static 'qusasa/images/Qusasa end.png' %}" alt="Logo">
+        <h1>Welcome to Qusasa</h1>
+    </div>
+    <div class="content">
+        <!-- Content of your page here -->
+    </div>
+
+    <!-- Linking JS at the bottom for better performance -->
+    <script src="{% static 'qusasa/js/script.js' %}"></script>
+</body>
+</html>
