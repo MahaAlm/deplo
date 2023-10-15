@@ -5,18 +5,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Qusasa Page</title>
+    <title>Qusasa | Log in</title>
     <!-- Linking CSS -->
-    <link rel="stylesheet" href="{% static 'qusasa/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}">
+    <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
 </head>
-<body>
-    <div class="header">
-        <img src="{% static 'qusasa/images/Qusasa end.png' %}" alt="Logo">
-        <h1>Welcome to Qusaah</h1>
+<body> 
+    <img class="polygon" src="{% static 'qusasa/images/Frame 2.png'%}" alt="Description of Image" class="full-size-absolute">
+    
+    <div class="navigation">
+        <img class="static-img" src="{% static 'qusasa/images/qusasa.png' %}" alt="">
+
+        <div class="navs">
+            <a href="{% url 'logout' %}">Log out</a>
+        </div>
     </div>
-    <div class="content">
-        <!-- Content of your page here -->
-    </div>
+
+    <div class="content"></div>
+
+
+    <footer>
+        Created in 2023, Qusasa team
+    </footer>
 
     <!-- Linking JS at the bottom for better performance -->
     <script src="{% static 'qusasa/js/script.js' %}"></script>

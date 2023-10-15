@@ -74,10 +74,11 @@
     flex-direction: row;
     width: 15vw;
     min-width: 200px;
-    justify-content: space-between; 
+    align-items: flex-end;
     padding: 0;
     margin: 0;
     font-weight: 700;
+    margin-right: 1vw;
 }
 html {
     height: 100%;
@@ -118,7 +119,7 @@ body {
     z-index: -1;
 }
 .content {
-    margin-top: 20vh;
+    margin-top: 15vh;
     margin-bottom: 40vh;
     height: 80vh;
     width: 30vw;
@@ -129,6 +130,11 @@ body {
     flex: 1;
 }
 
+a {
+    text-decoration: none;
+    color: white;
+    margin-left: auto;    
+}   
   footer {
     height: 15vh;
     background: linear-gradient(rgba(73, 79, 143, 0.753), rgba(78, 47, 112, 0.358));
