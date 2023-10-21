@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;400;500;600;700;800;900&display=swap');
 
-
 .navigation {
     box-sizing: border-box;
     position: absolute;  /* or you can use 'fixed' if you want it to stay on top even when scrolling */
@@ -34,7 +33,7 @@
     width: 180%;
     left: 50%;  /* Position the left edge at the center */
     transform: translateX(-50%); /* Pull it back to truly center it */
-    background: radial-gradient(ellipse at center, #d22354, #9c057b 30%, transparent 60%);
+    background: radial-gradient(ellipse at center, #04cae4, #1781a4a7 30%, transparent 60%);
     opacity: 0; /* Hide it initially */
     transition: opacity 0.3s ease-in-out;
     z-index: -1;
@@ -72,74 +71,97 @@
 .navigation .navs {
     display: flex;
     flex-direction: row;
-    width: 15vw;
+    width: 20vw;
     min-width: 200px;
     justify-content: space-between; 
     padding: 0;
     margin: 0;
     font-weight: 700;
+    margin-right: 1vw;
+
 }
-html {
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(-45deg, #0B0B25, #250D44, #0A2240);
-    background-repeat: no-repeat; /* Prevent gradient from repeating */
-    background-attachment: fixed;
-    font-family: 'Raleway', sans-serif;
+.navs #current::after {
+    opacity: 1; /* Show the glow on hover */
+} 
+.navs a {
+    text-decoration: none;
     color: white;
+    margin-left: auto; 
+    margin: 0 20px;   
+}   
+
+.hamburger {
+    display: none; /* Initially, it will be hidden. */
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.bar {
+    background-color: white;
+    height: 4px;
+    width: 25px;
+    margin: 3px;
+}
+
+.navigation .navs img {
+    display: none;
     
 }
 
-body {
-    min-height: 100%;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    background-image: url("static/images/Frame 2.png");
-    background-repeat: no-repeat; /* Prevent gradient from repeating */
-    background-attachment: fixed;
-    display: flex;
-    flex-direction: column; /* Change this */
-    min-height: 100vh; 
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-    justify-items: center;
-}
-.polygon {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -1;
-}
-.content {
-    margin-top: 20vh;
-    margin-bottom: 40vh;
-    height: 80vh;
-    width: 30vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    flex: 1;
+@media (max-width: 1000px) {
+    .navigation .navs {
+        display: none; /* Hide the regular navigation. */
+        top: -300px;
+        right: 0;
+        transition: top 0.3s ease;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .hamburger {
+        display: flex; /* Show the hamburger icon. */
+    }
 }
 
-  footer {
-    height: 15vh;
-    background: linear-gradient(rgba(73, 79, 143, 0.753), rgba(78, 47, 112, 0.358));
-    color: white;
-    position: unset;
-    width: 100%;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-weight: 700;
-  }
-  
+@media (max-width: 1000px) {
+
+    .navigation {
+        width: 100%;
+        transition: top 0.3s ease;
+
+    }
+    .navigation .navs {
+        flex-direction: column;
+        width: 100%;
+        min-height: 100%;
+        position: absolute;
+        top: 0;
+        margin: 0;
+        padding: 30px;
+        justify-content: center;
+        align-items: center;
+        background-color: #090916d4; 
+        transition: right 0.3s ease;
+        padding-right: 0;
+        /* Or any color you prefer for the background. */
+    }
+
+    .navigation .navs a {
+        margin: 20px 0;
+        width: 20%;
+        text-align: center;
+        color: white;
+        padding-bottom: 10px;
+        cursor: pointer;
+    }
+
+    .navigation .navs img {
+        color: white;
+        display: block;
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        max-width: 35px;
+        max-height: 25px;
+    }
+}

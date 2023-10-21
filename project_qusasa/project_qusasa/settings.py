@@ -31,14 +31,17 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "qusasa",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "qusasa"
+    "django_extensions"
 ]
+
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -125,7 +128,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 
-LOGIN_REDIRECT_URL = 'home'  # or any other name of the URL pattern
+LOGIN_REDIRECT_URL = 'base'  # or any other name of the URL pattern
 LOGOUT_REDIRECT_URL = 'home'  # or any other name of the URL pattern
 
 AUTH_USER_MODEL = 'qusasa.CustomUser'
@@ -134,3 +137,17 @@ AUTHENTICATION_BACKENDS = [
     'qusasa.backend.EmailBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'qusasacustomerservice@gmail.com'
+EMAIL_HOST_PASSWORD = 'dzgh rtxx qhzh ahvo'
+
+LOGIN_URL = 'login'
+
+GRAPH_MODELS ={
+'all_applications': True,
+'graph_models': True,
+}

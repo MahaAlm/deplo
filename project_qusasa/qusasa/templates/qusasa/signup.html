@@ -8,20 +8,14 @@
     <title>Qusasa | Sign up</title>
     <!-- Linking CSS -->
     <link rel="stylesheet" href="{% static 'qusasa/css/signup.css' %}">
+    <link rel="stylesheet" href="{% static 'qusasa/css/nav.css' %}">
+
     <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
 </head>
 <body> 
     <img class="polygon" src="{% static 'qusasa/images/Frame 2.png'%}" alt="Description of Image" class="full-size-absolute">
     
-    <div class="navigation">
-        <img class="static-img" src="{% static 'qusasa/images/qusasa.png' %}" alt="">
-
-        <div class="navs">
-            <a><span>Home</span></a>
-            <a href="{% url 'signup' %}" id="current"><span>Sign up</span></a>
-            <a href="{% url 'login' %}">Log in</a>
-        </div>
-    </div>
+    {% include "nav.html" %}
 
 
     <div class="content">

@@ -1,0 +1,111 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcom to Qusasa </title>
+    <link rel="stylesheet" href="{% static 'qusasa/css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'qusasa/css/nav.css' %}">
+    <link href="https://cdn.rawgit.com/michalsnik/aos/2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.rawgit.com/michalsnik/aos/2.3.1/dist/aos.js"></script>
+
+    <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
+</head>
+<body> 
+    <img class="polygon" src="{% static 'qusasa/images/Frame 2.png'%}" alt="Description of Image" class="full-size-absolute">
+    
+    {% include 'nav.html' %}
+
+    <div class="content">
+
+        <div class="part1Content">
+          <h1 data-aos="fade-up"> Welcome to the quantum leap in the data world!</h1>
+          <h3 data-aos="fade-up"> Explore our platform today and unlock the power of data!</h3>
+          <br>
+          <button class="buttonWelcomPage" data-aos="fade-up"><a href="#part2Content">get started now </a> </button>
+        </div>
+
+        <div class="part2Content" id="part2Content">
+            <h3 data-aos="fade-up"> With Qusasa, enjoy the realm of data exploration fratures...</h3>
+            <div class="features" data-aos="fade-up">
+                <div alt="mainFeatures" class="mainFeatures">
+                    <i class="fa-solid fa-magnifying-glass-chart"></i>
+                    Data colelction
+                </div>
+                <div alt="mainFeatures2" class="mainFeatures">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    Data visualisation                    
+                </div>
+                <div alt="mainFeatures3" class="mainFeatures">
+                    <i class="fa-solid fa-chart-bar"></i>
+                    Advanced Analytics
+                </div>
+                <div alt="mainFeatures4" class="mainFeatures">
+                    <i class="fa-solid fa-note-sticky"></i>
+                    Videos Summary
+                </div>
+            </div>
+                
+              
+          </div>
+
+          <div class="part3Content">
+            <h3 data-aos="fade-up">From the vast amount of content in youtube and instagram, get to the bottom of your <span>data needs</span></h3>
+            <img src="{% static 'qusasa/images/analysis.png' %}" alt="" data-aos="fade-up">
+          </div>
+
+          <div class="part4Content">
+            <div class="text" data-aos="fade-up">
+                <h3 >Analytics that will help you</h3>
+                <p>Unlock Insights with Interactive Charts: Explore, Analyze, Decide.</p>
+            </div>
+
+                <div class="charts">
+                    <div class="chart" data-aos="fade-up">
+                        <p>Post likes over time</p>
+
+                        {% include 'area_chart.html'%}
+                        
+                    </div>
+                    <div class="chart" data-aos="fade-up">
+                        {% include 'radial_chart.html'%}
+                    </div>
+
+                </div>
+                <div class="charts barchart" data-aos="fade-up">
+                        {% include 'barchart.html'%}
+
+                </div>
+
+            </div>
+
+            <div class="part5Content">
+                <h2 data-aos="fade-up">Researcher, markiting analyst, content maker, student, or a simple data enthusiest?</h2>
+                <h3 data-aos="fade-up">Your journey through data never been easier, <br>Join us in Qusasa now and enjoy data analysis within a click of a button!</h3>
+                <a href="{% url 'signup'%}"></a><button data-aos="fade-up">Sign up with Qusasa</a></button>
+
+            </div>
+    
+
+
+       
+
+    </div>
+
+
+    <footer>
+        Created in 2023, Qusasa team
+    </footer>
+
+    <!-- Linking JS at the bottom for better performance -->
+    <script>
+        AOS.init({
+          duration: 1200, // You can adjust this value for animation duration
+        });
+      </script>
+      
+</body>
+</html>

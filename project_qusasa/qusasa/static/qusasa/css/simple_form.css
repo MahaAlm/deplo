@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;400;500;600;700;800;900&display=swap');
 
+
 html {
     height: 100%;
     width: 100%;
@@ -10,6 +11,7 @@ html {
     background-attachment: fixed;
     font-family: 'Raleway', sans-serif;
     color: white;
+    
 }
 
 body {
@@ -66,12 +68,9 @@ body {
     font-size: 2rem;
     justify-self: center;
     align-self: center;
+    width: 120%;
+    text-align: center;
 }
-
-.content a {
-    text-decoration: none;
-    color: white;
-  }
 
 .content form {
     display: flex;
@@ -127,7 +126,7 @@ body {
     flex-direction: row;
     align-items: center;
     align-content: center;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
     flex-wrap: wrap;
     margin-top: 5vh;
@@ -160,7 +159,7 @@ body {
 
 
 .final-row button {
-    padding: 15px 50px;
+    padding: 15px 40px;
     border-radius: 50px;
     border: none;
     outline: none;
@@ -223,14 +222,13 @@ body {
     transition: opacity 500ms;
     visibility: hidden;
     opacity: 0;
-}
-
-.overlay:target {
+  }
+  .overlay:target {
     visibility: visible;
     opacity: 1;
-}
+  }
   
-.popup {
+  .popup {
     margin: 70px auto;
     padding: 20px;
     background: #fff;
@@ -239,15 +237,14 @@ body {
     position: relative;
     transition: all 5s ease-in-out;
     height: 70vh;
-}
+  }
   
-.popup h2 {
+  .popup h2 {
     margin-top: 0;
     color: #333;
     font-family: Tahoma, Arial, sans-serif;
-}
-
-.popup .close {
+  }
+  .popup .close {
     position: absolute;
     top: 20px;
     right: 30px;
@@ -256,21 +253,21 @@ body {
     font-weight: bold;
     text-decoration: none;
     color: #333;
-}
+  }
 
-.popup .close:hover {
+  .popup .close:hover {
     color: blue;
-}
-.popup .text {
+  }
+  .popup .text {
     color: black;
     overflow: scroll;
     height: 70%;
     padding-bottom: 20px;
 
 
-}
+  }
 
-.error {
+  .error {
     background: rgb(255, 238, 238);
     color: rgb(33, 33, 41);
     border-radius: 10px;
@@ -279,9 +276,9 @@ body {
     padding-right: 20px;
     font-weight: 700;
     margin-bottom: 30px;
-}
+  }
 
-footer {
+  footer {
     height: 15vh;
     background: linear-gradient(rgba(73, 79, 143, 0.753), rgba(78, 47, 112, 0.358));
     color: white;
@@ -293,7 +290,21 @@ footer {
     justify-content: center;
     align-items: center;
     font-weight: 700;
-}
+  }
+  
+  .content p {
+    text-align: center;
+  }
+
+  .content p span {
+    font-weight: 700;
+  }
+
+  .content a {
+    text-decoration: none;
+    color: white;
+    z-index: 2;
+  }
 
 
 @media (max-width: 1024px) {
@@ -319,6 +330,3 @@ footer {
     }
     
 }
-  
-  
-

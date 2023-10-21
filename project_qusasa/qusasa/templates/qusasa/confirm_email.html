@@ -5,13 +5,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    
-    <title>Qusasa | Log in</title>
+    <title>Qusasa | Confirm Email</title>
     <!-- Linking CSS -->
-    <link rel="stylesheet" href="{% static 'qusasa/css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'qusasa/css/simple_form.css' %}">
     <link rel="stylesheet" href="{% static 'qusasa/css/nav.css' %}">
-    <!-- <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script> -->
+
+    <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
 </head>
 <body> 
     <img class="polygon" src="{% static 'qusasa/images/Frame 2.png'%}" alt="Description of Image" class="full-size-absolute">
@@ -20,7 +19,7 @@
 
 
     <div class="content">
-        <h2>Log in</h2>
+        <h2>Confirm your Email</h2>
 
         <div class="signup-container">
             <form method="post">
@@ -31,24 +30,19 @@
                                 {{ error }}</div>
                     </div>
                 {% endif %}
+                <p>
+                    Check your email for the confirmation code to enabel us verify your email...
+                </p>
                 <div class="input-field">
-                    <label for="email">Email:</label>
-                    <input type="email" name="email" id="email" required>
+                    <label for="confirmation_code">Confirmation code:</label>
+                    <input type="number" name="confirmation_code" id="confirmation_code" required>
                 </div>
-                <div class="input-field">
-                    <label for="password">Password:</label>
-                    <input type="password" name="password" id="password" required>
-                </div>
-                <div class="final-row">
-                    <div class="login">
-                        
-                        <a class="log-in" href="{% url 'password_reset' %}">
-                            Forgot password
-                        </a>
-                    </div>
-                <button type="submit" ><span>Log in</span></button>
 
+                <div class="final-row">
+                    <button type="submit" ><span>Ok</span></button>
                 </div>
+                
+
             </form>
         </div>
         

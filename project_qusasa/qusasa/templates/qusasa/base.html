@@ -5,28 +5,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Qusasa | Log in</title>
+    <title>Qusasa | Welcome</title>
     <!-- Linking CSS -->
     <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}">
     <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
 </head>
 <body> 
-    <img class="polygon" src="{% static 'qusasa/images/Frame 2.png'%}" alt="Description of Image" class="full-size-absolute">
+    <!-- <img class="polygon" src="{% static 'qusasa/images/Frame 2.png'%}" alt="Description of Image" class="full-size-absolute"> -->
     
-    <div class="navigation">
+    <!-- <div class="navigation">
         <img class="static-img" src="{% static 'qusasa/images/qusasa.png' %}" alt="">
 
         <div class="navs">
             <a href="{% url 'logout' %}">Log out</a>
         </div>
+    </div> -->
+    <a class="log-out" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i>  Log out</a>
+
+
+    <div class="side-nav">
+        <div class="side-nav-container">
+            <img src="{% static 'qusasa/images/Qusasa end.png'%}" alt="">
+            <a class="el" id="el-current"><i class="fa-solid fa-clock"></i> My History</a>
+            <a class="el"><i class="fa-solid fa-scissors"></i> Qusasa's Features</a>
+            <a class="el"><i class="fa-solid fa-circle-question"></i> Inquiries</a>
+        </div>
+       
     </div>
 
-    <div class="content"></div>
+    <div class="content">
+        <div class="welcome">
+            Welecome,  {{ user.first_name }}!
+        </div>
+        <div class="history">
+            <p>You have no previous templates, <br> start using Qusasa's analysis features to serve your data needs now!</p>
+            <button><a><span>Go to Qusasa's Features   <i class="fa-solid fa-scissors"></i></a></span></button>
+        </div>
+    </div>
 
 
-    <footer>
-        Created in 2023, Qusasa team
-    </footer>
+   
 
     <!-- Linking JS at the bottom for better performance -->
     <script src="{% static 'qusasa/js/script.js' %}"></script>
