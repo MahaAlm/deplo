@@ -5,12 +5,24 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
 from .models import CustomUser
 from django.contrib.auth.decorators import login_required
-
+from django.contrib.admin.views.decorators import staff_member_required
 # Create your views here.
 from django.shortcuts import render
-
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+
+
+
+
+def custom_admin(request):
+    users = User.objects.all()
+    context = {
+        'users': users,
+    }
+    return render(request, 'admin/custom_admin.html', context)
+
+
 
 def email_verified_required(function):
     def wrap(request, *args, **kwargs):
@@ -65,6 +77,12 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+
+@staff_member_required
+@email_verified_required
+def admin_only_pages(request):
+    return render(request,'login.html')
 
 @login_required
 def confirm_email(request):

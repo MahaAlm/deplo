@@ -1,8 +1,12 @@
 from django.contrib import admin
-
-from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from requests import request
 from .models import CustomUser  # adjust the import if your model is in a different location
+
+class MyAdminSite(admin.AdminSite):
+    def has_permission(self, request):
+        return request.user.is_active and request.user.is_superuse
+admin_site=MyAdminSite()
 
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
