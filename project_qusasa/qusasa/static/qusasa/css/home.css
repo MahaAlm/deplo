@@ -429,6 +429,14 @@ a {
   .mainFeatures {
       margin: 25px; 
   }
+  .features {
+    padding: 3%;
+    width: 95%;
+    justify-content: center;
+    align-items: center;
+  }
+  
+
 }
 
 /* Mobile styles */
