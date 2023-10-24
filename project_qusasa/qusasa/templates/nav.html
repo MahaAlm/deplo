@@ -14,7 +14,7 @@
 
     <div class="navs">
         <img src="{% static 'qusasa/images/x.png' %}" alt="">
-        <a {% if request.resolver_match.url_name == 'home' %}id="current"{% endif %}><span>Home</span></a>
+        <a href="{% url 'home' %}"{% if request.resolver_match.url_name == 'home' %}id="current"{% endif %}><span>Home</span></a>
         <a href="{% url 'signup' %}"  {% if request.resolver_match.url_name == 'signup' %} id="current" {% endif %} ><span>Sign up</span></a>
         <a href="{% url 'login' %}" {% if request.resolver_match.url_name == 'login' %} id="current" {% endif %}>Log in</a>
     </div>

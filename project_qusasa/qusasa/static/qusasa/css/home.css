@@ -44,7 +44,9 @@ body {
     object-fit: cover;
     z-index: -1;
 }
+/* Base styles - Desktop first */
 .content  {
+    width: 70%;
     margin-top: -30px; /* Adjust the margin-top value to center the content vertically */
     margin-bottom: 2%; /* Adjust the margin-bottom value for desired spacing */
     min-height: 1300px; /* Adjust the height value to fit the content properly */
@@ -71,6 +73,7 @@ body {
 }
 
 .part1Content h1 {
+  font-size: 5rem;
 	justify-content: right;
 	font-size: 70px;
 	margin-bottom: 10px;
@@ -86,6 +89,8 @@ body {
 
 
 .buttonWelcomPage {
+  padding: 15px 50px;
+  font-size: 2rem;
 	display: block;
 	padding: 15px 50px;
 	font-size: 18px;
@@ -140,6 +145,7 @@ a {
   }
   
   .mainFeatures {
+  margin: 30px;
 	width: 200px;
 	height: 200px;
 	transition: transform 0.3s ease;
@@ -152,7 +158,7 @@ a {
   }
 
   .mainFeatures i {
-    font-size: 3rem;
+    font-size: 4rem;
     margin-bottom: 1rem;
   }
 
@@ -261,6 +267,7 @@ a {
 }
 
 .part4Content .charts .chart {
+  width: 100;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -370,4 +377,213 @@ a {
 
 .part5Content a {
     z-index: 2;
+}
+
+/* Tablet styles */
+@media screen and (max-width: 899px) {
+
+.part1Content h1 {
+  font-size: 3.8rem;
+}
+
+.part1Content h3 {
+	font-size: 20px;
+}
+.part2Content h3 {
+  font-size: 2.5rem;
+}
+.part3Content h3 {
+  font-size: 2rem;
+}
+.part4Content .text h3 {
+  font-size: 2.3rem;
+  width: 30%;
+}
+
+.part4Content .text p {
+  width: 30%;
+}
+.part4Content .charts p {
+  font-size: 1rem;
+}
+.mainFeatures {
+    width: 150px;
+    height: 150px;
+}
+
+.mainFeatures i {
+    font-size: 3rem;
+}
+.mainFeatures p {
+  font-size: 1.3rem;
+}
+  .content  {
+      width: 80%;
+  }
+
+  .buttonWelcomPage {
+      padding: 15px 40px;
+      font-size: 1.5rem;
+  }
+
+  .mainFeatures {
+      margin: 25px; 
+  }
+  .features {
+    padding: 3%;
+    width: 95%;
+    justify-content: center;
+    align-items: center;
+  }
+  
+
+}
+
+/* Mobile styles */
+@media screen and (max-width: 599px) {
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 100vw;
+    width: 100vw;
+  }
+
+
+  .part1Content h1 {
+    font-size: 2rem;
+  }
+
+  .part1Content .buttonWelcomPage {
+    font-size: 1.2rem;
+    padding: 0.5rem 2rem;
+  }
+
+  .part1Content {
+    min-height: 100vh;
+    height: 100vh;
+  }
+
+  
+  .part1Content h3 {
+    font-size: 1rem;
+  }
+
+  .part2Content {
+    height: 30vh;
+    
+
+  }
+  .part2Content h3 {
+    font-size: 1rem;
+
+  }
+  .part3Content h3 {
+    font-size: 1rem;
+  }
+  .part4Content .text h3 {
+    font-size: 1.3rem;
+    width: 10%;
+  }
+  
+  .part4Content .text p {
+    width: 2%;
+  }
+  .part4Content .charts p {
+    font-size: 1rem;
+  }
+
+  .part5Content h2 {
+    font-size: 1.6rem;
+}
+
+.part5Content h3 {
+    font-size: 1rem;
+}
+.features {
+  flex-direction: row;
+  flex-wrap: wrap; 
+  justify-content: space-between; 
+  padding: 10%;
+  justify-content: center;
+  align-items: center;
+}
+
+.features p {
+  margin: 0;
+  text-align: center;
+}
+
+.mainFeatures {
+    width: 100px;
+    height: 80px;
+    margin: 20px 0;
+}
+
+.mainFeatures i {
+    font-size: 1.8rem;
+}
+.mainFeatures p {
+  font-size: 0.7rem;
+}
+  .content  {
+      width: 90%;
+  }
+
+  .buttonWelcomPage {
+      padding: 5px 15px;
+      font-size: 0.9rem;
+  }
+
+  .mainFeatures {
+      margin: 15px; 
+  }
+  .part5Content button {
+    padding: 5px 15px;
+    font-size: 0.9rem;
+}
+.part4Content .charts {
+  display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+}
+
+.part4Content .charts .chart {
+width: 100;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+
+
+footer {
+  height: 5vh;
+}
+
+  .part4Content .text {
+    width: 130%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .part4Content .text h3 {
+    font-size: 1.6rem;
+  }
+
+.part4Content .text p {
+    width: 30%;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
 }
