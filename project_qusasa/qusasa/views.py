@@ -5,11 +5,24 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
 from .models import CustomUser
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 # Create your views here.
 from django.shortcuts import render
-
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+
+
+
+
+def custom_admin(request):
+    users = User.objects.all()
+    context = {
+        'users': users,
+    }
+    return render(request, 'admin/custom_admin.html', context)
+
+
 
 def email_verified_required(function):
     def wrap(request, *args, **kwargs):
@@ -28,8 +41,6 @@ def base(request):
     return render(request, 'qusasa/base.html')
 
 def signup(request):
-    if request.user.is_authenticated:
-        return redirect('base')
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
@@ -48,8 +59,6 @@ def signup(request):
     return render(request, 'qusasa/signup.html', {'form': form})
 
 def login_view(request):
-    if request.user.is_authenticated:
-        return redirect('base')
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
@@ -66,14 +75,17 @@ def login_view(request):
     return render(request, 'qusasa/login.html')
 
 def logout_view(request):
-    
     logout(request)
     return redirect('login')
 
+
+@staff_member_required
+@email_verified_required
+def admin_only_pages(request):
+    return render(request,'login.html')
+
 @login_required
 def confirm_email(request):
-    if request.user.is_verified:
-        return redirect('base')
     if request.method == 'POST':
         input_code = request.POST['confirmation_code']
         user = request.user
@@ -89,10 +101,3 @@ def confirm_email(request):
         # Display the page where they input the confirmation code
         return render(request, 'qusasa/confirm_email.html')
  
-from django.contrib.auth.views import PasswordResetView
-from .forms import CustomPasswordResetForm
-
-class CustomPasswordResetView(PasswordResetView):
-    form_class = CustomPasswordResetForm
-    email_template_name = 'registration/custom_password_reset_email.html'
-    html_email_template_name = 'registration/custom_password_reset_email.html'
