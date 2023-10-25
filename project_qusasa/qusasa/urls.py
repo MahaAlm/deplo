@@ -2,10 +2,7 @@ from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
 from django.contrib import admin
-<<<<<<< HEAD
-=======
 from qusasa.admin import admin_site
->>>>>>> 2288640b8d1acbcdb431cb18533a3bc3e871ef86
 
 
 urlpatterns = [
