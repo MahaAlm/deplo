@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,19 +7,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Qusasa | Welcome</title>
     <!-- Linking CSS -->
+    <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}">
     <link rel="stylesheet" href="{% static 'qusasa/css/admin.css' %}">
+
     <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
 </head>
-
 <body> 
+    <!-- <img class="polygon" src="{% static 'qusasa/images/Frame 2.png'%}" alt="Description of Image" class="full-size-absolute"> -->
+    
+    <!-- <div class="navigation">
+        <img class="static-img" src="{% static 'qusasa/images/qusasa.png' %}" alt="">
 
+        <div class="navs">
+            <a href="{% url 'logout' %}">Log out</a>
+        </div>
+    </div> -->
     <a class="log-out" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i>  Log out</a>
+
 
     <div class="side-nav">
         <div class="side-nav-container">
             <img src="{% static 'qusasa/images/Qusasa end.png'%}" alt="">
-            <a class="el" id="el-current" href="{% url 'admin:qusasa_customuser_changelist' %}"><i class="fa-solid fa-user"></i> Qusasa users</a>
-            <a class="el" href="{% url 'inquiries' %}"><i class="fa-solid fa-circle-question"></i> Inquiries</a>  
+            <a class="el" href="{% url 'admin:qusasa_customuser_changelist' %}"><i class="fa-solid fa-user"></i> Qusasa users</a>
+            <a class="el"  id="el-current" href="{% url 'inquiries' %}"><i class="fa-solid fa-circle-question"></i> Inquiries</a>  
         </div>    
     </div>
 
@@ -26,23 +37,13 @@
         <div class="welcome">
             Welecome,  admin {{ user.first_name }}
         </div>
-        <br class="clear">
-        {% block breadcrumbs %}{% endblock %}
-        {% block content_title %}{% endblock %}
-            <div class="module">
-                <h2>{% block title %}{% endblock %}</h2>
-                <div class="modulebody">
-                    {% block module_contents %}{% endblock %}
-                </div>
-            </div>
         <div class="history">
-            <div class="history232">
-                {% block content %}                
-                {% endblock %}
-
-            </div>
+            <p>The Inquiries functionality is yet to be implemented.</p>
         </div>
     </div>
+
+
+   
 
     <!-- Linking JS at the bottom for better performance -->
     <script src="{% static 'qusasa/js/script.js' %}"></script>

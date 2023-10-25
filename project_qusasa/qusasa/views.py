@@ -101,3 +101,7 @@ def confirm_email(request):
         # Display the page where they input the confirmation code
         return render(request, 'qusasa/confirm_email.html')
  
+@staff_member_required
+def inquiries_view(request):
+    # You can add code here to fetch and process inquiries
+    return render(request, 'qusasa/inquiries.html')
