@@ -84,6 +84,13 @@ def logout_view(request):
 def admin_only_pages(request):
     return render(request,'login.html')
 
+def YouTubeFeat(request):
+    return render(request,'qusasa/YouTubeFeat.html')
+def InstagramFeat(request):
+    return render(request,'qusasa/InstagramFeat.html')
+def wFeature(request):
+    return render(request,'qusasa/wFeature.html')
+
 @login_required
 def confirm_email(request):
     if request.method == 'POST':

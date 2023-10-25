@@ -1,0 +1,63 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Qusasa | Feature</title>
+    <!-- Linking CSS -->
+    <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}" />
+    <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
+
+  </head>
+  <body>
+    <!-- <img class="polygon" src="{% static 'qusasa/images/Frame 2.png'%}" alt="Description of Image" class="full-size-absolute"> -->
+
+    <!--  <div class="navigation">
+        <img class="static-img" src="{% static 'qusasa/images/qusasa.png' %}" alt="">
+
+        <div class="navs">
+            <a href="{% url 'logout' %}">Log out</a>
+        </div>
+    </div>  -->
+    <a class="log-out" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i> Log out</a>
+
+    <div class="side-nav">
+      <div class="side-nav-container">
+        <img src="{% static 'qusasa/images/Qusasa end.png' %}" alt="" />
+        <a class="el" id="el-current"><i class="fa-solid fa-clock"></i> My History</a>
+        <a class="el"><i class="fa-solid fa-scissors"></i> Qusasa's Features</a>
+        <a class="el"><i class="fa-solid fa-circle-question"></i> Inquiries</a>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="welcome">Welecome, {{ user.first_name }}!</div>
+
+        <ul class="breadcrumbs">
+            <li><a href="{% url 'base' %}" {% if request.resolver_match.url_name == 'base' %} id="current" {% endif %}> Home</a></li>
+            <li>Feature</li>
+        </ul>
+
+      <div class="history">
+
+        <div class="flex-container">
+          <div class="flex-cell">
+            <button style="margin-top: 1rem; padding: 50px;" class="flex-item"><i class="fa-brands fa-youtube fa-2xl"></i><a href="{% url 'YouTubeFeat' %}" {% if request.resolver_match.url_name == 'YouTubeFeat' %} id="current" {% endif %} style="padding: 15%;"><span> YouTube</span></a></button>
+          </div>
+
+          <div class="flex-cell">
+            <button style="margin-top: 1rem; padding: 50px;" class="flex-item"><i class="fa-brands fa-instagram fa-2xl"></i> 
+                <a 
+                 href="{% url 'InstagramFeat' %}" {% if request.resolver_match.url_name == 'InstagramFeat' %} id="current" 
+                {% endif %} style="padding: 15%;"> <span> Instagram</span></a></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Linking JS at the bottom for better performance -->
+    <script src="{% static 'qusasa/js/script.js' %}"></script>
+  </body>
+</html>
