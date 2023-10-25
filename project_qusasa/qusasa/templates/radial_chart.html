@@ -12,12 +12,11 @@
             flex-direction: row;
             justify-content: center;
             align-items: center;
-            font-size: 2rem;
             font-weight: 700;
         }
 
         #red-chart, #green-chart {
-            width: 80%;
+            width: 50%;
         }
 
     </style>
@@ -47,7 +46,7 @@
         plotOptions: {
             radialBar: {
                 hollow: {
-                    size: '50%',
+                    size: '40%',
                 },
                 track: {
                     background: '#333'  // dark track background
@@ -61,7 +60,7 @@
                         color: '#fff',
                         show: true,
                         fontWeight: 700,
-                        fontSize: '40px', // Adjust this to make the font size bigger or smaller
+                        fontSize: '1.5rem', // Adjust this to make the font size bigger or smaller
                         color: '#fff',
                     }
                 }
@@ -104,7 +103,7 @@
                 stops: [0, 100]
             }
         },
-        series: [85], // another example value
+        series: [25], // another example value
     };
     
     var chartRed = new ApexCharts(document.querySelector("#red-chart"), optionsRed);

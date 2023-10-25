@@ -2,12 +2,12 @@ from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
 from django.contrib import admin
-from qusasa.admin import admin_site
-
+from .admin import admin_site
 
 urlpatterns = [
     path('', views.home, name='home'),
     path('admin/', admin_site.urls),
+    path('inquiries/', views.inquiries_view, name='inquiries'),
     path('base/', views.base, name='base'),
     path('login/', views.login_view, name='login'),
     path('wFeature/', views.wFeature, name='wFeature'),

@@ -458,8 +458,7 @@ a {
   }
 
   .part1Content {
-    min-height: 100vh;
-    height: 100vh;
+    min-height: 80vh;
     margin: 0;
     padding: 0;
   }
@@ -471,7 +470,6 @@ a {
   }
 
   .part2Content {
-    height:80vh;
     margin: 0;
     width: 80%;
     
@@ -481,7 +479,7 @@ a {
     font-size: 1.5rem;
     margin-bottom: 2rem;
     padding: 0;
-    margin: 10vh 0;
+    /* margin: 10vh 0; */
 
   }
 
@@ -497,17 +495,14 @@ a {
   .part4Content .text {
     flex-direction: column;
   }
-  .part4Content .text h3 {
-
-  }
+  
 
   .part3Content {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 50vh 0;
+    margin: 5vh 0;
   }
 
   .part3Content img {
@@ -520,8 +515,20 @@ a {
   }
   
   .part4Content .text p {
-    width: 2%;
     margin: 0;
+    width: 70%;
+    text-align: center;
+    margin-bottom: 1rem;
+
+  }
+
+  .part4Content .text h3 {
+    margin: 0;
+    width: 70%;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+
   }
   .part4Content .charts p {
     font-size: 1rem;
@@ -573,10 +580,35 @@ a {
   .mainFeatures {
       margin: 15px; 
   }
-  .part5Content button {
-    padding: 5px 15px;
-    font-size: 0.9rem;
+  .part5Content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 80%;
+    margin: 0;
+    height: auto;
+    margin: 15vh 0;
 }
+
+.part5Content h3::after {
+  opacity: 0;
+}
+
+
+.part5Content h3 {
+  background: linear-gradient(#ffffff, #f0f0f0b2);
+  border-radius: 50px;
+  color: #0A2240;
+  padding: 2rem;
+}
+.part5Content button {
+  font-size: 1rem;
+  padding: 1rem;
+width: 100%;
+}
+
 .part4Content .charts {
   display: flex;
           flex-direction: column;
@@ -595,19 +627,21 @@ width: 100;
 
 
 footer {
-  height: 5vh;
+  height: 10vh;
+  background-color: #0A2240;
 }
 
   
 
-  .part4Content .text h3 {
-    font-size: 1.6rem;
-  }
 
-.part4Content .text p {
-    width: 30%;
-    font-size: 1.2rem;
-    font-weight: 500;
+
+
+
+.part4Content .charts p {
+  font-weight: 700;
+  font-size: 1.3rem;
+  margin-left: 0;
+  
 }
 
 }

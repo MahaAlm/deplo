@@ -5,12 +5,15 @@ from .models import CustomUser  # adjust the import if your model is in a differ
 from django.contrib.admin import AdminSite
 from django.urls import reverse
 from django.http import HttpResponseRedirect
+from django.contrib.admin import AdminSite
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 
+class CustomAdminSite(AdminSite):
+    def index(self, request, extra_context=None):
+        return HttpResponseRedirect(reverse('admin:qusasa_customuser_changelist'))
 
-class MyAdminSite(admin.AdminSite):
-    def has_permission(self, request):
-        return request.user.is_active and request.user.is_superuse
-admin_site=MyAdminSite()
+admin_site = CustomAdminSite(name='custom_admin')
 
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
@@ -37,12 +40,4 @@ class CustomUserAdmin(UserAdmin):
     search_fields = ('email', 'first_name', 'last_name',)
     ordering = ('email',)
 
-class CustomAdminSite(AdminSite):
-
-    def index(self, request, extra_context=None):
-        # Redirect to the Qusasa users changelist page.
-        return HttpResponseRedirect(reverse('admin:qusasa_customuser_changelist'))
-    
-
-admin_site = CustomAdminSite()
 admin_site.register(CustomUser, CustomUserAdmin)
