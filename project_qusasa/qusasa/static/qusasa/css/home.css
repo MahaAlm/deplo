@@ -466,7 +466,6 @@ a {
   
   .part1Content h3 {
     font-size: 1rem;
-    
   }
 
   .part2Content {
@@ -475,12 +474,12 @@ a {
     
 
   }
+
+
   .part2Content h3 {
     font-size: 1.5rem;
     margin-bottom: 2rem;
     padding: 0;
-    /* margin: 10vh 0; */
-
   }
 
   .part3Content {
