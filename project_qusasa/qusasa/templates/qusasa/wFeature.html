@@ -44,13 +44,13 @@
 
         <div class="flex-container">
           <div class="flex-cell">
-            <button style="margin-top: 1rem; padding: 50px;" class="flex-item"><i class="fa-brands fa-youtube fa-2xl"></i><a href="{% url 'Yfeature' %}" {% if request.resolver_match.url_name == 'Yfeature' %} id="current" {% endif %} style="padding: 15%;"><span> YouTube</span></a></button>
+            <button style="margin-top: 1rem; padding: 50px;" class="flex-item"><i class="fa-brands fa-youtube fa-2xl"></i><a href="{% url 'YouTubeFeat' %}" {% if request.resolver_match.url_name == 'YouTubeFeat' %} id="current" {% endif %} style="padding: 15%;"><span> YouTube</span></a></button>
           </div>
 
           <div class="flex-cell">
             <button style="margin-top: 1rem; padding: 50px;" class="flex-item"><i class="fa-brands fa-instagram fa-2xl"></i> 
                 <a 
-                 href="{% url 'Ifeature' %}" {% if request.resolver_match.url_name == 'Ifeature' %} id="current" 
+                 href="{% url 'InstagramFeat' %}" {% if request.resolver_match.url_name == 'InstagramFeat' %} id="current" 
                 {% endif %} style="padding: 15%;"> <span> Instagram</span></a></button>
           </div>
         </div>

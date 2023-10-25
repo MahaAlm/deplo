@@ -29,7 +29,8 @@
         <div class="side-nav-container">
             <img src="{% static 'qusasa/images/Qusasa end.png'%}" alt="">
             <a class="el" id="el-current"><i class="fa-solid fa-clock"></i> My History</a>
-            <a class="el"><i class="fa-solid fa-scissors"></i> Qusasa's Features</a>
+            <a class="el" href="{% url 'wFeature' %}" {% if request.resolver_match.url_name == 'wFeature' %} id="current" 
+            {% endif %}><i class="fa-solid fa-scissors"></i> Qusasa's Features</a>
             <a class="el"><i class="fa-solid fa-circle-question"></i> Inquiries</a>
         </div>
        
@@ -41,7 +42,8 @@
         </div>
         <div class="history">
             <p>You have no previous templates, <br> start using Qusasa's analysis features to serve your data needs now!</p>
-            <button><a><span>Go to Qusasa's Features   <i class="fa-solid fa-scissors"></i></a></span></button>
+            <button><a href="{% url 'wFeature' %}" {% if request.resolver_match.url_name == 'wFeature' %} id="current" 
+                {% endif %}><span>Go to Qusasa's Features   <i class="fa-solid fa-scissors"></i></a></span></button>
         </div>
     </div>
 

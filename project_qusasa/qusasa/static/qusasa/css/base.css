@@ -236,3 +236,31 @@ a {
 .history button a {
     z-index: 2;
 }
+
+.breadcrumbs {
+    list-style: none;
+    padding: 0;
+}
+
+.breadcrumbs li {
+    display: inline;
+    margin-right: 10px;
+}
+
+.breadcrumbs li::after {
+    content: " > ";
+    color: #999;
+}
+
+.breadcrumbs li:last-child::after {
+    content: "";
+}
+
+.breadcrumbs a {
+    text-decoration: none;
+    color: #333;
+}
+
+.breadcrumbs a:hover {
+    text-decoration: underline;
+}
