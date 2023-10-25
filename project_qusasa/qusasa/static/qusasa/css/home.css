@@ -442,15 +442,11 @@ a {
 /* Mobile styles */
 @media screen and (max-width: 599px) {
 
-  body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    max-width: 100vw;
-    width: 100vw;
-  }
+ 
 
+  body {
+    max-width: 100vw;
+  }
 
   .part1Content h1 {
     font-size: 2rem;
@@ -464,32 +460,68 @@ a {
   .part1Content {
     min-height: 100vh;
     height: 100vh;
+    margin: 0;
+    padding: 0;
   }
 
   
   .part1Content h3 {
     font-size: 1rem;
+    
   }
 
   .part2Content {
-    height: 30vh;
+    height:80vh;
+    margin: 0;
+    width: 80%;
     
 
   }
   .part2Content h3 {
-    font-size: 1rem;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    padding: 0;
+    margin: 10vh 0;
 
   }
+
+  .part3Content {
+    padding: 0;
+  }
   .part3Content h3 {
-    font-size: 1rem;
+    font-size: 1.5rem;
+    width: 80%;
+    margin: 0;
+  }
+
+  .part4Content .text {
+    flex-direction: column;
   }
   .part4Content .text h3 {
-    font-size: 1.3rem;
-    width: 10%;
+
+  }
+
+  .part3Content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 50vh 0;
+  }
+
+  .part3Content img {
+    max-width: 80%;
+    width: 70%;
+    align-self: center;
+    margin: 0;
+    padding: 0;
+    margin: 10vh;
   }
   
   .part4Content .text p {
     width: 2%;
+    margin: 0;
   }
   .part4Content .charts p {
     font-size: 1rem;
@@ -509,6 +541,7 @@ a {
   padding: 10%;
   justify-content: center;
   align-items: center;
+  height: auto;
 }
 
 .features p {
@@ -565,16 +598,7 @@ footer {
   height: 5vh;
 }
 
-  .part4Content .text {
-    width: 130%;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    margin-bottom: 2rem;
-  }
+  
 
   .part4Content .text h3 {
     font-size: 1.6rem;
