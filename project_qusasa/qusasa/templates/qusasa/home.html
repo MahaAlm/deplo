@@ -33,19 +33,19 @@
             <div class="features" data-aos="fade-up">
                 <div alt="mainFeatures" class="mainFeatures">
                     <i class="fa-solid fa-magnifying-glass-chart"></i>
-                    Data colelction
+                    <p>Data colelction</p>
                 </div>
                 <div alt="mainFeatures2" class="mainFeatures">
                     <i class="fa-solid fa-chart-pie"></i>
-                    Data visualisation                    
+                <p> Data visualisation </p>                   
                 </div>
                 <div alt="mainFeatures3" class="mainFeatures">
                     <i class="fa-solid fa-chart-bar"></i>
-                    Advanced Analytics
+                 <p>Advanced Analytics</p>
                 </div>
                 <div alt="mainFeatures4" class="mainFeatures">
                     <i class="fa-solid fa-note-sticky"></i>
-                    Videos Summary
+                <p>Videos Summary</p>
                 </div>
             </div>
                 
@@ -54,7 +54,7 @@
 
           <div class="part3Content">
             <h3 data-aos="fade-up">From the vast amount of content in youtube and instagram, get to the bottom of your <span>data needs</span></h3>
-            <img src="{% static 'qusasa/images/analysis.png' %}" alt="" data-aos="fade-up">
+            <img id="responsiveImage"src="{% static 'qusasa/images/analysis.png' %}" alt="" data-aos="fade-up" style="max-width: 100%; height: auto;">
           </div>
 
           <div class="part4Content">
@@ -106,6 +106,24 @@
           duration: 1200, // You can adjust this value for animation duration
         });
       </script>
+
+      <script>
+        function updateImageSource() {
+            var img = document.getElementById('responsiveImage');
+            if (window.innerWidth < 800) {
+                img.src = "{% static 'qusasa/images/alternative_image.png' %}";  // Change to your desired alternative image path
+            } else {
+                img.src = "{% static 'qusasa/images/analysis.png' %}";
+            }
+        }
+    
+        // Call the function when the page loads
+        window.onload = updateImageSource;
+    
+        // Call the function when the window is resized
+        window.onresize = updateImageSource;
+    </script>
+    
       
 </body>
 </html>

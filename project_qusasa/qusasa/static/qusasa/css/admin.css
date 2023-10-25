@@ -1,0 +1,627 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;400;500;600;700;800;900&display=swap');
+
+
+
+html {
+    height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    /* background: linear-gradient(-45deg, #0B0B25, #250D44, #0A2240); */
+    background: #f0f0f5;
+    background-repeat: no-repeat; /* Prevent gradient from repeating */
+    background-attachment: fixed;
+    font-family: 'Raleway', sans-serif;
+    color: white;
+    
+}
+
+body {
+    min-height: 100%;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-image: url("static/images/Frame 2.png");
+    background-repeat: no-repeat; /* Prevent gradient from repeating */
+    background-attachment: fixed;
+    display: flex;
+    flex-direction: row; /* Change this */
+    min-height: 100vh; 
+    justify-content: stretch;
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+}
+
+a {
+    text-decoration: none;
+}
+
+.side-nav {
+    min-height: 100%;
+    height: 100%;
+    width: 20%;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    text-align: center;
+    padding: 3%;
+    margin: 0;
+}
+
+.side-nav-container {
+    margin: 0;
+    height: 90%;
+    width: 100%;
+    background: white;
+    border-radius: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.side-nav .side-nav-container img {
+    max-height: 100px;
+    margin-top: 100px;
+    margin-bottom: 50px;
+
+}
+
+.side-nav .side-nav-container .el {
+    width: 80%;
+    padding: 10px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 1.3rem 0;
+    padding: 0.8rem 0;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: ease 0.2s;
+
+    
+}
+
+.el:hover {
+    color:#a02de7;
+    transition: ease 0.2s;
+
+}
+
+#el-current {
+    background: linear-gradient(-45deg, #3b3b9a, #58308c, #ae3aaa); 
+    color: white;
+    transition: ease 0.2s;
+
+}
+
+#el-current:hover {
+    background: linear-gradient(-45deg, #0B0B25, #250D44, #0A2240); 
+    transition: ease 0.2s;
+
+}
+
+.log-out {
+    color: #5300c0;
+    cursor: pointer;
+    transition: ease 0.2s;
+    font-size: 1.1rem;
+    font-weight: 700;
+    position: absolute;
+    top: 20px;
+    right: 25px;
+}
+
+.log-out a {
+    color: #5300c0;
+
+}
+
+.log-out a:visited {
+    color: #5300c0;
+}
+.log-out:hover {
+    color: #8528ff;
+    transition: ease 0.2s;
+
+
+}
+.polygon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+.content {
+    min-height: 90%;
+    width: 30vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex: 1;
+    padding: 0rem;
+    margin-top: 50vh;
+
+}
+
+.content .welcome {
+    color:rgb(112, 64, 164);
+    font-size: 2rem;
+    font-weight: 800;
+    padding: 3rem 0;
+    width: 100%;
+}
+
+.content .history {
+    background-color: white;
+    border-radius: 20px;
+    color: #0B0B25;
+    width: 80%;
+    padding: 3rem;
+    font-weight: 700;
+    margin-bottom: 10vh;
+}
+
+
+
+
+.history button {
+    padding: 15px 50px;
+    border-radius: 50px;
+    border: none;
+    outline: none;
+    background: linear-gradient(#009ba6b6, #1C93B9);
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    margin-top: 2rem;
+}
+
+.history button i {
+    margin-left: 10px;
+}
+.history button::before {
+    content: "";
+    position: absolute;
+    border-radius: 50px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;  /* Put the pseudo-element above the button content */
+    background: linear-gradient(#36f2ffd8, #29abd6);  /* Default gradient */
+    transition: 0.3s;
+    opacity: 0;
+}
+
+.history button:hover::before {
+    opacity: 1;
+    margin-bottom: 3px;
+}
+
+.history button span {
+        position: relative;  /* Make it appear above the pseudo-element */
+        z-index: 2;
+    
+}
+
+.history button:disabled {
+    background: linear-gradient(#b3b3b3b6, #888888);
+    cursor: auto;
+}
+
+.history button:disabled:hover::before  {
+    opacity: 0;
+    margin-bottom: 0;
+}
+
+.history button a {
+    z-index: 2;
+}
+
+.content .welcome {
+    margin-top: 3rem;
+    padding: 0;
+    height: auto;
+}
+
+.breadcrumbs {
+    font-weight: 700;
+    color: #0B0B25;
+}
+
+.module h2 {
+    color: #250D44;
+}
+
+.object-tools {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+}
+
+.object-tools li {
+    text-decoration: none;
+    list-style-type: none;
+    background: #250D44;
+    color: white;
+    padding: 0.5rem 2rem;
+    border-radius: 50px;
+    font-size: 1rem;
+}
+
+.addlink {
+    color: white;
+}
+
+a {
+    text-decoration: none;
+}
+
+#changelist-search {
+    height: 3rem;
+}
+
+#changelist-search div {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#changelist-search div label img {
+    height: 1.8rem;
+    margin-right: 0.4rem;
+}
+
+#changelist-search div input[type ="text"]{
+    height: 1.5rem;
+    width: 80%;
+    margin-right: 0.8rem;
+    border-radius: 20px;
+    outline: none;
+    border: none;
+    background-color: #f1f1f1;
+    padding: 0.3rem 1rem;
+}
+
+#changelist-search div input[type ="text"]:hover {
+    background-color: #e8e8e8;
+
+}
+
+#changelist-search div input[type ="submit"] {
+    text-decoration: none;
+    list-style-type: none;
+    background: #0fbdcd;
+    color: white;
+    padding: 0.4rem 2rem;
+    border-radius: 50px;
+    font-size: 1rem;
+    border: none;
+    outline: none;
+    font-family: 'Raleway';
+    font-weight: 700;
+}
+
+.actions {
+    height: 5rem;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    font-size: 1rem;
+    align-items: center;
+}
+
+.actions button {
+    height: 1.5rem;
+    width: 5rem;
+    background: #65468d;
+    margin: 0;
+    padding: 0;
+    margin-left: 1rem;
+    margin-right: 5rem;
+    font-size: 0.8rem;
+}
+
+.actions select {
+    border-radius: 20px;
+}
+
+.actions button::before {
+    opacity: 0;
+}
+
+.action-counter {
+    justify-self: flex-end;
+    float: left;
+    font-weight: 500;
+    
+}
+
+.actions button:hover::before {
+    opacity: 0;
+}
+
+/* Base table styles */
+#result_list {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.8rem;
+    
+}
+
+#result_list th, #result_list td {
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+#result_list thead th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+
+#result_list thead th a {
+    background-color: #f5f5f5;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: auto;
+    color: #0B0B25;
+}
+
+/* Checkbox styles */
+.action-checkbox-column {
+    width: 50px;
+}
+
+.action-checkbox {
+    text-align: center;
+}
+
+/* Field styles */
+.field-email a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.field-email a:hover {
+    text-decoration: underline;
+}
+
+.field-is_staff img, .field-is_active img {
+    display: block;
+    margin: 0 auto;
+}
+
+/* Row hover effect */
+#result_list tbody tr:hover {
+    background-color: #e8e8e8;
+}
+
+.paginator {
+    font-size: 1rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+}
+
+#changelist-filter {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 1rem;
+    align-items: center;
+}
+
+#changelist-filter details li {
+    text-decoration: none;
+    list-style-type: none;
+    color: #250D44;
+    
+}
+
+#changelist-filter details .selected {
+    text-decoration: none;
+    list-style-type: none;
+    color: #1C93B9;
+    
+}
+
+/* Base details and summary styles */
+details {
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    margin: 20px 0;
+    padding: 10px 20px;
+    max-width: 220px;
+    box-shadow: 0 2px 5px rgba(238, 184, 235, 0.376);
+    font-size: 0.9rem;
+}
+
+details[open] {
+    box-shadow: 0 2px 5px rgba(238, 184, 235, 0.376);
+}
+
+details > summary {
+    font-weight: bold;
+    list-style: none;
+    cursor: pointer;
+}
+
+details > summary::-webkit-details-marker {
+    display: none;
+}
+
+details > summary:before {
+    content: '▶';
+    margin-right: 5px;
+}
+
+details[open] > summary:before {
+    content: '▼';
+}
+
+/* List styles */
+details > ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+details > ul > li {
+    margin: 8px 0;
+}
+
+details > ul > li.selected {
+    font-weight: bold;
+}
+
+details > ul > li > a {
+    text-decoration: none;
+    color: #250D44;
+    padding: 5px;
+    border-radius: 4px;
+    display: block;
+    transition: background-color 0.3s;
+}
+
+details > ul > li > a:visited {
+    color: inherit;
+}
+
+details > ul > li > a:hover {
+    background-color: #f5f5f5;
+}
+
+
+
+/* Global form styling */
+form {
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;  /* Smaller base font size */
+    max-width: 600px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    background-color: #ffffff;
+    min-width: 100%;
+    margin: 0;
+    box-shadow: none;
+    font-family: 'Raleway';
+}
+
+/* Heading and description */
+p {
+    font-weight: 500;  /* Slightly less bold than before */
+    margin-bottom: 20px;
+    font-size: 16px;  /* Slightly bigger for better distinction */
+}
+
+/* Fieldset and div styles */
+fieldset {
+    border: 1px solid #e1e4e8;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+/* Flex container for input rows */
+.flex-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+label {
+    margin-right: 1rem;
+}
+
+/* Input fields and checkboxes styling */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 70%;
+    padding: 8px;
+    border: 1px solid #e1e4e8;
+    border-radius: 5px;
+    font-size: 14px;  /* Matched to base font size */
+    font-weight: 400;  /* Regular weight for better readability */
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-color: #007BFF;
+}
+
+.checkbox-row {
+    align-items: center;
+    margin: 0;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+/* Helper text styling */
+.help {
+    font-size: 12px;  /* Slightly smaller for helper texts */
+    color: #666666;
+    margin-top: 5px;
+    font-weight: 300;  /* Lighter weight for subtlety */
+}
+
+/* Submit row styling */
+.submit-row {
+    display: flex;
+    align-items: center;
+}
+
+input[type="submit"] {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 20px;
+    background-color: #76589d;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 15px;  /* Matched to base font size */
+    font-weight: 500;  /* Medium weight for better prominence */
+    transition: background-color 0.3s;
+    margin-right: 1rem;
+    font-weight: bold;
+}
+
+input[type="submit"]:hover {
+    background-color: #8457be;
+}
+
+input[type="submit"].default {
+    background-color: #26a5d3;
+}
+
+input[type="submit"].default:hover {
+    background-color: #1dade1;
+}
+
+.form-row {
+    margin-bottom: 1rem;
+}
+

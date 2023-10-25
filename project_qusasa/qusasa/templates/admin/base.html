@@ -6,20 +6,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Qusasa | Welcome</title>
     <!-- Linking CSS -->
+<<<<<<< HEAD
     <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}">
+=======
+    <link rel="stylesheet" href="{% static 'qusasa/css/admin.css' %}">
+>>>>>>> 2288640b8d1acbcdb431cb18533a3bc3e871ef86
     <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
 </head>
 
 <body> 
+<<<<<<< HEAD
     <img class="polygon" src="{% static 'qusasa/images/Frame 2.png'%}" alt="Description of Image" class="full-size-absolute">
+=======
+>>>>>>> 2288640b8d1acbcdb431cb18533a3bc3e871ef86
 
     <a class="log-out" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i>  Log out</a>
 
     <div class="side-nav">
         <div class="side-nav-container">
             <img src="{% static 'qusasa/images/Qusasa end.png'%}" alt="">
+<<<<<<< HEAD
             <a class="el" href="{% url 'admin:auth_group_changelist' %}"><i class="fa-solid fa-scissors"></i> Groups</a>
             <a class="el" href="{% url 'admin:qusasa_customuser_changelist' %}"><i class="fa-solid fa-circle-question"></i> Inquiries</a>
+=======
+            <a class="el" id="el-current" href="{% url 'admin:qusasa_customuser_changelist' %}"><i class="fa-solid fa-user"></i> Qusasa users</a>
+            <a class="el"><i class="fa-solid fa-circle-question"></i> Inquerires</a>
+
+>>>>>>> 2288640b8d1acbcdb431cb18533a3bc3e871ef86
             
             
         </div>
@@ -28,7 +41,11 @@
 
     <div class="content">
         <div class="welcome">
+<<<<<<< HEAD
             Welecome,  {{ user.first_name }}!
+=======
+            Welecome,  admin {{ user.first_name }}
+>>>>>>> 2288640b8d1acbcdb431cb18533a3bc3e871ef86
         </div>
         <br class="clear">
         {% block breadcrumbs %}{% endblock %}
@@ -45,7 +62,10 @@
                 {% endblock %}
 
             </div>
+<<<<<<< HEAD
                     <p>You have no customer inquiries, <br></p>        
+=======
+>>>>>>> 2288640b8d1acbcdb431cb18533a3bc3e871ef86
         </div>
     </div>
 

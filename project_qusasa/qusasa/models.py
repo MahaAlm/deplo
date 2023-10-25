@@ -36,23 +36,31 @@ from django.dispatch import receiver
 from django.core.mail import send_mail
 from django.conf import settings
 import uuid
+from django.template.loader import render_to_string
 
 @receiver(post_save, sender=CustomUser)
 def send_verification_email(sender, instance, **kwargs):
     if not instance.is_verified and not instance.email_confirmation_code:
-        # Generate a unique confirmation code (you can use UUID or any other method)
+        # Generate a unique confirmation code
         confirmation_code = generate_confirmation_code()
         instance.email_confirmation_code = confirmation_code
         instance.save()
 
+        # Render the email content with the template
+        html_message = render_to_string('path_to_templates/email_verification_template.html', {
+            'confirmation_code': confirmation_code
+        })
+
         # Send an email with the confirmation code
         send_mail(
             'Confirm your email address',
-            f'Use this code to confirm your email address: {confirmation_code}',
+            'Use the code provided in the attached HTML to confirm your email address.',  # This is a fallback for email clients that do not support HTML
             settings.EMAIL_HOST_USER,
             [instance.email],
             fail_silently=False,
+            html_message=html_message  # This is the HTML message
         )
+
 
 import random
 def generate_confirmation_code(length=6):

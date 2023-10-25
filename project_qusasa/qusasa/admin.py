@@ -2,6 +2,10 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from requests import request
 from .models import CustomUser  # adjust the import if your model is in a different location
+from django.contrib.admin import AdminSite
+from django.urls import reverse
+from django.http import HttpResponseRedirect
+
 
 class MyAdminSite(admin.AdminSite):
     def has_permission(self, request):
@@ -32,3 +36,13 @@ class CustomUserAdmin(UserAdmin):
     # Defines the fields used by the search box of the admin interface
     search_fields = ('email', 'first_name', 'last_name',)
     ordering = ('email',)
+
+class CustomAdminSite(AdminSite):
+
+    def index(self, request, extra_context=None):
+        # Redirect to the Qusasa users changelist page.
+        return HttpResponseRedirect(reverse('admin:qusasa_customuser_changelist'))
+    
+
+admin_site = CustomAdminSite()
+admin_site.register(CustomUser, CustomUserAdmin)

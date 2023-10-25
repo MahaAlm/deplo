@@ -25,6 +25,9 @@
     cursor: pointer;
 }
 
+.navs {
+
+}
 .navigation .navs a::after {
     content: "";
     position: absolute;
@@ -71,15 +74,14 @@
 .navigation .navs {
     display: flex;
     flex-direction: row;
-    width: 20vw;
-    min-width: 200px;
+    min-width: 300px;
     justify-content: space-between; 
     padding: 0;
     margin: 0;
     font-weight: 700;
     margin-right: 1vw;
-
 }
+
 .navs #current::after {
     opacity: 1; /* Show the glow on hover */
 } 
