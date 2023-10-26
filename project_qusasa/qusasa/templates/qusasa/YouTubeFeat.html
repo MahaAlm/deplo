@@ -8,16 +8,10 @@
     <title>Qusasa | YouTube Features</title>
     <!-- Linking CSS -->
     <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}" />
-<<<<<<< HEAD
     <link rel="stylesheet" href="{% static 'qusasa/css/cards.css' %}" />
 
     <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
 
-=======
-    <link rel="stylesheet" href="{% static 'qusasa/css/YouTube.css' %}" />
-
-    <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
->>>>>>> 444c3647480057a585f4b6cc9fcea9454071732e
   </head>
   <body>
     <!-- <img class="polygon" src="{% static 'qusasa/images/Frame 2.png'%}" alt="Description of Image" class="full-size-absolute"> -->
@@ -34,38 +28,148 @@
     <div class="side-nav">
       <div class="side-nav-container">
         <img src="{% static 'qusasa/images/Qusasa end.png' %}" alt="" />
-        <a class="el" id="el-current"><i class="fa-solid fa-clock"></i> My History</a>
-        <a class="el"><i class="fa-solid fa-scissors"></i> Qusasa's Features</a>
+        <a class="el" ><i class="fa-solid fa-clock"></i> My History</a>
+        <a class="el" id="el-current"><i class="fa-solid fa-scissors"></i> Qusasa's Features</a>
         <a class="el"><i class="fa-solid fa-circle-question"></i> Inquiries</a>
       </div>
     </div>
 
     <div class="content">
-        <div class="welcome">Welcome, {{ user.first_name }}!</div>
+        <div class="welcome">Youtube Features</div>
+        <p>Enjoy the realm of discovering videos, obtaining datasets, and watching the analysis unfold.</p>
     
         <ul class="breadcrumbs">
-            <!-- <li><a href="{% url 'base' %}" {% if request.resolver_match.url_name == 'base' %} id="current" {% endif %}> Home</a></li> -->
-            <li>Feature</li>
+            <li><a href="{% url 'base' %}" {% if request.resolver_match.url_name == 'base' %}  {% endif %}> Home</a></li>
+            <li><a href="{% url 'wFeature' %}" {% if request.resolver_match.url_name == 'base' %}  {% endif %}>Qusasa's Features</a></li>
+            <li id="current">YouTube Features</li>
         </ul>
 
       <div class="history">
 
+        <div class="cards">
+            <a href="#">
             <article class="card">
                 <header class="card__thumb">
-                    <a href="#"><img src="https://images.unsplash.com/photo-1501443762994-82bd5dace89a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"/></a>
+                    <img src="{% static 'qusasa/images/feature_1.webp' %}"/>
                     <div class="feature-name">
-                        Feature
+                        Topic Analysis
                     </div>
                 </header>
                 
                 <div class="card__body">
-                    <div class="card__category"><a href="#">pet</a></div>
-                    <h2 class="card__title"><a href="#">an ice cream sundae party！</a></h2>
-                    <div class="card__subtitle">an ice cream sundae party！</div>
-                    <p class="card__description">5. Pour the mixture into a non-stick container and then freeze overnight. Take treating your dog a step further by turning it into an ice cream sundae party!</p>
+                    <div class="card__category youtube">Youtube</div>
+                    <h2 class="card__title">Topic Analysis</h2>
+                    <p class="card__description">you can search for a specific tpoic and gather information from videos that contain relevant information about the topic.</p>
                 </div>
-                
+            </a>
             </article>
+
+            <article class="card">
+                <a href="#">
+                <header class="card__thumb">
+                    <img src="{% static 'qusasa/images/channel_analysis.webp' %}"/>
+                    <div class="feature-name">
+                        Channel Analysis
+                    </div>
+                </header>
+                
+                <div class="card__body">
+                    <div class="card__category youtube">Youtube</div>
+                    <h2 class="card__title">Channel Analysis</h2>
+                    <p class="card__description">you can convert the content of a specific video into text and obtain detailed statistical information about the audience's activities related to that video.
+                        .</p>
+                </div>
+            </a>
+            </article>
+
+            <article class="card">
+                <a href="#">
+                <header class="card__thumb">
+                    <img src="{% static 'qusasa/images/competitive_analysis.webp' %}"/>
+                    <div class="feature-name">
+                        Competitive Analysis
+                    </div>
+                </header>
+                
+                <div class="card__body">
+                    <div class="card__category youtube">Youtube</div>
+                    <h2 class="card__title">Competitive Analysis</h2>
+                    <p class="card__description">you can study your competitors by gathering statistical information about their activities and comparing them with each other.</p>
+                </div>
+            </a>
+            </article>
+
+            <article class="card">
+                <a href="#">
+                <header class="card__thumb">
+                    <img src="{% static 'qusasa/images/playlist analysis.webp' %}"/>
+                    <div class="feature-name">
+                        Playlist Analysis
+                    </div>
+                </header>
+                
+                <div class="card__body">
+                    <div class="card__category youtube">Youtube</div>
+                    <h2 class="card__title">Playlist Analysis</h2>
+                    <p class="card__description">you can obtain statistical information about a specific playlist, including the top videos within the playlist and the creator(s) of the playlist.</p>
+                </div>
+            </a>
+            </article>
+
+            <article class="card">
+                <a href="#">
+                <header class="card__thumb">
+                    <img src="{% static 'qusasa/images/video analysis.webp' %}"/>
+                    <div class="feature-name">
+                        Video Analysis
+                    </div>
+                </header>
+                
+                <div class="card__body">
+                    <div class="card__category youtube">Youtube</div>
+                    <h2 class="card__title">Video Analysis</h2>
+                    <p class="card__description">you can obtain statistical information about a specific playlist, including the top videos within the playlist and the creator(s) of the playlist.</p>
+                </div>
+            </a>
+            </article>
+
+            <article class="card">
+                <a href="#">
+                <header class="card__thumb">
+                    <img src="{% static 'qusasa/images/video_retrival.webp' %}"/>
+                    <div class="feature-name">
+                        Video Retrieval
+                    </div>
+                </header>
+                
+                <div class="card__body">
+                    <div class="card__category youtube">Youtube</div>
+                    <h2 class="card__title">Video Retrieval</h2>
+                    <p class="card__description">you can retrieve a collection of videos that have a common topic or belong to the same channel/playlist.</p>
+                </div>
+            </a>
+            </article>
+
+            <article class="card">
+                <a href="#">
+                    <header class="card__thumb">
+                        <img src="{% static 'qusasa/images/reporting.webp' %}"/>
+                        <div class="feature-name">
+                            YouTube Reporting
+                        </div>
+                    </header>
+
+                    
+                    <div class="card__body">
+                        <div class="card__category youtube">Youtube</div>
+                        <h2 class="card__title">YouTube Reporting</h2>
+                        <p class="card__description">you can create a comprehensive report that combines all the available YouTube features to serve your specific needs.</p>
+                    </div>
+                </a>
+
+            </article>
+        </div>
+            
  
       </div>
     </div>

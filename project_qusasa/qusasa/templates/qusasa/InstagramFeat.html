@@ -5,54 +5,157 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Qusasa | Instagram Feature</title>
+    <title>Qusasa | Instagram Features</title>
     <!-- Linking CSS -->
     <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/cards.css' %}" />
+
     <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
 
   </head>
   <body>
-    <!-- <img class="polygon" src="{% static 'qusasa/images/Frame 2.png'%}" alt="Description of Image" class="full-size-absolute"> -->
-
-    <!--  <div class="navigation">
-        <img class="static-img" src="{% static 'qusasa/images/qusasa.png' %}" alt="">
-
-        <div class="navs">
-            <a href="{% url 'logout' %}">Log out</a>
-        </div>
-    </div>  -->
+    
     <a class="log-out" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i> Log out</a>
 
     <div class="side-nav">
       <div class="side-nav-container">
         <img src="{% static 'qusasa/images/Qusasa end.png' %}" alt="" />
-        <a class="el" id="el-current"><i class="fa-solid fa-clock"></i> My History</a>
-        <a class="el"><i class="fa-solid fa-scissors"></i> Qusasa's Features</a>
+        <a class="el"><i class="fa-solid fa-clock"></i> My History</a>
+        <a class="el" id="el-current"><i class="fa-solid fa-scissors"></i> Qusasa's Features</a>
         <a class="el"><i class="fa-solid fa-circle-question"></i> Inquiries</a>
       </div>
     </div>
 
     <div class="content">
-      <div class="welcome">Welecome, {{ user.first_name }}!</div>
-
+        <div class="welcome">Instagram Features</div>
+        <p>Guide your study and analysis needs Through the pile of posts and profiles.</p>
+    
         <ul class="breadcrumbs">
-            <li><a href="{% url 'base' %}" {% if request.resolver_match.url_name == 'base' %} id="current" {% endif %}> Home</a></li>
-            <li>Feature</li>
+            <li><a href="{% url 'base' %}" {% if request.resolver_match.url_name == 'base' %}  {% endif %}> Home</a></li>
+            <li><a href="{% url 'wFeature' %}" {% if request.resolver_match.url_name == 'base' %}  {% endif %}>Qusasa's Features</a></li>
+            <li id="current">Instagram Features</li>
         </ul>
 
       <div class="history">
 
-        <div class="flex-container">
-          <div class="flex-cell">
-            <button class="flex-item"><i class="fa-brands fa-youtube fa-2xl"></i><a style="padding: 15%;"><span> YouTube</span></a></button>
-          </div>
+        <div class="cards">
+            <a href="#">
+            <article class="card">
+                <header class="card__thumb">
+                    <img src="{% static 'qusasa/images/trends analysis.webp' %}"/>
+                    <div class="feature-name">
+                        Topic Trends Analysis
+                    </div>
+                </header>
+                
+                <div class="card__body">
+                    <div class="card__category Instagram">Instagram</div>
+                    <h2 class="card__title">Topic Trends Analysis</h2>
+                    <p class="card__description">you to search for a specific topic or trending hashtag and gather information about the activities related to that hashtag.
+                      .</p>
+                </div>
+            </a>
+            </article>
 
-          <div class="flex-cell">
-            <button class="flex-item"><i class="fa-brands fa-instagram fa-2xl"></i><a style="padding: 15%;"><span> Instagram</span></a></button>
-          </div>
+            <article class="card">
+                <a href="#">
+                <header class="card__thumb">
+                    <img src="{% static 'qusasa/images/posts analysis.webp' %}"/>
+                    <div class="feature-name">
+                      Posts Analysis
+                    </div>
+                </header>
+                
+                <div class="card__body">
+                    <div class="card__category Instagram">Instagram</div>
+                    <h2 class="card__title">Posts Analysis</h2>
+                    <p class="card__description">you can obtain static information about selected posts on Instagram such as analysis of comments, likes, and other activities related to the post.
+                      .
+                        .</p>
+                </div>
+            </a>
+            </article>
+
+            <article class="card">
+                <a href="#">
+                <header class="card__thumb">
+                    <img src="{% static 'qusasa/images/engagment.webp' %}"/>
+                    <div class="feature-name">
+                      Engagement History
+                    </div>
+                </header>
+                
+                <div class="card__body">
+                    <div class="card__category Instagram">Instagram</div>
+                    <h2 class="card__title">Engagement History</h2>
+                    <p class="card__description">you can track the progress or evolution of a specific profile or hashtag
+                      over time.
+                      </p>
+                </div>
+            </a>
+            </article>
+
+            <article class="card">
+                <a href="#">
+                <header class="card__thumb">
+                    <img src="{% static 'qusasa/images/people analysis.webp' %}" />
+                    <div class="feature-name">
+                      People Analytics
+                    </div>
+                </header>
+                
+                <div class="card__body">
+                    <div class="card__category Instagram">Instagram</div>
+                    <h2 class="card__title">People Analysis</h2>
+                    <p class="card__description">you can gather information about the audience for a specific post or hashtag.</p>
+                </div>
+            </a>
+            </article>
+
+            <article class="card">
+                <a href="#">
+                <header class="card__thumb">
+                    <img src="{% static 'qusasa/images/comparative study.webp' %}"/>
+                    <div class="feature-name">
+                      Comparative Study
+                    </div>
+                </header>
+                
+                <div class="card__body">
+                    <div class="card__category Instagram">Instagram</div>
+                    <h2 class="card__title">Comparative Study</h2>
+                    <p class="card__description"> you can compare activities between two hashtags or compare activities from different locations or different eras associated with the same hashtag.
+                      </p>
+                </div>
+            </a>
+            </article>
+
+           
+
+            <article class="card">
+                <a href="#">
+                    <header class="card__thumb">
+                        <img src="{% static 'qusasa/images/reporting.webp' %}"/>
+                        <div class="feature-name">
+                            Instagram Reporting
+                        </div>
+                    </header>
+
+                    
+                    <div class="card__body">
+                        <div class="card__category Instagram">Instagram</div>
+                        <h2 class="card__title">Instagram Reporting</h2>
+                        <p class="card__description">you can create a comprehensive report that combines all the available Instagram features to serve your specific needs.</p>
+                    </div>
+                </a>
+
+            </article>
         </div>
+            
+ 
       </div>
     </div>
+    
 
     <!-- Linking JS at the bottom for better performance -->
     <script src="{% static 'qusasa/js/script.js' %}"></script>

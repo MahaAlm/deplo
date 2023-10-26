@@ -3,7 +3,6 @@
 
 
 html {
-    height: 100vh;
     width: 100%;
     margin: 0;
     padding: 0;
@@ -28,9 +27,9 @@ body {
     flex-direction: row; /* Change this */
     min-height: 100vh; 
     justify-content: stretch;
-    align-items: center;
-    align-content: center;
-    justify-items: center;
+    align-items: start;
+    align-content: start;
+    justify-items: start;
 }
 
 a {
@@ -38,8 +37,8 @@ a {
 }
 
 .side-nav {
-    min-height: 100%;
-    height: 100%;
+    min-height: 100vh;
+    height: 100vh;
     width: 20%;
     color: black;
     display: flex;
@@ -49,7 +48,7 @@ a {
     align-items: center;
     flex-wrap: wrap;
     text-align: center;
-    padding: 3%;
+    padding: 0 3%;
     margin: 0;
 }
 
@@ -132,14 +131,13 @@ a {
 }
 .content {
     min-height: 90%;
-    height: 90%;
     width: 30vw;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
     flex: 1;
-    padding: 0rem;
+    padding-top: 5vh;
 
 }
 
@@ -242,13 +240,16 @@ a {
 }
 
 .breadcrumbs li {
-    display: inline;
-    margin-right: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-right: 5px;
 }
 
 .breadcrumbs li::after {
     content: " > ";
     color: #999;
+    margin-left: 5px;
 }
 
 .breadcrumbs li:last-child::after {
@@ -295,3 +296,33 @@ a {
     justify-content: center;
     align-items: center;
   }
+
+  .breadcrumbs {
+    color: #333;
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  .breadcrumbs #current {
+    color: #562793;
+  }
+
+  a:visited {
+    color: inherit;
+  }
+
+  .content p {
+    color: #333;
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
+    font-size: 1.2rem;
+}
+
+.content .welcome {
+    padding-bottom: 1rem;
+    
+}
