@@ -292,10 +292,110 @@ a {
 .barchart {
     width: 100%;
 }
-
-
-
 .part5Content {
+  height: 150vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.part5Content h2 {
+  font-size: 3rem;
+}
+
+.part5Content h3 {
+  margin: 0%;
+  font-size: 1.8rem;
+  position: relative;
+
+}
+
+
+.part5Content h3::after {
+
+  content: "";
+  position: absolute;
+  top: 10px;  /* Start right after the bottom edge of the link */
+  height: 40px; /* Control the extent of the bottom glow */
+  width: 80%;
+  left: 50%;  /* Position the left edge at the center */
+  transform: translateX(-50%); /* Pull it back to truly center it */
+  background: radial-gradient(ellipse at center, #38d7ff, #17a4a2a7 30%, transparent 60%);
+  opacity: 1; /* Hide it initially */
+  z-index: -1;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+}
+
+/* Individual cards styling */
+.card {
+  width: 250px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  background: linear-gradient(#0a224000, #8a25bda9);
+  opacity: 30%;
+  position: relative;
+}
+
+.card-icon {
+  background-color:  #16b3bed3 ;
+  padding: 15px;
+  border-radius: 50%;
+  font-size: 24px;
+  color: #fff;
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.card-title {
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.card-description {
+  font-size: 0.8rem;
+  margin-bottom: 1.5rem;
+  font-weight: 400;
+}
+
+.learn-more {
+  color: #9c6ade;
+  font-weight: 600;
+}
+.card:hover {
+transform: scale(1.05);
+background: linear-gradient(#0a224000, #a169bea9);
+transition: all 0.4s ;
+}
+
+.learn-more:hover {
+color: #cab8ee;
+text-decoration: underline;
+transition: color 0.4s ;
+}
+
+.flex-container {
+margin-left:0% ;
+display: flex;
+justify-content: space-evenly;
+flex-wrap: wrap; 
+}
+
+
+
+
+.part6Content {
     height: 120vh;
     display: flex;
     flex-direction: column;
@@ -303,18 +403,18 @@ a {
     align-items: center;
 }
 
-.part5Content h2 {
+.part6Content h2 {
     font-size: 3rem;
 }
 
-.part5Content h3 {
+.part6Content h3 {
     font-size: 1.8rem;
     position: relative;
 
 }
 
 
-.part5Content h3::after {
+.part6Content h3::after {
 
     content: "";
     position: absolute;
@@ -329,7 +429,7 @@ a {
 }
 
 
-.part5Content button {
+.part6Content button {
     padding: 25px 80px;
     border-radius: 50px;
     border: none;
@@ -349,7 +449,7 @@ a {
 }
 
 
-.part5Content button::before {
+.part6Content button::before {
     content: "";
     position: absolute;
     border-radius: 50px;
@@ -363,23 +463,23 @@ a {
     opacity: 0;
 }
 
-.part5Content button:hover::before {
+.part6Content button:hover::before {
     opacity: 1;
     margin-bottom: 3px;
 }
 
 
-.part5Content button:disabled {
+.part6Content button:disabled {
     background: linear-gradient(#b3b3b3b6, #888888);
     cursor: auto;
 }
 
-.part5Content button:disabled:hover::before  {
+.part6Content button:disabled:hover::before  {
     opacity: 0;
     margin-bottom: 0;
 }
 
-.part5Content a {
+.part6Content a {
     z-index: 2;
 }
 
@@ -537,11 +637,11 @@ a {
     font-size: 1rem;
   }
 
-  .part5Content h2 {
+  .part6Content h2 {
     font-size: 1.6rem;
 }
 
-.part5Content h3 {
+.part6Content h3 {
     font-size: 1rem;
 }
 .features {
@@ -583,7 +683,7 @@ a {
   .mainFeatures {
       margin: 15px; 
   }
-  .part5Content {
+  .part6Content {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -595,18 +695,18 @@ a {
     margin: 15vh 0;
 }
 
-.part5Content h3::after {
+.part6Content h3::after {
   opacity: 0;
 }
 
 
-.part5Content h3 {
+.part6Content h3 {
   background: linear-gradient(#ffffff, #f0f0f0b2);
   border-radius: 50px;
   color: #0A2240;
   padding: 2rem;
 }
-.part5Content button {
+.part6Content button {
   font-size: 1rem;
   padding: 1rem;
 width: 100%;
@@ -648,5 +748,3 @@ footer {
 }
 
 }
-
-
