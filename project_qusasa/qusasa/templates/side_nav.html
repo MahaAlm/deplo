@@ -36,17 +36,6 @@
 });
 
 document.addEventListener('click', function(e) {
-<<<<<<< HEAD
-    let navs = document.querySelector('.side-nav');
-    let navContainer = document.querySelector('.side-nav-container');
-
-    // If the click target is not within the navContainer and not on the hamburger, hide the side-nav
-    if (!navContainer.contains(e.target) && !document.querySelector('.hamburger').contains(e.target)) {
-        hideSideNav(navs);
-    }
-});
-
-=======
   // Check if the screen width is less than 1000px
   if (window.innerWidth < 1000) {
       let navs = document.querySelector('.side-nav');
@@ -60,7 +49,6 @@ document.addEventListener('click', function(e) {
 });
 
 
->>>>>>> 02955fdc65445889697b47a56e74fe47a26cb43a
 function hideSideNav(navs) {
     navs.style.opacity = '0';
     navs.style.transform = 'scale(0.5)';
