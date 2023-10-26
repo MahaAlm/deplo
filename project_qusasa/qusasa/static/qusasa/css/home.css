@@ -331,6 +331,7 @@ a {
   flex-wrap: wrap;
   gap: 2rem;
   justify-content: center;
+  margin: 0%;
 }
 
 /* Individual cards styling */
@@ -342,6 +343,7 @@ a {
   background: linear-gradient(#0a224000, #8a25bda9);
   opacity: 30%;
   position: relative;
+  margin-bottom: 2rem;
 }
 
 .card-icon {
