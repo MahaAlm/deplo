@@ -24,6 +24,11 @@
     </div> -->
     <a class="log-out" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i>  Log out</a>
 
+    <div class="hamburger">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
 
     <div class="side-nav">
         <div class="side-nav-container">
@@ -47,5 +52,41 @@
 
     <!-- Linking JS at the bottom for better performance -->
     <script src="{% static 'qusasa/js/script.js' %}"></script>
+
+
+<script>
+    document.querySelector('.hamburger').addEventListener('click', function(e) {
+      let navs = document.querySelector('.side-nav');
+  
+      if (navs.style.visibility === 'hidden' || navs.style.visibility === '') {
+          navs.style.visibility = 'visible';
+          navs.style.opacity = '1';
+          navs.style.transform = 'scale(1)';
+      } else {
+          hideSideNav(navs);
+      }
+  
+      e.stopPropagation(); // Prevent the click from reaching the document
+  });
+  
+  document.addEventListener('click', function(e) {
+      let navs = document.querySelector('.side-nav');
+      let navContainer = document.querySelector('.side-nav-container');
+  
+      // If the click target is not within the navContainer and not on the hamburger, hide the side-nav
+      if (!navContainer.contains(e.target) && !document.querySelector('.hamburger').contains(e.target)) {
+          hideSideNav(navs);
+      }
+  });
+  
+  function hideSideNav(navs) {
+      navs.style.opacity = '0';
+      navs.style.transform = 'scale(0.5)';
+      setTimeout(() => { navs.style.visibility = 'hidden'; }, 300);
+  }
+  
+  
+  </script>
 </body>
 </html>
+
