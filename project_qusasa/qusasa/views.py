@@ -46,14 +46,8 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             user.backend = 'qusasa.backends.EmailBackend'
-            # Authenticate the user
-            authenticated_user = authenticate(request, username=user.username, password=request.POST['password1'])
             
-            # If authentication is successful, log the user in
-            if authenticated_user:
-                login(request, authenticated_user)
-                return redirect('confirm_email')
-            return redirect('confirm_email')
+            return redirect('login')
     else:
         form = CustomUserCreationForm()
     return render(request, 'qusasa/signup.html', {'form': form})
