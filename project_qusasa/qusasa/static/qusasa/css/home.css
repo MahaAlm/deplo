@@ -262,16 +262,21 @@ a {
 .part4Content .charts {
     display: flex;
             flex-direction: row;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
+            width: 100%;
+
 }
 
 .part4Content .charts .chart {
-  width: 100;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
+}
+
+.area {
+  width: 50%;
 }
 
 
@@ -352,11 +357,10 @@ a {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 1;  /* Put the pseudo-element above the button content */
+    z-index: -1;  /* Put the pseudo-element above the button content */
     background: linear-gradient(#ff6cd8, #c81ca3);  /* Default gradient */
     transition: 0.3s;
     opacity: 0;
-    z-index: 1;
 }
 
 .part5Content button:hover::before {
@@ -466,7 +470,6 @@ a {
   
   .part1Content h3 {
     font-size: 1rem;
-    
   }
 
   .part2Content {
@@ -475,12 +478,12 @@ a {
     
 
   }
+
+
   .part2Content h3 {
     font-size: 1.5rem;
     margin-bottom: 2rem;
     padding: 0;
-    /* margin: 10vh 0; */
-
   }
 
   .part3Content {
@@ -645,3 +648,5 @@ footer {
 }
 
 }
+
+

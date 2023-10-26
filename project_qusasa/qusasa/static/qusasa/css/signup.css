@@ -170,7 +170,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 1;  /* Put the pseudo-element above the button content */
+    z-index: -1;  /* Put the pseudo-element above the button content */
     background: linear-gradient(#36f2ffd8, #29abd6);  /* Default gradient */
     transition: 0.3s;
     opacity: 0;

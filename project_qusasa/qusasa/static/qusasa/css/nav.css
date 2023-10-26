@@ -111,6 +111,8 @@
 }
 
 @media (max-width: 1000px) {
+
+    
     .navigation .navs {
         display: none; /* Hide the regular navigation. */
         top: -300px;

@@ -12,7 +12,7 @@
     <div class="side-nav-container">
       <img src="{% static 'qusasa/images/Qusasa end.png' %}" alt="" />
       <a class="el" href="{% url 'base'%}" {% if current_url == 'base' %}id="el-current"{% endif %} ><i class="fa-solid fa-clock"></i> My History</a>
-      <a class="el" href="{%url 'wFeature'%}" {% if current_url == 'wFeature' %}id="el-current"{% endif %} ><i class="fa-solid fa-scissors"></i> Qusasa's Features</a>
+      <a class="el" href="{%url 'wFeature'%}" {% if current_url == 'wFeature' or current_url == 'InstagramFeat' or current_url == 'YouTubeFeat'%} id="el-current" {% endif %} ><i class="fa-solid fa-scissors"></i> Qusasa's Features</a>
       <a class="el" ><i class="fa-solid fa-circle-question"></i> Inquiries</a>
     </div>
   </div>
@@ -36,6 +36,7 @@
 });
 
 document.addEventListener('click', function(e) {
+<<<<<<< HEAD
     let navs = document.querySelector('.side-nav');
     let navContainer = document.querySelector('.side-nav-container');
 
@@ -45,6 +46,21 @@ document.addEventListener('click', function(e) {
     }
 });
 
+=======
+  // Check if the screen width is less than 1000px
+  if (window.innerWidth < 1000) {
+      let navs = document.querySelector('.side-nav');
+      let navContainer = document.querySelector('.side-nav-container');
+
+      // If the click target is not within the navContainer and not on the hamburger, hide the side-nav
+      if (!navContainer.contains(e.target) && !document.querySelector('.hamburger').contains(e.target)) {
+          hideSideNav(navs);
+      }
+  }
+});
+
+
+>>>>>>> 02955fdc65445889697b47a56e74fe47a26cb43a
 function hideSideNav(navs) {
     navs.style.opacity = '0';
     navs.style.transform = 'scale(0.5)';
