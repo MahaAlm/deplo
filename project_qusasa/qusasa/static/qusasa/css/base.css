@@ -80,6 +80,7 @@ a {
     border-radius: 20px;
     cursor: pointer;
     transition: ease 0.2s;
+    color: #333;
 
     
 }
@@ -219,6 +220,8 @@ a {
 .history button span {
         position: relative;  /* Make it appear above the pseudo-element */
         z-index: 2;
+        color: white;
+
     
 }
 
@@ -403,4 +406,8 @@ a {
         font-size: 0.8rem;
         margin-bottom: 3rem;
     }
+  }
+
+  a {
+    text-decoration: none;
   }
