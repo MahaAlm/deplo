@@ -13,7 +13,6 @@ html {
     background-attachment: fixed;
     font-family: 'Raleway', sans-serif;
     color: white;
-    
 }
 
 body {
@@ -157,7 +156,7 @@ a {
     border-radius: 20px;
     color: #0B0B25;
     width: 80%;
-    padding: 4rem;
+    padding: 2rem;
     font-weight: 700;
     font-size: 1.2rem;
 }
@@ -266,6 +265,7 @@ a {
 }
 
 .flex-container {
+    margin-left:10% ;
     display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap; 
@@ -288,9 +288,9 @@ a {
 
   .flex-item {
     flex-grow: 1;
-    border: 1px solid black;
+    margin-right: 10%;
+    margin-top: 13%;
     color: white;
-    
     display: flex;
     justify-content: center;
     align-items: center;
