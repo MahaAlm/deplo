@@ -15,7 +15,6 @@ urlpatterns = [
     path('YouTubeFeat/', views.YouTubeFeat, name='YouTubeFeat'),
     path('logout/', views.logout_view, name='logout'),
     path('signup/', views.signup, name='signup'),
-    path('usecases/', views.usecases, name='usecases'),
     path('confirm_email/', views.confirm_email, name='confirm_email'),
     path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
