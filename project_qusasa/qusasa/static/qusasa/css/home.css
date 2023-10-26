@@ -357,11 +357,10 @@ a {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 1;  /* Put the pseudo-element above the button content */
+    z-index: -1;  /* Put the pseudo-element above the button content */
     background: linear-gradient(#ff6cd8, #c81ca3);  /* Default gradient */
     transition: 0.3s;
     opacity: 0;
-    z-index: 1;
 }
 
 .part5Content button:hover::before {
@@ -649,3 +648,5 @@ footer {
 }
 
 }
+
+

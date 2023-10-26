@@ -109,7 +109,7 @@ a {
     transition: ease 0.2s;
     font-size: 1.1rem;
     font-weight: 700;
-    position: fixed;
+    position: absolute;
     top: 20px;
     right: 25px;
 }
@@ -190,6 +190,8 @@ a {
     align-items: center;
     align-self: center;
     margin-top: 2rem;
+    z-index: 1;
+
 }
 
 .history button i {
@@ -203,7 +205,7 @@ a {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 1;  /* Put the pseudo-element above the button content */
+    z-index: -1;  /* Put the pseudo-element above the button content */
     background: linear-gradient(#36f2ffd8, #29abd6);  /* Default gradient */
     transition: 0.3s;
     opacity: 0;
@@ -310,7 +312,7 @@ a {
     color: #562793;
   }
 
-  a:visited {
+  .content a:visited, .side-nav a:visited{
     color: inherit;
   }
 
@@ -326,3 +328,79 @@ a {
     padding-bottom: 1rem;
     
 }
+
+
+.hamburger {
+    display: none; /* Initially, it will be hidden. */
+    flex-direction: column;
+    cursor: pointer;
+  }
+  
+  .bar {
+    background-color: #333;
+    height: 4px;
+    width: 25px;
+    margin: 3px;
+  
+  }
+  
+  
+  @media (max-width: 1000px) {
+    .side-nav {
+        visibility: hidden;
+        top: -300px;
+        right: 0;
+        transition: top 0.3s ease;
+        justify-content: center;
+        align-items: center;
+        transform-origin: top left;
+
+    }
+  
+    .hamburger {
+        display: flex; /* Show the hamburger icon. */
+        position: absolute;
+        top:20px;
+        left:20px;
+    }
+
+    .content {
+        justify-content: center;
+        align-items: center;
+    }
+
+    .content  {
+        text-align: center;
+        padding: 10%;
+    }
+
+    
+    .side-nav {
+        width: 300px;
+        position: absolute;
+        top: 30px;
+        left: 30px;
+        z-index: 5;
+        transform: scale(0.5);
+        opacity: 0;
+        transition: transform 0.3s ease, opacity 0.3s ease; 
+     
+    }
+
+    .side-nav-container {
+        box-shadow: 0 0 10px rgba(100, 100, 100, 0.154);
+
+    }
+
+    .history {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .breadcrumbs {
+        font-size: 0.8rem;
+        margin-bottom: 3rem;
+    }
+  }

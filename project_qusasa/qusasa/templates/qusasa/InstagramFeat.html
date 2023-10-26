@@ -17,14 +17,7 @@
     
     <a class="log-out" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i> Log out</a>
 
-    <div class="side-nav">
-      <div class="side-nav-container">
-        <img src="{% static 'qusasa/images/Qusasa end.png' %}" alt="" />
-        <a class="el"><i class="fa-solid fa-clock"></i> My History</a>
-        <a class="el" id="el-current"><i class="fa-solid fa-scissors"></i> Qusasa's Features</a>
-        <a class="el"><i class="fa-solid fa-circle-question"></i> Inquiries</a>
-      </div>
-    </div>
+    {% include "side_nav.html" %}
 
     <div class="content">
         <div class="welcome">Instagram Features</div>
@@ -39,8 +32,9 @@
       <div class="history">
 
         <div class="cards">
-            <a href="#">
             <article class="card">
+              <a href="#">
+
                 <header class="card__thumb">
                     <img src="{% static 'qusasa/images/trends analysis.webp' %}"/>
                     <div class="feature-name">
