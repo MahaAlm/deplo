@@ -90,6 +90,8 @@ def InstagramFeat(request):
     return render(request,'qusasa/InstagramFeat.html')
 def wFeature(request):
     return render(request,'qusasa/wFeature.html')
+def usecases(request):
+    return render(request, 'qusasa/usecases.html')
 
 @login_required
 def confirm_email(request):
