@@ -1,0 +1,101 @@
+.header {
+    padding: 3%;
+}
+
+.feature-head {
+    display: flex;
+    flex-direction: row;
+    height: 50%;
+}
+
+
+button i {
+    margin-right: 5px;
+}
+.feature-head img {
+    max-width: 35%;
+    max-height: 100%;
+    height: auto;
+    margin-right: 2rem;
+}
+
+
+.feature-text h1 {
+    margin-bottom: 0.7rem;
+}
+
+.feature-text p {
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.feature-text button {
+    background: linear-gradient(#379eac, #06a4b9);
+    padding: 0.8rem 3rem;
+    width: 60%;
+    transition: ease 0.2s;
+    margin-top: 1.5rem;
+
+   
+}
+
+.feature-text button:hover {
+    transform: translate(0, -6px);
+    transition: ease 0.2s;
+
+
+}
+.feature-text button:hover::before {
+    opacity: 0;
+}
+
+
+.input-output {
+    margin-top: 2rem;
+}
+
+.input-output h3 {
+    margin: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.input-output p {
+    font-weight: 500;
+    font-size: 1rem;
+    width: 80%;
+}
+
+.input-output p .color {
+    color: #379eac;
+}
+
+.input-output p span {
+    font-weight: 700;
+}
+
+.input-output .input {
+    margin-bottom: 0;
+}
+
+.input-output .output button {
+    margin: 0;
+    background: linear-gradient(-45deg, #3b3b9a, #58308c, #ae3aaa); 
+    border-radius: 10px;
+    padding: 0.7rem 3rem;
+    transition: ease 0.2s;
+}
+
+.input-output .output button:hover {
+    transition: ease 0.2s;
+    transform: translate(3px);
+
+}
+
+.input-output .output button::before {
+    opacity: 0;
+}
+
+.input-output i {
+    color: #ae3aaa;
+}

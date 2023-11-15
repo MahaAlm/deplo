@@ -34,7 +34,7 @@
             <div class="features" data-aos="fade-up">
                 <div alt="mainFeatures" class="mainFeatures">
                     <i class="fa-solid fa-magnifying-glass-chart"></i>
-                    <p>Data colelction</p>
+                    <p>Data collection</p>
                 </div>
                 <div alt="mainFeatures2" class="mainFeatures">
                     <i class="fa-solid fa-chart-pie"></i>
@@ -136,9 +136,9 @@
             </div>
         
             <div class="part6Content">
-                <h2 data-aos="fade-up">Researcher, Marketing analyst, Content creator, Student, or a simple data enthusiest?</h2>
-                <h3 data-aos="fade-up">Your journey through data never been easier, <br>Join us in Qusasa now and enjoy data analysis within a click of a button!</h3>
-                <a href="{% url 'signup'%}"></a><button data-aos="fade-up">Sign up with Qusasa</a></button>
+                <h2 data-aos="fade-up">Researcher, markiting analyst, content maker, student, or a simple data enthusiest?</h2>
+                <h3 data-aos="fade-up" style="width: 100%;">Your journey through data never been easier, <br>Join us in Qusasa now and enjoy data analysis within a click of a button!</h3>
+                <a href="{% url 'signup' %}"  {% if request.resolver_match.url_name == 'signup' %} id="current" {% endif %}><button data-aos="fade-up">Sign up with Qusasa</a></button>
 
             </div>
 

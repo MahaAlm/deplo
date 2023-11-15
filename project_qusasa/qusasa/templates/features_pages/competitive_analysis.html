@@ -1,0 +1,412 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qusasa | Confirm Email</title>
+    <!-- Linking CSS -->
+    <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <link rel="stylesheet" href="{% static 'qusasa/css/simple_form.css' %}">
+    <link rel="stylesheet" href="{% static 'qusasa/css/nav.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/cometitive_analysis_form.css' %}">
+    <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
+    <link rel="stylesheet" href="">
+    
+
+</head>
+<body> 
+    <img class="polygon" src="{% static 'qusasa/images/Frame 2.png'%}" alt="Description of Image" class="full-size-absolute">
+    
+
+
+    <div class="content">
+            <form id="analysis-type-form" action="{% url 'competitive_analysis' %}" method="post">
+                {% csrf_token %}
+                {{ wizard.management_form }}
+                {{ form.media }}
+
+                
+                {% if wizard.steps.current == '0' %}
+                    <input type="hidden" id="id_0-analysis_type" name="0-analysis_type" value="{{ wizard.form.analysis_type.value|default_if_none:'' }}" />
+                    <h1>Welcome to Competitive Analysis</h1>
+                    <p class="the_p">choose What do you want to compare...</p>
+                    <div class="choices">
+                    <div class="choice-box" data-value="channels">
+                        <img src="{% static 'qusasa/images/channel icon.png' %}" alt="Channels">
+                        <p >Compare between channels</p>
+                    </div>
+
+                    <div class="choice-box" data-value="playlists">
+                        <img src="{% static 'qusasa/images/playlist.png' %}" alt="Playlists">
+                        <p>Compare between playlists</p>
+                    </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">next <i class="fa-solid fa-circle-chevron-right"></i></button>
+                    <a href="{% url 'features_details'%}"><button type="button" class="btn btn-secondary">Cancel</button></a>
+                {% endif %}
+
+                
+
+                {% if wizard.steps.current == '1' %}
+                    <h1>Help us to identify you!</h1>
+                    <h3>to be able to highlight your {{ wizard.form.input_text.label }} in our analysis, please provide us with your {{ wizard.form.input_text.label }} link...</h3>
+                    <div class="channel-playlist-con">
+                        <p style="font-weight: 600;">your {{ wizard.form.input_text.label }} link:</p>
+                        <br>
+                        <!-- Show the generic input form -->
+                        <div class="channel-playlist-input">
+                            {{ wizard.form.input_text }}
+                        </div>
+                    </div>
+                    
+
+                    <button type="submit" class="btn btn-primary">next <i class="fa-solid fa-circle-chevron-right"></i></button>
+                    <button type="button" class="btn btn-secondary" onclick="history.back()"><i class="fa-solid fa-circle-chevron-left"></i> Back</button>
+                {% endif %}
+
+                {% if wizard.steps.current == '2' %}
+                <div class="options-text">
+                    <h2>Who are your competitors?</h2>
+                    <p>Choose one of the below choices for us to learn who your competitors are...</p>
+                </div>
+                    
+                    <!-- Your code to display the FindInitialChoiceForm form -->
+                    
+                    <input type="hidden" id="id_2-choice" name="2-choice" value="{{ wizard.form.choice.value|default_if_none:'' }}" />
+                    <!-- {{ wizard.form.as_p }} -->
+
+                    <div class="options choices">
+                        <div class="options-box choice-box" data-value="input_list">
+                            <i class="fa-solid fa-address-book" style="color: #ffffff;"></i>
+                            <div class="box-text">
+                                <p class="p-head">I have a list of channels</p>
+                                <p>if you have some specific channels in mind, click here to input each channel url.</p>
+                            </div>
+                            
+                        </div>
+    
+                        <div class="options-box choice-box" data-value="search">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <div class="box-text">
+                                <p class="p-head">Search channels for me</p>
+                                <p>if you want to look through similar channels to you through a search, you can click here.</p>
+                            </div>
+                            
+                        </div>
+
+                        <div class="options-box choice-box" data-value="category">
+                            <i class="fa-solid fa-photo-film"></i>
+                            <div class="box-text">
+                                <p class="p-head">Choose from a certain category</p>
+                                <p>if there's a youtube category in mind, you can get the top 5 channels from that category.</p>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+        
+                    <button type="submit" class="btn btn-primary">next <i class="fa-solid fa-circle-chevron-right"></i></button>
+                    <button type="button" class="btn btn-secondary" onclick="history.back()"><i class="fa-solid fa-circle-chevron-left"></i> Back</button>
+                    {% endif %}
+                    {% if wizard.steps.current == '3' %}
+                        {% if step2_data.choice == 'input_list' %}
+                            <!-- Your code to display the ChannelsListInput form -->
+                            <div class="form-container">
+                                <div class="category-container">
+                                    <i class="fa-solid fa-address-book" style="color: #ffffff;"></i>
+                                    <div class="category-text">
+                                        <h1 class="p-head">Input a list of channels</h1>
+                                        <h3>input up to 5 channels from your choice so we can target them in our analysis.</h3>
+                                    </div>
+                                </div>
+                                <div id="channel-inputs-container" class="channel-inputs-container">
+                                    <p>
+                                        <label for="id_3-channel_url_1">Channel URL 1:</label>
+                                        <input type="url" name="3-channel_url_1" required="" id="id_3-channel_url_1">
+                                        <button type="button" id="add-channel-btn">+</button>
+                                        <button type="button" class="remove-channel-btn" style="display: none;">-</button>
+
+                                    </p>
+                                </div>
+                                
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">next <i class="fa-solid fa-circle-chevron-right"></i></button>
+                            <button type="button" class="btn btn-secondary" onclick="history.back()"><i class="fa-solid fa-circle-chevron-left"></i> Back</button>
+                        {% endif %}
+
+
+
+                        {% if step2_data.choice == 'search' %}
+                            
+                        <div class="form-container">
+                            <div class="category-container">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <div class="category-text">
+                                    <h1 class="p-head">Search channels for me</h1>
+                                    <h3>if you want to look through similar channels to you through a search, you can click here.</h3>
+                                </div>
+                            </div>
+                            
+                            <div class="category-field">
+                                <h3>Input a search query:</h3>
+                                {{ wizard.form.search_query }}
+                            </div>
+                                
+    
+    
+                                        <h3 id="filter-toggle">Filter your results <i class="fa-solid fa-caret-down"></i></h3>
+                                        <div class="filter-fields" style="display: none;">
+                                            <p>Filter the results, based on the Priority of search, if you want to limit it to a specific region, or get results of a specific language.</p>
+                                            <div class="select-fields">
+                                                <p>
+                                                    <label for="id_3-order">Priority of Search:</label>
+                                                    {{ wizard.form.order }}
+                                                </p>
+                                                <p>
+                                                    <label for="id_3-region_code">Region:</label>
+                                                    {{ wizard.form.region_code }}
+                                                </p>
+                                                <p>
+                                                    <label for="id_3-language">Language:</label>
+                                                    {{ wizard.form.language }}
+                                                </p>
+                                            </div>
+                                        </div>
+                        </div>
+                            <!-- Your code to display the YouTubeSearchForm form -->
+                            <button type="submit" class="btn btn-primary">next <i class="fa-solid fa-circle-chevron-right"></i></button>
+                            <button type="button" class="btn btn-secondary" onclick="history.back()"><i class="fa-solid fa-circle-chevron-left"></i> Back</button>
+                        {% endif %}
+
+
+                        {% if step2_data.choice == 'category' %}
+
+                        <div class="form-container">
+                            <div class="category-container">
+                                <i class="fa-solid fa-photo-film"></i>
+                                <div class="category-text">
+                                    <h1 class="p-head">Choose from a certin category</h1>
+                                    <h3>if there's a youtube category in mind, you can get the top 5 channels from that category.</h3>
+                                </div>
+                            </div>
+                            
+                            <div class="category-field">
+                                <h3>choose a category:</h3>
+                                {{ wizard.form.category }}
+                            </div>
+                                        <h3 id="filter-toggle">Filter your results <i class="fa-solid fa-caret-down"></i></h3>
+                                        <div class="filter-fields" style="display: none;">
+                                            <p>Filter the results, based on the Priority of search, if you want to limit it to a specific region, or get results of a specific language.</p>
+                                            <div class="select-fields">
+                                                <p>
+                                                    <label for="id_3-order">Priority of Search:</label>
+                                                    {{ wizard.form.order }}
+                                                </p>
+                                                <p>
+                                                    <label for="id_3-region_code">Region:</label>
+                                                    {{ wizard.form.region_code }}
+                                                </p>
+                                                <p>
+                                                    <label for="id_3-language">Language:</label>
+                                                    {{ wizard.form.language }}
+                                                </p>
+                                            </div>
+                                        </div>
+                        </div>
+                        
+                                
+    
+                            
+                            
+                            <button type="submit" class="btn btn-primary">next <i class="fa-solid fa-circle-chevron-right"></i></button>
+                            <button type="button" class="btn btn-secondary" onclick="history.back()"><i class="fa-solid fa-circle-chevron-left"></i> Back</button>
+                        {% endif %}
+                
+                    {% endif %}
+
+                    {% if wizard.steps.current == '4' %}
+                    <div class="output-choice-container">
+                        <div class="checkbox-text">
+                            <h1>Control your outputs</h1>
+                            <p>Qusasa can provide you with both a dataset and a report analysis, you can control the outputs to have both or to suffy with one for us to be more time efficient.</p>
+                        </div>
+                        <div class="checkbox-container">
+                            
+                            <div class="custom-checkbox">
+                                <input type="checkbox" name="4-choice" value="dataset" id="id_4-choice_0" checked>
+                                <label for="id_4-choice_0">
+                                    <span class="checkmark"></span> <!-- Custom checkmark container -->
+                                    <i class="fa-solid fa-table"></i>
+                                    <h3>A CSV data set</h3>
+                                    <p>a dataset including each {{ wizard.form.input_text.label }} as a row with its assoicated data enabling you to do your custom analysis.</p>
+                                </label>
+                            </div>
+                            <div class="custom-checkbox">
+                                <input type="checkbox" name="4-choice" value="report" id="id_4-choice_1" checked>
+                                <label for="id_4-choice_1">
+                                    <span class="checkmark"></span> <!-- Custom checkmark container -->
+                                    <i class="fa-solid fa-file-contract"></i>
+                                    <h3>A PDF report</h3>
+                                    <p>A pdf report consisting of advanced statistics and analytics of you and your competition, including text, graphs, and insights.</p>
+                                </label>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                    
+
+                    <button type="submit" class="btn btn-primary">next <i class="fa-solid fa-circle-chevron-right"></i></button>
+                    <button type="button" class="btn btn-secondary" onclick="history.back()"><i class="fa-solid fa-circle-chevron-left"></i> Back</button>
+                    {% endif %}
+            </form>
+        
+        
+    </div>
+
+    <script>
+        // Wait for the DOM to load
+        document.addEventListener('DOMContentLoaded', (event) => {
+          // Get all the custom-checkbox divs
+          const checkBoxContainers = document.querySelectorAll('.custom-checkbox');
+          
+          // Add click event listener to each container
+          checkBoxContainers.forEach(container => {
+            container.addEventListener('click', function() {
+              // Get the first input element within this container which should be the checkbox
+              const checkbox = this.querySelector('input[type="checkbox"]');
+              // Toggle the checked state of the checkbox
+              checkbox.checked = !checkbox.checked;
+        
+              // Change background of the .custom-checkbox
+              if (checkbox.checked) {
+                this.style.background = 'linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.984))';
+              } else {
+                this.style.background = 'linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.7))'; // Resets to default
+              }
+        
+              // Manually trigger the change event on the checkbox
+              // This is necessary if other scripts rely on the 'change' event of checkboxes
+              const changeEvent = new Event('change');
+              checkbox.dispatchEvent(changeEvent);
+            });
+        
+            
+          });
+        });
+      </script>
+      
+        
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var channelContainer = document.getElementById('channel-inputs-container');
+            var addButton = document.getElementById('add-channel-btn');
+            var maxInputs = 5;
+            var inputCount = 1;
+        
+            addButton.addEventListener('click', function () {
+                if (inputCount < maxInputs) {
+                    inputCount++;
+                    var newInput = document.createElement('p');
+                    newInput.classList.add('channel-input');
+                    newInput.innerHTML = '<label>Channel URL ' + inputCount + ':</label>' +
+                        '<input type="url" name="3-channel_url_' + inputCount + '" id="id_3-channel_url_' + inputCount + '">' +
+                        '<button type="button" class="remove-channel-btn">-</button>';
+                    channelContainer.appendChild(newInput);
+                    addButton.disabled = inputCount >= maxInputs;
+                }
+            });
+        
+            // Event delegation for remove buttons
+            channelContainer.addEventListener('click', function (e) {
+                if (e.target && e.target.classList.contains('remove-channel-btn')) {
+                    var parent = e.target.parentNode;
+                    channelContainer.removeChild(parent);
+                    inputCount--;
+                    // If we remove an input, we should re-enable the add button if it was disabled.
+                    addButton.disabled = false;
+                    // Update labels of all channel URLs
+                    updateLabels();
+                }
+            });
+        
+            function updateLabels() {
+                var allInputs = channelContainer.querySelectorAll('.channel-input');
+        allInputs.forEach((input, index) => {
+            var label = input.querySelector('label');
+            var inputField = input.querySelector('input');
+            label.textContent = 'Channel URL ' + (index + 2) + ':';
+            inputField.name = '3-channel_url_' + (index + 2);
+            inputField.id = 'id_3-channel_url_' + (index + 2);
+        });
+            }
+        });
+        
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#id_3-category').select2();
+            $('#id_3-order').select2();
+            $('#id_3-region_code').select2();
+            $('#id_3-language').select2();
+        });
+
+        $(document).ready(function() {
+            $('#filter-toggle').click(function() {
+                $('.filter-fields').slideToggle();
+            });
+        });
+        
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var currentStep = "{{ wizard.steps.current }}";
+            var choiceBoxes = document.querySelectorAll('.choice-box');
+            //var submitButton = document.querySelector('.btn-primary');
+            
+             // Disable the button on initial load
+          //submitButton.disabled = true;
+          //submitButton.style.background = 'grey';
+          //submitButton.style.cursor = 'default';
+          
+            choiceBoxes.forEach(function(box) {
+                box.addEventListener('click', function() {
+                    // Remove 'selected' class from all boxes
+                    choiceBoxes.forEach(function(box) { box.classList.remove('selected'); });
+                    // Add 'selected' class to clicked box
+                    this.classList.add('selected');
+    
+                    // Update the hidden input value based on the step
+                    if(currentStep === '0') {
+                        console.log(currentStep)
+                        
+                        document.getElementById('id_0-analysis_type').value = this.dataset.value;
+                    } else if (currentStep === '2') {
+                        console.log(currentStep)
+                        document.getElementById('id_2-choice').value = this.dataset.value;
+                    }
+                    // Enable the submit button when a box is selected
+                    //submitButton.disabled = false;
+                    //submitButton.style.background = 'linear-gradient(#379eac, #06a4b9)';
+                    //submitButton.style.cursor = 'pointer';
+                });
+            });
+        });
+    </script>
+    
+    
+        
+</body>
+</html>

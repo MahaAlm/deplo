@@ -301,6 +301,7 @@ a {
 }
 
 .part5Content h2 {
+  margin: 1.8%;
   font-size: 3rem;
 }
 
@@ -398,6 +399,7 @@ flex-wrap: wrap;
 
 
 .part6Content {
+  width: 80%;
     height: 120vh;
     display: flex;
     flex-direction: column;
@@ -407,9 +409,11 @@ flex-wrap: wrap;
 
 .part6Content h2 {
     font-size: 3rem;
+    position: relative;
 }
 
 .part6Content h3 {
+  width: 80%;
     font-size: 1.8rem;
     position: relative;
 
@@ -691,7 +695,7 @@ flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     text-align: center;
-    width: 80%;
+    width: 100%;
     margin: 0;
     height: auto;
     margin: 15vh 0;
@@ -699,10 +703,12 @@ flex-wrap: wrap;
 
 .part6Content h3::after {
   opacity: 0;
+  width: 100%;
 }
 
 
 .part6Content h3 {
+  width: 100%;
   background: linear-gradient(#ffffff, #f0f0f0b2);
   border-radius: 50px;
   color: #0A2240;
@@ -737,10 +743,6 @@ footer {
 }
 
   
-
-
-
-
 
 .part4Content .charts p {
   font-weight: 700;
