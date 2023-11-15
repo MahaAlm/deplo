@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{% static 'qusasa/css/cards.css' %}" />
 
     <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
 
   </head>
   <body>
@@ -59,7 +60,7 @@
             </article>
 
             <article class="card">
-                <a href="#">
+                <a href="{% url 'features_details' %}">
                 <header class="card__thumb">
                     <img src="{% static 'qusasa/images/channel_analysis.webp' %}"/>
                     <div class="feature-name">
@@ -77,7 +78,7 @@
             </article>
 
             <article class="card">
-                <a href="#">
+                <a href="{% url 'features_details' %}">
                 <header class="card__thumb">
                     <img src="{% static 'qusasa/images/competitive_analysis.webp' %}"/>
                     <div class="feature-name">

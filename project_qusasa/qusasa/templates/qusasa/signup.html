@@ -26,6 +26,7 @@
         <div class="signup-container">
             <form method="post">
                 {% csrf_token %}
+                
                 {% for field in form %}
                     <div class="error-msgs">
                         {% if field.errors %}

@@ -3,6 +3,8 @@ from . import views
 from django.contrib.auth import views as auth_views
 from django.contrib import admin
 from .admin import admin_site
+from django.conf import settings
+from django.urls import include, path
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -13,6 +15,7 @@ urlpatterns = [
     path('wFeature/', views.wFeature, name='wFeature'),
     path('InstagramFeat/', views.InstagramFeat, name='InstagramFeat'),
     path('YouTubeFeat/', views.YouTubeFeat, name='YouTubeFeat'),
+    path('feature_details/', views.features_details_view, name='features_details'),
     path('logout/', views.logout_view, name='logout'),
     path('signup/', views.signup, name='signup'),
     path('confirm_email/', views.confirm_email, name='confirm_email'),
@@ -20,5 +23,17 @@ urlpatterns = [
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    path('competitive_analysis/', views.CompetitiveAnalysisWizard.as_view(), name='competitive_analysis'),
+    path('competitive_analysis/output/', views.competitive_analysis_output_view, name='competitive_analysis_output'),
+    
+    
+
+
     # You can add more paths for other views in the qusasa app here
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns

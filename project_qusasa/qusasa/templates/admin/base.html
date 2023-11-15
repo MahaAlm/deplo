@@ -4,9 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Qusasa | Welcome</title>
+    <title>Qusasa | Admin</title>
     <!-- Linking CSS -->
     <link rel="stylesheet" href="{% static 'qusasa/css/admin.css' %}">
+    <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
+
     <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
 </head>
 
@@ -19,7 +21,7 @@
         <div class="bar"></div>
         <div class="bar"></div>
       </div>
-      
+
     <div class="side-nav">
         <div class="side-nav-container">
             <img src="{% static 'qusasa/images/Qusasa end.png'%}" alt="">
@@ -57,35 +59,39 @@
 
 
 <script>
-    document.querySelector('.hamburger').addEventListener('click', function(e) {
-      let navs = document.querySelector('.side-nav');
-  
-      if (navs.style.visibility === 'hidden' || navs.style.visibility === '') {
-          navs.style.visibility = 'visible';
-          navs.style.opacity = '1';
-          navs.style.transform = 'scale(1)';
-      } else {
-          hideSideNav(navs);
-      }
-  
-      e.stopPropagation(); // Prevent the click from reaching the document
-  });
-  
-  document.addEventListener('click', function(e) {
+  document.querySelector('.hamburger').addEventListener('click', function(e) {
+    let navs = document.querySelector('.side-nav');
+
+    if (navs.style.visibility === 'hidden' || navs.style.visibility === '') {
+        navs.style.visibility = 'visible';
+        navs.style.opacity = '1';
+        navs.style.transform = 'scale(1)';
+    } else {
+        hideSideNav(navs);
+    }
+
+    e.stopPropagation(); // Prevent the click from reaching the document
+});
+
+document.addEventListener('click', function(e) {
+  // Check if the screen width is less than 1000px
+  if (window.innerWidth < 1000) {
       let navs = document.querySelector('.side-nav');
       let navContainer = document.querySelector('.side-nav-container');
-  
+
       // If the click target is not within the navContainer and not on the hamburger, hide the side-nav
       if (!navContainer.contains(e.target) && !document.querySelector('.hamburger').contains(e.target)) {
           hideSideNav(navs);
       }
-  });
-  
-  function hideSideNav(navs) {
-      navs.style.opacity = '0';
-      navs.style.transform = 'scale(0.5)';
-      setTimeout(() => { navs.style.visibility = 'hidden'; }, 300);
   }
-  
-  
-  </script>
+});
+
+
+function hideSideNav(navs) {
+    navs.style.opacity = '0';
+    navs.style.transform = 'scale(0.5)';
+    setTimeout(() => { navs.style.visibility = 'hidden'; }, 300);
+}
+
+
+</script>

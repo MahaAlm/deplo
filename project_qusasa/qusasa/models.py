@@ -47,7 +47,7 @@ def send_verification_email(sender, instance, **kwargs):
         instance.save()
 
         # Render the email content with the template
-        html_message = render_to_string('path_to_templates/email_verification_template.html', {
+        html_message = render_to_string('registration/email_verification_template.html', {
             'confirmation_code': confirmation_code
         })
 

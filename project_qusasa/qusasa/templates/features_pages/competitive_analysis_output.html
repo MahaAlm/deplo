@@ -1,0 +1,125 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Qusasa | YouTube Features</title>
+    <!-- Linking CSS -->\
+    <link rel="stylesheet" href="{% static 'qusasa/css/signup.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/cards.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/feature_details.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/output.css' %}" />
+    <link href="https://cdn.rawgit.com/michalsnik/aos/2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.rawgit.com/michalsnik/aos/2.3.1/dist/aos.js"></script>
+
+    <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
+
+  </head>
+  <body>
+    
+    <a class="log-out" href="#popup1"><i class="fa-solid fa-right-from-bracket"></i> Exit Analysis</a>
+
+    
+    <div class="output-container">
+        <div class="output-header " data-aos="fade-up">
+            <h1>Your Competitive Analysis is ready!</h1>
+            <p>Our youtube competitive analysis will provide you with customizable dataset, statistics, graphs and interpretaions to make your work with data easier.</p>
+        </div>
+        <div class="youtube-channels" data-aos="fade-up">
+            <h3>Analysed channels</h3>
+            <div class="channels-container">
+                <div class="channel-el">
+                    <img src="{% static 'qusasa/images/gaming1.jpeg' %}" alt="">
+                    <p>Channel 1</p>
+                </div>
+                <div class="channel-el">
+                    <img src="{% static 'qusasa/images/gaming2.jpg' %}" alt="">
+                    <p>Channel 2</p>
+                </div>
+                <div class="channel-el">
+                    <img src="{% static 'qusasa/images/gaming3.jpeg' %}" alt="">
+                    <p>Channel 3</p>
+                </div>
+                <div class="channel-el">
+                    <img src="{% static 'qusasa/images/gaming4.jpeg' %}" alt="">
+                    <p>Channel 4</p>
+                </div>
+                <div class="channel-el">
+                    <img src="{% static 'qusasa/images/gaming5.jpeg' %}" alt="">
+                    <p>Channel 5</p>
+                </div>
+            </div>
+            
+        </div>
+
+        <h2 data-aos="fade-up">Download your results:</h2>
+        <div class="downlaodables" data-aos="fade-up">
+            <div class="download-dataset download-el">
+                <i class="fa-solid fa-table"></i>
+                <div class="download-text">
+                    <div class="text">
+                        <h3>The channels dataset</h3>
+                    <p>Have each channel as a row with its assoicated data.</p>
+                    </div>
+                    
+                    <div class="button">
+                        <button>Download the dataset</button>
+                    </div>
+                    
+                </div>
+
+            </div>
+            <div class="download-report download-el">
+                <i class="fa-solid fa-file-contract"></i>
+                <div class="download-text ">
+                    <div class="text">
+                        <h3>Analysis report</h3>
+                    
+                    <p>including all the graphs, statistics, and interpretaions presented.</p>
+                    </div>
+                    
+                    <div class="button">
+                        <button>Download the report</button>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-graphs" data-aos="fade-up">
+            <h2>Statistics and Graphs</h2>
+        </div>
+
+        <div id="popup1" class="overlay">
+            <div class="popup">
+                <h2>Are you sure you want to quit the analysis?</h2>
+                <div class="text">
+                    if you did you will not be able to access its content anymore...
+                    <div class="popup-buttons">
+                        <a href="{% url 'base' %}"><button class="yes">Yes I'm sure</button></a>
+                    <a href="#"><button>Go back</button></a>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+   
+</div>
+
+    <script>
+        AOS.init({
+          duration: 1200, // You can adjust this value for animation duration
+        });
+      </script>
+  </body>
+</html>

@@ -5,9 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Custom Admin Login</title>
+    <title>Qusasa | Admin Login</title>
     <!-- Add your custom CSS or link to external CSS files here -->
         <link rel="stylesheet" href="{% static 'qusasa/css/login.css' %}">
+        <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
+
 
 </head>
 <body>
@@ -18,12 +20,14 @@
         <div class="signup-container">
             <form method="post">
             {% csrf_token %}
-            {% if error %}
-            <div class="error-msgs">
-                    <div class="error"><i class="fas fa-exclamation-circle"></i>
-                        {{ error }}</div>
-            </div>
-             {% endif %}
+            {% for field in form %}
+                    <div class="error-msgs">
+                        {% if field.errors %}
+                            <div class="error"><i class="fas fa-exclamation-circle"></i>
+                                {{ field.errors|first }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
             <div class="input-field">
                 <label for="{{ form.username.id_for_label }}">Email:</label>
                 {{ form.username }}
