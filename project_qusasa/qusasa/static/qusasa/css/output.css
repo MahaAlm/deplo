@@ -1,34 +1,81 @@
 html {
     background: linear-gradient(-45deg, #0B0B25, #250D44, #0A2240);
+    height: auto;
 }
 
+body {
+    /* display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; */
+}
+
+
 .output-container {
-    width: 70vw;
-    background: white;
-    border-radius: 50px;
     margin: 0 auto;
-    color: #333;
-    padding: 5rem;
-    margin-top: 20vh;
+    width: 80vw;
+    border-radius: 50px;
+    color: white;
+    margin-top: 10vh;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
+.mini-container {
+    background: #361463;
+    padding: 5rem 0;
+    border-radius: 50px;
+    margin: 3rem 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    border: 1px solid #b175ff;
+    box-shadow: 0 0 30px 10px #6b4e8f76;
+
+}
+
+.mini-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50;
+    translate: (-50%);
+    width: 115%;
+    height: 115%;
+    z-index: -1;
+    /* box-shadow: 0 0 10px 10px white; */
+    /* Apply gradient as background */
+    /* background: radial-gradient(ellipse at center, #38d7ff, #17a4a2a7 30%, transparent 60%); */
+    /* Adjust position to create the shadow effect */
 }
 
 .output-container h1 {
-    color: rgb(86, 27, 98);
+    color: white;
     margin: 0;
     font-size: 3rem;
     margin-top: 2rem;
+
 }
 
 .output-container p {
     font-size: 1.5rem;
     font-weight: 600;
+
 }
 
 .output-container h3 {
     font-size: 1.5rem;
     justify-self: center;
+}
+
+.output-header {
+    width: 80%;
+
 }
 
 .youtube-channels {
@@ -37,7 +84,7 @@ html {
     align-items: center;
     align-content: center;
     flex-direction: column;
-    margin: 6rem 0;
+    /* margin: 6rem 0; */
 }
 
 .channels-container {
@@ -72,18 +119,20 @@ html {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    width: 90%;
 }
 
 .download-el {
     width: 60%;
     border-radius: 30px;
-    border: solid 1px rgb(121, 219, 222);
-    padding: 2rem;
+    /* border: solid 1px rgb(121, 219, 222); */
+    padding: 3rem;
     display: flex;
     flex-direction: row;
     margin: 1rem;
     height: 11rem;
-    box-shadow: 0px 0px 5px rgba(128, 128, 128, 0.486);
+    /* box-shadow: 0px 0px 5px rgba(128, 128, 128, 0.486); */
+    background: #805ea976;
     
 }
 
@@ -100,7 +149,7 @@ html {
 .download-el i {
     font-size: 3rem;
     /* padding: 1rem 2rem; */
-    box-shadow: 0px 0px 5px rgba(128, 128, 128, 0.486);
+    /* box-shadow: 0px 0px 5px rgba(128, 128, 128, 0.486); */
     border-radius: 30px;
     justify-content: center;
     align-items: center;
@@ -110,6 +159,8 @@ html {
     height: 7rem;
     width: 7rem;
     margin-right: 2rem;
+    background: #669db476;
+    margin-top: -5px;
 }
 
 .download-text {
@@ -123,7 +174,7 @@ html {
     font-size: 0.95rem;
     border-radius: 30px;
     padding:1rem 1.8rem;
-    background: #5ebbba;
+    background: #65afcfaf;
     border: none;
     outline: none;
     color: white;
@@ -210,3 +261,153 @@ html {
     top: 0;
     margin: 0;
 }
+
+.stats-graphs {
+    max-width: 100%;
+    margin: 0;
+    min-height: 100%;
+    width: 80%;
+}
+
+.overview {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+    width: 100%;
+}
+
+.stats-graphs h1 {
+    margin-bottom: 2rem;
+    
+}
+
+.stats-graphs {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.owl-carousel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+
+.owl-carousel .item {
+    min-height: 30rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+}
+
+.chart-compare {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(#0a224000, #8a25bda9);
+    border-radius: 30px;
+    width: 90%;
+    padding: 2rem;
+}
+
+#channel-views-chart,  #channel-likes-chart, #channel-subs-chart{
+    width: 50%;
+}
+
+.stats-graphs-container {
+    padding: 3rem 0;
+}
+
+.compare-el {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    padding: 2rem;
+    justify-content: space-around;
+}
+
+.compare-el h1 span{
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-left: 0.5rem;
+}
+
+.compare-el h1 {
+font-size: 6rem;
+font-family: sans-serif;
+
+margin: 0;
+}
+
+.compare-el h2 {
+    font-size: 2.5rem;
+    margin: 0;
+
+}
+
+.compare-el h2 span {
+    font-size: 1.5rem;
+}
+
+.owl-carousel .owl-nav button.owl-prev,
+.owl-carousel .owl-nav button.owl-next {
+    position: absolute;
+    top: 45%;
+    transform: translateY(-50%);
+    background: #ffffff91; 
+    color: rgba(51, 51, 51, 0.451)fff; 
+    border-radius: 50%;
+    border: none;
+    
+}
+
+.owl-carousel .owl-nav button.owl-prev span,
+.owl-carousel .owl-nav button.owl-next span {
+font-size: 18rem;
+font-weight: 300;
+color: rgba(255, 255, 255, 0.551);
+transition: 0.2s ease;
+font-family: sans-serif;
+
+}
+
+.owl-carousel .owl-nav button.owl-prev span:hover,
+.owl-carousel .owl-nav button.owl-next span:hover {
+font-size: 20rem;
+/* font-weight: 500; */
+color: rgba(255, 255, 255, 0.925);
+transition: 0.2s ease;
+font-family: sans-serif;
+
+
+}
+
+
+.owl-carousel .owl-nav button.owl-prev {
+    left: -90px; 
+}
+
+.owl-carousel .owl-nav button.owl-next {
+    right: -90px; 
+}
+
+.compare-el p {
+    font-weight: 400;
+}
+
+.compare-el p span {
+    position: relative;
+    font-size: 2rem;
+    font-weight: 700;
+}
+

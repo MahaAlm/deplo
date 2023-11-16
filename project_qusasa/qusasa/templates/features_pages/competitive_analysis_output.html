@@ -6,7 +6,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Qusasa | YouTube Features</title>
-    <!-- Linking CSS -->\
+    <!-- Linking CSS -->
     <link rel="stylesheet" href="{% static 'qusasa/css/signup.css' %}" />
     <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}" />
     <link rel="stylesheet" href="{% static 'qusasa/css/cards.css' %}" />
@@ -14,6 +14,22 @@
     <link rel="stylesheet" href="{% static 'qusasa/css/output.css' %}" />
     <link href="https://cdn.rawgit.com/michalsnik/aos/2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://cdn.rawgit.com/michalsnik/aos/2.3.1/dist/aos.js"></script>
+    <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    <!-- Include Owl Carousel CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+
+    <!-- Include jQuery Library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Include Owl Carousel JS File -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+<!-- Add the new slick-theme.css if you want default styling -->
+<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
+<script type="text/javascript" src="slick/slick.min.js"></script>
 
     <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
@@ -25,38 +41,46 @@
 
     
     <div class="output-container">
-        <div class="output-header " data-aos="fade-up">
-            <h1>Your Competitive Analysis is ready!</h1>
-            <p>Our youtube competitive analysis will provide you with customizable dataset, statistics, graphs and interpretaions to make your work with data easier.</p>
-        </div>
-        <div class="youtube-channels" data-aos="fade-up">
-            <h3>Analysed channels</h3>
-            <div class="channels-container">
-                <div class="channel-el">
-                    <img src="{% static 'qusasa/images/gaming1.jpeg' %}" alt="">
-                    <p>Channel 1</p>
-                </div>
-                <div class="channel-el">
-                    <img src="{% static 'qusasa/images/gaming2.jpg' %}" alt="">
-                    <p>Channel 2</p>
-                </div>
-                <div class="channel-el">
-                    <img src="{% static 'qusasa/images/gaming3.jpeg' %}" alt="">
-                    <p>Channel 3</p>
-                </div>
-                <div class="channel-el">
-                    <img src="{% static 'qusasa/images/gaming4.jpeg' %}" alt="">
-                    <p>Channel 4</p>
-                </div>
-                <div class="channel-el">
-                    <img src="{% static 'qusasa/images/gaming5.jpeg' %}" alt="">
-                    <p>Channel 5</p>
-                </div>
-            </div>
-            
-        </div>
 
-        <h2 data-aos="fade-up">Download your results:</h2>
+        <div class="mini-container">
+            <div class="output-header " data-aos="fade-up">
+                <h1>Your Competitive Analysis is ready!</h1>
+                <p>Our youtube competitive analysis will provide you with customizable dataset, statistics, graphs and interpretaions to make your work with data easier.</p>
+            </div>
+        </div>
+        
+        <div class="mini-container">
+            <div class="youtube-channels" data-aos="fade-up">
+                <h3>Analysed channels</h3>
+                <div class="channels-container">
+                    <div class="channel-el">
+                        <img src="{% static 'qusasa/images/gaming1.jpeg' %}" alt="">
+                        <p>Channel 1</p>
+                    </div>
+                    <div class="channel-el">
+                        <img src="{% static 'qusasa/images/gaming2.jpg' %}" alt="">
+                        <p>Channel 2</p>
+                    </div>
+                    <div class="channel-el">
+                        <img src="{% static 'qusasa/images/gaming3.jpeg' %}" alt="">
+                        <p>Channel 3</p>
+                    </div>
+                    <div class="channel-el">
+                        <img src="{% static 'qusasa/images/gaming4.jpeg' %}" alt="">
+                        <p>Channel 4</p>
+                    </div>
+                    <div class="channel-el">
+                        <img src="{% static 'qusasa/images/gaming5.jpeg' %}" alt="">
+                        <p>Channel 5</p>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+
+        <div class="mini-container">
+            <h2 data-aos="fade-up">Download your results:</h2>
         <div class="downlaodables" data-aos="fade-up">
             <div class="download-dataset download-el">
                 <i class="fa-solid fa-table"></i>
@@ -90,9 +114,88 @@
             </div>
         </div>
 
-        <div class="stats-graphs" data-aos="fade-up">
-            <h2>Statistics and Graphs</h2>
         </div>
+        
+        <div class="mini-container stats-graphs-container">
+            <div class="stats-graphs" data-aos="fade-up">
+                <h1>Get An Overview</h1>
+                <div class="overview">
+                    <div class="owl-carousel">
+                        <div class="item">
+                            <div class="chart-compare ">
+                                <div class="compare-el">
+                                    <div class="compare-stats">
+                                        <p>Top channel in <span>views</span></p>
+                                        <h2>Channel C <span>with</span></h2>
+                                        <h1>5000<span>views</span></h1>
+                        
+                                    </div>
+                                    <div id="channel-views-chart"></div>
+
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="chart-compare ">
+                                <div class="compare-el">
+                                    <div class="compare-stats">
+                                        <p>Top channel in <span>likes</span></p>
+                                        <h2>Channel C <span>with</span></h2>
+                                        <h1>5000<span>likes</span></h1>
+                        
+                                    </div>
+                                    <div id="channel-likes-chart"></div>
+
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="chart-compare ">
+                                <div class="compare-el">
+                                    <div class="compare-stats">
+                                        <p>Top channel in <span>subscribtions</span></p>
+                                        <h2>Channel C <span>with</span></h2>
+                                        <h1>5000<span>subscribers</span></h1>
+                        
+                                    </div>
+                                    <div id="channel-subs-chart"></div>
+
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+
+                        
+                        <!-- more items -->
+                    </div>
+                    
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="top-videos">
+            <h1>Top videos</h1>
+            <p>here we display the top video of each channel, you can hover on each video to get more insights about why is it so successfull!</p>
+            <div class="videos">
+                <div class="mini-container video-container" style=>
+                    
+                </div>
+                <div class="mini-container video-container"></div>
+                <div class="mini-container video-container"></div>
+                <div class="mini-container video-container"></div>
+                <div class="mini-container video-container"></div>
+            </div>
+            
+        </div>
+        
 
         <div id="popup1" class="overlay">
             <div class="popup">
@@ -102,8 +205,14 @@
                     <div class="popup-buttons">
                         <a href="{% url 'base' %}"><button class="yes">Yes I'm sure</button></a>
                     <a href="#"><button>Go back</button></a>
-                    </div>
-                    
+                    </div>   
+                </div>
+                <div class="text">
+                    if you did you will not be able to access its content anymore...
+                    <div class="popup-buttons">
+                        <a href="{% url 'base' %}"><button class="yes">Yes I'm sure</button></a>
+                    <a href="#"><button>Go back</button></a>
+                    </div>   
                 </div>
             </div>
         </div>
@@ -115,6 +224,105 @@
 
    
 </div>
+
+<script>
+    var channels = ['Channel A', 'Channel B', 'Channel C', 'Channel D', 'Channel E'];
+    var views = [45000, 32000, 50000, 27000, 36000];
+    var likes = [1500, 2000, 5000, 2000, 3000];
+    var subscribers = [3000, 6000, 1500, 7000, 4000];
+
+    var options = {
+        chart: {
+            type: 'bar',
+            height: 250,
+            width: '100%',
+            foreColor: '#fff',        
+            // white text for the dark theme,
+            background: 'transparent'
+
+        },
+        plotOptions: {
+            bar: {
+                distributed: true, 
+                columnWidth: '50%', 
+                endingShape: 'rounded' ,
+                borderRadius: [4, 4, 0, 0]
+            }
+        },
+        theme: {
+            mode: 'dark',
+            palette: 'palette1'
+        },
+        dataLabels: {
+            enabled: false
+        },
+        series: [{
+            name: 'Views',
+            data: views
+        }],
+        xaxis: {
+            categories: channels
+        },
+        grid: {
+            show: false
+        },
+        legend: {
+            show: false
+        },
+        fill: {
+            colors: ['#00E396', '#775DD0', '#775DD0', '#775DD0', '#775DD0'],
+            type: 'gradient',
+            gradient: {
+                shade: 'light',
+                type: "vertical",
+                shadeIntensity: 0.5,
+                gradientToColors: undefined, 
+                inverseColors: true,
+                opacityFrom: 0.85,
+                opacityTo: 0.85,
+                stops: [0, 100]
+            }
+        }
+    };
+    
+    var chart = new ApexCharts(document.querySelector("#channel-views-chart"), options);
+    chart.render();
+
+    var options_likes = options
+    options_likes['series'] = [{
+        name: 'Likes',
+        data: likes
+    }]
+
+    var chart = new ApexCharts(document.querySelector("#channel-likes-chart"), options_likes);
+    chart.render();
+
+    var options_subscribers = options
+    options_subscribers.series = [{
+        name: 'Subscribtions',
+        data: subscribers
+    }]
+
+    var chart = new ApexCharts(document.querySelector("#channel-subs-chart"), options_subscribers);
+    chart.render();
+    
+</script>
+
+
+<script>$(document).ready(function(){
+    $(".owl-carousel").owlCarousel({
+        // Owl Carousel options
+        items: 1,
+        center: true,
+        loop: true,
+        autoplay: true,
+        autoplayTimeout: 3000,
+        autoplayHoverPause: true,
+        nav: true
+        // other options as needed
+    });
+});
+</script>
 
     <script>
         AOS.init({
