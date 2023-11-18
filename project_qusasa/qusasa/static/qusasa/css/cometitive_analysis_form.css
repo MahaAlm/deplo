@@ -657,3 +657,17 @@ input[type="checkbox"]:checked + label .checkmark::after {
 .content {
     margin-bottom: 5rem;
 }
+
+img.floating {
+    animation: float 3s ease-in-out infinite;
+}
+
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px); /* Adjust the value for more or less movement */
+    }
+}

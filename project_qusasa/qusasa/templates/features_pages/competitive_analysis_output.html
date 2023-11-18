@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -16,7 +15,12 @@
     <script src="https://cdn.rawgit.com/michalsnik/aos/2.3.1/dist/aos.js"></script>
     <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <!-- Make sure to include the cloud layout plugin after the main D3 library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Include Owl Carousel CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
@@ -51,28 +55,16 @@
         
         <div class="mini-container">
             <div class="youtube-channels" data-aos="fade-up">
-                <h3>Analysed channels</h3>
+                <h3>Analysed {{type}}s</h3>
                 <div class="channels-container">
-                    <div class="channel-el">
-                        <img src="{% static 'qusasa/images/gaming1.jpeg' %}" alt="">
-                        <p>Channel 1</p>
-                    </div>
-                    <div class="channel-el">
-                        <img src="{% static 'qusasa/images/gaming2.jpg' %}" alt="">
-                        <p>Channel 2</p>
-                    </div>
-                    <div class="channel-el">
-                        <img src="{% static 'qusasa/images/gaming3.jpeg' %}" alt="">
-                        <p>Channel 3</p>
-                    </div>
-                    <div class="channel-el">
-                        <img src="{% static 'qusasa/images/gaming4.jpeg' %}" alt="">
-                        <p>Channel 4</p>
-                    </div>
-                    <div class="channel-el">
-                        <img src="{% static 'qusasa/images/gaming5.jpeg' %}" alt="">
-                        <p>Channel 5</p>
-                    </div>
+                    {% for icon_url, channel_name in channels %}
+                        <div class="channel-el">
+                            <img src="{{ icon_url }}" alt="{{ channel_name }}">
+                            <p>{{ channel_name }}</p>
+                        </div>
+                    {% empty %}
+                        <p>No {{type}}s available.</p>
+                    {% endfor %}
                 </div>
                 
             </div>
@@ -86,12 +78,12 @@
                 <i class="fa-solid fa-table"></i>
                 <div class="download-text">
                     <div class="text">
-                        <h3>The channels dataset</h3>
-                    <p>Have each channel as a row with its assoicated data.</p>
+                        <h3>The {{type}}s dataset</h3>
+                    <p>Have each {{type}} as a row with its assoicated data.</p>
                     </div>
                     
                     <div class="button">
-                        <button>Download the dataset</button>
+                        <button id="download-dataset-button">Download the dataset</button>
                     </div>
                     
                 </div>
@@ -102,8 +94,7 @@
                 <div class="download-text ">
                     <div class="text">
                         <h3>Analysis report</h3>
-                    
-                    <p>including all the graphs, statistics, and interpretaions presented.</p>
+                        <p>including all the graphs, statistics, and interpretaions presented.</p>
                     </div>
                     
                     <div class="button">
@@ -119,15 +110,15 @@
         <div class="mini-container stats-graphs-container">
             <div class="stats-graphs" data-aos="fade-up">
                 <h1>Get An Overview</h1>
+                <p>take a look over the general likes, views, and subscribtions for each {{ type }}</p>
                 <div class="overview">
                     <div class="owl-carousel">
                         <div class="item">
                             <div class="chart-compare ">
                                 <div class="compare-el">
                                     <div class="compare-stats">
-                                        <p>Top channel in <span>views</span></p>
-                                        <h2>Channel C <span>with</span></h2>
-                                        <h1>5000<span>views</span></h1>
+                                        <p>Top {{type}} in <span>views</span></p>
+                                        <h2>{{top_views_channel}}</h2>
                         
                                     </div>
                                     <div id="channel-views-chart"></div>
@@ -142,9 +133,8 @@
                             <div class="chart-compare ">
                                 <div class="compare-el">
                                     <div class="compare-stats">
-                                        <p>Top channel in <span>likes</span></p>
-                                        <h2>Channel C <span>with</span></h2>
-                                        <h1>5000<span>likes</span></h1>
+                                        <p>Top {{type}} in <span>likes</span></p>
+                                        <h2>{{top_likes_channel}}</h2>
                         
                                     </div>
                                     <div id="channel-likes-chart"></div>
@@ -159,9 +149,8 @@
                             <div class="chart-compare ">
                                 <div class="compare-el">
                                     <div class="compare-stats">
-                                        <p>Top channel in <span>subscribtions</span></p>
-                                        <h2>Channel C <span>with</span></h2>
-                                        <h1>5000<span>subscribers</span></h1>
+                                        <p>Top in <span>subscribtions</span></p>
+                                        <h2>{{top_subs_channel}}</h2>
                         
                                     </div>
                                     <div id="channel-subs-chart"></div>
@@ -181,20 +170,124 @@
             </div>
         </div>
 
-        <div class="top-videos">
-            <h1>Top videos</h1>
-            <p>here we display the top video of each channel, you can hover on each video to get more insights about why is it so successfull!</p>
+        <div class="top-videos" data-aos="fade-up">
+            <h1 data-aos="fade-up">Top videos</h1>
+            <p data-aos="fade-up"> here we display the top video of each channel, you can hover on each video to get more insights about why is it so successfull!</p>
             <div class="videos">
-                <div class="mini-container video-container" style=>
+                {% for video in top_videos %}
+                <div class="mini-container video-container">
+                    <div class="header">
+                        <img src='{{video.thumbnail}}' alt="">
+                        <div class="header-info">
+                            <h1>{{video.title}}</h1>
+                            <div class="desc">
+                                <h3>Video's description</h3>
+                            <p>{{video.description}}</p>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <h2 class="video-stats-h2">Video statistics</h2>
+                        <div class="video-stats">
+                            <div class="video-stat">
+                                <h3 class="number" data-target="{{video.viewsCount}}">0</h3>
+                                <p>views</p>
+                            </div>
+                            <div class="video-stat">
+                                <h3 class="number" data-target="{{video.likesCount}}">0</h3>
+                                <p>likes</p>
+                            </div>
+                            <div class="video-stat">
+                                <h3 class="number" data-target="{{video.duration}}">0</h3>
+                                <p>minutes</p>
+                            </div>
+                        </div>
+                        
+                        <div class="video-comments">
+                            <p>Top comments</p>
+                            {% for comment in video.topComments %}
+                            <div class="comment" data-aos="fade-up">
+                                <p><i class="fa-solid fa-comment"></i> {{comment}}</p>
+                            </div>
+                            {% endfor %}
+                        </div>
                     
                 </div>
-                <div class="mini-container video-container"></div>
-                <div class="mini-container video-container"></div>
-                <div class="mini-container video-container"></div>
-                <div class="mini-container video-container"></div>
+            {% endfor %}
+                
+                
             </div>
             
         </div>
+
+
+        <div class="mini-container stats-graphs-container" data-aos="fade-up">
+            <div class="stats-graphs" data-aos="fade-up">
+                <h1>Get more insights</h1>
+                <p class="stats-graphs-p">We present you with some graphs that could help you in understanding your competition better</p>
+                <div class="overview">
+                            <div class="chart-compare " data-aos="fade-up">
+                                <div class="compare-el">
+                                    <div class="compare-stats">
+                                        <p><span>Duration</span> box plots</p>
+                                        <p style="font-size: 1.1rem; width:80%;">Box plots of video durations reveal trends in content length across channels, providing insights into audience preferences and guiding content strategy to enhance viewer engagement and channel success.
+                                        </p>
+                        
+                                    </div>
+                                    <div id="channel-duration-chart"></div>
+
+
+                                </div>
+                                
+                                
+                            </div>
+
+                            
+                            <div class="chart-compare " data-aos="fade-up">
+                                <div class="compare-el">
+                                    <div class="compare-stats">
+                                        <p>look through <span>Categories</span></p>
+                                        <p style="font-size: 1.1rem; width:80%;">
+                                            Analyzing a stacked bar chart of video categories across channels can swiftly highlight which categories are most prevalent in your successful content, offering insights into competitive trends and audience preferences, to help you in strategic content planning.
+                                        </p>
+                        
+                                    </div>
+                                    <div id="stacked-bar-chart"></div>
+
+
+                                </div>
+                                
+                                
+                            </div>
+                            
+                            
+                                
+                                
+                                <div class="owl-carousel" data-aos="fade-up">
+                                    {% for tags, channel_name in channels_tags %}
+                                        <div class="item">
+                                            <div class="chart-compare tags-chart">
+                                                <div class="compare-el">
+                                                    <div class="compare-stats">
+                                                        <p>Look through <span>Tags</span></p>
+                                                        <p><span>{{channel_name}}</span></p>
+                                                        <p style="font-size: 1.1rem; width:80%;">
+                                                            Analyzing a stacked bar chart of video categories across channels can swiftly highlight which categories are most prevalent in your successful content, offering insights into competitive trends and audience preferences, to help you in strategic content planning.
+                                                        </p>
+                                                    </div>
+                                                    <!-- Generate a unique ID for each word cloud container using the forloop.counter -->
+                                                    <div id="wordcloud{{ forloop.counter }}" class="wordcloud"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                
+                                </div>
+                                
+                        </div>
+            </div>
+        </div>
+
         
 
         <div id="popup1" class="overlay">
@@ -225,12 +318,81 @@
    
 </div>
 
-<script>
-    var channels = ['Channel A', 'Channel B', 'Channel C', 'Channel D', 'Channel E'];
-    var views = [45000, 32000, 50000, 27000, 36000];
-    var likes = [1500, 2000, 5000, 2000, 3000];
-    var subscribers = [3000, 6000, 1500, 7000, 4000];
 
+<script>
+   
+    document.addEventListener('DOMContentLoaded', function() {
+        var videoContainers = document.querySelectorAll('.video-container');
+    
+        // Function to remove expanded class from all video containers
+        function resetContainers() {
+            videoContainers.forEach(function(container) {
+                container.classList.remove('expanded');
+                container.style.boxShadow = '';
+                container.style.display = ''; // Show all containers
+            });
+        }
+    
+        // Add or remove expanded class on hover
+        videoContainers.forEach(function(container) {
+            container.addEventListener('mouseenter', function() {
+                container.classList.add('expanded');
+                // Hide other containers
+                videoContainers.forEach(function(otherContainer) {
+                    if (otherContainer !== container) {
+                        otherContainer.style.display = 'none';
+                    }
+                });
+            });
+            container.addEventListener('mouseleave', function() {
+                if (!container.classList.contains('clicked')) {
+                    container.classList.remove('expanded');
+                    container.style.boxShadow = '0 0 30px 10px #6b4e8f76'; // Change box shadow
+                    resetContainers();
+                }
+            });
+        });
+    
+        // Remove expanded class and reset on click outside
+        document.addEventListener('click', function(event) {
+            var isClickInsideContainer = Array.from(videoContainers).some(function(container) {
+                return container.contains(event.target);
+            });
+    
+            if (!isClickInsideContainer) {
+                resetContainers();
+            } else {
+                videoContainers.forEach(function(container) {
+                    if (container.contains(event.target)) {
+                        container.classList.add('clicked');
+                    } else {
+                        container.classList.remove('clicked');
+                    }
+                });
+            }
+        });
+    });
+    
+        
+</script>
+<script>
+    document.getElementById('download-dataset-button').addEventListener('click', function() {
+        window.location.href = "{% url 'dataset_zipped_output' %}";
+    });
+</script>
+<script id="json-data" type="application/json">{{ json_data|safe }}</script>
+
+<script>
+
+    var jsonData = JSON.parse(document.getElementById('json-data').textContent);
+    var channels = jsonData.channel_names
+    var views = jsonData.average_views
+    var likes = jsonData.average_likes
+    var subscribers = jsonData.subs
+    const trimmedChannels = channels.map(label => 
+    label.length > 15 ? label.substring(0, 5) + '...' : label);
+
+    console.log(jsonData.topTags)
     var options = {
         chart: {
             type: 'bar',
@@ -246,7 +408,18 @@
                 distributed: true, 
                 columnWidth: '50%', 
                 endingShape: 'rounded' ,
-                borderRadius: [4, 4, 0, 0]
+                borderRadius: [4, 4, 0, 0],
+                dataLabels: {
+                    position: 'top' // Ensuring data labels appear on top of the bars
+                }
+            }
+        },
+        tooltip: {
+            x: {
+                formatter: function(value, { series, seriesIndex, dataPointIndex, w }) {
+                    // Display the full channel name in the tooltip
+                    return channels[dataPointIndex]
+                }
             }
         },
         theme: {
@@ -261,7 +434,14 @@
             data: views
         }],
         xaxis: {
-            categories: channels
+            categories: trimmedChannels,
+            labels: {
+                rotate: 0, // Rotates labels to handle long text
+                offsetY: 0, // Adjust to position the labels higher above the bar
+                style: {
+                    cssClass: 'custom-xaxis-label',
+                },
+            }
         },
         grid: {
             show: false
@@ -305,6 +485,247 @@
 
     var chart = new ApexCharts(document.querySelector("#channel-subs-chart"), options_subscribers);
     chart.render();
+    
+</script>
+
+<script>
+    // Define a function to draw a word cloud
+    var myColors = ['#D5A9FF', '#7EF7D9', '#12CEE6', '#4686FF', '#FFFFFF', /* more colors */ ];
+
+    function drawWordCloud(selector, words) {
+        // Create a function to generate random sizes for the words
+        var getRandomSize = function() {
+            return 10 + Math.random() * 30; // Random size between 10 and 50
+        };
+    
+        // Set up the word cloud layout
+        var layout = d3.layout.cloud()
+            .size([400, 300]) // The size of the word cloud
+            .words(words.map(function(d) {
+                return {text: d, size: getRandomSize()}; // Assign random size to each word
+            }))
+            .padding(2) // Adjust padding between words
+            .rotate(0) // Set rotation, if desired
+            .font("Raleway")
+            .fontSize(function(d) { return d.size; }) // Use the assigned size
+            .on("end", draw);
+    
+        layout.start();
+    
+        // Draw the word cloud
+        function draw(words) {
+            var svg = d3.select(selector).append("svg")
+                .attr("width", layout.size()[0])
+                .attr("height", layout.size()[1])
+                .append("g")
+                .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")");
+    
+            svg.selectAll("text")
+                .data(words)
+                .enter().append("text")
+                .style("font-size", function(d) { return d.size + "px"; }) // Font size is set by the layout
+                .style("font-family", "Raleway")
+                .style("font-weight", "bold") // Set the font family
+                .style("fill", function(d, i) { return myColors[i % myColors.length]; }) // Set the color
+                .attr("text-anchor", "middle")
+                .attr("transform", function(d) {
+                    return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                })
+                .text(function(d) { return d.text; });
+        }
+    }
+    
+
+// Define your array of words for each channel
+var channelsTags = jsonData.topTags
+
+// Call the drawWordCloud function for each channel
+channelsTags.forEach(function(tags, i) {
+    drawWordCloud("#wordcloud" + (i + 1), tags);
+});
+
+</script>
+
+<script>
+        var mostUsedCategories = jsonData.mostUsedCategories
+        var mostUsedCategories = [
+    [["Education", 47],["Science", 30]],
+    [["Education", 38]],
+    [["Education", 12]],
+    [["Education", 39]]
+];
+
+var colorPalette = ['#00E396', '#008FFB', '#FEB019', '#FF4560', '#775DD0', /* more colors */ ];
+
+var categoryColors = {};
+var colorIndex = 0;
+
+    mostUsedCategories.forEach((channelData, index) => {
+        channelData.forEach(([category, count]) => {
+            if (!(category in categoryColors)) {
+                categoryColors[category] = colorPalette[colorIndex % colorPalette.length];
+                colorIndex++;
+            }
+        });
+    });
+
+var seriesData = {};
+
+    mostUsedCategories.forEach((channelData, index) => {
+        channelData.forEach(([category, count]) => {
+            if (!seriesData[category]) {
+                seriesData[category] = Array(channels.length).fill(0);
+            }
+            seriesData[category][index] = count;
+        });
+    });
+
+    var series = Object.keys(seriesData).map(category => {
+        return {
+            name: category,
+            data: seriesData[category],
+            color: categoryColors[category]
+        };
+    });
+
+    console.log(categoryColors)
+
+    var options = {
+        chart: {
+            type: 'bar',
+            height: '100%',
+            width: '100%',
+            foreColor: '#fff',
+            background: 'transparent',
+            stacked: true
+        },
+        plotOptions: {
+            bar: {
+                columnWidth: '50%',
+                borderRadius: [4, 4, 0, 0],
+                // other bar options
+            }
+        },
+        tooltip: {
+            x: {
+                formatter: function(value, { series, seriesIndex, dataPointIndex, w }) {
+                    // Display the full channel name in the tooltip
+                    return channels[dataPointIndex]
+                }
+            }
+        },
+        theme: {
+            mode: 'dark',
+            palette: 'palette1'
+        },
+        // other options (theme, dataLabels, etc.) similar to your previous charts
+        series: series,
+        xaxis: {
+            categories: trimmedChannels
+        },
+        formatter: function(seriesName, opts) {
+            return seriesName; // Just return the category name
+        }
+        // other options (grid, legend, etc.)
+    };
+    
+    var chart = new ApexCharts(document.querySelector("#stacked-bar-chart"), options);
+    chart.render();
+    
+
+</script>
+<script>
+    
+ var durations = jsonData.durations
+var boxPlotData = durations.map((channelDurations, index) => {
+    return {
+        x: trimmedChannels[index],
+        y: channelDurations
+    };
+});
+
+var optionsBoxPlot = {
+    chart: {
+        type: 'boxPlot',
+        height: 250,
+        width: '100%',
+        foreColor: '#fff',
+        background: 'transparent'
+    },
+    tooltip: {
+        x: {
+            formatter: function(value, { series, seriesIndex, dataPointIndex, w }) {
+                // Display the full channel name in the tooltip
+                return channels[dataPointIndex]
+            }
+        }
+    },
+    theme: {
+        mode: 'dark',
+        palette: 'palette1'
+    },
+    plotOptions: {
+        boxPlot: {
+            colors: {
+                upper: '#00E396',
+                lower: '#775DD0'
+            }
+        }
+    },
+    series: [{
+        name: 'Video Durations',
+        type: 'boxPlot',
+        data: boxPlotData
+    }],
+    xaxis: {
+        type: 'category',
+        categories: trimmedChannels
+    },
+    grid: {
+        show: true
+    },
+    legend: {
+        show: true,
+        formatter: function(seriesName, opts) {
+            // Assuming `channels` array contains the full channel names
+            return channels[opts.seriesIndex];
+        }
+    },
+    fill: {
+        type: 'solid'
+    }
+};
+
+var boxPlotChart = new ApexCharts(document.querySelector("#channel-duration-chart"), optionsBoxPlot);
+boxPlotChart.render();
+
+</script>
+
+<script>
+    function animateNumber(element, start, end, duration) {
+        let startTime = null;
+    
+        function animation(currentTime) {
+            if (startTime === null) startTime = currentTime;
+            const timeElapsed = currentTime - startTime;
+            const progress = Math.min((timeElapsed / duration), 1); // Ensure progress doesn't exceed 1
+    
+            element.textContent = Math.floor(progress * (end - start) + start);
+    
+            if (timeElapsed < duration) {
+                requestAnimationFrame(animation);
+            }
+        }
+    
+        requestAnimationFrame(animation);
+    }
+    
+    const numberElements = document.querySelectorAll('.number');
+    
+    numberElements.forEach(numberElement => {
+        const targetValue = parseInt(numberElement.getAttribute('data-target'), 10);
+        animateNumber(numberElement, 0, targetValue, 4000); // 2000ms = 2 seconds for animation
+    });
     
 </script>
 

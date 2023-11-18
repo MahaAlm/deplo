@@ -1,13 +1,13 @@
 html {
     background: linear-gradient(-45deg, #0B0B25, #250D44, #0A2240);
     height: auto;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    /* display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center; */
+    background: linear-gradient(-45deg, #0B0B25, #250D44, #0A2240);
+
 }
 
 
@@ -24,7 +24,7 @@ body {
 }
 
 .mini-container {
-    background: #361463;
+    background: rgb(8, 14, 77);
     padding: 5rem 0;
     border-radius: 50px;
     margin: 3rem 0;
@@ -34,25 +34,12 @@ body {
     align-items: center;
     flex-direction: column;
     position: relative;
-    border: 1px solid #b175ff;
+    border: 1px solid #7587ff;
     box-shadow: 0 0 30px 10px #6b4e8f76;
 
 }
 
-.mini-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50;
-    translate: (-50%);
-    width: 115%;
-    height: 115%;
-    z-index: -1;
-    /* box-shadow: 0 0 10px 10px white; */
-    /* Apply gradient as background */
-    /* background: radial-gradient(ellipse at center, #38d7ff, #17a4a2a7 30%, transparent 60%); */
-    /* Adjust position to create the shadow effect */
-}
+
 
 .output-container h1 {
     color: white;
@@ -92,6 +79,7 @@ body {
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    padding: 0 3rem;
 }
 .channel-el {
     margin: 2rem;
@@ -100,7 +88,13 @@ body {
     justify-content: center;
     align-items: center;
     transition: 0.2s ease-in-out;
+    text-align: center;
+    max-width: 10rem;
 
+}
+
+.channel-el p {
+    font-size: 1rem;
 }
 
 .channel-el:hover {
@@ -181,10 +175,13 @@ body {
     font-family: 'Raleway';
     font-weight: 700;
     cursor: pointer;
+    transition: 0.2s ease;
 }
 
 .download-el button:hover {
-    background: #71d0cf;
+    background: #40bfe6;
+    transform: translate(0, -3px);
+    transition: 0.2s ease;
 }
 
 .stats-graphs {
@@ -321,7 +318,9 @@ body {
 }
 
 #channel-views-chart,  #channel-likes-chart, #channel-subs-chart{
-    width: 50%;
+    width: 60%;
+    min-width: 60%;
+    min-height: 100%;
 }
 
 .stats-graphs-container {
@@ -343,7 +342,7 @@ body {
 }
 
 .compare-el h1 {
-font-size: 6rem;
+font-size: 5rem;
 font-family: sans-serif;
 
 margin: 0;
@@ -411,3 +410,266 @@ font-family: sans-serif;
     font-weight: 700;
 }
 
+
+.custom-xaxis-label {
+    max-width: 10px; /* Set your desired width */
+    white-space: wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.custom-xaxis-label tspan {
+    max-width: 5px;
+}
+.top-videos {
+    margin-top: 1rem;
+    margin-bottom: 8rem;
+    text-align: center;
+
+}
+
+.top-videos p {
+    margin-bottom: 5rem;
+}
+
+.videos {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+}
+
+.video-container {
+    padding: 0.5rem 1.5rem;
+    width: auto;
+    /* max-width: 40vw; */
+    margin: 1rem;
+    transition: 0.3s ease;
+    transform-origin: top left;
+    border-radius: 20px;
+}
+
+
+
+.video-container .header *:not(img) {
+    /* CSS styles here will be applied to every element inside the div except img tags */
+    /* Example: */
+    visibility: hidden;
+    display: none;
+    transition: 0.3s ease;
+    transform: scale(0); /* Initially scale the element down to zero */
+    opacity: 0; 
+
+}
+
+.video-container .video-stats, .video-container .video-comments {
+    /* CSS styles here will be applied to every element inside the div except img tags */
+    /* Example: */
+    visibility: hidden;
+    display: none;
+    transform: scale(0); /* Initially scale the element down to zero */
+    opacity: 0; 
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+}
+
+.video-container.expanded *, .video-container.expanded .header *:not(img) {
+    visibility: visible;
+    display: flex;
+    transition: 0.3s ease;
+    transform: scale(1); /* Initially scale the element down to zero */
+    opacity: 1; 
+    
+}
+.video-container.expanded {
+    width: 100%;
+    padding:  5rem;
+    flex-grow: 1;
+}
+
+.video-container .header .header-info {
+    flex-direction: column;
+    margin-left: 2rem;
+    min-width: 60%;
+    
+
+}
+
+.video-container.expanded .header img {
+    max-width: 40%;
+    
+    margin: 0;
+    border-radius: 20px;
+    max-height: 17rem;
+    transform: scale(1);
+
+}
+.video-container .header .header-info h1 {
+    margin: 0;
+    margin-bottom: 1rem;
+}
+
+.video-container .header .header-info h3 {
+    margin: 0;
+    margin-bottom: 0.5rem;
+}
+
+.video-container .header .header-info p {
+    font-weight: 400;
+    font-size: 1rem;
+    margin: 0;
+}
+.video-container .header img {
+    border-radius: 20px;
+}
+
+.desc {
+    flex-direction: column;
+    background: linear-gradient(rgba(28, 58, 130, 0.702), rgba(69, 33, 169, 0.702));
+    padding: 2rem;
+    border-radius: 30px;
+    margin-top: 2rem;
+    height: auto;
+
+}
+
+.desc p {
+    width: 100%;
+    text-wrap: wrap;
+}
+
+.video-stats {
+    flex-direction: row;
+    justify-content: space-around;
+    width: 90%;
+    background: linear-gradient(#0a224000, #8a25bda9);
+    border-radius: 30px;
+    align-items: flex-end;
+    padding: 3rem 0;
+    align-content: flex-end;
+}
+
+.video-stat {
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.video-stat h3 {
+    margin: 0;
+    font-size: 3rem;
+}
+
+.video-stat p {
+    margin: 0;
+    
+}
+
+.video-stats-h2 {
+    visibility: hidden;
+    display: none;
+    transform: scale(0); /* Initially scale the element down to zero */
+    opacity: 0; 
+    transition: 0.3s ease;
+}
+
+.video-stats-h2  {
+    margin-top: 5rem;
+    font-size: 2.5rem;
+    transition: 0.3s ease;
+    
+}
+
+.video-container.expanded .video-stats-h2  {
+    visibility: visible;
+    display: flex;
+    transform: scale(1); /* Initially scale the element down to zero */
+    opacity: 1; 
+    transition: 0.3s ease;
+}
+
+.video-comments {
+    flex-direction: column;
+    width: 90%;
+}
+
+.video-comments .comment {
+    background: linear-gradient(rgba(46, 81, 162, 0.702), rgba(69, 33, 169, 0.56));
+    border-radius: 30px;
+    font-size: 0.5rem;
+    font-weight: 400;
+    padding: 0.5rem 2rem;
+    margin: 1rem 0;
+
+}
+
+.video-comments p {
+    margin-top: 7rem;
+}
+
+.video-comments .comment p {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin: 1rem;
+}
+
+.video-comments .comment i {
+    margin-right: 1rem;
+}
+
+.video-container.expanded {
+    width: 100%; /* Adjust as needed */
+    padding: 4rem;
+    box-shadow: 0 0 30px 10px rgba(151, 65, 255, 0.731);
+    /* Add other styles for the expanded state */
+}
+
+
+
+
+#channel-duration-chart, #stacked-bar-chart
+{
+    width: 60%;
+    min-width: 60%;
+    min-height: 100%;
+}
+
+foreignObject {
+    height: 100%;
+    min-height: 100%;
+}
+
+#apexchartszml5zwur {
+    height: 100%;
+    min-height: 100%;
+}
+
+.tags-chart {
+    padding: 0 2rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.wordcloud {
+    padding: 0;
+    margin: 0;
+}
+
+.stats-graphs-container {
+    margin-bottom: 10rem;
+}
+
+.stats-graphs-p {
+    text-align: center;
+    margin: 0;
+
+margin-bottom: 3rem;}

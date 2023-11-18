@@ -178,3 +178,5 @@ DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.redirects.RedirectsPanel',
     # ... add or remove panels as needed ...
 ]
+
+YOUTUBE_DEVELOPER_KEY = os.environ.get("AIzaSyB5Mi7IXiOBEq5f7nk_kIiq-bVZ6m25rwE")

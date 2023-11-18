@@ -11,6 +11,8 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from .utils import searchByQuery, extractIdFromUrl, analyse_channels
+from .youtube_api import get_youtube_client
 
 
 
@@ -113,11 +115,11 @@ def features_details_view(request):
 
 from django.http import HttpResponseRedirect
 from formtools.wizard.views import SessionWizardView
-from .forms import CompetitiveAnalysisTypeForm, myChannelPlaylistInputForm, YouTubeSearchForm, YouTubeCategorySearchForm, ChannelsListInput, FindInitialChoiceForm, OutputChoiceForm
+from .forms import CompetitiveAnalysisTypeForm, myChannelPlaylistInputForm, YouTubeSearchForm, YouTubeCategorySearchForm, ChannelsListInput, FindInitialChoiceForm
 from django.forms import formset_factory
 
 class CompetitiveAnalysisWizard(SessionWizardView):
-    form_list = [CompetitiveAnalysisTypeForm, myChannelPlaylistInputForm, FindInitialChoiceForm, ChannelsListInput, OutputChoiceForm]
+    form_list = [CompetitiveAnalysisTypeForm, myChannelPlaylistInputForm, FindInitialChoiceForm, ChannelsListInput]
     template_name = 'features_pages/competitive_analysis.html'
     
     def get_form(self, step=None, data=None, files=None):
@@ -156,15 +158,147 @@ class CompetitiveAnalysisWizard(SessionWizardView):
     def done(self, form_list, **kwargs):
         # Process the cleaned data
         cleaned_data = self.get_all_cleaned_data()
+        
         # Do something with the data and generate dataset/report as required
+        entity_type = cleaned_data.get('analysis_type')
+        my_link = cleaned_data.get('input_text')
+        search_or_list = cleaned_data.get('choice') #('input_list', 'search')
+        print()
+        youtube = get_youtube_client()
+        
+        if(search_or_list == 'search'):
+            search = True
+            query = cleaned_data.get('search_query')
+            order = cleaned_data.get('order')
+            region_code = cleaned_data.get('region_code')
+            language = cleaned_data.get('language')
+            ids_list = searchByQuery(youtube, query, entity_type, order, region_code, language)
+            ids_list.insert(0, extractIdFromUrl(my_link))
+            
+        elif(search_or_list == 'input_list'):
+            ids_list = []
+            ids_list.append(my_link)
+            ids_list.append(extractIdFromUrl(cleaned_data.get('channel_url_1')))
+            ids_list.append(extractIdFromUrl(cleaned_data.get('channel_url_2')))
+            ids_list.append(extractIdFromUrl(cleaned_data.get('channel_url_3')))
+            ids_list.append(extractIdFromUrl(cleaned_data.get('channel_url_4')))
+        
+        print(ids_list)
+        channel_data_df, top_videos_df, channel_icons, durations_list = analyse_channels(ids_list, entity_type, youtube)
+        
+        channel_data_csv = channel_data_df.to_csv(index=False)
+        top_videos_csv = top_videos_df.to_csv(index=False)
+        # Extract channel names
+        print(channel_data_df.columns)
+        channel_names = channel_data_df['Name'].tolist()
+        
+        top_videos_dict = top_videos_df.to_dict(orient='records')
+        self.request.session['top_videos'] = top_videos_dict
+
+        
+
+        # Store in session
+        self.request.session['channel_icons'] = channel_icons
+        self.request.session['channel_names'] = channel_names
+        self.request.session['channel_data_csv'] = channel_data_csv
+        self.request.session['top_videos_csv'] = top_videos_csv
+        self.request.session['durations'] = durations_list
+        
+        average_likes = channel_data_df['Like average'].tolist()
+        top_likes_channel = channel_data_df.sort_values('Like average', ascending=False)['Name'].iloc[0]
+        
+        average_views = channel_data_df['View average'].tolist()
+        top_views_channel = channel_data_df.sort_values('View average', ascending=False)['Name'].iloc[0]
+
+        subs = channel_data_df['Subscriber count'].tolist()
+        top_subs_channel = channel_data_df.sort_values('Subscriber count', ascending=False)['Name'].iloc[0]
+
+        mostUsedCategories = channel_data_df['mostUsedCategories'].tolist()
+        topTags = channel_data_df['Top tags'].tolist()
+        
+        self.request.session['mostUsedCategories'] = mostUsedCategories
+        self.request.session['topTags'] = topTags
+        self.request.session['average_likes'] = average_likes
+        self.request.session['top_likes_channel'] = top_likes_channel
+        self.request.session['average_views'] = average_views
+        self.request.session['top_views_channel'] = top_views_channel
+        self.request.session['subs'] = subs
+        self.request.session['top_subs_channel'] = top_subs_channel
+        self.request.session['type'] = entity_type
+        self.request.session['durations'] = durations_list
         # Redirect to a new URL:
         return HttpResponseRedirect(reverse('competitive_analysis_output'))  # Use the name of the URL pattern
 
 
 # URL pattern would look something like this:
 # path('analysis/', AnalysisWizard.as_view())
+import json
 
 def competitive_analysis_output_view(request):
+    channel_icons = request.session.get('channel_icons', [])
+    channel_names = request.session.get('channel_names', [])
+    top_videos = request.session.get('top_videos', [])
+    durations = request.session.get('durations', [])
+    output_data = {
+        'average_likes': request.session['average_likes'],
+        'average_views': request.session['average_views'],
+        'subs': request.session['subs'],
+        'channel_names': channel_names,
+        'durations': durations,
+        'mostUsedCategories': request.session.get('mostUsedCategories', []),
+        'topTags': request.session.get('topTags', []),
+    }
+    json_data = json.dumps(output_data)
+    
+
+    # Zip the lists together in the view
+    channels = zip(channel_icons, channel_names)
+    channels_tags = zip(request.session.get('topTags', []), channel_names)
+    context = {
+        'channels': channels,
+        'json_data': json_data,
+        'top_likes_channel': request.session['top_likes_channel'],
+        'top_views_channel': request.session['top_views_channel'],
+        'top_subs_channel': request.session['top_subs_channel'],
+        'type': request.session['type'],
+        'top_videos': top_videos,
+        'output_data': output_data,
+        'channels_tags': channels_tags
+        
+    }
+    return render(request, 'features_pages/competitive_analysis_output.html', context)
+
+import zipfile
+import io
+
+def dataset_zipped_output(request):
     # Handle the output display here
-    return render(request, 'features_pages/competitive_analysis_output.html')
+    # Retrieve the CSV data from the session
+    channel_data_csv = request.session.get('channel_data_csv', '')
+    top_videos_csv = request.session.get('top_videos_csv', '')
+    # Create a zip file in memory
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(zip_buffer, 'a', zipfile.ZIP_DEFLATED, False) as zip_file:
+        zip_file.writestr('channel_data.csv', channel_data_csv)
+        zip_file.writestr('top_videos.csv', top_videos_csv)
+
+    # Set up the HttpResponse
+    zip_buffer.seek(0)
+    response = HttpResponse(zip_buffer, content_type='application/zip')
+    response['Content-Disposition'] = 'attachment; filename="data.zip"'
+
+    return response
+
+
+
+    
+    
+
+
+
+
+
+
+
+
 

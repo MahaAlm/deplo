@@ -54,8 +54,8 @@ class CustomPasswordResetForm(PasswordResetForm):
 
 class CompetitiveAnalysisTypeForm(forms.Form):
     ANALYSIS_CHOICES = (
-        ('channels', 'Compare between channels'),
-        ('playlists', 'Compare between playlists'),
+        ('channel', 'Compare between channels'),
+        ('playlist', 'Compare between playlists'),
     )
     analysis_type = forms.ChoiceField(choices=ANALYSIS_CHOICES)
     
@@ -414,13 +414,12 @@ class ChannelsListInput(forms.Form):
     channel_url_2 = forms.URLField(label='Channel URL 2', required=False)
     channel_url_3 = forms.URLField(label='Channel URL 3', required=False)
     channel_url_4 = forms.URLField(label='Channel URL 4', required=False)
-    channel_url_5 = forms.URLField(label='Channel URL 5', required=False)
 
 
 CHOICES = [
     ('input_list', 'Input a list of channels'),
     ('search', 'Search channels'),
-    ('category', 'Select a category'),
+    # ('category', 'Select a category'),
 ]
 
 class FindInitialChoiceForm(forms.Form):
@@ -433,7 +432,7 @@ OUTPUT_CHOICES = [
 ]
 
 class OutputChoiceForm(forms.Form):
-    choice = forms.MultipleChoiceField(
+    choice_output = forms.MultipleChoiceField(
         choices=OUTPUT_CHOICES,
         widget=forms.CheckboxSelectMultiple,  # Correct widget for multiple choices
         label="Select an option"

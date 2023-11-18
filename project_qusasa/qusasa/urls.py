@@ -25,6 +25,8 @@ urlpatterns = [
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('competitive_analysis/', views.CompetitiveAnalysisWizard.as_view(), name='competitive_analysis'),
     path('competitive_analysis/output/', views.competitive_analysis_output_view, name='competitive_analysis_output'),
+    path('dataset_zipped_output/', views.dataset_zipped_output, name='dataset_zipped_output'),
+    
     
     
 
