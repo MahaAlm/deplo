@@ -86,6 +86,8 @@ def InstagramFeat(request):
     return render(request,'qusasa/InstagramFeat.html')
 def wFeature(request):
     return render(request,'qusasa/wFeature.html')
+
+
 @login_required
 def confirm_email(request):
     if request.method == 'POST':
@@ -109,9 +111,9 @@ def inquiries_view(request):
     return render(request, 'qusasa/inquiries.html')
 
 @login_required
-def features_details_view(request):
+def competitive_analysis_details(request):
     # You can add code here to fetch and process inquiries
-    return render(request, 'features_pages/feature_details.html')
+    return render(request, 'features_pages/competitive_analysis/competitive_analysis_details.html')
 
 from django.http import HttpResponseRedirect
 from formtools.wizard.views import SessionWizardView
@@ -120,7 +122,7 @@ from django.forms import formset_factory
 
 class CompetitiveAnalysisWizard(SessionWizardView):
     form_list = [CompetitiveAnalysisTypeForm, myChannelPlaylistInputForm, FindInitialChoiceForm, ChannelsListInput]
-    template_name = 'features_pages/competitive_analysis.html'
+    template_name = 'features_pages/competitive_analysis/competitive_analysis.html'
     
     def get_form(self, step=None, data=None, files=None):
         form = super().get_form(step, data, files)
@@ -266,7 +268,7 @@ def competitive_analysis_output_view(request):
         'channels_tags': channels_tags
         
     }
-    return render(request, 'features_pages/competitive_analysis_output.html', context)
+    return render(request, 'features_pages/competitive_analysis/competitive_analysis_output.html', context)
 
 import zipfile
 import io
