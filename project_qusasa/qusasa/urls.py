@@ -15,7 +15,6 @@ urlpatterns = [
     path('wFeature/', views.wFeature, name='wFeature'),
     path('InstagramFeat/', views.InstagramFeat, name='InstagramFeat'),
     path('YouTubeFeat/', views.YouTubeFeat, name='YouTubeFeat'),
-    path('competitive_analysis_details', views.competitive_analysis_details, name='competitive_analysis_details'),
     path('logout/', views.logout_view, name='logout'),
     path('signup/', views.signup, name='signup'),
     path('confirm_email/', views.confirm_email, name='confirm_email'),
@@ -23,8 +22,12 @@ urlpatterns = [
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    path('competitive_analysis_details', views.competitive_analysis_details, name='competitive_analysis_details'),
     path('competitive_analysis/', views.CompetitiveAnalysisWizard.as_view(), name='competitive_analysis'),
     path('competitive_analysis/output/', views.competitive_analysis_output_view, name='competitive_analysis_output'),
+    path('video_analysis_details', views.video_analysis_details, name='video_analysis_details'),
+    path('video_analysis/', views.VideoAnalysisWizard.as_view(), name='video_analysis'),
+    path('video_analysis/output/', views.video_analysis_output_view, name='video_analysis_output'),
     path('dataset_zipped_output/', views.dataset_zipped_output, name='dataset_zipped_output'),
     
     

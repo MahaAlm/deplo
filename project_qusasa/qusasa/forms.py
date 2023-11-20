@@ -437,3 +437,8 @@ class OutputChoiceForm(forms.Form):
         widget=forms.CheckboxSelectMultiple,  # Correct widget for multiple choices
         label="Select an option"
     )
+
+
+class VideoAnalysisInputForm(forms.Form):
+    video_url = forms.CharField(label='', max_length=255)  # Initially leave label empty
+

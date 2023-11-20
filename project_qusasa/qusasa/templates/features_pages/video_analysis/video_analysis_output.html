@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="{% static 'qusasa/css/cards.css' %}" />
     <link rel="stylesheet" href="{% static 'qusasa/css/feature_details.css' %}" />
     <link rel="stylesheet" href="{% static 'qusasa/css/output.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/video_analysis_output.css' %}" />
+
     <link href="https://cdn.rawgit.com/michalsnik/aos/2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://cdn.rawgit.com/michalsnik/aos/2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
@@ -49,33 +51,18 @@
             </div>
         </div>
         
-        <div class="mini-container">
-            <div class="youtube-channels" data-aos="fade-up">
-                <h3>Analysed {{type}}s</h3>
-                <div class="channels-container">
-                    {% for icon_url, channel_name in channels %}
-                        <div class="channel-el">
-                            <img src="{{ icon_url }}" alt="{{ channel_name }}">
-                            <p>{{ channel_name }}</p>
-                        </div>
-                    {% empty %}
-                        <p>No {{type}}s available.</p>
-                    {% endfor %}
-                </div>
-                
-            </div>
-        </div>
+        
         
 
         <div class="mini-container">
             <h2 data-aos="fade-up">Download your results:</h2>
-        <div class="downlaodables" data-aos="fade-up">
+            <div class="downlaodables" data-aos="fade-up">
             <div class="download-dataset download-el">
                 <i class="fa-solid fa-table"></i>
                 <div class="download-text">
                     <div class="text">
-                        <h3>The {{type}}s dataset</h3>
-                    <p>Have each {{type}} as a row with its assoicated data.</p>
+                        <h3>The videoss dataset</h3>
+                    <p>Have each video as a row with its assoicated data.</p>
                     </div>
                     
                     <div class="button">
@@ -99,22 +86,22 @@
                     
                 </div>
             </div>
-        </div>
+            </div>
 
         </div>
         
         <div class="mini-container stats-graphs-container">
             <div class="stats-graphs" data-aos="fade-up">
                 <h1>Get An Overview</h1>
-                <p>take a look over the general likes, views, and subscribtions for each {{ type }}</p>
+                <p>take a look over the general likes, views, and subscribtions for each video</p>
                 <div class="overview">
                     <div class="owl-carousel">
                         <div class="item">
                             <div class="chart-compare ">
                                 <div class="compare-el">
                                     <div class="compare-stats">
-                                        <p>Top {{type}} in <span>views</span></p>
-                                        <h2>{{top_views_channel}}</h2>
+                                        <p>Top video in <span>views</span></p>
+                                        <h2>1000</h2>
                         
                                     </div>
                                     <div id="channel-views-chart"></div>
@@ -129,8 +116,8 @@
                             <div class="chart-compare ">
                                 <div class="compare-el">
                                     <div class="compare-stats">
-                                        <p>Top {{type}} in <span>likes</span></p>
-                                        <h2>{{top_likes_channel}}</h2>
+                                        <p>Top video in <span>likes</span></p>
+                                        <h2>2000</h2>
                         
                                     </div>
                                     <div id="channel-likes-chart"></div>
@@ -146,7 +133,7 @@
                                 <div class="compare-el">
                                     <div class="compare-stats">
                                         <p>Top in <span>subscribtions</span></p>
-                                        <h2>{{top_subs_channel}}</h2>
+                                        <h2>5000</h2>
                         
                                     </div>
                                     <div id="channel-subs-chart"></div>
@@ -170,15 +157,14 @@
             <h1 data-aos="fade-up">Top videos</h1>
             <p data-aos="fade-up"> here we display the top video of each channel, you can hover on each video to get more insights about why is it so successfull!</p>
             <div class="videos">
-                {% for video in top_videos %}
                 <div class="mini-container video-container">
                     <div class="header">
                         <img src='{{video.thumbnail}}' alt="">
                         <div class="header-info">
-                            <h1>{{video.title}}</h1>
+                            <h1>video title</h1>
                             <div class="desc">
                                 <h3>Video's description</h3>
-                            <p>{{video.description}}</p>
+                            <p>here is the discreption</p>
                             </div>
                             
                         </div>
@@ -186,30 +172,27 @@
                     <h2 class="video-stats-h2">Video statistics</h2>
                         <div class="video-stats">
                             <div class="video-stat">
-                                <h3 class="number" data-target="{{video.viewsCount}}">0</h3>
+                                <h3 class="number" data-target="100">0</h3>
                                 <p>views</p>
                             </div>
                             <div class="video-stat">
-                                <h3 class="number" data-target="{{video.likesCount}}">0</h3>
+                                <h3 class="number" data-target="100">0</h3>
                                 <p>likes</p>
                             </div>
                             <div class="video-stat">
-                                <h3 class="number" data-target="{{video.duration}}">0</h3>
+                                <h3 class="number" data-target="100">0</h3>
                                 <p>minutes</p>
                             </div>
                         </div>
                         
                         <div class="video-comments">
                             <p>Top comments</p>
-                            {% for comment in video.topComments %}
                             <div class="comment" data-aos="fade-up">
-                                <p><i class="fa-solid fa-comment"></i> {{comment}}</p>
+                                <p><i class="fa-solid fa-comment"></i>here is comments</p>
                             </div>
-                            {% endfor %}
                         </div>
                     
                 </div>
-            {% endfor %}
                 
                 
             </div>
@@ -228,7 +211,6 @@
                                         <p><span>Duration</span> box plots</p>
                                         <p style="font-size: 1.1rem; width:80%;">Box plots of video durations reveal trends in content length across channels, providing insights into audience preferences and guiding content strategy to enhance viewer engagement and channel success.
                                         </p>
-                        
                                     </div>
                                     <div id="channel-duration-chart"></div>
 
@@ -260,23 +242,21 @@
                                 
                                 
                                 <div class="owl-carousel" data-aos="fade-up">
-                                    {% for tags, channel_name in channels_tags %}
                                         <div class="item">
                                             <div class="chart-compare tags-chart">
                                                 <div class="compare-el">
                                                     <div class="compare-stats">
                                                         <p>Look through <span>Tags</span></p>
-                                                        <p><span>{{channel_name}}</span></p>
+                                                        <p><span>channel name</span></p>
                                                         <p style="font-size: 1.1rem; width:80%;">
                                                             Analyzing a stacked bar chart of video categories across channels can swiftly highlight which categories are most prevalent in your successful content, offering insights into competitive trends and audience preferences, to help you in strategic content planning.
                                                         </p>
                                                     </div>
                                                     <!-- Generate a unique ID for each word cloud container using the forloop.counter -->
-                                                    <div id="wordcloud{{ forloop.counter }}" class="wordcloud"></div>
+                                                    <div id="wordcloud0" class="wordcloud"></div>
                                                 </div>
                                             </div>
                                         </div>
-                                    {% endfor %}
                                 
                                 </div>
                                 
@@ -376,19 +356,22 @@
         window.location.href = "{% url 'dataset_zipped_output' %}";
     });
 </script>
-<script id="json-data" type="application/json">{{ json_data|safe }}</script>
+<!-- <script id="json-data" type="application/json">{{ json_data|safe }}</script> -->
 
 <script>
 
-    var jsonData = JSON.parse(document.getElementById('json-data').textContent);
-    var channels = jsonData.channel_names
-    var views = jsonData.average_views
-    var likes = jsonData.average_likes
-    var subscribers = jsonData.subs
+    //var jsonData = JSON.parse(document.getElementById('json-data').textContent);
+    //var channels = jsonData.channel_names
+    //var views = jsonData.average_views
+    //var likes = jsonData.average_likes
+    //var subscribers = jsonData.subs
+    
+    channels = ['channel1', 'channel2']
+    views = [100, 200]
+    likes = [10, 20]
+    subscribers = [5, 10]
     const trimmedChannels = channels.map(label => 
     label.length > 15 ? label.substring(0, 5) + '...' : label);
-
-    console.log(jsonData.topTags)
     var options = {
         chart: {
             type: 'bar',
@@ -533,17 +516,18 @@
     
 
 // Define your array of words for each channel
-var channelsTags = jsonData.topTags
+//var channelsTags = jsonData.topTags
+var channelsTags = [['I','love', 'you', 'Mashael', 'good','luck', 'best','GP', 'ever']]
 
 // Call the drawWordCloud function for each channel
 channelsTags.forEach(function(tags, i) {
-    drawWordCloud("#wordcloud" + (i + 1), tags);
+    drawWordCloud("#wordcloud" + (i), tags);
 });
 
 </script>
 
 <script>
-        var mostUsedCategories = jsonData.mostUsedCategories
+        //var mostUsedCategories = jsonData.mostUsedCategories
         var mostUsedCategories = [
     [["Education", 47],["Science", 30]],
     [["Education", 38]],
@@ -632,7 +616,8 @@ var seriesData = {};
 </script>
 <script>
     
- var durations = jsonData.durations
+ //var durations = jsonData.durations
+ var durations = [[20,8,5, 8, 20,12,2], [8,10,11, 21, 21, 9, 1]]
 var boxPlotData = durations.map((channelDurations, index) => {
     return {
         x: trimmedChannels[index],

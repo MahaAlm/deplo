@@ -270,6 +270,30 @@ def competitive_analysis_output_view(request):
     }
     return render(request, 'features_pages/competitive_analysis/competitive_analysis_output.html', context)
 
+
+
+@login_required
+def video_analysis_details(request):
+    # You can add code here to fetch and process inquiries
+    return render(request, 'features_pages/video_analysis/video_analysis_details.html')
+
+from .forms import VideoAnalysisInputForm
+
+class VideoAnalysisWizard(SessionWizardView):
+    form_list = [VideoAnalysisInputForm]
+    template_name = 'features_pages/video_analysis/video_analysis_forms.html'  
+    
+    def done(self, form_list, **kwargs):
+        # Process the cleaned data
+        cleaned_data = self.get_all_cleaned_data()
+        return HttpResponseRedirect(reverse('video_analysis_output'))  # Use the name of the URL pattern
+
+
+def video_analysis_output_view(request):
+    return render(request, 'features_pages/video_analysis/video_analysis_output.html')
+
+
+
 import zipfile
 import io
 
@@ -290,17 +314,5 @@ def dataset_zipped_output(request):
     response['Content-Disposition'] = 'attachment; filename="data.zip"'
 
     return response
-
-
-
-    
-    
-
-
-
-
-
-
-
 
 
