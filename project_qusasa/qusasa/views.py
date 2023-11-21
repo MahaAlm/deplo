@@ -11,7 +11,7 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from .utils import searchByQuery, extractIdFromUrl, analyse_channels
+from .utils import searchByQuery, extractIdFromUrl, analyse_channels, video_analysis
 from .youtube_api import get_youtube_client
 
 
@@ -118,7 +118,6 @@ def competitive_analysis_details(request):
 from django.http import HttpResponseRedirect
 from formtools.wizard.views import SessionWizardView
 from .forms import CompetitiveAnalysisTypeForm, myChannelPlaylistInputForm, YouTubeSearchForm, YouTubeCategorySearchForm, ChannelsListInput, FindInitialChoiceForm
-from django.forms import formset_factory
 
 class CompetitiveAnalysisWizard(SessionWizardView):
     form_list = [CompetitiveAnalysisTypeForm, myChannelPlaylistInputForm, FindInitialChoiceForm, ChannelsListInput]
@@ -285,17 +284,58 @@ class VideoAnalysisWizard(SessionWizardView):
     
     def done(self, form_list, **kwargs):
         # Process the cleaned data
+        youtube = get_youtube_client()
         cleaned_data = self.get_all_cleaned_data()
+        video_url = cleaned_data.get('video_url')
+        video_id = extractIdFromUrl(video_url)
+        video_info_df, comments_df, emotion_counts, top_comments_by_emotion = video_analysis(youtube, video_id)
+        
+        video_info_csv = video_info_df.to_csv(index=False)
+        comments_csv = comments_df.to_csv(index=False)
+        
+        self.request.session['video_info_csv'] = video_info_csv
+        self.request.session['comments_csv'] = comments_csv
+        
+        self.request.session['emotion_counts'] = emotion_counts
+        self.request.session['top_comments_by_emotion'] = top_comments_by_emotion
         return HttpResponseRedirect(reverse('video_analysis_output'))  # Use the name of the URL pattern
 
 
 def video_analysis_output_view(request):
-    return render(request, 'features_pages/video_analysis/video_analysis_output.html')
+    
+    output_data = {
+        'emotion_counts': request.session['emotion_counts'],
+        'top_comments_by_emotion': request.session['top_comments_by_emotion'],
+    }
+    
+    json_data = json.dumps(output_data)
+    
+    context= {json_data}
+    
+    return render(request, 'features_pages/video_analysis/video_analysis_output.html', context)
 
 
 
 import zipfile
 import io
+
+def dataset_zipped_output_video_analysis(request):
+    # Handle the output display here
+    # Retrieve the CSV data from the session
+    video_info_csv = request.session.get('video_info_csv', '')
+    comments_csv = request.session.get('comments_csv', '')
+    # Create a zip file in memory
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(zip_buffer, 'a', zipfile.ZIP_DEFLATED, False) as zip_file:
+        zip_file.writestr('video_info_csv.csv', video_info_csv)
+        zip_file.writestr('comments_csv.csv', comments_csv)
+
+    # Set up the HttpResponse
+    zip_buffer.seek(0)
+    response = HttpResponse(zip_buffer, content_type='application/zip')
+    response['Content-Disposition'] = 'attachment; filename="video_analysis_datasets.zip"'
+
+    return response
 
 def dataset_zipped_output(request):
     # Handle the output display here
