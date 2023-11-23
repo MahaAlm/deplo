@@ -55,11 +55,12 @@ def searchByQuery(youtube, keyword, Type, orderBy='relevance', regionCode='', la
 # r = searchByQuery('Minecraft', 'video', regionCode='US', language='en')
 
 import re
+
 def extractIdFromUrl(url):
     channel_pattern = r'youtube\.com/channel/([a-zA-Z0-9_-]+)'
-    playlist_pattern = r'youtube\.com/playlist\?list=([a-zA-Z0-9_-]+)'
-    video_pattern = r'youtube\.com/watch\?v=([a-zA-Z0-9_-]+)'
-    short_video_pattern = r'youtu\.be/([a-zA-Z0-9_-]+)'
+    playlist_pattern = r'youtube\.com/playlist\?list=([a-zA-Z0-9_-]+)&?.*'
+    video_pattern = r'youtube\.com/watch\?v=([a-zA-Z0-9_-]+)&?.*'
+    short_video_pattern = r'youtu\.be/([a-zA-Z0-9_-]+)(\?.*)?'
 
     channel_match = re.search(channel_pattern, url)
     playlist_match = re.search(playlist_pattern, url)
@@ -67,15 +68,16 @@ def extractIdFromUrl(url):
     short_video_match = re.search(short_video_pattern, url)
 
     if channel_match:
-        return {'type': 'channel', 'id': channel_match.group(1)}
+        return channel_match.group(1)
     elif playlist_match:
-        return {'type': 'playlist', 'id': playlist_match.group(1)}
+        return playlist_match.group(1)
     elif video_match:
-        return {'type': 'video', 'id': video_match.group(1)}
+        return video_match.group(1)
     elif short_video_match:
-        return {'type': 'video', 'id': short_video_match.group(1)}
+        return short_video_match.group(1)
     else:
         return None
+
 
 
 def get_videos_info(entity_id, youtube, entity_type='channel'):
@@ -260,7 +262,6 @@ def analyze_youtube_entity(entity_id, youtube, entity_type='channel'):
     else:  # For playlist
         # Use averageViews for playlists
         view_average = videos_info['averageViews']
-
         request_entity = youtube.playlists().list(part="snippet", id=entity_id)
         response_entity = request_entity.execute()
 
@@ -419,7 +420,7 @@ def analyze_comments_emotions(comments_df):
       predictions = torch.argmax(logits, dim=-1)
       
       # Convert predictions to labels
-      labels = [model.config.id2label[prediction.item()] for prediction in predictions]
+      labels = [model.config.id2label[prediction.item()] for prediction in predictions][0]
       return labels
     
     # Add a new column to the DataFrame for the predicted emotions
@@ -521,6 +522,246 @@ def video_analysis(youtube, video_id):
     comments_df = pd.DataFrame(comments_data)
     
     emotion_counts, top_comments_by_emotion = analyze_comments_emotions(comments_df)
-
-
     return video_info_df, comments_df, emotion_counts, top_comments_by_emotion
+
+import googleapiclient.discovery
+import pandas as pd
+import pandas as pd
+from datetime import timedelta
+import re
+from collections import Counter
+from transformers import pipeline
+
+
+#Maha=   AIzaSyB5Mi7IXiOBEq5f7nk_kIiq-bVZ6m25rwE
+#Qusasa=   AIzaSyBTkp8Z7xgdHMF8y7BBlWqUabqbERDhyFM
+dev="AIzaSyB5Mi7IXiOBEq5f7nk_kIiq-bVZ6m25rwE"
+api_service_name = "youtube"
+api_version = "v3"
+DEVELOPER_KEY = dev
+
+youtube = googleapiclient.discovery.build(
+    api_service_name, api_version, developerKey='AIzaSyB5Mi7IXiOBEq5f7nk_kIiq-bVZ6m25rwE')
+
+def parse_duration_to_minutes(duration):
+    pattern = r'P(?:(\d+)D)?T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?'
+    match = re.match(pattern, duration)
+    if match:
+        days, hours, minutes, seconds = map(lambda x: int(x) if x else 0, match.groups())
+        total_minutes = days * 24 * 60 + hours * 60 + minutes + seconds / 60
+        return int(total_minutes)
+    else:
+        return 0
+
+def analyse_video(youtube, video_id):
+    unique_tags = set()
+    category_count = Counter()
+
+    
+
+    video_response = youtube.videos().list(
+        part='statistics,contentDetails,snippet',
+        id=video_id
+    ).execute()
+
+    if 'items' in video_response and video_response['items']:
+        video_details = video_response['items'][0]
+        statistics = video_details['statistics']
+
+        unique_tags.update(video_details['snippet'].get('tags', []))
+        category_count[video_details['snippet']['categoryId']] += 1
+        
+        # Construct a dictionary with all the video info
+        video_info = {
+            'videoId': video_details['id'],
+            'title': video_details['snippet']['title'],
+            'description': video_details['snippet']['description'],
+            'publishedAt': video_details['snippet']['publishedAt'],
+            'thumbnail': video_details['snippet']['thumbnails']['high']['url'],
+            'viewsCount': int(statistics.get('viewCount', 0)),
+            'likesCount': int(statistics.get('likeCount', 0)),
+            'commentCount': int(statistics.get('commentCount', 0)),
+            'duration': parse_duration_to_minutes(video_details['contentDetails'].get('duration')),
+            'unique_tags': list(unique_tags),
+            
+
+        }
+        
+    # Convert category IDs to names
+    category_names = {}
+    category_ids = list(category_count.keys())
+    if category_ids:
+        category_response = youtube.videoCategories().list(part='snippet', id=','.join(category_ids)).execute()
+        for item in category_response['items']:
+            category_names[item['id']] = item['snippet']['title']
+
+    most_used_categories = [(category_names.get(cid, 'Unknown'), count) for cid, count in category_count.most_common()]
+    video_info['most_used_categories'] = most_used_categories
+    
+
+    # Create a DataFrame from video info
+    video_info_df = pd.DataFrame([video_info])
+    return video_info_df
+
+def analyse_comments_data(youtube, video_id):
+    comments_data = []
+
+    # Fetch all comments
+    comments_response = youtube.commentThreads().list(
+            part='snippet',
+            videoId=video_id,
+            maxResults=30  # Adjust the maxResults if needed
+        ).execute()
+
+        # Extract comment details and add to the list
+    for item in comments_response['items']:
+            comment = item['snippet']['topLevelComment']['snippet']
+            comments_data.append({
+                'commentId': item['snippet']['topLevelComment']['id'],
+                'author': comment['authorDisplayName'],
+                'text': comment['textDisplay'],
+                'likeCount': int(comment.get('likeCount', 0)),
+                'replyCount': int(item['snippet']['totalReplyCount']),
+                'timestamp': comment['publishedAt']
+            })
+
+
+    # Create a DataFrame from comments data
+    comments_data
+    
+    return comments_data
+
+
+def analyze_comments_emotions_for_playlist(comments_df):
+    
+    tokenizer = BertTokenizer.from_pretrained('bhadresh-savani/bert-base-go-emotion')
+    model = AutoModelForSequenceClassification.from_pretrained('bhadresh-savani/bert-base-go-emotion')
+
+    # Function to safely analyze emotion (with truncation)
+    def get_emotion(texts):
+      # Ensure the input is a list of strings
+      if isinstance(texts, str):
+          texts = [texts]
+      elif not isinstance(texts, list) or not all(isinstance(t, str) for t in texts):
+          raise ValueError("Input must be a string or a list of strings.")
+
+      # Tokenize and truncate texts
+      inputs = tokenizer(texts, padding=True, truncation=True, max_length=512, return_tensors="pt")
+      
+      # Predict emotions
+      with torch.no_grad():
+          outputs = model(**inputs)
+      logits = outputs.logits
+      predictions = torch.argmax(logits, dim=-1)
+      
+      # Convert predictions to labels
+      label = [model.config.id2label[prediction.item()] for prediction in predictions][0]
+      return label
+
+    # Add a new column to the DataFrame for the predicted emotions
+    comments_df['emotion'] = comments_df['text'].apply(get_emotion)
+
+    # Calculate the frequency of each emotion
+    emotion_counts = comments_df['emotion'].value_counts(normalize=True)
+    # Get the top 5 emotions
+    top_emotions = emotion_counts.nlargest(5).index.tolist()
+
+    # Create a dictionary to store the top comments for each emotion
+    top_comments_by_emotion = {emotion: [] for emotion in top_emotions}
+
+    # Get the top 5 comments for each of the top emotions
+    for emotion in top_emotions:
+        top_comments = comments_df[comments_df['emotion'] == emotion].nlargest(1, 'likeCount')
+        top_comments_by_emotion[emotion] = top_comments['text'].iloc[0]
+        
+
+    return emotion_counts, top_comments_by_emotion
+
+def analyze_playlist(youtube, playlist_id):
+    # Fetch playlist details
+    playlist_response = youtube.playlists().list(
+        part="snippet,contentDetails",
+        id=playlist_id
+    ).execute()
+
+    playlist_details = playlist_response['items'][0]
+    
+    # Fetch videos in the playlist
+    next_page_token = None
+    videos_info_list = []
+    while True:
+        playlist_videos_response = youtube.playlistItems().list(
+            part="snippet,contentDetails",
+            playlistId=playlist_id,
+            maxResults=50,
+            pageToken=next_page_token
+        ).execute()
+
+        for item in playlist_videos_response['items']:
+            video_id = item['contentDetails']['videoId']
+            video_info_df = analyse_video(youtube, video_id)
+            videos_info_list.append(video_info_df.iloc[0])
+
+        next_page_token = playlist_videos_response.get('nextPageToken')
+        if not next_page_token:
+            break
+
+    # Create a DataFrame from all videos info
+    all_videos_info_df = pd.DataFrame(videos_info_list)
+
+    # Analyze comments for top 5 and worst 5 videos based on views
+    top_3_videos = all_videos_info_df.nlargest(3, 'viewsCount')
+    worst_3_videos = all_videos_info_df.nsmallest(3, 'viewsCount')
+
+
+
+    top_3_comments = []
+    for _, row in top_3_videos.iterrows():
+        video_comments = analyse_comments_data(youtube, row['videoId'])
+        top_3_comments.extend(video_comments)
+
+    # Collect comments for worst 3 videos
+    worst_3_comments = []
+    for _, row in worst_3_videos.iterrows():
+        video_comments = analyse_comments_data(youtube, row['videoId'])
+        worst_3_comments.extend(video_comments)
+
+    # Convert comments lists to DataFrames
+    top_3_comments_df = pd.DataFrame(top_3_comments)
+    worst_3_comments_df = pd.DataFrame(worst_3_comments)
+
+    # Analyze the merged comments
+    top_3_comments_analysis = analyze_comments_emotions_for_playlist(top_3_comments_df)
+    worst_3_comments_analysis = analyze_comments_emotions_for_playlist(worst_3_comments_df)
+
+    # Calculate aggregated data
+    total_views = all_videos_info_df['viewsCount'].sum()
+    total_likes = all_videos_info_df['likesCount'].sum()
+    total_comments = all_videos_info_df['commentCount'].sum()
+    average_duration = all_videos_info_df['duration'].mean()
+
+    # Aggregate unique tags
+    unique_tags = set()
+    for tags in all_videos_info_df['unique_tags']:
+        unique_tags.update(tags)
+
+    # Update playlist_info with aggregated data
+    playlist_info = {
+        'playlistId': playlist_id,
+        'title': playlist_details['snippet']['title'],
+        'description': playlist_details['snippet']['description'],
+        'thumbnail': playlist_details['snippet']['thumbnails']['high']['url'],
+        'channelName': playlist_details['snippet']['channelTitle'],
+        'publishedAt': playlist_details['snippet']['publishedAt'],
+        'videoCount': playlist_details['contentDetails']['itemCount'],
+        'totalViews': total_views,
+        'totalLikes': total_likes,
+        'totalComments': total_comments,
+        'averageDuration': average_duration,
+        'uniqueTags': list(unique_tags)
+    }
+
+    # Create a DataFrame from playlist info
+    playlist_info_df = pd.DataFrame([playlist_info])
+
+    return playlist_info_df, all_videos_info_df, top_3_videos, worst_3_videos, top_3_comments_analysis, worst_3_comments_analysis

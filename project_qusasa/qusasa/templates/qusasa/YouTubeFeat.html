@@ -60,7 +60,7 @@
             </article>
 
             <article class="card">
-                <a href="{% url 'features_details' %}">
+                <a href="{% url 'competitive_analysis_details' %}">
                 <header class="card__thumb">
                     <img src="{% static 'qusasa/images/channel_analysis.webp' %}"/>
                     <div class="feature-name">
@@ -78,7 +78,7 @@
             </article>
 
             <article class="card">
-                <a href="{% url 'features_details' %}">
+                <a href="{% url 'competitive_analysis_details' %}">
                 <header class="card__thumb">
                     <img src="{% static 'qusasa/images/competitive_analysis.webp' %}"/>
                     <div class="feature-name">
@@ -95,7 +95,7 @@
             </article>
 
             <article class="card">
-                <a href="#">
+                <a href="{% url 'playlist_analysis_details' %}">
                 <header class="card__thumb">
                     <img src="{% static 'qusasa/images/playlist analysis.webp' %}"/>
                     <div class="feature-name">
@@ -109,10 +109,10 @@
                     <p class="card__description">you can obtain statistical information about a specific playlist, including the top videos within the playlist and the creator(s) of the playlist.</p>
                 </div>
             </a>
-            </article>
+            </article> 
 
             <article class="card">
-                <a href="#">
+                <a href="{% url 'video_analysis_details' %}">
                 <header class="card__thumb">
                     <img src="{% static 'qusasa/images/video analysis.webp' %}"/>
                     <div class="feature-name">

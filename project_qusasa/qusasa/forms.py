@@ -438,7 +438,20 @@ class OutputChoiceForm(forms.Form):
         label="Select an option"
     )
 
+from django import forms
+from django.core.exceptions import ValidationError
+import re
 
 class VideoAnalysisInputForm(forms.Form):
     video_url = forms.CharField(label='', max_length=255)  # Initially leave label empty
 
+class PlaylistAnalysisInputForm(forms.Form):
+    playlist_url = forms.URLField(label='Playlist URL', required=True)
+
+    def clean_playlist_url(self):
+        playlist_url = self.cleaned_data['playlist_url']
+        youtube_playlist_pattern = r'^(https?://)?(www.youtube.com|youtube.com)/playlist\?list=[a-zA-Z0-9_-]+(&.*)?$'
+        
+        if not re.match(youtube_playlist_pattern, playlist_url):
+            raise ValidationError("Please enter a valid YouTube playlist URL.")
+        return playlist_url

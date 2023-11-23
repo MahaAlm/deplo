@@ -673,3 +673,15 @@ foreignObject {
     margin: 0;
 
 margin-bottom: 3rem;}
+
+
+.error {
+    background: rgb(255, 238, 238);
+    color: rgb(33, 33, 41);
+    border-radius: 10px;
+    max-width: 100%;
+    padding: 10px;
+    padding-right: 20px;
+    font-weight: 700;
+    margin-bottom: 30px;
+}

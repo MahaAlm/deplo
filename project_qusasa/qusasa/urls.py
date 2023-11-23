@@ -29,7 +29,11 @@ urlpatterns = [
     path('video_analysis/', views.VideoAnalysisWizard.as_view(), name='video_analysis'),
     path('video_analysis/output/', views.video_analysis_output_view, name='video_analysis_output'),
     path('dataset_zipped_output/', views.dataset_zipped_output, name='dataset_zipped_output'),
-    path('dataset_zipped_output_video_analysis/', views.dataset_zipped_output_video_analysis, name='dataset_zipped_output_video_analysis'),    
+    path('dataset_zipped_output_video_analysis/', views.dataset_zipped_output_video_analysis, name='dataset_zipped_output_video_analysis'),
+    path('playlist_analysis_details', views.playlist_analysis_details, name='playlist_analysis_details'),
+    path('playlist_analysis/', views.PlaylistAnalysisWizard.as_view(), name='playlist_analysis'),
+    path('playlist_analysis/output/', views.playlist_analysis_output_view, name='playlist_analysis_output'),
+    path('dataset_zipped_output_playlist/', views.playlist_dataset_zipped_output, name='playlist_dataset_zipped_output'),    
     
 
 

@@ -1,0 +1,893 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Qusasa | Playlist Analysis</title>
+    <!-- Linking CSS -->
+    <link rel="stylesheet" href="{% static 'qusasa/css/signup.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/cards.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/feature_details.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/output.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/playlist_analysis_output.css' %}" />
+
+    <link href="https://cdn.rawgit.com/michalsnik/aos/2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.rawgit.com/michalsnik/aos/2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <!-- Make sure to include the cloud layout plugin after the main D3 library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Include Owl Carousel CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+
+    <!-- Include jQuery Library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Include Owl Carousel JS File -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+
+    <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
+
+  </head>
+  <body>
+    
+    <a class="log-out" href="#popup1"><i class="fa-solid fa-right-from-bracket"></i> Exit Analysis</a>
+
+    
+    <div class="output-container">
+
+        <div class="mini-container">
+            <div class="output-header " data-aos="fade-up">
+                <h1>Your Playlist Analysis is ready!</h1>
+                <p>Our playlist analysis will give you an overview over the playlist, what does influence its performance, and a closer look on its top and worst performing videos...</p>
+            </div>
+        </div>
+        
+        <div class="mini-container">
+            <h2 data-aos="fade-up">Download your results:</h2>
+            <div class="downlaodables" data-aos="fade-up">
+            <div class="download-dataset download-el">
+                <i class="fa-solid fa-table"></i>
+                <div class="download-text">
+                    <div class="text">
+                        <h3>The playlist datasets</h3>
+                    <p>A dataset for the playlist info, and a dataset for each video on the playlist.</p>
+                    </div>
+                    
+                    <div class="button">
+                        <button id="download-dataset-button">Download the dataset</button>
+                    </div>
+                    
+                </div>
+
+            </div>
+            <div class="download-report download-el">
+                <i class="fa-solid fa-file-contract"></i>
+                <div class="download-text ">
+                    <div class="text">
+                        <h3>Analysis report</h3>
+                        <p>including all the graphs, statistics, and interpretaions presented.</p>
+                    </div>
+                    
+                    <div class="button">
+                        <button>Download the report</button>
+                    </div>
+                    
+                </div>
+            </div>
+            </div>
+
+        </div>
+
+        <div class="mini-container stats-graphs-container">
+            <div class="stats-graphs" data-aos="fade-up">
+                <h1>Get An Overview</h1>
+                <p>take a look over playlist in general, what is it about and how is it performing</p>
+                <div class="overview">
+                    <div class="header">
+                        
+                        <div class="header-info">
+                            <img src='{{thumbnail}}' alt="">
+                            <h1>{{title}}</h1>
+                              
+                        </div>
+                        {% if description != ''%}
+                        <div class="desc">
+                            <h3>Playlist description</h3>
+                        <p>{{description}}</p>
+                        </div>
+                        {%endif%}
+                    </div>
+                    <div class="playlist-wordtags">
+                        <h1>Playlist Word tags</h1>
+                        <div id="wordcloud0" class="wordcloud"></div>
+
+                    </div>
+                        <h1 class="playlist-stats-h1">Playlist statistics</h1>
+                        <div class="video-stats">
+                            <div class="video-stat">
+                                <h3 >{{playlist_publishedAt}}</h3>
+                                <p>publishedAt</p>
+                            </div>
+                            <div class="video-stat">
+                                <h3 class="number" data-target="{{videoCount}}">1000</h3>
+                                <p>videos</p>
+                            </div>
+                            <div class="video-stat">
+                                <h3 class="number" data-target="{{totalViews}}">1000</h3>
+                                <p>total Views</p>
+                            </div>
+                            <div class="video-stat">
+                                <h3 class="number" data-target="{{totalLikes}}">1000</h3>
+                                <p>total Likes</p>
+                            </div>
+                            <div class="video-stat">
+                                <h3 class="number" data-target="{{totalComments}}">0</h3>
+                                <p>total Comments</p>
+                            </div>
+                            <div class="video-stat">
+                                <h3 class="number" data-target="{{averageDuration}}">0</h3>
+                                <p>average video duration</p>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mini-container stats-graphs-container">
+            <div class="stats-graphs" data-aos="fade-up">
+                <h1>Get a deeper understanding</h1>
+                <div class="overview">
+                    <div class="owl-carousel">
+                        <div class="item">
+                            <div class="chart-compare ">
+                                <div class="compare-el">
+                                    <div class="compare-stats">
+                                        <p>Playlist<br><span>Progress</span> <br>over puplication time</p>
+                                        <p>in <span>Views</span> </p>
+                        
+                                    </div>
+                                    <div id="views-chart"></div>
+
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="chart-compare ">
+                                <div class="compare-el">
+                                    <div class="compare-stats">
+                                        <p>Playlist<br><span>Progress</span> <br>over puplication time</p>
+                                        <p>in <span>Likes</span> </p>
+                        
+                                    </div>
+                                    <div id="likes-chart"></div>
+
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="chart-compare ">
+                                <div class="compare-el">
+                                    <div class="compare-stats">
+                                        <p>Playlist<br><span>Progress</span> <br>over puplication time</p>
+                                        <p>in <span>Comment counts</span> </p>
+                        
+                                    </div>
+                                    <div id="comment-chart"></div>
+
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                    
+                    <div class="owl-carousel">
+                        <div class="item">
+                            <div class="chart-compare ">
+                                <div class="compare-el">
+                                    <div class="compare-stats">
+                                        <p>How does <br><span>Duration</span> <br> affect the performance?</p>
+                                        <p>in <span>Views</span> </p>
+                        
+                                    </div>
+                                    <div id="views-chart-dur"></div>
+
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="chart-compare ">
+                                <div class="compare-el">
+                                    <div class="compare-stats">
+                                        <p>How does <br><span>Duration</span> <br> affect the performance?</p>
+                                        <p>in <span>Likes</span> </p>
+                        
+                                    </div>
+                                    <div id="likes-chart-dur"></div>
+
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="chart-compare ">
+                                <div class="compare-el">
+                                    <div class="compare-stats">
+                                        <p>How does <br><span>Duration</span> <br> affect the performance?</p>
+                                        <p>in <span>Comment counts</span> </p>
+                        
+                                    </div>
+                                    <div id="comment-chart-dur"></div>
+
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="top-videos" data-aos="fade-up">
+            <h1 data-aos="fade-up">Top videos</h1>
+            <p data-aos="fade-up"> here we display the top video of each channel, you can hover on each video to get more insights about why is it so successfull!</p>
+            <div class="videos">
+                <div class="mini-container video-container">
+                    <div class="header">
+                        <img src='{{video.thumbnail}}' alt="">
+                        <div class="header-info">
+                            <h1>video title</h1>
+                            <div class="desc">
+                                <h3>Video's description</h3>
+                            <p>here is the discreption</p>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <h2 class="video-stats-h2">Video statistics</h2>
+                        <div class="video-stats">
+                            <div class="video-stat">
+                                <h3 class="number" data-target="100">0</h3>
+                                <p>views</p>
+                            </div>
+                            <div class="video-stat">
+                                <h3 class="number" data-target="100">0</h3>
+                                <p>likes</p>
+                            </div>
+                            <div class="video-stat">
+                                <h3 class="number" data-target="100">0</h3>
+                                <p>minutes</p>
+                            </div>
+                        </div>
+                        
+                        <div class="video-comments">
+                            <p>Top comments</p>
+                            <div class="comment" data-aos="fade-up">
+                                <p><i class="fa-solid fa-comment"></i>here is comments</p>
+                            </div>
+                        </div>
+                    
+                </div>
+                
+                
+            </div>
+            
+        </div>
+
+
+
+        
+
+        <div id="popup1" class="overlay">
+            <div class="popup">
+                <h2>Are you sure you want to quit the analysis?</h2>
+                <div class="text">
+                    if you did you will not be able to access its content anymore...
+                    <div class="popup-buttons">
+                        <a href="{% url 'base' %}"><button class="yes">Yes I'm sure</button></a>
+                    <a href="#"><button>Go back</button></a>
+                    </div>   
+                </div>
+                <div class="text">
+                    if you did you will not be able to access its content anymore...
+                    <div class="popup-buttons">
+                        <a href="{% url 'base' %}"><button class="yes">Yes I'm sure</button></a>
+                    <a href="#"><button>Go back</button></a>
+                    </div>   
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+   
+</div>
+
+
+<script>
+   
+    document.addEventListener('DOMContentLoaded', function() {
+        var videoContainers = document.querySelectorAll('.video-container');
+    
+        // Function to remove expanded class from all video containers
+        function resetContainers() {
+            videoContainers.forEach(function(container) {
+                container.classList.remove('expanded');
+                container.style.boxShadow = '';
+                container.style.display = ''; // Show all containers
+            });
+        }
+    
+        // Add or remove expanded class on hover
+        videoContainers.forEach(function(container) {
+            container.addEventListener('mouseenter', function() {
+                container.classList.add('expanded');
+                // Hide other containers
+                videoContainers.forEach(function(otherContainer) {
+                    if (otherContainer !== container) {
+                        otherContainer.style.display = 'none';
+                    }
+                });
+            });
+            container.addEventListener('mouseleave', function() {
+                if (!container.classList.contains('clicked')) {
+                    container.classList.remove('expanded');
+                    container.style.boxShadow = '0 0 30px 10px #6b4e8f76'; // Change box shadow
+                    resetContainers();
+                }
+            });
+        });
+    
+        // Remove expanded class and reset on click outside
+        document.addEventListener('click', function(event) {
+            var isClickInsideContainer = Array.from(videoContainers).some(function(container) {
+                return container.contains(event.target);
+            });
+    
+            if (!isClickInsideContainer) {
+                resetContainers();
+            } else {
+                videoContainers.forEach(function(container) {
+                    if (container.contains(event.target)) {
+                        container.classList.add('clicked');
+                    } else {
+                        container.classList.remove('clicked');
+                    }
+                });
+            }
+        });
+    });
+    
+        
+</script>
+<script>
+    document.getElementById('download-dataset-button').addEventListener('click', function() {
+        window.location.href = "{% url 'dataset_zipped_output' %}";
+    });
+</script>
+<script id="json-data" type="application/json">{{ json_data|safe }}</script>
+
+<script>
+
+    var jsonData = JSON.parse(document.getElementById('json-data').textContent);
+
+    var videos_publishedAt = jsonData.videos_publishedAt
+    var videos_duration = jsonData.videos_duration
+    videos_duration.sort((a, b) => a - b);
+
+
+    var videos_likes = jsonData.videos_likes.reverse()
+    var videos_views = jsonData.videos_views.reverse()
+    var videos_commentCount = jsonData.videos_commentCount.reverse()
+
+    var seriesData = videos_publishedAt.map(function(date, index) {
+        return {
+            x: new Date(date).getTime(), // Convert to timestamp
+            y: videos_views[index]
+        };
+    });
+
+    var seriesDataLikes = videos_publishedAt.map(function(date, index) {
+        return {
+            x: new Date(date).getTime(), // Convert to timestamp
+            y: videos_likes[index]
+        };
+    });
+
+
+    var seriesDataComments = videos_publishedAt.map(function(date, index) {
+        return {
+            x: new Date(date).getTime(), // Convert to timestamp
+            y: videos_commentCount[index]
+        };
+    });
+
+    var seriesDataDur = videos_duration.map(function(time, index) {
+        return {
+            x: time, // Convert to timestamp
+            y: videos_views[index]
+        };
+    });
+
+    var seriesDataLikesDur = videos_duration.map(function(time, index) {
+        return {
+            x: time, // Convert to timestamp
+            y: videos_likes[index]
+        };
+    });
+
+
+    var seriesDataCommentsDur = videos_duration.map(function(time, index) {
+        return {
+            x: time, // Convert to timestamp
+            y: videos_commentCount[index]
+        };
+    });
+
+
+
+    console.log(videos_publishedAt)
+    console.log(videos_views)
+    var options1 = {
+        chart: {
+            id: "chart2",
+            type: "area",
+            height: 300,
+            width: 500,
+            foreColor: "#ccc",
+            toolbar: {
+                show: true, // Show the toolbar
+                tools: {
+                    download: true, // Enable the download tool
+                    selection: false,
+                zoom: false,
+                zoomin: false,
+                zoomout: false,
+                pan: true,
+                reset: false
+                }        },
+        },
+       
+        colors: ["#00BAEC"],
+        stroke: {
+            width: 3,
+            curve: 'smooth'
+        },
+        grid: {
+            borderColor: "#555",
+            clipMarkers: false,
+            yaxis: {
+            lines: {
+                show: false
+            }
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        fill: {
+            gradient: {
+            enabled: true,
+            opacityFrom: 0.9,
+            opacityTo: 0.3
+            }
+        },
+        
+        series: [
+            {
+                name: "views",
+            data: seriesData
+            }
+        ],
+        tooltip: {
+            theme: "dark",
+            x: {
+                format: "dd MMM yyyy" // Format: 01 Jan 2023
+            }
+        },
+        xaxis: {
+            type: "datetime",
+            labels: {
+                formatter: function(value, timestamp) {
+                    return new Date(timestamp).getFullYear();
+                }}
+        },
+        
+        yaxis: {
+            min: 0,
+            tickAmount: 4
+        },
+        grid: {
+            show: true
+        }
+        };
+
+        var chart1 = new ApexCharts(document.querySelector("#views-chart"), options1);
+
+        const options2 = options1
+        options2.series = [{name: "likes", data: seriesDataLikes}]
+        var chart2 = new ApexCharts(document.querySelector("#likes-chart"), options2);
+
+        const options3 = options1
+        options3.series = [{name: "comment count", data: seriesDataComments}]
+        var chart3 = new ApexCharts(document.querySelector("#comment-chart"), options3);
+
+        chart1.render();
+        chart2.render();
+        chart3.render();
+
+        var options4 = {
+            chart: {
+                id: "chart2",
+                type: "area",
+                height: 300,
+                width: 500,
+                foreColor: "#ccc",
+                toolbar: {
+                    show: true, // Show the toolbar
+                    tools: {
+                        download: true, // Enable the download tool
+                        selection: false,
+                    zoom: false,
+                    zoomin: false,
+                    zoomout: false,
+                    pan: true,
+                    reset: false
+                    }        },
+            },
+           
+            colors: ["#00BAEC"],
+            stroke: {
+                curve: 'smooth'
+            },
+            grid: {
+                borderColor: "#555",
+                clipMarkers: false,
+                yaxis: {
+                lines: {
+                    show: false
+                }
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            fill: {
+                gradient: {
+                enabled: true,
+                opacityFrom: 0.9,
+                opacityTo: 0.3
+                }
+            },
+            
+            series: [
+                {
+                    name: "views",
+                data: seriesDataDur
+                }
+            ],
+            tooltip: {
+                theme: "dark",
+            
+            },
+            xaxis: {            
+            },
+            
+            yaxis: {
+                min: 0,
+                tickAmount: 4
+            },
+            grid: {
+                show: true
+            }
+            };
+
+        options4.series = [{name: "views", data: seriesDataDur}]
+        var chart4 = new ApexCharts(document.querySelector("#views-chart-dur"), options4);
+
+        const options5 = options4
+        options5.series = [{name: "likes", data: seriesDataLikesDur}]
+        var chart5 = new ApexCharts(document.querySelector("#likes-chart-dur"), options5);
+
+        const options6 = options4
+        options6.series = [{name: "comment count", data: seriesDataCommentsDur}]
+        var chart6 = new ApexCharts(document.querySelector("#comment-chart-dur"), options6);
+
+        chart4.render();
+        chart5.render();
+        chart6.render();
+    
+    
+</script>
+
+<script>
+    // Define a function to draw a word cloud
+    var myColors = ['#D5A9FF', '#7EF7D9', '#12CEE6', '#4686FF', '#FFFFFF', /* more colors */ ];
+
+    function drawWordCloud(selector, words) {
+        // Create a function to generate random sizes for the words
+        var getRandomSize = function() {
+            return 10 + Math.random() * 30; // Random size between 10 and 50
+        };
+    
+        // Set up the word cloud layout
+        var layout = d3.layout.cloud()
+            .size([800, 300]) // The size of the word cloud
+            .words(words.map(function(d) {
+                return {text: d, size: getRandomSize()}; // Assign random size to each word
+            }))
+            .padding(2) // Adjust padding between words
+            .rotate(0) // Set rotation, if desired
+            .font("Raleway")
+            .fontSize(function(d) { return d.size; }) // Use the assigned size
+            .on("end", draw);
+    
+        layout.start();
+    
+        // Draw the word cloud
+        function draw(words) {
+            var svg = d3.select(selector).append("svg")
+                .attr("width", layout.size()[0])
+                .attr("height", layout.size()[1])
+                .append("g")
+                .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")");
+    
+            svg.selectAll("text")
+                .data(words)
+                .enter().append("text")
+                .style("font-size", function(d) { return d.size + "px"; }) // Font size is set by the layout
+                .style("font-family", "Raleway")
+                .style("font-weight", "bold") // Set the font family
+                .style("fill", function(d, i) { return myColors[i % myColors.length]; }) // Set the color
+                .attr("text-anchor", "middle")
+                .attr("transform", function(d) {
+                    return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                })
+                .text(function(d) { return d.text; });
+        }
+    }
+    
+
+// Define your array of words for each channel
+//var channelsTags = jsonData.topTags
+var channelsTags = jsonData.uniqueTags
+drawWordCloud("#wordcloud0" , channelsTags);
+
+</script>
+
+<script>
+        //var mostUsedCategories = jsonData.mostUsedCategories
+        var mostUsedCategories = [
+    [["Education", 47],["Science", 30]],
+    [["Education", 38]],
+    [["Education", 12]],
+    [["Education", 39]]
+];
+
+var colorPalette = ['#00E396', '#008FFB', '#FEB019', '#FF4560', '#775DD0', /* more colors */ ];
+
+var categoryColors = {};
+var colorIndex = 0;
+
+    mostUsedCategories.forEach((channelData, index) => {
+        channelData.forEach(([category, count]) => {
+            if (!(category in categoryColors)) {
+                categoryColors[category] = colorPalette[colorIndex % colorPalette.length];
+                colorIndex++;
+            }
+        });
+    });
+
+var seriesData = {};
+
+    mostUsedCategories.forEach((channelData, index) => {
+        channelData.forEach(([category, count]) => {
+            if (!seriesData[category]) {
+                seriesData[category] = Array(channels.length).fill(0);
+            }
+            seriesData[category][index] = count;
+        });
+    });
+
+    var series = Object.keys(seriesData).map(category => {
+        return {
+            name: category,
+            data: seriesData[category],
+            color: categoryColors[category]
+        };
+    });
+
+    console.log(categoryColors)
+
+    var options = {
+        chart: {
+            type: 'bar',
+            height: '100%',
+            width: '100%',
+            foreColor: '#fff',
+            background: 'transparent',
+            stacked: true
+        },
+        plotOptions: {
+            bar: {
+                columnWidth: '50%',
+                borderRadius: [4, 4, 0, 0],
+                // other bar options
+            }
+        },
+        tooltip: {
+            x: {
+                formatter: function(value, { series, seriesIndex, dataPointIndex, w }) {
+                    // Display the full channel name in the tooltip
+                    return channels[dataPointIndex]
+                }
+            }
+        },
+        theme: {
+            mode: 'dark',
+            palette: 'palette1'
+        },
+        // other options (theme, dataLabels, etc.) similar to your previous charts
+        series: series,
+        xaxis: {
+            categories: trimmedChannels
+        },
+        formatter: function(seriesName, opts) {
+            return seriesName; // Just return the category name
+        }
+        // other options (grid, legend, etc.)
+    };
+    
+    var chart = new ApexCharts(document.querySelector("#stacked-bar-chart"), options);
+    chart.render();
+    
+
+</script>
+<script>
+    
+ //var durations = jsonData.durations
+ var durations = [[20,8,5, 8, 20,12,2], [8,10,11, 21, 21, 9, 1]]
+var boxPlotData = durations.map((channelDurations, index) => {
+    return {
+        x: trimmedChannels[index],
+        y: channelDurations
+    };
+});
+
+var optionsBoxPlot = {
+    chart: {
+        type: 'boxPlot',
+        height: 250,
+        width: '100%',
+        foreColor: '#fff',
+        background: 'transparent'
+    },
+    tooltip: {
+        x: {
+            formatter: function(value, { series, seriesIndex, dataPointIndex, w }) {
+                // Display the full channel name in the tooltip
+                return channels[dataPointIndex]
+            }
+        }
+    },
+    theme: {
+        mode: 'dark',
+        palette: 'palette1'
+    },
+    plotOptions: {
+        boxPlot: {
+            colors: {
+                upper: '#00E396',
+                lower: '#775DD0'
+            }
+        }
+    },
+    series: [{
+        name: 'Video Durations',
+        type: 'boxPlot',
+        data: boxPlotData
+    }],
+    xaxis: {
+        type: 'category',
+        categories: trimmedChannels
+    },
+    grid: {
+        show: true
+    },
+    legend: {
+        show: true,
+        formatter: function(seriesName, opts) {
+            // Assuming `channels` array contains the full channel names
+            return channels[opts.seriesIndex];
+        }
+    },
+    fill: {
+        type: 'solid'
+    }
+};
+
+var boxPlotChart = new ApexCharts(document.querySelector("#channel-duration-chart"), optionsBoxPlot);
+boxPlotChart.render();
+
+</script>
+
+<script>
+    function animateNumber(element, start, end, duration) {
+        let startTime = null;
+    
+        function animation(currentTime) {
+            if (startTime === null) startTime = currentTime;
+            const timeElapsed = currentTime - startTime;
+            const progress = Math.min((timeElapsed / duration), 1); // Ensure progress doesn't exceed 1
+    
+            element.textContent = Math.floor(progress * (end - start) + start);
+    
+            if (timeElapsed < duration) {
+                requestAnimationFrame(animation);
+            }
+        }
+    
+        requestAnimationFrame(animation);
+    }
+    
+    const numberElements = document.querySelectorAll('.number');
+    
+    numberElements.forEach(numberElement => {
+        const targetValue = parseInt(numberElement.getAttribute('data-target'), 10);
+        animateNumber(numberElement, 0, targetValue, 4000); // 2000ms = 2 seconds for animation
+    });
+    
+</script>
+
+
+<script>$(document).ready(function(){
+    $(".owl-carousel").owlCarousel({
+        // Owl Carousel options
+        items: 1,
+        center: true,
+        loop: true,
+        autoplay: true,
+        autoplayTimeout: 3000,
+        autoplayHoverPause: true,
+        nav: true
+        // other options as needed
+    });
+});
+</script>
+
+    <script>
+        AOS.init({
+          duration: 1200, // You can adjust this value for animation duration
+        });
+      </script>
+  </body>
+</html>
