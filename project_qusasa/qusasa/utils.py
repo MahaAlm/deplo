@@ -6,6 +6,7 @@ from transformers import pipeline
 import torch
 from transformers import pipeline, BertTokenizer, AutoModelForSequenceClassification
 import torch
+from .youtube_api import get_youtube_client
 #competitive analysis utils
 
 def searchByQuery(youtube, keyword, Type, orderBy='relevance', regionCode='', language=''):
@@ -57,18 +58,25 @@ def searchByQuery(youtube, keyword, Type, orderBy='relevance', regionCode='', la
 import re
 
 def extractIdFromUrl(url):
-    channel_pattern = r'youtube\.com/channel/([a-zA-Z0-9_-]+)'
-    playlist_pattern = r'youtube\.com/playlist\?list=([a-zA-Z0-9_-]+)&?.*'
-    video_pattern = r'youtube\.com/watch\?v=([a-zA-Z0-9_-]+)&?.*'
-    short_video_pattern = r'youtu\.be/([a-zA-Z0-9_-]+)(\?.*)?'
+    # youtube = get_youtube_client()
 
-    channel_match = re.search(channel_pattern, url)
+    # Regular expressions for different YouTube URL formats
+    channel_id_pattern = r'youtube\.com/channel/([a-zA-Z0-9_-]+)'
+    channel_name_pattern = r'youtube\.com/(c/|user/|@)([a-zA-Z0-9_-]+)'
+    playlist_pattern = r'youtube\.com/playlist\?list=([a-zA-Z0-9_-]+)'
+    video_pattern = r'youtube\.com/watch\?v=([a-zA-Z0-9_-]+)'
+    short_video_pattern = r'youtu\.be/([a-zA-Z0-9_-]+)'
+
+    channel_id_match = re.search(channel_id_pattern, url)
+    channel_name_match = re.search(channel_name_pattern, url)
     playlist_match = re.search(playlist_pattern, url)
     video_match = re.search(video_pattern, url)
     short_video_match = re.search(short_video_pattern, url)
 
-    if channel_match:
-        return channel_match.group(1)
+    if channel_id_match:
+        return channel_id_match.group(1)
+    elif channel_name_match:
+        return get_channel_id_from_custom_url(url)
     elif playlist_match:
         return playlist_match.group(1)
     elif video_match:
@@ -76,6 +84,30 @@ def extractIdFromUrl(url):
     elif short_video_match:
         return short_video_match.group(1)
     else:
+        return None
+    
+import requests
+from bs4 import BeautifulSoup
+
+def get_channel_id_from_custom_url(custom_url):
+    try:
+        response = requests.get(custom_url)
+        if response.status_code != 200:
+            print("Failed to retrieve the web page")
+            return None
+
+        soup = BeautifulSoup(response.content, 'html.parser')
+        meta_tag = soup.find("meta", property="og:url")
+
+        if not meta_tag or not meta_tag.get("content"):
+            print("Meta tag with channel URL not found")
+            return None
+
+        channel_url = meta_tag.get("content")
+        channel_id = channel_url.split('/')[-1]  # Extract the ID from the URL
+        return channel_id
+    except Exception as e:
+        print(f'An error occurred: {e}')
         return None
 
 
@@ -353,6 +385,7 @@ def video_analysis(youtube, video_id):
         likes = int(video_details['statistics'].get('likeCount', 0))
         views = int(video_details['statistics'].get('viewCount', 0))
         duration = parse_duration_to_minutes(video_details['contentDetails'].get('duration'))
+        comments = int(video_details['statistics'].get('commentCount', 0))
         video_info = {
                 'videoId': video_details['id'],
                 'title': video_details['snippet']['title'],
@@ -360,8 +393,10 @@ def video_analysis(youtube, video_id):
                 'thumbnail': video_details['snippet']['thumbnails']['high']['url'],
                 'viewsCount': views,
                 'likesCount': likes,
+                'commentCount': comments,
                 'duration': duration,
-                'unique_tags' :unique_tags
+                'unique_tags' :unique_tags,
+                
             }
 
     # Convert category IDs to names
@@ -583,7 +618,7 @@ def analyse_video(youtube, video_id):
             'commentCount': int(statistics.get('commentCount', 0)),
             'duration': parse_duration_to_minutes(video_details['contentDetails'].get('duration')),
             'unique_tags': list(unique_tags),
-            
+            'categoryId': video_details['snippet']['categoryId']
 
         }
         
@@ -677,6 +712,18 @@ def analyze_comments_emotions_for_playlist(comments_df):
 
     return emotion_counts, top_comments_by_emotion
 
+
+from datetime import datetime
+
+def calculate_engagement_score(video_info, current_time):
+    days_since_published = (current_time - datetime.fromisoformat(video_info['publishedAt'][:-1])).days
+    if days_since_published == 0:
+        days_since_published = 1  # To avoid division by zero
+    average_counts = (video_info['viewsCount'] + video_info['likesCount'] + video_info['commentCount']) / 3
+    engagement_score = average_counts / days_since_published
+    return engagement_score
+
+
 def analyze_playlist(youtube, playlist_id):
     # Fetch playlist details
     playlist_response = youtube.playlists().list(
@@ -700,7 +747,9 @@ def analyze_playlist(youtube, playlist_id):
         for item in playlist_videos_response['items']:
             video_id = item['contentDetails']['videoId']
             video_info_df = analyse_video(youtube, video_id)
-            videos_info_list.append(video_info_df.iloc[0])
+            video_info = video_info_df.iloc[0]
+            video_info['engagementScore'] = calculate_engagement_score(video_info, datetime.now())
+            videos_info_list.append(video_info)
 
         next_page_token = playlist_videos_response.get('nextPageToken')
         if not next_page_token:
@@ -708,11 +757,12 @@ def analyze_playlist(youtube, playlist_id):
 
     # Create a DataFrame from all videos info
     all_videos_info_df = pd.DataFrame(videos_info_list)
+    
+    
 
-    # Analyze comments for top 5 and worst 5 videos based on views
-    top_3_videos = all_videos_info_df.nlargest(3, 'viewsCount')
-    worst_3_videos = all_videos_info_df.nsmallest(3, 'viewsCount')
-
+    # Sort by engagement score instead of views
+    top_3_videos = all_videos_info_df.nlargest(3, 'engagementScore')
+    worst_3_videos = all_videos_info_df.nsmallest(3, 'engagementScore')
 
 
     top_3_comments = []
@@ -765,3 +815,218 @@ def analyze_playlist(youtube, playlist_id):
     playlist_info_df = pd.DataFrame([playlist_info])
 
     return playlist_info_df, all_videos_info_df, top_3_videos, worst_3_videos, top_3_comments_analysis, worst_3_comments_analysis
+
+
+
+
+def analyze_channel(youtube, channel_id):
+    # Fetch channel details
+    channel_response = youtube.channels().list(
+        part="snippet,contentDetails,statistics",
+        id=channel_id
+    ).execute()
+
+    channel_details = channel_response['items'][0]
+
+    # Extract channel info
+    channel_info = {
+        'Channel Name': channel_details['snippet']['title'],
+        'description': channel_details['snippet']['description'],
+        'thumbnail': channel_details['snippet']['thumbnails']['high']['url'],
+        'viewCount': channel_details['statistics']['viewCount'],
+        'videoCount': channel_details['statistics']['videoCount'],
+        'subscriberCount': channel_details['statistics']['subscriberCount'],
+        'publishedAt': channel_details['snippet']['publishedAt'],
+    }
+
+    # Fetch and analyze videos in the channel
+    all_videos_info = []
+    next_page_token = None
+    while True:
+        video_response = youtube.search().list(
+            part="snippet",
+            channelId=channel_id,
+            maxResults=50,
+            pageToken=next_page_token,
+            type="video"
+        ).execute()
+        
+        category_count = Counter()
+        for item in video_response['items']:
+            video_id = item['id']['videoId']
+            video_info = analyse_video(youtube, video_id)
+            video_info = video_info.iloc[0]
+            video_info['engagementScore'] = calculate_engagement_score(video_info, datetime.now())
+            category_id = video_info.get('categoryId')
+            if category_id:
+                category_count[category_id] += 1
+                
+            all_videos_info.append(video_info)
+
+        next_page_token = video_response.get('nextPageToken')
+        if not next_page_token:
+            break
+
+    all_videos_df = pd.DataFrame(all_videos_info)
+    # Convert category IDs to names and find the most used categories
+    category_names = {}
+    category_ids = list(category_count.keys())
+    if category_ids:
+        category_response = youtube.videoCategories().list(
+            part='snippet',
+            id=','.join(category_ids)
+        ).execute()
+
+        for item in category_response['items']:
+            category_names[item['id']] = item['snippet']['title']
+
+    most_used_categories = [(category_names.get(cid, 'Unknown'), count) 
+                            for cid, count in category_count.most_common()]
+
+    # Add most used categories to channel info
+    channel_info['mostUsedCategories'] = most_used_categories
+    
+    total_likes = all_videos_df['likesCount'].sum()
+    total_comments = all_videos_df['commentCount'].sum()
+    average_duration = all_videos_df['duration'].mean()
+
+    channel_info['likesCount'] = total_likes
+    channel_info['commentCount'] = total_comments
+    channel_info['average_duration'] = average_duration
+    
+    # Sort by engagement score instead of views
+    top_3_videos = all_videos_df.nlargest(3, 'engagementScore')
+    worst_3_videos = all_videos_df.nsmallest(3, 'engagementScore')
+
+
+    top_3_comments = []
+    for _, row in top_3_videos.iterrows():
+        video_comments = analyse_comments_data(youtube, row['videoId'])
+        top_3_comments.extend(video_comments)
+
+    # Collect comments for worst 3 videos
+    worst_3_comments = []
+    for _, row in worst_3_videos.iterrows():
+        video_comments = analyse_comments_data(youtube, row['videoId'])
+        worst_3_comments.extend(video_comments)
+
+    # Convert comments lists to DataFrames
+    top_3_comments_df = pd.DataFrame(top_3_comments)
+    worst_3_comments_df = pd.DataFrame(worst_3_comments)
+
+    # Analyze the merged comments
+    top_3_comments_analysis = analyze_comments_emotions_for_playlist(top_3_comments_df)
+    worst_3_comments_analysis = analyze_comments_emotions_for_playlist(worst_3_comments_df)
+
+    # Aggregate unique tags
+    unique_tags = set()
+    for tags in all_videos_df['unique_tags']:
+        unique_tags.update(tags)
+    
+    channel_info['uniqueTags'] = unique_tags
+    
+    all_playlists_info = []
+    next_page_token = None
+    while True:
+        playlist_response = youtube.playlists().list(
+            part="snippet,contentDetails",
+            channelId=channel_id,
+            maxResults=50,
+            pageToken=next_page_token
+        ).execute()
+
+        for item in playlist_response['items']:
+            playlist_id = item['id']
+            playlist_details = item['snippet']
+            content_details = item['contentDetails']
+
+            playlist_info = {
+                'playlistId': playlist_id,
+                'title': playlist_details['title'],
+                'description': playlist_details['description'],
+                'thumbnail': playlist_details['thumbnails']['high']['url'],
+                'publishedAt': playlist_details['publishedAt'],
+                'videoCount': content_details['itemCount'],
+            }
+            all_playlists_info.append(playlist_info)
+
+        next_page_token = playlist_response.get('nextPageToken')
+        if not next_page_token:
+            break
+        
+    channel_info['PlaylistCount'] = len(all_playlists_info)
+    
+    all_playlists_df = pd.DataFrame(all_playlists_info)
+    channel_df = pd.DataFrame([channel_info])
+
+    return channel_df, all_videos_df, all_playlists_df, top_3_videos, worst_3_videos, top_3_comments_analysis, worst_3_comments_analysis
+
+
+
+from pytube import YouTube
+import subprocess
+import os
+
+def download_audio_from_youtube(url, output_dir):
+    yt = YouTube(url)
+    audio_stream = yt.streams.filter(only_audio=True).first()
+
+    # Download and save the audio stream
+    download_path = audio_stream.download(output_path=output_dir)
+
+    # Construct the mp3 filename
+    mp3_filename = os.path.join(output_dir, os.path.splitext(os.path.basename(download_path))[0] + ".mp3")
+    
+    # Use FFmpeg to convert the downloaded file to mp3
+    subprocess.run(['ffmpeg', '-i', download_path, mp3_filename])
+
+    # Optionally, delete the original download
+    os.remove(download_path)
+
+    return mp3_filename
+
+import whisper
+
+def transcribe_youtube_video(audio_file):
+    model = whisper.load_model("tiny")  # or another model size
+    result = model.transcribe(audio_file)
+    return result["text"]
+
+# youtube_downloader.py
+
+import openai
+
+def summarize_youtube_video(transcript, openai_api_key):
+    openai.api_key = openai_api_key
+
+    response = openai.Completion.create(
+      engine="text-davinci-003",
+      prompt=f"Provide a summary for the following text:\n\n{transcript}",
+      max_tokens=150
+    )
+
+    return response.choices[0].text.strip()
+
+# youtube_downloader.py
+
+from docx import Document
+import os
+
+def create_word_document(transcript, summary, filename, output_dir):
+    doc = Document()
+    doc.add_heading('YouTube Video Analysis', 0)
+
+    doc.add_heading('Transcript:', level=1)
+    doc.add_paragraph(transcript)
+
+    doc.add_heading('Summary:', level=1)
+    doc.add_paragraph(summary)
+
+    # Save the document
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    
+    file_path = os.path.join(output_dir, f"{filename}.docx")
+    doc.save(file_path)
+
+    return file_path

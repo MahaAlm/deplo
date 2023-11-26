@@ -12,7 +12,9 @@
     <link rel="stylesheet" href="{% static 'qusasa/css/feature_details.css' %}" />
     <link rel="stylesheet" href="{% static 'qusasa/css/output.css' %}" />
     <link rel="stylesheet" href="{% static 'qusasa/css/playlist_analysis_output.css' %}" />
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    
     <link href="https://cdn.rawgit.com/michalsnik/aos/2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://cdn.rawgit.com/michalsnik/aos/2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
@@ -78,7 +80,7 @@
                     </div>
                     
                     <div class="button">
-                        <button>Download the report</button>
+                        <button onclick="downloadPDF()">Download the report</button>
                     </div>
                     
                 </div>
@@ -255,43 +257,110 @@
         </div>
 
         <div class="top-videos" data-aos="fade-up">
-            <h1 data-aos="fade-up">Top videos</h1>
-            <p data-aos="fade-up"> here we display the top video of each channel, you can hover on each video to get more insights about why is it so successfull!</p>
-            <div class="videos">
-                <div class="mini-container video-container">
-                    <div class="header">
-                        <img src='{{video.thumbnail}}' alt="">
-                        <div class="header-info">
-                            <h1>video title</h1>
-                            <div class="desc">
-                                <h3>Video's description</h3>
-                            <p>here is the discreption</p>
+            <h1 data-aos="fade-up">Look closer</h1>
+            <p data-aos="fade-up">observe the top and worst performing videos on the playlist to have a closer look on the people opinions and engagement with the content</p>
+            <div class="videos" >
+                <div class="mini-container"  data-aos="fade-up">
+                    <h1 data-aos="fade-up" style="margin-bottom: 4rem;">Top performing videos</h1>
+                    {% for video in top_5_videos%}
+                        <div class="video" data-aos="fade-up">
+                            <div class="video-header" >
+                                <img src="{{video.thumbnail}}" alt="">
+                                <h3>{{video.title}}</h3>
+                                <div class="video-stats">
+                                    <div class="video-stat">
+                                        <p>{{video.viewsCount}}</p>
+                                        <p>views</p>
+                                    </div>
+                                    <div class="video-stat">
+                                        <p>{{video.duration}}</p>
+                                        <p>minutes</p>
+                                    </div>
+                                    <div class="video-stat">
+                                        <p>{{video.publishedAt}}</p>
+                                        <p>publishedAt</p>
+                                    </div>
+                                </div>
                             </div>
-                            
+                        </div>
+                    {% endfor %}
+                    
+                    <div class="emotions_radchart" style="margin-bottom: 5rem; margin-top: 5rem;">
+                        <h1 data-aos="fade-up">Commetns emotions distribution</h1>
+                    <p data-aos="fade-up">Get a deeper understanding of why the viewers likes this content through comments sentiment analysis</p>
+                    <div id="emotions_radchart" data-aos="fade-up"></div>
+                    </div>
+                    
+                  
+                    <div class="emotions-examples">
+                        <h1 data-aos="fade-up">Look into the top emotions</h1>
+                        <p data-aos="fade-up">the top comments from the top emotions</p>
+                        <div class="examples">
+                            {% for emotion, comment in top_5_comments.items %}
+                            <div class="example" data-aos="fade-up">
+                                <div class="emotion"><h3>{{ emotion }}</h3></div>
+                                <div class="ex">
+                                    <p class="truncated">{{ comment|truncatechars:150 }}</p>
+                                    <p class="full-comment">{{ comment }}</p>
+                                </div>
+                            </div>
+                            {%endfor%}
                         </div>
                     </div>
-                    <h2 class="video-stats-h2">Video statistics</h2>
-                        <div class="video-stats">
-                            <div class="video-stat">
-                                <h3 class="number" data-target="100">0</h3>
-                                <p>views</p>
-                            </div>
-                            <div class="video-stat">
-                                <h3 class="number" data-target="100">0</h3>
-                                <p>likes</p>
-                            </div>
-                            <div class="video-stat">
-                                <h3 class="number" data-target="100">0</h3>
-                                <p>minutes</p>
+                    
+                </div>
+                
+                
+            </div>
+
+            <div class="videos" >
+                <div class="mini-container"  data-aos="fade-up">
+                    <h1 data-aos="fade-up" style="margin-bottom: 4rem;">Worst performing videos</h1>
+                    {% for video in worst_5_videos%}
+                        <div class="video" data-aos="fade-up">
+                            <div class="video-header" >
+                                <img src="{{video.thumbnail}}" alt="">
+                                <h3>{{video.title}}</h3>
+                                <div class="video-stats">
+                                    <div class="video-stat">
+                                        <p>{{video.viewsCount}}</p>
+                                        <p>views</p>
+                                    </div>
+                                    <div class="video-stat">
+                                        <p>{{video.duration}}</p>
+                                        <p>minutes</p>
+                                    </div>
+                                    <div class="video-stat">
+                                        <p>{{video.publishedAt}}</p>
+                                        <p>publishedAt</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        
-                        <div class="video-comments">
-                            <p>Top comments</p>
-                            <div class="comment" data-aos="fade-up">
-                                <p><i class="fa-solid fa-comment"></i>here is comments</p>
+                    {% endfor %}
+                    
+                    <div class="emotions_radchart" style="margin-bottom: 5rem; margin-top: 5rem;">
+                        <h1 data-aos="fade-up">Commetns emotions distribution</h1>
+                    <p data-aos="fade-up">Get a deeper understanding of why the viewers likes this content through comments sentiment analysis</p>
+                    <div id="emotions_radchart_worst" data-aos="fade-up"></div>
+                    </div>
+                    
+                  
+                    <div class="emotions-examples">
+                        <h1 data-aos="fade-up">Look into the top emotions</h1>
+                        <p data-aos="fade-up">the top comments from the top emotions</p>
+                        <div class="examples">
+                            {% for emotion, comment in worst_5_comments.items %}
+                            <div class="example" data-aos="fade-up">
+                                <div class="emotion"><h3>{{ emotion }}</h3></div>
+                                <div class="ex">
+                                    <p class="truncated">{{ comment|truncatechars:150 }}</p>
+                                    <p class="full-comment">{{ comment }}</p>
+                                </div>
                             </div>
+                            {%endfor%}
                         </div>
+                    </div>
                     
                 </div>
                 
@@ -300,6 +369,7 @@
             
         </div>
 
+       
 
 
         
@@ -314,13 +384,7 @@
                     <a href="#"><button>Go back</button></a>
                     </div>   
                 </div>
-                <div class="text">
-                    if you did you will not be able to access its content anymore...
-                    <div class="popup-buttons">
-                        <a href="{% url 'base' %}"><button class="yes">Yes I'm sure</button></a>
-                    <a href="#"><button>Go back</button></a>
-                    </div>   
-                </div>
+                
             </div>
         </div>
 
@@ -332,6 +396,22 @@
    
 </div>
 
+<script>
+    function downloadPDF() {
+        var container = document.querySelector('.stats-graphs-container');
+
+    html2canvas(container, { scale: 2 }).then(function(canvas) {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jspdf.jsPDF({
+            orientation: 'landscape', // Change according to the layout of your content
+            unit: 'pt',
+            format: [canvas.width, canvas.height]
+        });
+        pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+        pdf.save("stats-graphs-report.pdf");
+    });
+    }
+</script>
 
 <script>
    
@@ -402,7 +482,6 @@
 
     var videos_publishedAt = jsonData.videos_publishedAt
     var videos_duration = jsonData.videos_duration
-    videos_duration.sort((a, b) => a - b);
 
 
     var videos_likes = jsonData.videos_likes.reverse()
@@ -472,7 +551,7 @@
                 zoom: false,
                 zoomin: false,
                 zoomout: false,
-                pan: true,
+                pan: false,
                 reset: false
                 }        },
         },
@@ -548,7 +627,7 @@
         var options4 = {
             chart: {
                 id: "chart2",
-                type: "area",
+                type: "bar",
                 height: 300,
                 width: 500,
                 foreColor: "#ccc",
@@ -560,9 +639,17 @@
                     zoom: false,
                     zoomin: false,
                     zoomout: false,
-                    pan: true,
+                    pan: false,
                     reset: false
                     }        },
+            },
+
+            plotOptions: {
+                bar: {
+                    columnWidth: '50%',
+                    borderRadius: [4, 4, 0, 0],
+                    // other bar options
+                }
             },
            
             colors: ["#00BAEC"],
@@ -626,6 +713,20 @@
         chart5.render();
         chart6.render();
     
+        setTimeout(() => {
+            chart1.updateOptions({
+            });
+            chart2.updateOptions({
+            });
+            chart3.updateOptions({
+            });
+            chart4.updateOptions({
+            });
+            chart5.updateOptions({
+            });
+            chart6.updateOptions({
+            });
+        }, 300); // Adjust the timeout duration as needed
     
 </script>
 
@@ -685,159 +786,103 @@ drawWordCloud("#wordcloud0" , channelsTags);
 </script>
 
 <script>
-        //var mostUsedCategories = jsonData.mostUsedCategories
-        var mostUsedCategories = [
-    [["Education", 47],["Science", 30]],
-    [["Education", 38]],
-    [["Education", 12]],
-    [["Education", 39]]
-];
+    // Assuming jsonData.top_5_comments_analysis_dist is already defined as shown above
+    var emotionData = jsonData.top_5_comments_analysis_dist;
 
-var colorPalette = ['#00E396', '#008FFB', '#FEB019', '#FF4560', '#775DD0', /* more colors */ ];
+   
+    const emotionDatasliced = Object.fromEntries(
+  Object.entries(emotionData).slice(0, 10)
+);
 
-var categoryColors = {};
-var colorIndex = 0;
+    var emotions = Object.keys(emotionDatasliced);
+    var emotionValues = Object.values(emotionDatasliced).map(value => Math.round(value * 100));  // Convert to percentages
 
-    mostUsedCategories.forEach((channelData, index) => {
-        channelData.forEach(([category, count]) => {
-            if (!(category in categoryColors)) {
-                categoryColors[category] = colorPalette[colorIndex % colorPalette.length];
-                colorIndex++;
-            }
-        });
-    });
+    var emotionDataWorst = jsonData.worst_5_comments_analysis_dist;
 
-var seriesData = {};
+   
+    const emotionDataslicedWorst = Object.fromEntries(
+  Object.entries(emotionData).slice(0, 10)
+);
 
-    mostUsedCategories.forEach((channelData, index) => {
-        channelData.forEach(([category, count]) => {
-            if (!seriesData[category]) {
-                seriesData[category] = Array(channels.length).fill(0);
-            }
-            seriesData[category][index] = count;
-        });
-    });
-
-    var series = Object.keys(seriesData).map(category => {
-        return {
-            name: category,
-            data: seriesData[category],
-            color: categoryColors[category]
-        };
-    });
-
-    console.log(categoryColors)
+    var emotionsWorst = Object.keys(emotionDataslicedWorst);
+    var emotionValuesWorst = Object.values(emotionDataslicedWorst).map(value => Math.round(value * 100));  // Convert to percentages
 
     var options = {
         chart: {
             type: 'bar',
-            height: '100%',
+            height: 500,
             width: '100%',
-            foreColor: '#fff',
-            background: 'transparent',
-            stacked: true
+            foreColor: '#fff',        
+            // white text for the dark theme,
+            background: 'transparent'
+
         },
         plotOptions: {
             bar: {
-                columnWidth: '50%',
-                borderRadius: [4, 4, 0, 0],
-                // other bar options
-            }
-        },
-        tooltip: {
-            x: {
-                formatter: function(value, { series, seriesIndex, dataPointIndex, w }) {
-                    // Display the full channel name in the tooltip
-                    return channels[dataPointIndex]
+                horizontal: true,
+                distributed: true, 
+                columnWidth: '50%', 
+                endingShape: 'rounded' ,
+                dataLabels: {
+                    position: 'top' // Ensuring data labels appear on top of the bars
                 }
             }
         },
+        
         theme: {
             mode: 'dark',
             palette: 'palette1'
         },
-        // other options (theme, dataLabels, etc.) similar to your previous charts
-        series: series,
-        xaxis: {
-            categories: trimmedChannels
+        dataLabels: {
+            enabled: false
         },
-        formatter: function(seriesName, opts) {
-            return seriesName; // Just return the category name
-        }
-        // other options (grid, legend, etc.)
-    };
-    
-    var chart = new ApexCharts(document.querySelector("#stacked-bar-chart"), options);
-    chart.render();
-    
-
-</script>
-<script>
-    
- //var durations = jsonData.durations
- var durations = [[20,8,5, 8, 20,12,2], [8,10,11, 21, 21, 9, 1]]
-var boxPlotData = durations.map((channelDurations, index) => {
-    return {
-        x: trimmedChannels[index],
-        y: channelDurations
-    };
-});
-
-var optionsBoxPlot = {
-    chart: {
-        type: 'boxPlot',
-        height: 250,
-        width: '100%',
-        foreColor: '#fff',
-        background: 'transparent'
-    },
-    tooltip: {
-        x: {
-            formatter: function(value, { series, seriesIndex, dataPointIndex, w }) {
-                // Display the full channel name in the tooltip
-                return channels[dataPointIndex]
+        series: [{
+            name: 'Emotion Percentage',
+            data: emotionValues
+        }],
+        xaxis: {
+            categories: emotions,
+            
+        },
+        grid: {
+            show: false
+        },
+        legend: {
+            show: false
+        },
+        fill: {
+            type: 'gradient',
+            gradient: {
+                shade: 'light',
+                type: "vertical",
+                shadeIntensity: 0.5,
+                gradientToColors: undefined, 
+                inverseColors: true,
+                opacityFrom: 0.85,
+                opacityTo: 0.85,
+                stops: [0, 100]
             }
-        }
-    },
-    theme: {
-        mode: 'dark',
-        palette: 'palette1'
-    },
-    plotOptions: {
-        boxPlot: {
-            colors: {
-                upper: '#00E396',
-                lower: '#775DD0'
-            }
-        }
-    },
-    series: [{
-        name: 'Video Durations',
-        type: 'boxPlot',
-        data: boxPlotData
-    }],
-    xaxis: {
-        type: 'category',
-        categories: trimmedChannels
-    },
-    grid: {
-        show: true
-    },
-    legend: {
-        show: true,
-        formatter: function(seriesName, opts) {
-            // Assuming `channels` array contains the full channel names
-            return channels[opts.seriesIndex];
-        }
-    },
-    fill: {
-        type: 'solid'
+        },
+        stroke: {
+        lineCap: 'round' // This gives a slight radius effect on the chart
     }
-};
+    };
 
-var boxPlotChart = new ApexCharts(document.querySelector("#channel-duration-chart"), optionsBoxPlot);
-boxPlotChart.render();
+    var emotions_chart = new ApexCharts(document.querySelector("#emotions_radchart"), options);
+    emotions_chart.render();
 
+    var options_worst = options
+    options_worst['series'] = [{
+        name: 'Emotion Percentage',
+        data: emotionValuesWorst
+    }],
+
+    options_worst['xaxis'] = {
+        categories: emotionsWorst
+    }
+
+    var emotions_chart_worst = new ApexCharts(document.querySelector("#emotions_radchart_worst"), options_worst);
+    emotions_chart_worst.render();
 </script>
 
 <script>

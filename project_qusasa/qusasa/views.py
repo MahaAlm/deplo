@@ -11,11 +11,12 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from .utils import searchByQuery, extractIdFromUrl, analyse_channels, video_analysis, analyze_playlist
+from .utils import searchByQuery, extractIdFromUrl, analyse_channels, video_analysis, analyze_playlist, analyze_channel, download_audio_from_youtube, transcribe_youtube_video, summarize_youtube_video, create_word_document
 from .youtube_api import get_youtube_client
 from django.core.exceptions import ValidationError
 import re
-
+import os
+from django.conf import settings
 
 
 def custom_admin(request):
@@ -305,6 +306,9 @@ class VideoAnalysisWizard(SessionWizardView):
         youtube = get_youtube_client()
         cleaned_data = self.get_all_cleaned_data()
         video_url = cleaned_data.get('video_url')
+        openai_api_key = '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'
+
+        
         video_id = extractIdFromUrl(video_url)
         video_info_df, comments_df, emotion_counts, top_comments_by_emotion = video_analysis(youtube, video_id)
         
@@ -314,8 +318,28 @@ class VideoAnalysisWizard(SessionWizardView):
         self.request.session['video_info_csv'] = video_info_csv
         self.request.session['comments_csv'] = comments_csv
         
-        self.request.session['emotion_counts'] = emotion_counts
+        self.request.session['video_info_dict'] = video_info_df.iloc[0].to_dict()
+        self.request.session['emotion_counts'] = emotion_counts.to_dict()
         self.request.session['top_comments_by_emotion'] = top_comments_by_emotion
+        
+        # Define the output directory for audio files
+        output_dir = os.path.join(settings.MEDIA_ROOT, 'audio')
+
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+
+        # Download audio
+        mp3_file = download_audio_from_youtube(video_url, output_dir)
+
+        # Transcribe the audio file
+        transcript = transcribe_youtube_video(mp3_file)
+
+        # Summarize the transcript
+        summary = summarize_youtube_video(transcript, openai_api_key)
+
+        self.request.session['transcript'] = transcript
+        self.request.session['summary'] = summary
+        
         return HttpResponseRedirect(reverse('video_analysis_output'))  # Use the name of the URL pattern
 
 
@@ -324,11 +348,26 @@ def video_analysis_output_view(request):
     output_data = {
         'emotion_counts': request.session['emotion_counts'],
         'top_comments_by_emotion': request.session['top_comments_by_emotion'],
+        "video_info_dict": request.session['video_info_dict'],
+        'transcript': request.session['transcript'],
+        'summary': request.session['summary']
     }
     
     json_data = json.dumps(output_data)
     
-    context= {json_data}
+    
+    summary = request.session['summary']
+    transcript = request.session['transcript']
+    doc_output_dir = os.path.join(settings.MEDIA_ROOT, 'documents')
+    
+    docx_file_path = create_word_document(transcript, summary, "YouTube_Analysis", doc_output_dir)
+    
+    context= {'json_data': json_data, 
+              'transcript': request.session['transcript'],
+            'summary': request.session['summary'],
+            "video_info_dict": request.session['video_info_dict'],
+            'docx_file': docx_file_path
+        }
     
     return render(request, 'features_pages/video_analysis/video_analysis_output.html', context)
 
@@ -355,7 +394,22 @@ def dataset_zipped_output_video_analysis(request):
 
     return response
 
+from django.http import FileResponse, Http404
+import os
 
+def download_docx(request, filename):
+    file_path = os.path.join(settings.MEDIA_ROOT, 'documents', filename)
+
+    if not os.path.exists(file_path):
+        raise Http404("File not found.")
+
+    try:
+        fh = open(file_path, 'rb')
+        response = FileResponse(fh, as_attachment=True, filename=filename)
+        return response
+    except Exception as e:
+        raise Http404(f"An error occurred: {str(e)}")
+    
 @login_required
 def playlist_analysis_details(request):
     # You can add code here to fetch and process inquiries
@@ -447,12 +501,31 @@ def playlist_analysis_output_view(request):
     # Format to 'YYYY MMM DD'
     formatted_date = date_obj.strftime('%Y %b %d')
     print(formatted_date)
+    
+    top_5_videos = request.session['top_5_videos']
+    # Assuming 'top_5_videos' is a list of dictionaries containing video information
+    for video in top_5_videos:
+        # Parse the 'publishedAt' date string to a datetime object
+        date_obj = datetime.strptime(video['publishedAt'], '%Y-%m-%dT%H:%M:%SZ')
 
+        # Reformat the date to 'YYYY MMM DD' and update the video dictionary
+        video['publishedAt'] = date_obj.strftime('%Y %b %d')
+
+    worst_5_videos = request.session['worst_5_videos']
+    # Assuming 'top_5_videos' is a list of dictionaries containing video information
+    for video in worst_5_videos:
+        # Parse the 'publishedAt' date string to a datetime object
+        date_obj = datetime.strptime(video['publishedAt'], '%Y-%m-%dT%H:%M:%SZ')
+
+        # Reformat the date to 'YYYY MMM DD' and update the video dictionary
+        video['publishedAt'] = date_obj.strftime('%Y %b %d')
+
+        
     json_data = json.dumps(output_data)
     
     context= {'json_data': json_data,
-              'top_5_videos': request.session['top_5_videos'],
-              'worst_5_videos': request.session['worst_5_videos'],
+              'top_5_videos': top_5_videos,
+              'worst_5_videos': worst_5_videos,
               'top_5_comments': request.session['top_5_comments'],
               'worst_5_comments': request.session['worst_5_comments'],
               'title': request.session['title'],
@@ -489,5 +562,367 @@ def playlist_dataset_zipped_output(request):
     zip_buffer.seek(0)
     response = HttpResponse(zip_buffer, content_type='application/zip')
     response['Content-Disposition'] = 'attachment; filename="playlist_analysis_datasets.zip"'
+
+    return response
+
+
+
+
+
+@login_required
+def channel_analysis_details(request):
+    # You can add code here to fetch and process inquiries
+    return render(request, 'features_pages/channel_analysis/channel_analysis_details.html')
+
+from .forms import ChannelAnalysisInputForm
+
+class ChannelAnalysisWizard(SessionWizardView):
+    form_list = [ChannelAnalysisInputForm]
+    template_name = 'features_pages/channel_analysis/channel_analysis_forms.html'  
+    
+    def done(self, form_list, **kwargs):
+        # Process the cleaned data
+        youtube = get_youtube_client()
+        cleaned_data = self.get_all_cleaned_data()
+        channel_url = cleaned_data.get('channel_url')
+        
+        channel_id = extractIdFromUrl(channel_url)
+        channel_df, all_videos_df, all_playlists_df, top_3_videos, worst_3_videos, top_3_comments_analysis, worst_3_comments_analysis = analyze_channel(youtube, channel_id)
+        
+        channel_df_csv = channel_df.to_csv(index=False)
+        all_videos_csv = all_videos_df.to_csv(index=False)
+        all_playlists_csv = all_playlists_df.to_csv(index=False)
+        
+        self.request.session['channel_df_csv'] = channel_df_csv
+        self.request.session['all_videos_info_csv'] = all_videos_csv
+        self.request.session['all_playlists_dict'] = all_playlists_df.to_dict(orient='records')
+
+        self.request.session['all_playlists_csv'] = all_playlists_csv
+
+        self.request.session['title'] = channel_df['Channel Name'].iloc[0]
+        self.request.session['description'] = channel_df['description'].iloc[0]
+        self.request.session['publishedAt'] = channel_df['publishedAt'].iloc[0]
+        self.request.session['uniqueTags'] = list(channel_df['uniqueTags'].iloc[0])
+        self.request.session['thumbnail'] = channel_df['thumbnail'].iloc[0]
+        self.request.session['mostUsedCategories'] = channel_df['mostUsedCategories'].iloc[0]
+
+       # Convert Pandas int64 values to native Python types for JSON serialization
+        self.request.session['videoCount'] = int(channel_df['videoCount'].iloc[0])
+        self.request.session['totalViews'] = int(channel_df['viewCount'].iloc[0])
+        self.request.session['totalLikes'] = int(channel_df['likesCount'].iloc[0])
+        self.request.session['totalComments'] = int(channel_df['commentCount'].iloc[0])
+        self.request.session['average_duration'] = float(channel_df['average_duration'].iloc[0])
+        self.request.session['subscriberCount'] = float(channel_df['subscriberCount'].iloc[0])
+        self.request.session['PlaylistCount'] = int(channel_df['PlaylistCount'].iloc[0])
+
+        # Convert the lists to native Python lists
+        self.request.session['videos_publishedAt'] = all_videos_df['publishedAt'].tolist()
+        self.request.session['videos_duration'] = all_videos_df['duration'].tolist()
+        self.request.session['videos_views'] = all_videos_df['viewsCount'].tolist()
+        self.request.session['videos_likes'] = all_videos_df['likesCount'].tolist()
+        self.request.session['videos_commentCount'] = all_videos_df['commentCount'].tolist()
+            
+        self.request.session['top_5_videos'] = top_3_videos.to_dict(orient='records')
+        self.request.session['worst_5_videos'] = worst_3_videos.to_dict(orient='records')
+        
+        top_5_comments_analysis_dist = top_3_comments_analysis[0].to_dict()
+        top_5_comments = top_3_comments_analysis[1]
+        
+        worst_5_comments_analysis_dist = worst_3_comments_analysis[0].to_dict()
+        worst_5_comments = worst_3_comments_analysis[1]
+        
+        
+        self.request.session['top_5_comments_analysis_dist'] = top_5_comments_analysis_dist
+        self.request.session['top_5_comments'] = top_5_comments
+        
+        self.request.session['worst_5_comments_analysis_dist'] = worst_5_comments_analysis_dist
+        self.request.session['worst_5_comments'] = worst_5_comments
+      
+        
+        
+        return HttpResponseRedirect(reverse('channel_analysis_output'))  # Use the name of the URL pattern
+
+import math
+from datetime import datetime
+
+def channel_analysis_output_view(request):
+    
+    
+    output_data = {
+        'top_5_videos': request.session['top_5_videos'],
+        'worst_5_videos': request.session['worst_5_videos'],
+        'top_5_comments_analysis_dist': request.session['top_5_comments_analysis_dist'],
+        'top_5_comments': request.session['top_5_comments'],
+        'worst_5_comments_analysis_dist': request.session['worst_5_comments_analysis_dist'],
+        'worst_5_comments': request.session['worst_5_comments'],
+        'uniqueTags': request.session['uniqueTags'],
+        'videos_publishedAt': request.session['videos_publishedAt'],
+        'videos_duration': request.session['videos_duration'],
+        'videos_likes': request.session['videos_likes'],
+        'videos_views': request.session['videos_views'],
+        'videos_commentCount': request.session['videos_commentCount'],
+        'all_playlists_dict': request.session['all_playlists_dict'],
+        'videoCount': request.session['videoCount'],
+        'totalViews': request.session['totalViews'],
+        'totalLikes': request.session['totalLikes'],
+        'totalComments': request.session['totalComments'],
+        'mostUsedCategories': request.session['mostUsedCategories'],
+
+
+    }
+    
+    publishedAt = request.session['publishedAt']
+    
+    date_obj = datetime.strptime(publishedAt, '%Y-%m-%dT%H:%M:%S.%fZ')
+
+    # Format to 'YYYY MMM DD'
+    formatted_date = date_obj.strftime('%Y %b %d')
+    print(formatted_date)
+    
+    top_5_videos = request.session['top_5_videos']
+    # Assuming 'top_5_videos' is a list of dictionaries containing video information
+    for video in top_5_videos:
+        # Parse the 'publishedAt' date string to a datetime object
+        date_obj = datetime.strptime(video['publishedAt'], '%Y-%m-%dT%H:%M:%SZ')
+
+        # Reformat the date to 'YYYY MMM DD' and update the video dictionary
+        video['publishedAt'] = date_obj.strftime('%Y %b %d')
+
+    worst_5_videos = request.session['worst_5_videos']
+    # Assuming 'top_5_videos' is a list of dictionaries containing video information
+    for video in worst_5_videos:
+        # Parse the 'publishedAt' date string to a datetime object
+        date_obj = datetime.strptime(video['publishedAt'], '%Y-%m-%dT%H:%M:%SZ')
+
+        # Reformat the date to 'YYYY MMM DD' and update the video dictionary
+        video['publishedAt'] = date_obj.strftime('%Y %b %d')
+
+        
+    json_data = json.dumps(output_data)
+    
+    context= {'json_data': json_data,
+              'top_5_videos': top_5_videos,
+              'worst_5_videos': worst_5_videos,
+              'top_5_comments': request.session['top_5_comments'],
+              'worst_5_comments': request.session['worst_5_comments'],
+              'title': request.session['title'],
+              'description': request.session['description'],
+              'thumbnail': request.session['thumbnail'],
+              'playlist_publishedAt': formatted_date,
+              'videoCount': request.session['videoCount'],
+              'totalViews': request.session['totalViews'],
+              'totalLikes': request.session['totalLikes'],
+              'totalComments': request.session['totalComments'],
+              'averageDuration': request.session['averageDuration'],
+              'uniqueTags': request.session['uniqueTags'],
+              'videos_publishedAt': request.session['videos_publishedAt'],
+              'videos_duration': request.session['videos_duration'],
+              'videos_likes': request.session['videos_likes'],
+              'videos_views': request.session['videos_views'],
+              'videos_commentCount': request.session['videos_commentCount'],
+              }
+    
+    
+    return render(request, 'features_pages/channel_analysis/channel_analysis_output.html', context)
+
+def channel_dataset_zipped_output(request):
+    # Handle the output display here
+    # Retrieve the CSV data from the session
+    channel_df_csv = request.session.get('channel_df_csv', '')
+    all_videos_info_csv = request.session.get('all_videos_info_csv', '')
+    all_playlists_csv = request.session.get('all_playlists_csv', '')
+    # Create a zip file in memory
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(zip_buffer, 'a', zipfile.ZIP_DEFLATED, False) as zip_file:
+        zip_file.writestr('channel_df_csv.csv', channel_df_csv)
+        zip_file.writestr('all_videos_info_csv.csv', all_videos_info_csv)
+        zip_file.writestr('all_playlists_csv.csv', all_playlists_csv)
+
+
+    # Set up the HttpResponse
+    zip_buffer.seek(0)
+    response = HttpResponse(zip_buffer, content_type='application/zip')
+    response['Content-Disposition'] = 'attachment; filename="channel_analysis_datasets.zip"'
+
+    return response
+
+
+
+
+
+@login_required
+def topic_analysis_details(request):
+    # You can add code here to fetch and process inquiries
+    return render(request, 'features_pages/channel_analysis/channel_analysis_details.html')
+
+from .forms import ChannelAnalysisInputForm
+
+class TopicAnalysisWizard(SessionWizardView):
+    form_list = [ChannelAnalysisInputForm]
+    template_name = 'features_pages/channel_analysis/channel_analysis_forms.html'  
+    
+    def done(self, form_list, **kwargs):
+        # Process the cleaned data
+        youtube = get_youtube_client()
+        cleaned_data = self.get_all_cleaned_data()
+        channel_url = cleaned_data.get('channel_url')
+        
+        channel_id = extractIdFromUrl(channel_url)
+        channel_df, all_videos_df, all_playlists_df, top_3_videos, worst_3_videos, top_3_comments_analysis, worst_3_comments_analysis = analyze_channel(youtube, channel_id)
+        
+        channel_df_csv = channel_df.to_csv(index=False)
+        all_videos_csv = all_videos_df.to_csv(index=False)
+        all_playlists_csv = all_playlists_df.to_csv(index=False)
+        
+        self.request.session['channel_df_csv'] = channel_df_csv
+        self.request.session['all_videos_info_csv'] = all_videos_csv
+        self.request.session['all_playlists_dict'] = all_playlists_df.to_dict(orient='records')
+
+        self.request.session['all_playlists_csv'] = all_playlists_csv
+
+        self.request.session['title'] = channel_df['Channel Name'].iloc[0]
+        self.request.session['description'] = channel_df['description'].iloc[0]
+        self.request.session['publishedAt'] = channel_df['publishedAt'].iloc[0]
+        self.request.session['uniqueTags'] = list(channel_df['uniqueTags'].iloc[0])
+        self.request.session['thumbnail'] = channel_df['thumbnail'].iloc[0]
+        self.request.session['mostUsedCategories'] = channel_df['mostUsedCategories'].iloc[0]
+
+       # Convert Pandas int64 values to native Python types for JSON serialization
+        self.request.session['videoCount'] = int(channel_df['videoCount'].iloc[0])
+        self.request.session['totalViews'] = int(channel_df['viewCount'].iloc[0])
+        self.request.session['totalLikes'] = int(channel_df['likesCount'].iloc[0])
+        self.request.session['totalComments'] = int(channel_df['commentCount'].iloc[0])
+        self.request.session['average_duration'] = float(channel_df['average_duration'].iloc[0])
+        self.request.session['subscriberCount'] = float(channel_df['subscriberCount'].iloc[0])
+        self.request.session['PlaylistCount'] = int(channel_df['PlaylistCount'].iloc[0])
+
+        # Convert the lists to native Python lists
+        self.request.session['videos_publishedAt'] = all_videos_df['publishedAt'].tolist()
+        self.request.session['videos_duration'] = all_videos_df['duration'].tolist()
+        self.request.session['videos_views'] = all_videos_df['viewsCount'].tolist()
+        self.request.session['videos_likes'] = all_videos_df['likesCount'].tolist()
+        self.request.session['videos_commentCount'] = all_videos_df['commentCount'].tolist()
+            
+        self.request.session['top_5_videos'] = top_3_videos.to_dict(orient='records')
+        self.request.session['worst_5_videos'] = worst_3_videos.to_dict(orient='records')
+        
+        top_5_comments_analysis_dist = top_3_comments_analysis[0].to_dict()
+        top_5_comments = top_3_comments_analysis[1]
+        
+        worst_5_comments_analysis_dist = worst_3_comments_analysis[0].to_dict()
+        worst_5_comments = worst_3_comments_analysis[1]
+        
+        
+        self.request.session['top_5_comments_analysis_dist'] = top_5_comments_analysis_dist
+        self.request.session['top_5_comments'] = top_5_comments
+        
+        self.request.session['worst_5_comments_analysis_dist'] = worst_5_comments_analysis_dist
+        self.request.session['worst_5_comments'] = worst_5_comments
+      
+        
+        
+        return HttpResponseRedirect(reverse('channel_analysis_output'))  # Use the name of the URL pattern
+
+import math
+from datetime import datetime
+
+def topic_analysis_output_view(request):
+    
+    
+    output_data = {
+        'top_5_videos': request.session['top_5_videos'],
+        'worst_5_videos': request.session['worst_5_videos'],
+        'top_5_comments_analysis_dist': request.session['top_5_comments_analysis_dist'],
+        'top_5_comments': request.session['top_5_comments'],
+        'worst_5_comments_analysis_dist': request.session['worst_5_comments_analysis_dist'],
+        'worst_5_comments': request.session['worst_5_comments'],
+        'uniqueTags': request.session['uniqueTags'],
+        'videos_publishedAt': request.session['videos_publishedAt'],
+        'videos_duration': request.session['videos_duration'],
+        'videos_likes': request.session['videos_likes'],
+        'videos_views': request.session['videos_views'],
+        'videos_commentCount': request.session['videos_commentCount'],
+        'all_playlists_dict': request.session['all_playlists_dict'],
+        'videoCount': request.session['videoCount'],
+        'totalViews': request.session['totalViews'],
+        'totalLikes': request.session['totalLikes'],
+        'totalComments': request.session['totalComments'],
+        'mostUsedCategories': request.session['mostUsedCategories'],
+
+
+    }
+    
+    publishedAt = request.session['publishedAt']
+    
+    date_obj = datetime.strptime(publishedAt, '%Y-%m-%dT%H:%M:%S.%fZ')
+
+    # Format to 'YYYY MMM DD'
+    formatted_date = date_obj.strftime('%Y %b %d')
+    print(formatted_date)
+    
+    top_5_videos = request.session['top_5_videos']
+    # Assuming 'top_5_videos' is a list of dictionaries containing video information
+    for video in top_5_videos:
+        # Parse the 'publishedAt' date string to a datetime object
+        date_obj = datetime.strptime(video['publishedAt'], '%Y-%m-%dT%H:%M:%SZ')
+
+        # Reformat the date to 'YYYY MMM DD' and update the video dictionary
+        video['publishedAt'] = date_obj.strftime('%Y %b %d')
+
+    worst_5_videos = request.session['worst_5_videos']
+    # Assuming 'top_5_videos' is a list of dictionaries containing video information
+    for video in worst_5_videos:
+        # Parse the 'publishedAt' date string to a datetime object
+        date_obj = datetime.strptime(video['publishedAt'], '%Y-%m-%dT%H:%M:%SZ')
+
+        # Reformat the date to 'YYYY MMM DD' and update the video dictionary
+        video['publishedAt'] = date_obj.strftime('%Y %b %d')
+
+        
+    json_data = json.dumps(output_data)
+    
+    context= {'json_data': json_data,
+              'top_5_videos': top_5_videos,
+              'worst_5_videos': worst_5_videos,
+              'top_5_comments': request.session['top_5_comments'],
+              'worst_5_comments': request.session['worst_5_comments'],
+              'title': request.session['title'],
+              'description': request.session['description'],
+              'thumbnail': request.session['thumbnail'],
+              'playlist_publishedAt': formatted_date,
+              'videoCount': request.session['videoCount'],
+              'totalViews': request.session['totalViews'],
+              'totalLikes': request.session['totalLikes'],
+              'totalComments': request.session['totalComments'],
+              'averageDuration': request.session['averageDuration'],
+              'uniqueTags': request.session['uniqueTags'],
+              'videos_publishedAt': request.session['videos_publishedAt'],
+              'videos_duration': request.session['videos_duration'],
+              'videos_likes': request.session['videos_likes'],
+              'videos_views': request.session['videos_views'],
+              'videos_commentCount': request.session['videos_commentCount'],
+              }
+    
+    
+    return render(request, 'features_pages/channel_analysis/channel_analysis_output.html', context)
+
+def topic_dataset_zipped_output(request):
+    # Handle the output display here
+    # Retrieve the CSV data from the session
+    channel_df_csv = request.session.get('channel_df_csv', '')
+    all_videos_info_csv = request.session.get('all_videos_info_csv', '')
+    all_playlists_csv = request.session.get('all_playlists_csv', '')
+    # Create a zip file in memory
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(zip_buffer, 'a', zipfile.ZIP_DEFLATED, False) as zip_file:
+        zip_file.writestr('channel_df_csv.csv', channel_df_csv)
+        zip_file.writestr('all_videos_info_csv.csv', all_videos_info_csv)
+        zip_file.writestr('all_playlists_csv.csv', all_playlists_csv)
+
+
+    # Set up the HttpResponse
+    zip_buffer.seek(0)
+    response = HttpResponse(zip_buffer, content_type='application/zip')
+    response['Content-Disposition'] = 'attachment; filename="channel_analysis_datasets.zip"'
 
     return response

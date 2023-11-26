@@ -455,3 +455,14 @@ class PlaylistAnalysisInputForm(forms.Form):
         if not re.match(youtube_playlist_pattern, playlist_url):
             raise ValidationError("Please enter a valid YouTube playlist URL.")
         return playlist_url
+    
+class ChannelAnalysisInputForm(forms.Form):
+    channel_url = forms.URLField(label='Channel URL', required=True)
+
+    def clean_channel_url(self):
+        channel_url = self.cleaned_data['channel_url']
+        youtube_channel_pattern = r'https://www\.youtube\.com/(c/|channel/|user/|@)?[\w-]+'
+        
+        if not re.match(youtube_channel_pattern, channel_url):
+            raise ValidationError("Please enter a valid YouTube channel URL.")
+        return channel_url

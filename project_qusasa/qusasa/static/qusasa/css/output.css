@@ -646,6 +646,7 @@ font-family: sans-serif;
 foreignObject {
     height: 100%;
     min-height: 100%;
+    padding: 1rem;
 }
 
 #apexchartszml5zwur {
