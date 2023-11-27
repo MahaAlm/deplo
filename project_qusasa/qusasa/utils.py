@@ -619,7 +619,6 @@ def analyse_video(youtube, video_id):
             'duration': parse_duration_to_minutes(video_details['contentDetails'].get('duration')),
             'unique_tags': list(unique_tags),
             'categoryId': video_details['snippet']['categoryId']
-
         }
         
     # Convert category IDs to names
@@ -1030,3 +1029,108 @@ def create_word_document(transcript, summary, filename, output_dir):
     doc.save(file_path)
 
     return file_path
+
+def topic_analysis(youtube, query, orderBy='relevance', regionCode='', language='', max_results=100):
+
+    one_year_ago = datetime.now() - timedelta(days=365)
+    one_year_ago_str = one_year_ago.strftime('%Y-%m-%dT%H:%M:%SZ')
+
+    
+    
+    request_parameters = {
+        "part": "snippet",
+        "order": orderBy,
+        "q": query,
+        "type": 'videos',
+        "maxResults": max_results,
+        "publishedAfter": one_year_ago_str
+    }
+
+    if(regionCode != ''):
+        request_parameters["regionCode"] = regionCode
+    
+    if(language != ''):
+        request_parameters["relevanceLanguage"] = language
+
+    # Step 1: Search for top videos based on the query
+    search_response = youtube.search().list(**request_parameters).execute()
+
+    videos = []
+    channels = {}
+    all_tags = []
+    unique_tags = set()
+    
+    category_count = Counter()
+
+    for item in search_response.get('items', []):
+        video_id = item['id']['videoId']
+        channel_id = item['snippet']['channelId']
+
+        # Fetch additional video details
+        video_response = youtube.videos().list(
+            part='snippet,contentDetails,statistics',
+            id=video_id
+        ).execute()
+
+        video_details = video_response['items'][0]
+        statistics = video_details['statistics']
+
+        unique_tags.update(video_details['snippet'].get('tags', []))
+        category_count[video_details['snippet']['categoryId']] += 1
+
+        video_info = {
+            'videoId': video_details['id'],
+            'title': video_details['snippet']['title'],
+            'description': video_details['snippet']['description'],
+            'publishedAt': video_details['snippet']['publishedAt'],
+            'thumbnail': video_details['snippet']['thumbnails']['high']['url'],
+            'viewsCount': int(statistics.get('viewCount', 0)),
+            'likesCount': int(statistics.get('likeCount', 0)),
+            'commentCount': int(statistics.get('commentCount', 0)),
+            'duration': parse_duration_to_minutes(video_details['contentDetails'].get('duration')),
+            'unique_tags': list(unique_tags),
+            'categoryId': video_details['snippet']['categoryId']
+
+        }
+
+        category_names = {}
+        category_ids = list(category_count.keys())
+        if category_ids:
+            category_response = youtube.videoCategories().list(part='snippet', id=','.join(category_ids)).execute()
+            for item in category_response['items']:
+                category_names[item['id']] = item['snippet']['title']
+
+        most_used_categories = [(category_names.get(cid, 'Unknown'), count) for cid, count in category_count.most_common()]
+        video_info['most_used_categories'] = most_used_categories
+
+        video_info['engagementScore'] = calculate_engagement_score(video_info, datetime.now())
+
+        videos.append(video_info)
+
+        
+        # Track channel activity
+        channels[channel_id] = channels.get(channel_id, 0) + 1
+
+    # Step 2: Fetch the most active channels
+    active_channels = sorted(channels.items(), key=lambda x: x[1], reverse=True)[:5]
+    channels = []
+    for channel_id, _ in active_channels:
+        channel_df , topVideo, channel_icon_url, durations = analyze_youtube_entity(channel_id, youtube)
+        channel_df['channel_icon_url'] = channel_icon_url
+        channels.append(channel_df)
+
+    # Convert results to DataFrames
+    videos_df = pd.DataFrame(videos)
+    top_5_videos = videos_df.nlargest(5, 'engagementScore')
+    
+    top_5_comments = []
+    for _, row in top_5_videos.iterrows():
+        video_comments = analyse_comments_data(youtube, row['videoId'])
+        top_5_comments.extend(video_comments)
+    
+    top_5_comments_df = pd.DataFrame(top_5_comments)
+    top_5_comments_analysis = analyze_comments_emotions_for_playlist(top_5_comments_df)
+        
+    channels_df = pd.concat(channels, ignore_index=True)
+
+    return videos_df, channels_df, top_5_videos, top_5_comments_df, top_5_comments_analysis

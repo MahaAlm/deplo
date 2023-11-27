@@ -94,7 +94,7 @@
                     </div>
                     
                     <div class="button">
-                        <button>Download the report</button>
+                        <button id ='print'>Download the report</button>
                     </div>
                     
                 </div>
@@ -719,6 +719,19 @@ boxPlotChart.render();
     
 </script>
 
+<script>
+    jQuery(document).ready(function(){
+
+        $('#print').click(function(){
+    
+            window.print();
+    
+    
+        });
+    
+    
+    });
+</script>
 
 <script>$(document).ready(function(){
     $(".owl-carousel").owlCarousel({

@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="{% static 'qusasa/css/cards.css' %}" />
     <link rel="stylesheet" href="{% static 'qusasa/css/feature_details.css' %}" />
     <link rel="stylesheet" href="{% static 'qusasa/css/output.css' %}" />
-    <link rel="stylesheet" href="{% static 'qusasa/css/video_analysis_output.css' %}" />
-
     <link href="https://cdn.rawgit.com/michalsnik/aos/2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://cdn.rawgit.com/michalsnik/aos/2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
@@ -32,11 +30,129 @@
     <!-- Include Owl Carousel JS File -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 
-
     <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
 
+
   </head>
+  <style>
+    .body1 {
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 20px;
+      margin: 0;
+      align-items: stretch;
+    }
+    .thumbnail iframe {
+    width: 100%; 
+    height: auto; 
+    border-radius: 10px; 
+  }
+
+  .stat {
+    margin: 0 1rem;
+  }
+    .card {
+      background: #805ea976;
+      border-radius: 30px;
+      padding: 15px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border: 1px solid #7587ff;
+      box-shadow: 0 0 30px 10px #6b4e8f76;
+      height: auto;
+      align-items: stretch;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    
+    .card-header {
+      font-weight: 600;
+      font-size: 25px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .thumbnail {
+      background-color: #706fd3;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 14px;
+    }
+    .statistics {
+  display: flex;
+  justify-content: space-around; /* Adjust as necessary to space items */
+  margin-top: 10px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column; /* Stack number and label vertically */
+  align-items: center; /* Center-align the flex items */
+}
+
+.number {
+    font-weight: 500;
+  font-size: 30px; 
+  color: #fff; /* White text color */
+}
+
+.label {
+  font-size: 20px; /* Smaller font size for the label */
+  color: #fff; /* White text color */
+}
+
+    .sentiment {
+      height: 10px;
+      background: #ff5252;
+      width: 100%;
+      margin-top: 10px;
+      border-radius: 5px;
+    }
+    
+    /* Sizes for the cards based on the image */
+   
+    .medium-card { width: 320px; height: 300px; }
+    .dashboard-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two columns of equal size */
+  grid-gap: 20px; /* Gap between grid items */
+  padding: 20px;
+}
+
+/* Optional: if you want to make the line chart bigger than the radial chart */
+#lineChart { 
+  grid-column: span 2; /* Line chart will span across two columns */
+}
+
+#positiveCommentsChart { 
+  /* Ensures the radial bar chart takes up the space of one column */
+  max-width: 100%; /* Optional: You can adjust this value if the chart appears too big */
+}
+
+
+.chart {
+  
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.medium-card {
+    height: auto;
+}
+
+  </style>
   <body>
     
     <a class="log-out" href="#popup1"><i class="fa-solid fa-right-from-bracket"></i> Exit Analysis</a>
@@ -46,23 +162,20 @@
 
         <div class="mini-container">
             <div class="output-header " data-aos="fade-up">
-                <h1>Analysis Complete!</h1>
-                <p>Video summary and audience engagement insights are now available. Explore the sections below to gain insights into the video's performance and audience interaction</p>
+                <h1>Your topic analysis is ready!</h1>
+                <p>Check out the metrics and insights to dive into the trends and discussions around your chosen subject.</p>
             </div>
         </div>
         
-        
-        
-
         <div class="mini-container">
-            <h2 data-aos="fade-up">Download the results:</h2>
-            <div class="downlaodables" data-aos="fade-up">
+            <h2 data-aos="fade-up">Download your results:</h2>
+        <div class="downlaodables" data-aos="fade-up">
             <div class="download-dataset download-el">
                 <i class="fa-solid fa-table"></i>
                 <div class="download-text">
                     <div class="text">
-                        <h3>The video dataset</h3>
-                    <p>Comprehensive datasets including video performance metrics/user comments.</p>
+                        <h3>{{type}} Datasets</h3>
+                    <p>Have a list of all videos, channels, and comments related to your topic </p>
                     </div>
                     
                     <div class="button">
@@ -77,141 +190,70 @@
                 <div class="download-text ">
                     <div class="text">
                         <h3>Analysis report</h3>
-                        <p>including the video summary, all the graphs, statistics, and interpretaions presented.</p>
+                        <p>including all the graphs, statistics, and interpretaions presented.</p>
                     </div>
                     
                     <div class="button">
-                        <a href="{% url 'download_docx' filename=docx_file %}"><button>Download the report</button></a>
+                        <button>Download the report</button>
                     </div>
                     
                 </div>
             </div>
-            </div>
-
-        </div>
-        <div class="top-videos" data-aos="fade-up">
-            
-            <div class="videos">
-                <div class="mini-container">
-                    <div class="header">
-                        <img src='{{video_info_dict.thumbnail}}' alt="">
-                        <div class="header-info">
-                            <h1>{{video_info_dict.title}}</h1>
-                            <div class="desc">
-                                <h3>Video Summary</h3>
-                            <p>{{summary}}</p>
-                            </div>
-                            
-                        </div>
-                    </div>
-                    <h2 class="video-stats-h2">Video statistics</h2>
-                        <div class="video-stats">
-                            <div class="video-stat">
-                                <h3 class="number" data-target="{{video_info_dict.viewsCount}}">0</h3>
-                                <p>views</p>
-                            </div>
-                            <div class="video-stat">
-                                <h3 class="number" data-target="{{video_info_dict.likesCount}}">0</h3>
-                                <p>likes</p>
-                            </div>
-                            <div class="video-stat">
-                                <h3 class="number" data-target="{{video_info_dict.duration}}">0</h3>
-                                <p>minutes</p>
-                            </div>
-                            <div class="video-stat">
-                                <h3 class="number" data-target="98">0</h3>
-                                <p>Comments</p>
-                            </div>
-                        </div>
-                        
-                        <div class="stats-graphs" data-aos="fade-up">
-                            <h1>Get An Overview</h1>
-                            <p>take a look over the video user engagement</p>
-                            <div class="overview">
-                                <div class="owl-carousel">
-                                    <div class="item">
-                                        <div class="chart-compare ">
-                                            <div class="compare-el">
-                                                <div class="compare-stats">
-                                                    <p>proportion of</p>
-                                                    <h2>Likes</h2> <p>to <h2>Comments</h2></p>
-                                    
-                                                </div>
-                                                <div id="like-comment-ratio-chart"></div>
-            
-                                            </div>
-                                            
-                                            
-                                        </div>
-                                    </div>
-            
-                                    <div class="item">
-                                        <div class="chart-compare ">
-                                            <div class="compare-el">
-                                                <div class="compare-stats">
-                                                    <p>Compare <h2>Likes, </h2><h2>Comments</h2></p>
-                                                   <p>and <h2> Views </h2>  </p>
-                                    
-                                                </div>
-                                                <div id="engagement-chart"></div>
-            
-                                            </div>
-                                            
-                                            
-                                        </div>
-                                    </div>
-            
-                                    <div class="item">
-                                        <div class="chart-compare ">
-                                            <div class="compare-el column-compare" >
-                                                <div class="compare-stats">
-                                                
-                                                    <p>  Gauge audience <span>  reactions </span> </p>
-                                                   
-                                    
-                                                </div>
-                                                <div id="sentiment-chart"></div>
-            
-                                            </div>
-                                            
-                                            
-                                        </div>
-                                    </div>
-            
-                                    <div class="item">
-                                        <div class="chart-compare tags-chart">
-                                            <div class="compare-el column-compare" style="flex-direction: column;">
-                                                <div class="compare-stats" >
-                                                    <p>Discover key <span>Tags</span></p>
-                                                    
-                                
-                                                </div>
-                                                <!-- Generate a unique ID for each word cloud container using the forloop.counter -->
-                                                <div id="wordcloud0" class="wordcloud"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- more items -->
-                                </div>
-                                
-                                
-                            </div>
-                        </div>  
-                    
-                </div>
-                
-                
-            </div>
-            
         </div>
 
-
+        </div>
         
 
-    
+        <div class="mini-container">
+            <div class="output-header " data-aos="fade-up">
+                <h1>
+                    Take a look at the top 5 trending videos on your topic</h1>
+                <p>Reflecting the latest insights and popular discussions</p>
+                <div class="body1">
 
+                    {% for video in top_5_videos %}
+                    <div class="card medium-card">
+                      <div class="card-header">{{video.title}}</div>
+                      <div class="thumbnail"> <iframe width="560" height="315" src="https://www.youtube.com/embed/{{video.videoId}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+                      <div class="statistics">
+                        <div class="stat">
+                            <div class="number">{{video.likesCount}}</div>
+                            <div class="label">Likes</div>
+                          </div>
+                          <div class="stat">
+                            <div class="number">{{video.viewsCount}}</div>
+                            <div class="label">Views</div>
+                          </div>
+                      </div>
+                      <div id="positive-comments-gauge" class="chart-container"></div>
+                    </div>
+                    {%endfor%}
+                    
+                </div>
+            </div>
+        </div>
+        <h1 data-aos="fade-up">Topic Dashboard</h1>
+        <p data-aos="fade-up"> here we display the top video of each channel, you can hover on each video to get more insights about why is it so successfull!</p>
+       
+      
 
-     
+        <div class="mini-container stats-graphs-container" data-aos="fade-up">
+            
+            <div class="stats-graphs" data-aos="fade-up">
+                <div class="dashboard-container">
+                    <div id="pieChart" class="chart"> <p>Video Distribution by Channel</p><h5>A pie chart highlighting the most active channels</h5></div>
+                    <div id="barChart" class="chart"><p>Top Video Comment Counts</p><h5>A bar chart showcasing the most popular videos</h5></div>
+                  <div class="chart" > <div id="wordcloud0" class="wordcloud"><p>Tags WordCloud</p> <h5>A visual snapshot of trending terms from video content, guiding your focus to prevalent topics</h5></div> </div>
+                    <div id="frequencyBarChart" class="chart"><p>Keyword Frequency</p><h5>The top 10 keywords in video titles and descriptions</h5></div>
+                    <div id="lineChart" class="chart">
+                        <p>Trend Over Time</p>
+                        <h5>A line chart tracking video uploads, revealing patterns and interest in the topic over the years</h5>
+                      </div>
+                </div>
+                
+            </div>
+        </div>
+
         
 
         <div id="popup1" class="overlay">
@@ -230,11 +272,14 @@
 
 
 
-
     </div>
 
    
 </div>
+
+<script id="json-data" type="application/json">{{ json_data|safe }}</script>
+
+
 <script>
    
     document.addEventListener('DOMContentLoaded', function() {
@@ -293,68 +338,86 @@
 </script>
 <script>
     document.getElementById('download-dataset-button').addEventListener('click', function() {
-        window.location.href = "{% url 'dataset_zipped_output' %}";
+        window.location.href = "{% url 'topic_dataset_zipped_output' %}";
     });
 </script>
-
-<script id="json-data" type="application/json">{{ json_data|safe }}</script>
-
-
-
 <script>
 
     var jsonData = JSON.parse(document.getElementById('json-data').textContent);
-    var likes = jsonData.video_info_dict.likesCount
-    var comments = 100
-    var views = jsonData.video_info_dict.viewsCount
+    console.log('hi')
+    console.log(jsonData.top_5_videos)
 
-      // Bar Chart: Compare likes, comments, and views for a single video
-      var optionsEngagement = {
-        chart: {
-            type: 'bar',
-            height: 250,
-            width: 400,
-            foreColor: '#fff',        
-            // white text for the dark theme,
-            background: 'transparent'
-        },
-        series: [{
-            name: 'Engagment',
-            data: [views, likes, comments] // Fake likes data
-        }],
-        xaxis: {
-            categories: ["Views", 'Likes','Comments'] // Example video title
-        },
-        labels: {
-                rotate: 0, // Rotates labels to handle long text
-                offsetY: 0, // Adjust to position the labels higher above the bar
-                style: {
-                    cssClass: 'custom-xaxis-label',
-                },
-            },
-        plotOptions: {
-            bar: {
-                distributed: true, 
-                columnWidth: '50%', 
-                endingShape: 'rounded' ,
-                borderRadius: [4, 4, 0, 0],
-                dataLabels: {
-                    position: 'top' // Ensuring data labels appear on top of the bars
-                }
+    
+    var videosNames = jsonData.top_5_videos.map(video => video.title);
+    var trimmedNames = videosNames.map(label => 
+    label.length > 15 ? label.substring(0, 5) + '...' : label);
+    var video_comments = jsonData.top_5_videos.map(video => parseFloat(video["commentCount"]));
+    var videoTitles = jsonData.videos_dict.map(video => video.title);
+    let stopWords = new Set([
+    "a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "aren't", "as", "at", 
+    "be", "because", "been", "before", "being", "below", "between", "both", "but", "by", 
+    "can't", "cannot", "could", "couldn't", "did", "didn't", "do", "does", "doesn't", "doing", "don't", "down", "during", 
+    "each", "few", "for", "from", "further", 
+    "had", "hadn't", "has", "hasn't", "have", "haven't", "having", "he", "he'd", "he'll", "he's", "her", "here", "here's", "hers", "herself", "him", "himself", "his", "how", "how's", 
+    "i", 'l', ' ', "i'd", "i'll", "i'm", "i've", "if", "in", "into", "is", "isn't", "it", "it's", "its", "itself", 
+    "let's", "me", "more", "most", "mustn't", "my", "myself", 
+    "no", "nor", "not", 
+    "of", "off", "on", "once", "only", "or", "other", "ought", "our", "ours", "ourselves", "out", "over", "own", 
+    "same", "shan't", "she", "she'd", "she'll", "she's", "should", "shouldn't", "so", "some", "such", 
+    "than", "that", "that's", "the", "their", "theirs", "them", "themselves", "then", "there", "there's", "these", "they", "they'd", "they'll", "they're", "they've", "this", "those", "through", "to", "too", 
+    "under", "until", "up", 
+    "very", 
+    "was", "wasn't", "we", "we'd", "we'll", "we're", "we've", "were", "weren't", "what", "what's", "when", "when's", "where", "where's", "which", "while", "who", "who's", "whom", "why", "why's", "with", "won't", "would", "wouldn't", 
+    "you", "you'd", "you'll", "you're", "you've", "your", "yours", "yourself", "yourselves", '|', '', '_'
+]); // Add more stop words as needed
+    let wordCounts = {};
+
+    videoTitles.forEach(title => {
+        title.toLowerCase().split(/\s+/).forEach(word => {
+            // Remove special characters
+            let cleanWord = word.replace(/[?*&]/g, '');
+
+            // Skip stop words
+            if (!stopWords.has(cleanWord)) {
+                wordCounts[cleanWord] = (wordCounts[cleanWord] || 0) + 1;
             }
-        },
-        tooltip: {
-            x: {
-                formatter: function(value, { series, seriesIndex, dataPointIndex, w }) {
-                    // Display the full channel name in the tooltip
-                    return channels[dataPointIndex]
-                }
-            }
-        },
-        theme: {
-            mode: 'dark',
-            palette: 'palette1'
-        },
+        });
+    });
+    // Sort by frequency and get top 20 words
+    let topWords = Object.entries(wordCounts).sort((a, b) => b[1] - a[1]).slice(0, 10);
+
+    // Separate words and their counts for the chart
+    let words = topWords.map(item => item[0]);
+    let frequencies = topWords.map(item => item[1]);
+
+    var tags_list = [];
+jsonData.top_5_videos.forEach(video => {
+    tags_list = tags_list.concat(video.unique_tags);
+});
+     var options = {
+  series: [{
+    name: 'Comment count',
+    data: video_comments
+  }],
+  chart: {
+    type: 'bar',
+    height: 350,
+    background: 'transparent'
+  },
+  plotOptions: {
+    bar: {
+      horizontal: false,
+      columnWidth: '55%',
+      endingShape: 'rounded'
+    },
+  },
+  dataLabels: {
+    enabled: false
+  },
+  xaxis: {
+    categories: trimmedNames,
+  },
+  
         dataLabels: {
             enabled: false
         },
@@ -365,6 +428,10 @@
         legend: {
             show: false
         },
+        theme: {
+            mode: 'dark'
+        },
+        
         fill: {
             colors: ['#00E396', '#775DD0', '#775DD0', '#775DD0', '#775DD0'],
             type: 'gradient',
@@ -380,159 +447,233 @@
             }
         }
 
-    
-    };
+    ,
+};
 
-    var engagementChart = new ApexCharts(document.querySelector("#engagement-chart"), optionsEngagement);
-    engagementChart.render();
-    engagementChart.updateOptions({
-    });
-    // Pie Chart: Show the proportion of likes to comments
-    var optionsLikeCommentRatio = {
-        chart: {
-            type: 'pie',
-            height: 500,
-            width: 300,
-            background: 'transparent'
+var chart = new ApexCharts(document.querySelector("#barChart"), options);
+chart.render();
+
+var channelNames = jsonData.channels_dict.map(channel => channel.Name);
+var viewAverages = jsonData.channels_dict.map(channel => parseFloat(channel["View average"]));
+
+var options = {
+  series: viewAverages,
+  chart: {
+    width: 380,
+    type: 'pie',
+    background: 'transparent'
+  },
+  toolbar: {
+    show: true, // Show the toolbar
+    tools: {
+        download: true, // Enable the download tool
+        selection: false,
+    zoom: false,
+    zoomin: false,
+    zoomout: false,
+    pan: false,
+    reset: false
+    }        },
+series: viewAverages,
+labels: channelNames,
+theme: {
+    mode: 'dark'
+},
+
+legend: {
+    position: 'bottom'
+},
+stroke: {
+    show: false, // No border
+},
+fill: {
+    type: 'gradient',
+    gradient: {
+        shade: 'light',
+        shadeIntensity: 0.05,
+        inverseColors: true,
+        opacityFrom: 0.85,
+        opacityTo: 0.85,
+        stops: [0, 100],
+    }},
+    dataLabels: {
+        enabled: true,
+        formatter: function (val) {
+            return Math.round(val) + '%'; // Round to nearest integer
         },
-        toolbar: {
-            show: true, // Show the toolbar
-            tools: {
-                download: true, // Enable the download tool
-                selection: false,
-            zoom: false,
-            zoomin: false,
-            zoomout: false,
-            pan: false,
-            reset: false
-            }        },
-        series: [likes, comments],
-        labels: ['Likes', 'Comments'],
+        style: {
+            fontSize: '14px',
+            fontFamily: 'Raleway',
+            fontWeight: 'bold',
+            
+        },
+        dropShadow: {
+            enabled: false  // Disable drop shadow on data labels
+        }
+    }
+};
+
+var chart = new ApexCharts(document.querySelector("#pieChart"), options);
+chart.render();
+
+var options = {
+  series: [{
+    data: frequencies
+  }],
+  chart: {
+    type: 'bar',
+    height: 350,
+    background: 'transparent'
+  },
+  plotOptions: {
+    bar: {
+      horizontal: true,
+    },
+  },
+  theme: {
+    mode: 'dark'
+},
+  dataLabels: {
+    enabled: false
+  },
+  grid: {
+            show: false
+        },
+        
+  xaxis: {
+    categories: words,
+  }
+};
+
+var chart = new ApexCharts(document.querySelector("#frequencyBarChart"), options);
+chart.render();
+
+//////
+
+    var videos = jsonData.videos_dict
+    console.log(videos[0])
+
+    // Initialize a map to hold month and total views count
+    var viewsCountByMonth = {};
+
+    // Define an array for month names
+    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    // Process each video to sum views by month
+    videos.forEach(video => {
+        var monthIndex = new Date(video.publishedAt).getMonth(); // getMonth() returns a zero-based index
+        var monthName = monthNames[monthIndex];
+        viewsCountByMonth[monthName] = (viewsCountByMonth[monthName] || 0) + video.viewsCount;
+    });
+
+    // Get the corresponding total views for each month
+    var viewsCounts = monthNames.map(monthName => viewsCountByMonth[monthName] || 0);
+
+
+  // Define the options for the line chart
+  var lineChartOptions = {
+    series: [{
+      name: "Total Views",
+      data: viewsCounts
+    }],
+    chart: {
+      type: 'line',
+      height: 350,
+      background: 'transparent'
+    },
+    stroke: {
+      width: 5,
+      curve: 'smooth'
+    },
+    xaxis: {
+      type: 'Month',
+      categories: monthNames
+    },
+    
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shade: 'dark',
+        gradientToColors: [ '#FDD835'],
+        shadeIntensity: 1,
+        type: 'horizontal',
+        opacityFrom: 1,
+        opacityTo: 1,
+        stops: [0, 100]
+      },
+    },
+    
+    markers: {
+      size: 4,
+      colors: ["#FFA41B"],
+      strokeColors: "#fff",
+      strokeWidth: 2,
+      hover: {
+        size: 7,
+      }
+    },
+    grid: {
+            show: false
+        },
         theme: {
             mode: 'dark'
         },
-        
-        legend: {
-            position: 'bottom'
-        },
-        stroke: {
-            show: false, // No border
-        },
-        fill: {
-            type: 'gradient',
-            gradient: {
-                shade: 'light',
-                shadeIntensity: 0.05,
-                inverseColors: true,
-                opacityFrom: 0.85,
-                opacityTo: 0.85,
-                stops: [0, 100],
-            }},
-            dataLabels: {
-                enabled: true,
-                formatter: function (val) {
-                    return Math.round(val); // Round to nearest integer
-                },
-                style: {
-                    fontSize: '14px',
-                    fontFamily: 'Raleway',
-                    fontWeight: 'bold',
-                    
-                },
-                dropShadow: {
-                    enabled: false  // Disable drop shadow on data labels
-                }
-            }
-    };
-
-    var likeCommentRatioChart = new ApexCharts(document.querySelector("#like-comment-ratio-chart"), optionsLikeCommentRatio);
-    likeCommentRatioChart.render();
-    likeCommentRatioChart.updateOptions({
-    });
-
-   // Assuming jsonData.top_5_comments_analysis_dist is already defined as shown above
-   var emotionData = jsonData.emotion_counts;
-
-   
-   const emotionDatasliced = Object.fromEntries(
- Object.entries(emotionData).slice(0, 5)
-);
-
-   var emotions = Object.keys(emotionDatasliced);
-   var emotionValues = Object.values(emotionDatasliced).map(value => Math.round(value * 100));  // Convert to percentages
-
-
   
-  
-   var options = {
-       chart: {
-           type: 'bar',
-           height: 300,
-           width: 650,
-           foreColor: '#fff',        
-           // white text for the dark theme,
-           background: 'transparent'
+  };
 
-       },
-       plotOptions: {
-           bar: {
-               horizontal: true,
-               distributed: true, 
-               columnWidth: '50%', 
-               endingShape: 'rounded' ,
-               dataLabels: {
-                   position: 'top' // Ensuring data labels appear on top of the bars
-               }
-           }
-       },
-       
-       theme: {
-           mode: 'dark',
-           palette: 'palette1'
-       },
-       dataLabels: {
-           enabled: false
-       },
-       series: [{
-           name: 'Emotion Percentage',
-           data: emotionValues
-       }],
-       xaxis: {
-           categories: emotions,
-           
-       },
-       grid: {
-           show: false
-       },
-       legend: {
-           show: false
-       },
-       fill: {
-           type: 'gradient',
-           gradient: {
-               shade: 'light',
-               type: "vertical",
-               shadeIntensity: 0.5,
-               gradientToColors: undefined, 
-               inverseColors: true,
-               opacityFrom: 0.85,
-               opacityTo: 0.85,
-               stops: [0, 100]
-           }
-       },
-       stroke: {
-       lineCap: 'round' // This gives a slight radius effect on the chart
-   }
-   };
+  // Render the line chart
+  var lineChart = new ApexCharts(document.querySelector("#lineChart"), lineChartOptions);
+  lineChart.render();
+  ////
+  var radialOptions = {
+    series: [75], // Replace 75 with your actual percentage value
+    chart: {
+      height: 350,
+      type: 'radialBar',
+    },
+    plotOptions: {
+      radialBar: {
+        hollow: {
+          size: '70%',
+        },
+        dataLabels: {
+          name: {
+            show: false,
+          },
+          value: {
+            formatter: function (val) {
+              return parseInt(val) + "%";
+            },
+            color: 'white',
+            fontSize: '36px',
+            show: true,
+          }
+        }
+      }
+    },
+    labels: ['Positive Comments'],
+    colors: ['#20E647'], // Color for the radial bar
+    stroke: {
+      lineCap: 'round',
+    },
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shade: 'light',
+        type: 'horizontal',
+        shadeIntensity: 0.5,
+        gradientToColors: ['#87D4F9'],
+        inverseColors: true,
+        opacityFrom: 1,
+        opacityTo: 1,
+        stops: [0, 100],
+      },
+    },
+  };
 
-   var emotions_chart = new ApexCharts(document.querySelector("#sentiment-chart"), options);
-   emotions_chart.render();
-   emotions_chart.updateOptions({
-});
+  // Render the Radial Bar Chart
+  new ApexCharts(document.querySelector("#positiveCommentsChart"), radialOptions).render();
 
-
-
-    
 </script>
 
 <script>
@@ -542,12 +683,12 @@
     function drawWordCloud(selector, words) {
         // Create a function to generate random sizes for the words
         var getRandomSize = function() {
-            return 10 + Math.random() * 30; // Random size between 10 and 50
+            return 10 + Math.random() * 10; // Random size between 10 and 50
         };
     
         // Set up the word cloud layout
         var layout = d3.layout.cloud()
-            .size([800, 350]) // The size of the word cloud
+            .size([400, 300]) // The size of the word cloud
             .words(words.map(function(d) {
                 return {text: d, size: getRandomSize()}; // Assign random size to each word
             }))
@@ -585,43 +726,16 @@
 
 // Define your array of words for each channel
 //var channelsTags = jsonData.topTags
-//var channelsTags = [['I','love', 'you', 'to', 'the','moon', 'and','back', 'Nana', 'Mwaaah','best', 'GP','Qusasa4Life']]
+var channelsTags = [tags_list]
 
-var channelsTags = jsonData.video_info_dict.unique_tags
-console.log(channelsTags)
 // Call the drawWordCloud function for each channel
-drawWordCloud("#wordcloud0", channelsTags);
-
+channelsTags.forEach(function(tags, i) {
+    drawWordCloud("#wordcloud" + (i), tags);
+});
 
 </script>
 
-<script>
-    function animateNumber(element, start, end, duration) {
-        let startTime = null;
-    
-        function animation(currentTime) {
-            if (startTime === null) startTime = currentTime;
-            const timeElapsed = currentTime - startTime;
-            const progress = Math.min((timeElapsed / duration), 1); // Ensure progress doesn't exceed 1
-    
-            element.textContent = Math.floor(progress * (end - start) + start);
-    
-            if (timeElapsed < duration) {
-                requestAnimationFrame(animation);
-            }
-        }
-    
-        requestAnimationFrame(animation);
-    }
-    
-    const numberElements = document.querySelectorAll('.number');
-    
-    numberElements.forEach(numberElement => {
-        const targetValue = parseInt(numberElement.getAttribute('data-target'), 10);
-        animateNumber(numberElement, 0, targetValue, 4000); // 2000ms = 2 seconds for animation
-    });
-    
-</script>
+
 
 
 <script>$(document).ready(function(){

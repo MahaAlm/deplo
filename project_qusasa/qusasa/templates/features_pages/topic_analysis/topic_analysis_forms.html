@@ -17,6 +17,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{% static 'qusasa/css/cometitive_analysis_form.css' %}">
     <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
     <style>
         @keyframes float {
             0%, 100% {
@@ -44,6 +46,12 @@
             display: none;
         }
 
+        .filter-fields select {
+            width: 50%;
+             margin: 0; 
+            color: black !important;
+            padding: 2rem !important;
+        }
     </style>
     
 
@@ -54,24 +62,50 @@
 
 
     <div class="content">
-            <form id="video-url-form" action="{% url 'video_analysis' %}" method="post">
+            <form id="search-query-form" action="{% url 'topic_analysis' %}" method="post">
                 {% csrf_token %}
                 {{ wizard.management_form }}
                 {{ form.media }}
 
-                    <h1>Help us to identify you!</h1>
-                    <h3>to be able to highlight your {{ wizard.form.input_text.label }} in our analysis, please provide us with your {{ wizard.form.input_text.label }} link...</h3>
-                    <div class="channel-playlist-con">
-                        <p style="font-weight: 600;">your {{ wizard.form.input_text.label }} link:</p>
-                        <br>
-                        <div class="channel-playlist-input">
-                            {{ wizard.form.video_url }}
+                <div class="form-container">
+                    <div class="category-container">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <div class="category-text">
+                            <h1 class="p-head">Search channels for me</h1>
+                            <h3>if you want to look through similar channels to you through a search, you can click here.</h3>
                         </div>
                     </div>
                     
+                    <div class="category-field">
+                        <h3>Input a search query:</h3>
+                        {{ wizard.form.search_query }}
+                    </div>
+                        
 
-                    <button type="submit" class="btn btn-primary">next <i class="fa-solid fa-circle-chevron-right"></i></button>
-                    <button type="button" class="btn btn-secondary" onclick="history.back()"><i class="fa-solid fa-circle-chevron-left"></i> Back</button>
+
+                                <h3 id="filter-toggle">Filter your results <i class="fa-solid fa-caret-down"></i></h3>
+                                <div class="filter-fields" style="display: none;">
+                                    <p>Filter the results, based on the Priority of search, if you want to limit it to a specific region, or get results of a specific language.</p>
+                                    <div class="select-fields">
+                                        <p>
+                                            <label for="id_3-order">Priority of Search:</label>
+                                            {{ wizard.form.order }}
+                                        </p>
+                                        <p>
+                                            <label for="id_3-region_code">Region:</label>
+                                            {{ wizard.form.region_code }}
+                                        </p>
+                                        <p>
+                                            <label for="id_3-language">Language:</label>
+                                            {{ wizard.form.language }}
+                                        </p>
+                                    </div>
+                                </div>
+                </div>
+                    
+
+                <button type="submit" class="btn btn-primary">next <i class="fa-solid fa-circle-chevron-right"></i></button>
+                <button type="button" class="btn btn-secondary" onclick="history.back()"><i class="fa-solid fa-circle-chevron-left"></i> Back</button>
 
                           
             </form>
@@ -89,102 +123,25 @@
     </div>
 
     <script>
-        document.getElementById('video-url-form').addEventListener('submit', function() {
+        document.getElementById('search-query-form').addEventListener('submit', function() {
             // Show the loading spinner/message when the form is submitted
             document.getElementById('loading-spinner').style.display = 'block';
-            document.getElementById('video-url-form').style.visibility = 'hidden';
-            document.getElementById('video-url-form').style.display = 'none';
+            document.getElementById('search-query-form').style.visibility = 'hidden';
+            document.getElementById('search-query-form').style.display = 'none';
             
         });
     </script>
 
-    <script>
-        // Wait for the DOM to load
-        document.addEventListener('DOMContentLoaded', (event) => {
-          // Get all the custom-checkbox divs
-          const checkBoxContainers = document.querySelectorAll('.custom-checkbox');
-          
-          // Add click event listener to each container
-          checkBoxContainers.forEach(container => {
-            container.addEventListener('click', function() {
-              // Get the first input element within this container which should be the checkbox
-              const checkbox = this.querySelector('input[type="checkbox"]');
-              // Toggle the checked state of the checkbox
-              checkbox.checked = !checkbox.checked;
-        
-              // Change background of the .custom-checkbox
-              if (checkbox.checked) {
-                this.style.background = 'linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.984))';
-              } else {
-                this.style.background = 'linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.7))'; // Resets to default
-              }
-        
-              // Manually trigger the change event on the checkbox
-              // This is necessary if other scripts rely on the 'change' event of checkboxes
-              const changeEvent = new Event('change');
-              checkbox.dispatchEvent(changeEvent);
-            });
-        
-            
-          });
-        });
-      </script>
+    
       
-        
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var channelContainer = document.getElementById('channel-inputs-container');
-            var addButton = document.getElementById('add-channel-btn');
-            var maxInputs = 4;
-            var inputCount = 1;
-        
-            addButton.addEventListener('click', function () {
-                if (inputCount < maxInputs) {
-                    inputCount++;
-                    var newInput = document.createElement('p');
-                    newInput.classList.add('channel-input');
-                    newInput.innerHTML = '<label>Channel URL ' + inputCount + ':</label>' +
-                        '<input type="url" name="3-channel_url_' + inputCount + '" id="id_3-channel_url_' + inputCount + '">' +
-                        '<button type="button" class="remove-channel-btn">-</button>';
-                    channelContainer.appendChild(newInput);
-                    addButton.disabled = inputCount >= maxInputs;
-                }
-            });
-        
-            // Event delegation for remove buttons
-            channelContainer.addEventListener('click', function (e) {
-                if (e.target && e.target.classList.contains('remove-channel-btn')) {
-                    var parent = e.target.parentNode;
-                    channelContainer.removeChild(parent);
-                    inputCount--;
-                    // If we remove an input, we should re-enable the add button if it was disabled.
-                    addButton.disabled = false;
-                    // Update labels of all channel URLs
-                    updateLabels();
-                }
-            });
-        
-            function updateLabels() {
-                var allInputs = channelContainer.querySelectorAll('.channel-input');
-        allInputs.forEach((input, index) => {
-            var label = input.querySelector('label');
-            var inputField = input.querySelector('input');
-            label.textContent = 'Channel URL ' + (index + 2) + ':';
-            inputField.name = '3-channel_url_' + (index + 2);
-            inputField.id = 'id_3-channel_url_' + (index + 2);
-        });
-            }
-        });
-        
-    </script>
+    
 
     <script>
         $(document).ready(function() {
-            $('#id_3-category').select2();
-            $('#id_3-order').select2();
-            $('#id_3-region_code').select2();
-            $('#id_3-language').select2();
+            $('#id_0-category').select2();
+            $('#id_0-order').select2();
+            $('#id_0-region_code').select2();
+            $('#id_0-language').select2();
         });
 
         $(document).ready(function() {
@@ -195,41 +152,6 @@
         
     </script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var currentStep = "{{ wizard.steps.current }}";
-            var choiceBoxes = document.querySelectorAll('.choice-box');
-            //var submitButton = document.querySelector('.btn-primary');
-            
-             // Disable the button on initial load
-          //submitButton.disabled = true;
-          //submitButton.style.background = 'grey';
-          //submitButton.style.cursor = 'default';
-          
-            choiceBoxes.forEach(function(box) {
-                box.addEventListener('click', function() {
-                    // Remove 'selected' class from all boxes
-                    choiceBoxes.forEach(function(box) { box.classList.remove('selected'); });
-                    // Add 'selected' class to clicked box
-                    this.classList.add('selected');
-    
-                    // Update the hidden input value based on the step
-                    if(currentStep === '0') {
-                        console.log(currentStep)
-                        
-                        document.getElementById('id_0-analysis_type').value = this.dataset.value;
-                    } else if (currentStep === '2') {
-                        console.log(currentStep)
-                        document.getElementById('id_2-choice').value = this.dataset.value;
-                    }
-                    // Enable the submit button when a box is selected
-                    //submitButton.disabled = false;
-                    //submitButton.style.background = 'linear-gradient(#379eac, #06a4b9)';
-                    //submitButton.style.cursor = 'pointer';
-                });
-            });
-        });
-    </script>
     
     
         
