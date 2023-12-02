@@ -59,8 +59,8 @@
             {{ wizard.management_form }}
             {{ form.media }}
         
-            <h1>Welcome to channel analysis!</h1>
-            <h3>Input the channel URL you want to analyse, and we will be there for you in a second...</h3>
+            <h1>Welcome to Channel Analysis!</h1>
+            <h3>Got a YouTube channel to analyze? Just drop the channel Link here, and we'll provide you with valuable insights in no time.</h3>
             <div class="channel-playlist-con">
                 {% if wizard.form.channel_url.errors %}
                             <div class="error-msgs">
@@ -68,8 +68,8 @@
                                         {{ wizard.form.channel_url.errors.as_text }}
                                     </div>
                             </div>
-                    {% endif %}
-                <p style="font-weight: 600; margin: 0;">the channel link:</p>
+                {% endif %}
+                <p style="font-weight: 600; margin: 0;">Youtube Channel Link:</p>
                 <br>
                 <div class="channel-playlist-input">
                     

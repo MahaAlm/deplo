@@ -61,7 +61,12 @@
         
                         <div class="output">
                             <a href="{% url 'topic_analysis_redo' history.id %}"><button style="width: 20rem"><i class="fa-solid fa-circle-play" style="color: white; margin-right: 0.5rem;"></i> Redo this template</button></a>
-                        </div>
+                            <a href="{% url 'delete_history' 'topic' history.id %}" onclick="return confirm('Are you sure you want to delete this template?');">
+                              <button style="width: 20rem; margin-top: 1rem; background: linear-gradient(rgb(124, 36, 36), rgb(178, 96, 96))">
+                                <i class="fa-solid fa-trash" style="color: white; margin-right: 0.5rem;"></i> Delete this template
+                              </button>
+                          </a>
+                          </div>
                     </div>                </div>
             </div>
             

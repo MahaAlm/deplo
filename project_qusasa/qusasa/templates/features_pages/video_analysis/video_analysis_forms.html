@@ -59,12 +59,20 @@
                 {{ wizard.management_form }}
                 {{ form.media }}
 
-                    <h1>Help us to identify you!</h1>
-                    <h3>to be able to highlight your {{ wizard.form.input_text.label }} in our analysis, please provide us with your {{ wizard.form.input_text.label }} link...</h3>
+                    <h1>Welcome to Video Analysis!</h1>
+                    <h3>Ready to analyze a video? Just enter the URL below. We'll handle the analysis, transcription, and summarization for you.</h3>
                     <div class="channel-playlist-con">
-                        <p style="font-weight: 600;">your {{ wizard.form.input_text.label }} link:</p>
+                        {% if wizard.form.video_url.errors %}
+                            <div class="error-msgs">
+                                    <div class="error"><i class="fas fa-exclamation-circle"></i>
+                                        {{ wizard.form.video_url.errors.as_text }}
+                                    </div>
+                            </div>
+                        {% endif %}
+                        <p style="font-weight: 600;">Enter the Youtube Video URL:</p>
                         <br>
                         <div class="channel-playlist-input">
+
                             {{ wizard.form.video_url }}
                         </div>
                     </div>

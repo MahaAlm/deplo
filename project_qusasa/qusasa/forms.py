@@ -2,6 +2,24 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser
 
+import re
+
+def is_valid_channel_url(url):
+    # Regular expression for a YouTube channel URL
+    channel_patterns = [
+        r'^https?://www\.youtube\.com/channel/[A-Za-z0-9_-]+$',
+        r'^https?://www\.youtube\.com/c/[A-Za-z0-9_-]+$',
+        r'^https?://www\.youtube\.com/user/[A-Za-z0-9_-]+$',
+        r'^https?://www\.youtube\.com/(c/|user/|@)([a-zA-Z0-9_-]+)'
+
+    ]
+    return any(re.match(pattern, url) for pattern in channel_patterns)
+
+def is_valid_playlist_url(url):
+    # This regex covers more variations in YouTube playlist URLs, including additional parameters
+    youtube_playlist_pattern = r'^(https?://)?(www.youtube.com|youtube.com)/playlist\?list=[a-zA-Z0-9_-]+(&.*)?$'
+    return re.match(youtube_playlist_pattern, url) is not None
+
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={'class': 'form-control'}))
     first_name = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -63,6 +81,24 @@ class CompetitiveAnalysisTypeForm(forms.Form):
 class myChannelPlaylistInputForm(forms.Form):
     input_text = forms.CharField(label='', max_length=255)  # Initially leave label empty
 
+    def __init__(self, *args, **kwargs):
+        # Extract the analysis_type argument if provided
+        self.analysis_type = kwargs.pop('analysis_type', None)
+        super(myChannelPlaylistInputForm, self).__init__(*args, **kwargs)
+
+    def clean_input_text(self):
+        print('cleaining input text')
+        print(self.analysis_type)
+        input_text = self.cleaned_data['input_text']
+        if self.analysis_type == 'channel':
+            # Validate as channel URL
+            if not is_valid_channel_url(input_text):
+                raise ValidationError("Please enter a valid YouTube channel URL.")
+        elif self.analysis_type == 'playlist':
+            # Validate as playlist URL
+            if not is_valid_playlist_url(input_text):
+                raise ValidationError("Please enter a valid YouTube playlist URL.")
+        return input_text
 
 COUNTRY_CHOICES = [
     ('', '---------'),
@@ -397,6 +433,12 @@ VIDEO_CATEGORIES = [
 ]
 
 class YouTubeSearchForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        # Extract the analysis_type argument if provided
+        self.analysis_type = kwargs.pop('analysis_type', None)
+        super(YouTubeSearchForm, self).__init__(*args, **kwargs)
+
+        
     search_query = forms.CharField(label='Search Query', max_length=100, required=True)
     order = forms.ChoiceField(label='Order', choices=ORDER_CHOICES, required=False, initial='relevance')
     region_code = forms.ChoiceField(label='Region Code', choices=COUNTRY_CHOICES, required=False)
@@ -404,17 +446,50 @@ class YouTubeSearchForm(forms.Form):
 
 
 class YouTubeCategorySearchForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        # Extract the analysis_type argument if provided
+        self.analysis_type = kwargs.pop('analysis_type', None)
+        super(YouTubeCategorySearchForm, self).__init__(*args, **kwargs)
+
     category = forms.ChoiceField(label='Category', choices=VIDEO_CATEGORIES, required=True)
     order = forms.ChoiceField(label='Order', choices=ORDER_CHOICES, required=False, initial='relevance')
     region_code = forms.ChoiceField(label='Region Code', choices=COUNTRY_CHOICES, required=False)
     language = forms.ChoiceField(label='Language', choices=LANGUAGE_CHOICES, required=False)
 
 class ChannelsListInput(forms.Form):
+    
+    def __init__(self, *args, **kwargs):
+        # Extract the analysis_type argument if provided
+        self.analysis_type = kwargs.pop('analysis_type', None)
+        super(ChannelsListInput, self).__init__(*args, **kwargs)
+
+    
     channel_url_1 = forms.URLField(label='Channel URL 1', required=True)
     channel_url_2 = forms.URLField(label='Channel URL 2', required=False)
     channel_url_3 = forms.URLField(label='Channel URL 3', required=False)
     channel_url_4 = forms.URLField(label='Channel URL 4', required=False)
 
+    
+    def clean_channel_url_1(self):
+        return self.clean_url('channel_url_1', 1)
+
+    def clean_channel_url_2(self):
+        return self.clean_url('channel_url_2', 2)
+
+    def clean_channel_url_3(self):
+        return self.clean_url('channel_url_3', 3)
+
+    def clean_channel_url_4(self):
+        return self.clean_url('channel_url_4', 4)
+
+
+    def clean_url(self, field_name, field_number):
+        url = self.cleaned_data.get(field_name)
+        if url and self.analysis_type == 'channel' and not is_valid_channel_url(url):
+            raise ValidationError(f"Please enter a valid YouTube channel URL for Channel {field_number}.")
+        elif url and self.analysis_type == 'playlist' and not is_valid_playlist_url(url):
+            raise ValidationError(f"Please enter a valid YouTube playlist URL for Playlist {field_number}.")
+        return url
 
 CHOICES = [
     ('input_list', 'Input a list of channels'),
@@ -423,8 +498,14 @@ CHOICES = [
 ]
 
 class FindInitialChoiceForm(forms.Form):
+    
     choice = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect, label="Select an option")
     
+    def __init__(self, *args, **kwargs):
+        # Extract the analysis_type argument if provided
+        self.analysis_type = kwargs.pop('analysis_type', None)
+        super(FindInitialChoiceForm, self).__init__(*args, **kwargs)
+
 
 OUTPUT_CHOICES = [
     ('dataset', 'A CSV data set'),
@@ -444,7 +525,15 @@ import re
 
 class VideoAnalysisInputForm(forms.Form):
     video_url = forms.CharField(label='', max_length=255)  # Initially leave label empty
-
+    
+    def clean_video_url(self):
+        video_url = self.cleaned_data['video_url']
+        youtube_video_pattern = r'^(https?://)?(www.youtube.com|youtube.com|youtu.be)/watch\?v=[a-zA-Z0-9_-]+(&.*)?$'
+        
+        if not re.match(youtube_video_pattern, video_url):
+            raise ValidationError("Please enter a valid YouTube video URL.")
+        return video_url
+    
 class PlaylistAnalysisInputForm(forms.Form):
     playlist_url = forms.URLField(label='Playlist URL', required=True)
 
@@ -461,9 +550,7 @@ class ChannelAnalysisInputForm(forms.Form):
 
     def clean_channel_url(self):
         channel_url = self.cleaned_data['channel_url']
-        youtube_channel_pattern = r'https://www\.youtube\.com/(c/|channel/|user/|@)?[\w-]+'
-        
-        if not re.match(youtube_channel_pattern, channel_url):
+        if(not is_valid_channel_url(channel_url)):       
             raise ValidationError("Please enter a valid YouTube channel URL.")
         return channel_url
     
@@ -474,3 +561,11 @@ class VideoRetrivingInputForm(forms.Form):
     order = forms.ChoiceField(label='Order', choices=ORDER_CHOICES, required=False, initial='relevance')
     region_code = forms.ChoiceField(label='Region Code', choices=COUNTRY_CHOICES, required=False)
     language = forms.ChoiceField(label='Language', choices=LANGUAGE_CHOICES, required=False)
+
+    def clean_search_query(self):
+        video_url = self.cleaned_data['search_query']
+        youtube_video_pattern = r'^(https?://)?(www.youtube.com|youtube.com|youtu.be)/watch\?v=[a-zA-Z0-9_-]+(&.*)?$'
+        
+        if not re.match(youtube_video_pattern, video_url):
+            raise ValidationError("Please enter a valid YouTube video URL.")
+        return video_url

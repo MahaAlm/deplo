@@ -141,6 +141,7 @@ class CompetitiveAnalysisWizard(SessionWizardView):
     form_list = [CompetitiveAnalysisTypeForm, myChannelPlaylistInputForm, FindInitialChoiceForm, ChannelsListInput]
     template_name = 'features_pages/competitive_analysis/competitive_analysis.html'
     
+    
     def get_form_initial(self, step):
         initial = super().get_form_initial(step)
         history_id = self.kwargs.get('history_id')
@@ -171,13 +172,7 @@ class CompetitiveAnalysisWizard(SessionWizardView):
                         initial.update({f'channel_url_{i+1}': url})
         return initial
     
-    def get_form(self, step=None, data=None, files=None):
-        history_id = self.kwargs.get('history_id')
-        if history_id and step is None:
-            # If it's a redo, skip to the last step
-            step = self.steps.last
 
-        return super().get_form(step, data, files)
     
     def get_form(self, step=None, data=None, files=None):
         form = super().get_form(step, data, files)
@@ -194,6 +189,27 @@ class CompetitiveAnalysisWizard(SessionWizardView):
                 self.form_list[step] = YouTubeCategorySearchForm 
                 form = YouTubeCategorySearchForm(data, files, prefix=self.get_form_prefix(step, YouTubeCategorySearchForm))
         return form
+    
+    def get_form_kwargs(self, step=None):
+        kwargs = super().get_form_kwargs(step)
+        if step in ['1', '2', '3']:  # Include all steps after the initial selection
+            analysis_type = self.request.session.get('analysis_type')
+            if analysis_type:
+                kwargs['analysis_type'] = analysis_type
+            else:
+                # Redirect to step 0 if analysis_type is missing
+                self.storage.current_step = '0'
+                return self.render_goto_step('0')
+        return kwargs
+    
+    def post(self, *args, **kwargs):
+        if self.steps.current == '0' and '0-analysis_type' in self.request.POST:
+            # Store analysis type in the session after completing step 0
+            analysis_type = self.request.POST['0-analysis_type']
+            self.request.session['analysis_type'] = analysis_type
+        return super().post(*args, **kwargs)
+
+    
 
 
     def get_context_data(self, form, **kwargs):
@@ -1724,3 +1740,27 @@ def video_retriving_detail(request, history_id):
 def competitive_analysis_detail(request, history_id):
     history = get_object_or_404(CompetitiveAnalysisHistory, pk=history_id, user=request.user)
     return render(request, 'features_pages/competitive_analysis/competitive_analysis_detail.html', {'history': history})
+
+from django.shortcuts import redirect, get_object_or_404
+
+def get_model_by_type(history_type):
+    if history_type == 'video':
+        return VideoAnalysisHistory
+    elif history_type == 'topic':
+        return TopicAnalysisHistory
+    elif history_type == 'playlist':
+        return PlaylistAnalysisHistory
+    elif history_type == 'channel':
+        return ChannelAnalysisHistory
+    elif history_type == 'video_retrieving':
+        return VideoRetrievingHistory
+    elif history_type == 'competitive':
+        return CompetitiveAnalysisHistory
+    else:
+        raise ValueError("Unknown history type")
+
+def delete_history(request, history_type, history_id):
+    model = get_model_by_type(history_type)
+    history = get_object_or_404(model, pk=history_id, user=request.user)
+    history.delete()
+    return redirect('base')  # Redirect to an appropriate page

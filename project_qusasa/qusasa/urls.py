@@ -73,7 +73,8 @@ urlpatterns = [
     path('video_retriving/output/', views.video_retriving_output_view, name='video_retriving_output'),
     path('dataset_zipped_output_retriving/', views.dataset_zipped_output_retriving, name='dataset_zipped_output_retriving'), 
     path('topic-analysis/<int:history_id>/', views.topic_analysis_detail, name='topic_analysis_detail'),
-  
+      path('delete_history/<str:history_type>/<int:history_id>/', views.delete_history, name='delete_history'),
+
 
 
 

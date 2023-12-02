@@ -80,6 +80,15 @@
             .topic {
                 width: 150%;
             }
+
+            .error {
+                width: 100%
+            }
+
+            .error-msgs {
+                width: 80%
+                
+            }
     </style>
     
 
@@ -99,14 +108,36 @@
                 <div class="category-container">
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <div class="category-text">
-                        <h1 class="p-head">Retrive Videos for me</h1>
-                        <h3>Paste the video URL that you want to retrive the related videos from, then specify the number of videos you want to retrieve.</h3>
+                        <h1 class="p-head">Retrieve Related Videos</h1>
+                        <h3>Enter the URL of a video to find related videos. Specify how many videos you'd like to see and apply filters for more targeted results.</h3>
                     </div>
                 </div>
+
+                {% if wizard.form.non_field_errors %}
+                            <div class="error-msgs">
+                                {% for error in wizard.form.non_field_errors %}
+                                    <div class="error"><i class="fas fa-exclamation-circle"></i> {{ error }}</div>
+                                {% endfor %}
+                                    </div>
+                        {% endif %}
+
+                        {% for field in wizard.form %}
+                            {% if field.errors %}
+                                        <div class="error-msgs">
+                                            {% for error in field.errors %}
+                                                <div class="error"><i class="fas fa-exclamation-circle"></i> {{ error }}</div>
+                                            {% endfor %}
+                                        </div>
+                            {% endif %}
+                            
+                        {% endfor %}
                 
                 <div class="main-inputs">
+                    
                     <div class="category-field topic" style="margin-right: 3rem;">
-                        <h3>Input a video URL:</h3>
+                        
+
+                        <h3>Youtube Video URL:</h3>
                         {{ wizard.form.search_query }}
                     </div>
                     <br>
@@ -126,7 +157,7 @@
 
                             <h3 id="filter-toggle">Filter your results <i class="fa-solid fa-caret-down"></i></h3>
                             <div class="filter-fields" style="display: none;">
-                                <p>Filter the results, based on the Priority of search, if you want to limit it to a specific region, or get results of a specific language.</p>
+                                <p>You can provide us with search priority, region, and language to help get exactly for what you want.</p>
                                 <div class="select-fields">
                                     <p>
                                         <label for="id_3-order">Priority of Search:</label>

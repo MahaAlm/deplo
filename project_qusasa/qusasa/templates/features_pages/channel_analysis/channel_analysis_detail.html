@@ -39,7 +39,7 @@
       <div class="history">
         <div class="header">
             <div class="feature-head">
-                    <img src="{% static 'qusasa/images/feature_1.webp'  %}" style="object-fit: contain; max-width: 22rem;" alt="">
+                    <img src="{% static 'qusasa/images/channel_analysis.webp'  %}" style="object-fit: contain; max-width: 22rem;" alt="">
                 <div class="feature-text">
                   <h1>Channel Analysis</h1>
                   <p>This feature offers an in-depth analysis of your channel, providing insights into its overall performance, identifying the most and least viewed videos and playlists, and assessing audience engagement and content comprehension.</p>
@@ -59,7 +59,12 @@
         
                         <div class="output">
                             <a href="{% url 'channel_analysis_redo' history.id %}"><button style="width: 20rem"><i class="fa-solid fa-circle-play" style="color: white; margin-right: 0.5rem;"></i> Redo this template</button></a>
-                        </div>
+                            <a href="{% url 'delete_history' 'channel' history.id %}" onclick="return confirm('Are you sure you want to delete this template?');">
+                              <button style="width: 20rem; margin-top: 1rem; background: linear-gradient(rgb(124, 36, 36), rgb(178, 96, 96))">
+                                <i class="fa-solid fa-trash" style="color: white; margin-right: 0.5rem;"></i> Delete this template
+                              </button>
+                          </a>
+                          </div>
                     </div>                </div>
             </div>
             

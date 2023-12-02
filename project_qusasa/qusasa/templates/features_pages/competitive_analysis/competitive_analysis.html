@@ -44,6 +44,10 @@
             display: none;
         }
 
+        .error-msgs {
+            width: 100%;
+        }
+
     </style>
     
 
@@ -63,7 +67,7 @@
                 {% if wizard.steps.current == '0' %}
                     <input type="hidden" id="id_0-analysis_type" name="0-analysis_type" value="{{ wizard.form.analysis_type.value|default_if_none:'' }}" />
                     <h1>Welcome to Competitive Analysis</h1>
-                    <p class="the_p">choose What do you want to compare...</p>
+                    <p class="the_p">Start by choosing the type of analysis you'd like to perform, do you want to compare between Channels or Playlists?</p>
                     <div class="choices">
                     <div class="choice-box" data-value="channel">
                         <img src="{% static 'qusasa/images/channel icon.png' %}" alt="Channels">
@@ -83,10 +87,28 @@
                 
 
                 {% if wizard.steps.current == '1' %}
-                    <h1>Help us to identify you!</h1>
-                    <h3>to be able to highlight your {{ wizard.form.input_text.label }} in our analysis, please provide us with your {{ wizard.form.input_text.label }} link...</h3>
+                    <h1>Identify Your Main {{ wizard.form.analysis_type}}</h1>
+                    <h3>Provide us with your main {{ wizard.form.analysis_type}} Link. This {{wizard.form.input_text.label}} will be the primary subject for our comparative analysis. Please provide its URL below.</h3>
                     <div class="channel-playlist-con">
-                        <p style="font-weight: 600;">your {{ wizard.form.input_text.label }} link:</p>
+                        {% if wizard.form.non_field_errors %}
+                            <div class="error-msgs">
+                                {% for error in wizard.form.non_field_errors %}
+                                    <div class="error"><i class="fas fa-exclamation-circle"></i> {{ error }}</div>
+                                {% endfor %}
+                                    </div>
+                        {% endif %}
+
+                        {% for field in wizard.form %}
+                            {% if field.errors %}
+                                        <div class="error-msgs">
+                                            {% for error in field.errors %}
+                                                <div class="error"><i class="fas fa-exclamation-circle"></i> {{ error }}</div>
+                                            {% endfor %}
+                                        </div>
+                            {% endif %}
+                            
+                        {% endfor %}
+                        <p style="font-weight: 600;">Main {{ wizard.form.analysis_type}} link:</p>
                         <br>
                         <!-- Show the generic input form -->
                         <div class="channel-playlist-input">
@@ -101,8 +123,8 @@
 
                 {% if wizard.steps.current == '2' %}
                 <div class="options-text">
-                    <h2>Who are your competitors?</h2>
-                    <p>Choose one of the below choices for us to learn who your competitors are...</p>
+                    <h2>Identify Your Competitors</h2>
+                    <p>Select how you'd like to identify the other {{ wizard.form.analysis_type}}s to compare to.</p>
                 </div>
                     
                     <!-- Your code to display the FindInitialChoiceForm form -->
@@ -111,11 +133,11 @@
                     <!-- {{ wizard.form.as_p }} -->
 
                     <div class="options choices">
-                        <div class="options-box choice-box step-2-choice-box" data-value="input_list">
+                        <div class="options-box choice-box step-2-choice-box" data-value="input_list" style="margin-top: 5rem;">
                             <i class="fa-solid fa-address-book" style="color: #ffffff;"></i>
                             <div class="box-text">
-                                <p class="p-head">I have a list of channels</p>
-                                <p>if you have some specific channels in mind, click here to input each channel url.</p>
+                                <p class="p-head">Input a List</p>
+                                <p>If you have specific {{ wizard.form.analysis_type}}s in mind, enter their URLs here.</p>
                             </div>
                             
                         </div>
@@ -123,8 +145,8 @@
                         <div class="options-box choice-box step-2-choice-box" data-value="search">
                             <i class="fa-solid fa-magnifying-glass"></i>
                             <div class="box-text">
-                                <p class="p-head">Search channels for me</p>
-                                <p>if you want to look through similar channels to you through a search, you can click here.</p>
+                                <p class="p-head">Search {{ wizard.form.analysis_type}}s for me</p>
+                                <p>Let us search for similar {{ wizard.form.analysis_type}}s based on your search criteria.</p>
                             </div>
                             
                         </div>
@@ -143,13 +165,31 @@
                                 <div class="category-container">
                                     <i class="fa-solid fa-address-book" style="color: #ffffff;"></i>
                                     <div class="category-text">
-                                        <h1 class="p-head">Input a list of channels</h1>
-                                        <h3>input up to 5 channels from your choice so we can target them in our analysis.</h3>
+                                        <h1 class="p-head">Input a list of {{ request.session.analysis_type}}s</h1>
+                                        <h3>Input up to 4 {{request.session.analysis_type}}s from your choice so we can target them in our analysis.</h3>
                                     </div>
                                 </div>
                                 <div id="channel-inputs-container" class="channel-inputs-container">
+                                    {% if wizard.form.non_field_errors %}
+                            <div class="error-msgs">
+                                {% for error in wizard.form.non_field_errors %}
+                                    <div class="error"><i class="fas fa-exclamation-circle"></i> {{ error }}</div>
+                                {% endfor %}
+                                    </div>
+                        {% endif %}
+
+                        {% for field in wizard.form %}
+                            {% if field.errors %}
+                                        <div class="error-msgs">
+                                            {% for error in field.errors %}
+                                                <div class="error"><i class="fas fa-exclamation-circle"></i> {{ error }}</div>
+                                            {% endfor %}
+                                        </div>
+                            {% endif %}
+                            
+                        {% endfor %}
                                     <p>
-                                        <label for="id_3-channel_url_1">Channel URL 1:</label>
+                                        <label for="id_3-channel_url_1">{{ request.session.analysis_type }} URL 1:</label>
                                         <input type="url" name="3-channel_url_1" required="" id="id_3-channel_url_1">
                                         <button type="button" id="add-channel-btn">+</button>
                                         <button type="button" class="remove-channel-btn" style="display: none;">-</button>
@@ -172,7 +212,7 @@
                                 <i class="fa-solid fa-magnifying-glass"></i>
                                 <div class="category-text">
                                     <h1 class="p-head">Search channels for me</h1>
-                                    <h3>if you want to look through similar channels to you through a search, you can click here.</h3>
+                                    <h3>Define your search query and filters to find comparable channels or playlists.</h3>
                                 </div>
                             </div>
                             
@@ -344,7 +384,9 @@
         });
       </script>
       
-        
+      <script type="text/javascript">
+        const analysis_type = '{{ request.session.analysis_type }}';
+    </script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -358,7 +400,7 @@
                     inputCount++;
                     var newInput = document.createElement('p');
                     newInput.classList.add('channel-input');
-                    newInput.innerHTML = '<label>Channel URL ' + inputCount + ':</label>' +
+                    newInput.innerHTML = '<label>' + analysis_type + ' URL ' + inputCount + ':</label>' +
                         '<input type="url" name="3-channel_url_' + inputCount + '" id="id_3-channel_url_' + inputCount + '">' +
                         '<button type="button" class="remove-channel-btn">-</button>';
                     channelContainer.appendChild(newInput);
@@ -384,7 +426,7 @@
         allInputs.forEach((input, index) => {
             var label = input.querySelector('label');
             var inputField = input.querySelector('input');
-            label.textContent = 'Channel URL ' + (index + 2) + ':';
+            label.textContent = analysis_type + ' URL ' + (index + 2) + ':';
             inputField.name = '3-channel_url_' + (index + 2);
             inputField.id = 'id_3-channel_url_' + (index + 2);
         });
