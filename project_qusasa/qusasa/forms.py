@@ -5,20 +5,25 @@ from .models import CustomUser
 import re
 
 def is_valid_channel_url(url):
-    # Regular expression for a YouTube channel URL
+    # Regular expression patterns for YouTube channel URLs
     channel_patterns = [
-        r'^https?://www\.youtube\.com/channel/[A-Za-z0-9_-]+$',
-        r'^https?://www\.youtube\.com/c/[A-Za-z0-9_-]+$',
-        r'^https?://www\.youtube\.com/user/[A-Za-z0-9_-]+$',
-        r'^https?://www\.youtube\.com/(c/|user/|@)([a-zA-Z0-9_-]+)'
-
+        r'^https?://(www\.)?youtube\.com/channel/[A-Za-z0-9_-]+$',
+        r'^https?://(www\.)?youtube\.com/c/[A-Za-z0-9_-]+$',
+        r'^https?://(www\.)?youtube\.com/user/[A-Za-z0-9_-]+$',
+        r'^https?://(www\.)?youtube\.com/(c/|user/|@)([a-zA-Z0-9_-]+)',
+        r'^https?://youtube\.com/@[A-Za-z0-9_-]+(\?.*)?$'
     ]
     return any(re.match(pattern, url) for pattern in channel_patterns)
 
 def is_valid_playlist_url(url):
-    # This regex covers more variations in YouTube playlist URLs, including additional parameters
-    youtube_playlist_pattern = r'^(https?://)?(www.youtube.com|youtube.com)/playlist\?list=[a-zA-Z0-9_-]+(&.*)?$'
-    return re.match(youtube_playlist_pattern, url) is not None
+    # Regular expression for YouTube playlist URLs
+    youtube_playlist_patterns = [
+        r'^https?://(www\.)?youtube\.com/playlist\?list=[a-zA-Z0-9_-]+(&.*)?$',
+        r'^https?://youtube\.com/playlist\?list=[a-zA-Z0-9_-]+(&.*)?$',
+        r'^https?://(www\.)?youtube\.com/watch\?v=[a-zA-Z0-9_-]+&list=[a-zA-Z0-9_-]+(&.*)?$',
+        r'^https?://youtu\.be/[a-zA-Z0-9_-]+\?list=[a-zA-Z0-9_-]+(&.*)?$'
+    ]
+    return any(re.match(pattern, url) for pattern in youtube_playlist_patterns)
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={'class': 'form-control'}))
@@ -528,7 +533,7 @@ class VideoAnalysisInputForm(forms.Form):
     
     def clean_video_url(self):
         video_url = self.cleaned_data['video_url']
-        youtube_video_pattern = r'^(https?://)?(www.youtube.com|youtube.com|youtu.be)/watch\?v=[a-zA-Z0-9_-]+(&.*)?$'
+        youtube_video_pattern = r'^(https?://)?((www.youtube.com|youtube.com)/watch\?v=[a-zA-Z0-9_-]+(&.*)?|youtu.be/[a-zA-Z0-9_-]+(\?.*)?)$'
         
         if not re.match(youtube_video_pattern, video_url):
             raise ValidationError("Please enter a valid YouTube video URL.")

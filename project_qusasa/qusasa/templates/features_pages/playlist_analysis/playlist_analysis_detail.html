@@ -14,17 +14,10 @@
     <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
 
+    
   </head>
   <body>
-    <!-- <img class="polygon" src="{% static 'qusasa/images/Frame 2.png'%}" alt="Description of Image" class="full-size-absolute"> -->
-
-    <!--   <div class="navigation">
-        <img class="static-img" src="{% static 'qusasa/images/qusasa.png' %}" alt="">
-
-        <div class="navs">
-            <a href="{% url 'logout' %}">Log out</a>
-        </div>
-    </div>   -->
+    
     <a class="log-out" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i> Log out</a>
 
     {% include 'side_nav.html' %}

@@ -13,8 +13,72 @@
 
     <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
+    <style>
 
+        .popup {
+            margin: auto;
+            margin-top: 3rem;
+            background: #fff;
+            border-radius: 10px;
+            width: 40%;
+            position: relative;
+            transition: all 5s ease-in-out;
+            padding: 1rem;
+            z-index: 300;
+
+
+        }
+
+
+
+ .close {
+    position: absolute;
+    top: 0;
+    right: 30px;
+    transition: all 200ms;
+    font-size: 5rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+    z-index: 500;
+    color: white;
+}
+
+.popup .close:hover {
+    color: blueviolet;
+}
+
+
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    visibility: hidden;
+    opacity: 0;
+    z-index: 300;
+
+  }
+  .overlay:target {
+    visibility: visible;
+    opacity: 1;
+    z-index: 300;
+
+  }
+
+  .popup img {
+    max-height: 100%;
+    max-width: 100%;
+    z-index: 300;
+
+  }
+          </style>
   </head>
+
+  
   <body>
     <!-- <img class="polygon" src="{% static 'qusasa/images/Frame 2.png'%}" alt="Description of Image" class="full-size-absolute"> -->
 
@@ -65,7 +129,7 @@
 
                 <div class="output">
                     <h3><i class="fa-solid fa-circle-chevron-right"></i> Output:</h3>
-                    <button>View the output page example</button>
+                    <a href="#popup1"><button>View the output page example</button></a>
                 </div>
             </div>
 
@@ -75,6 +139,14 @@
       </div>
     </div>
     
+    <div id="popup1" class="overlay">
+        <div class="popup">
+            <a class="close" href="#">&times;</a>
+
+            <img src="{% static 'qusasa/images/topic_example.jpeg' %}" alt="">
+            
+        </div>
+    </div>
 
     <!-- Linking JS at the bottom for better performance -->
     <script src="{% static 'qusasa/js/script.js' %}"></script>

@@ -61,6 +61,7 @@ import re
 
 def extractIdFromUrl(url):
     # youtube = get_youtube_client()
+    url = url.split('?')[0]
 
     # Regular expressions for different YouTube URL formats
     channel_id_pattern = r'youtube\.com/channel/([a-zA-Z0-9_-]+)'
