@@ -1,0 +1,74 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Qusasa | YouTube Video Retrieval</title>
+    <!-- Linking CSS -->
+    <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/cards.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/feature_details.css' %}" />
+
+    <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
+
+  </head>
+  <body>
+   
+    <a class="log-out" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i> Log out</a>
+
+    {% include 'side_nav.html' %}
+
+    <div class="content">
+    
+        <ul class="breadcrumbs">
+            <li><a href="{% url 'base' %}" {% if request.resolver_match.url_name == 'base' %}  {% endif %}> Home</a></li>
+            <li><a href="{% url 'wFeature' %}" {% if request.resolver_match.url_name == 'base' %}  {% endif %}>Qusasa's Features</a></li>
+            <li><a href="{% url 'YouTubeFeat' %}" {% if request.resolver_match.url_name == 'base' %}  {% endif %}>YouTube Features</a></li>
+            <li id="current">Video Retrieval</li>
+        </ul>
+
+      <div class="history">
+        <div class="header">
+            <div class="feature-head">
+                    <img src="{% static 'qusasa/images/video_retrival.webp' %}" alt="">
+                <div class="feature-text">
+                    <h1>Video Retrieval</h1>
+                    <p>This feature allows you to input a specific video and assemble a selection of videos that delve into relevant aspects of that videos topics.</p>
+                    <a href="{% url 'video_retriving' %}"><button><i class="fa-solid fa-circle-play"></i>  Start now</button></a>
+                </div>
+            </div>
+            
+            <div class="input-output">
+                <div class="input">
+                    <h3><i class="fa-solid fa-circle-chevron-right"></i> Input:</h3>
+                    <p>Video URL to retrieve its related videos
+                        <br>
+                        <br>
+                        <span class="color">Example: </span>
+                        <br>
+                         A fitness coach seeks to compile training tutorials by entering "home workout" to retrieve a series for their training program
+                    </p>
+        
+                </div>
+                <br>
+
+                <div class="output">
+                    <h3><i class="fa-solid fa-circle-chevron-right"></i> Output:</h3>
+                    <button>View the output page example</button>
+                </div>
+            </div>
+
+        </div>
+            
+        
+      </div>
+    </div>
+    
+
+    <!-- Linking JS at the bottom for better performance -->
+    <script src="{% static 'qusasa/js/script.js' %}"></script>
+  </body>
+</html>

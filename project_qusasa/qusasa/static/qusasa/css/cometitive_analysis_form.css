@@ -239,7 +239,7 @@ form {
 }
 
 /* Apply overall form styling */
-#analysis-type-form {
+#analysis-type-form, #search-query-form {
 display: flex;
 flex-direction: column; /* Align form items in a column */
 align-items: center;
@@ -261,12 +261,12 @@ width: 80%; /* Adjust according to your layout needs */
 }
 
 /* Style form paragraphs for spacing */
-#analysis-type-form p {
+#analysis-type-form p, #search-query-form p {
 margin-bottom: 0; /* Spacing between form elements */
 }
 
 /* Form labels */
-#analysis-type-form label {
+#analysis-type-form label, #search-query-form label {
 display: block; /* Make labels block to align with inputs */
 margin-bottom: 0.5rem; /* Space between label and input */
 font-weight: 600; /* Match the font weight from your CSS */
@@ -274,7 +274,7 @@ font-size: 1rem;
 }
 
 /* Form selects */
-#analysis-type-form select {
+#analysis-type-form select, #search-query-form select {
 width: 100%; /* Make selects full width of the form container */
 padding: 0.5rem; /* Padding inside the selects */
 border-radius: 5px; /* Rounded corners for the selects */
@@ -386,7 +386,7 @@ font-family: 'Raleway', sans-serif; /* Matching the font-family */
 }
 
 /* Increase specificity by using an id or additional classes */
-#analysis-type-form .select2-container--default .select2-selection--single {
+#analysis-type-form .select2-container--default .select2-selection--single, #search-query-form .select2-container--default .select2-selection--single {
     background-color: #fff; /* Your background */
 }
 

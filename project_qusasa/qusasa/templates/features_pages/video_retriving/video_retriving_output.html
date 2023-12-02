@@ -1,0 +1,653 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Qusasa | Youtube Video Retrieval </title>
+    <!-- Linking CSS -->
+    <link rel="stylesheet" href="{% static 'qusasa/css/signup.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/cards.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/feature_details.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/output.css' %}" />
+    <link href="https://cdn.rawgit.com/michalsnik/aos/2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.rawgit.com/michalsnik/aos/2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <!-- Make sure to include the cloud layout plugin after the main D3 library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Include Owl Carousel CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+
+    <!-- Include jQuery Library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Include Owl Carousel JS File -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+    <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
+
+
+  </head>
+  <style>
+  .card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  margin: 0%;
+  align-items: stretch;
+}
+
+/* Individual cards styling */
+.card {
+    border: none;
+  width: 250px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  background: linear-gradient(#0a224000, #8a25bda9);
+  opacity: 30%;
+  position: relative;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: auto;
+}
+
+.card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto; /* Set this to the height of your iframe */
+}
+
+
+.card-title {
+ text-align: center;
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+/* Make the iframe wider */
+iframe {
+  width: 100%; /* Adjust this value as needed */
+  height: auto; 
+  border-radius: 10px; 
+  display: block;
+  margin: auto;
+  align-items: stretch;
+
+}
+
+/* Adjust the style of the text below the iframe */
+
+.card:hover {
+    border: none;
+transform: scale(1.05);
+background: linear-gradient(#0a224000, #a169bea9);
+transition: all 0.4s ;
+}
+.flex-container {
+margin-left:0% ;
+display: flex;
+justify-content: space-evenly;
+flex-wrap: wrap; 
+align-items: stretch;
+}
+
+
+.card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.statistics {
+    width: 100%;
+  display: flex;
+  height: auto;
+  justify-content: space-around; }
+
+.stat {
+  display: flex;
+  flex-direction: column; /* Stack number and label vertically */
+  align-items: center; /* Center-align the flex items */
+}
+
+.number {
+    font-weight: 500;
+  font-size: 20px; 
+  color: #fff; /* White text color */
+}
+
+.label {
+  font-size: 19px; /* Smaller font size for the label */
+  color: #fff; /* White text color */
+}
+
+button {
+    font-size: 0.95rem;
+    border-radius: 30px;
+    padding:1rem 1.8rem;
+    background: #65afcfaf;
+    border: none;
+    outline: none;
+    color: white;
+    font-family: 'Raleway';
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+button:hover {
+    background: #40bfe6;
+    transform: translate(0, -3px);
+    transition: 0.2s ease;
+}
+
+.last {
+    text-align: center;
+    height: 100px;
+    margin-top: 10vh;
+}
+  </style>
+ 
+  <body>
+    
+    <a class="log-out" href="#popup1"><i class="fa-solid fa-right-from-bracket"></i> Exit Analysis</a>
+
+    
+    <div class="output-container">
+
+        <div class="mini-container">
+            <div class="output-header " data-aos="fade-up">
+                <h1>Your selection of videos is ready!</h1>
+                <p>Explore the collection below to discover content related to your search. Use these insights to enhance your understanding, create content, or simply enjoy the diversity of videos available on your topic of interest.</p>
+            </div>
+        </div>
+        
+        <div class="mini-container">
+            <h2 data-aos="fade-up">Download your results:</h2>
+        <div class="downlaodables" data-aos="fade-up">
+            <div class="download-dataset download-el">
+                <i class="fa-solid fa-table"></i>
+                <div class="download-text">
+                    <div class="text">
+                        <h3>{{type}} Dataset</h3>
+                    <p>Have a list of all videos related to your topic with all it details </p>
+                    </div>
+                    
+                    <div class="button">
+                        <button id="download-dataset-button">Download the dataset</button>
+                    </div>
+                    
+                </div>
+
+            </div>
+            <div class="download-report download-el">
+                <i class="fa-solid fa-file-contract"></i>
+                <div class="download-text ">
+                    <div class="text">
+                        <h3>Report</h3>
+                        <p>Complete with all video links and details for your records</p>
+                    </div>
+                    
+                    <div class="button">
+                      <a href="{% url 'download_docx' filename=docx_file %}"><button>Download the report</button></a>
+                  </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        </div>
+        
+        <h1 data-aos="fade-up">Explore the top related videos</h1>
+        <p data-aos="fade-up">Delve into the most popular content in your selected topic </p>
+       
+      
+        <div class="mini-container">
+
+            <div class="flex-container">
+                <div class="card-container">
+
+                    {% for video in related_videos_dict%}
+
+                
+                    <div class="card" data-aos="fade-up">
+                        <div class="card-title">{{video.Title}}</div>
+                        <div class="card-icon"><iframe width="560" height="315" src="https://www.youtube.com/embed/{{video.Id}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+                       
+                        <div class="statistics">
+                            <div class="stat">
+                                <div class="number">{{video.Likes}}</div>
+                                <div class="label">Likes</div>
+                              </div>
+                              <div class="stat">
+                                <div class="number">{{video.Views}}</div>
+                                <div class="label">Views</div>
+                              </div>
+                          </div>
+                    </div>
+
+                    {%endfor%}
+    
+
+                   
+
+                    <div class="last" data-aos="fade-up">
+                        <div class="card-title">See more:</div>
+                       
+                        <div class="button">
+                          <button id="download-dataset">Download the dataset</button>
+                      </div>
+                         
+                    </div>
+
+                </div>
+                
+            </div>
+        </div>
+      
+        
+
+        <div id="popup1" class="overlay">
+            <div class="popup">
+                <h2>Are you sure you want to quit the analysis?</h2>
+                <div class="text">
+                    if you did you will not be able to access its content anymore...
+                    <div class="popup-buttons">
+                        <a href="{% url 'base' %}"><button class="yes">Yes I'm sure</button></a>
+                    <a href="#"><button>Go back</button></a>
+                    </div>   
+                </div>
+                <div class="text">
+                    if you did you will not be able to access its content anymore...
+                    <div class="popup-buttons">
+                        <a href="{% url 'base' %}"><button class="yes">Yes I'm sure</button></a>
+                    <a href="#"><button>Go back</button></a>
+                    </div>   
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+   
+</div>
+
+
+<script>
+   
+    document.addEventListener('DOMContentLoaded', function() {
+        var videoContainers = document.querySelectorAll('.video-container');
+    
+        // Function to remove expanded class from all video containers
+        function resetContainers() {
+            videoContainers.forEach(function(container) {
+                container.classList.remove('expanded');
+                container.style.boxShadow = '';
+                container.style.display = ''; // Show all containers
+            });
+        }
+    
+        // Add or remove expanded class on hover
+        videoContainers.forEach(function(container) {
+            container.addEventListener('mouseenter', function() {
+                container.classList.add('expanded');
+                // Hide other containers
+                videoContainers.forEach(function(otherContainer) {
+                    if (otherContainer !== container) {
+                        otherContainer.style.display = 'none';
+                    }
+                });
+            });
+            container.addEventListener('mouseleave', function() {
+                if (!container.classList.contains('clicked')) {
+                    container.classList.remove('expanded');
+                    container.style.boxShadow = '0 0 30px 10px #6b4e8f76'; // Change box shadow
+                    resetContainers();
+                }
+            });
+        });
+    
+        // Remove expanded class and reset on click outside
+        document.addEventListener('click', function(event) {
+            var isClickInsideContainer = Array.from(videoContainers).some(function(container) {
+                return container.contains(event.target);
+            });
+    
+            if (!isClickInsideContainer) {
+                resetContainers();
+            } else {
+                videoContainers.forEach(function(container) {
+                    if (container.contains(event.target)) {
+                        container.classList.add('clicked');
+                    } else {
+                        container.classList.remove('clicked');
+                    }
+                });
+            }
+        });
+    });
+    
+        
+</script>
+<script>
+    document.getElementById('download-dataset-button').addEventListener('click', function() {
+        window.location.href = "{% url 'dataset_zipped_output_retriving' %}";
+    });
+
+    document.getElementById('download-dataset-button').addEventListener('click', function() {
+      window.location.href = "{% url 'dataset_zipped_output_retriving' %}";
+  });
+</script>
+<script>
+     var options = {
+  series: [{
+    data: [20,40000,599,44999,322222,444555,6666666,6444,6665,777]
+  }],
+  chart: {
+    type: 'bar',
+    height: 350
+  },
+  plotOptions: {
+    bar: {
+      horizontal: false,
+      columnWidth: '55%',
+      endingShape: 'rounded'
+    },
+  },
+  dataLabels: {
+    enabled: false
+  },
+  xaxis: {
+    categories: ['Video1','Video2','Video3','Video4','Video5','Video6','Video7','Video8','Video9','Video10'],
+  },
+  
+        dataLabels: {
+            enabled: false
+        },
+    
+        grid: {
+            show: false
+        },
+        legend: {
+            show: false
+        },
+        fill: {
+            colors: ['#00E396', '#775DD0', '#775DD0', '#775DD0', '#775DD0'],
+            type: 'gradient',
+            gradient: {
+                shade: 'light',
+                type: "vertical",
+                shadeIntensity: 0.5,
+                gradientToColors: undefined, 
+                inverseColors: true,
+                opacityFrom: 0.85,
+                opacityTo: 0.85,
+                stops: [0, 100]
+            }
+        }
+
+    ,
+};
+
+var chart = new ApexCharts(document.querySelector("#barChart"), options);
+chart.render();
+
+var options = {
+  series: [2,3,1,2,4,7,8,9,10,33],
+  chart: {
+    width: 380,
+    type: 'pie',
+  },
+  labels: ['channel1','channel2','channel3','channel4','channel5','channel6','channel7','channel8','channel9','channel10'],
+  responsive: [{
+    breakpoint: 480,
+    options: {
+      chart: {
+        width: 200
+      },
+      legend: {
+        position: 'bottom'
+      }
+    }
+  }]
+};
+
+var chart = new ApexCharts(document.querySelector("#pieChart"), options);
+chart.render();
+
+var options = {
+  series: [{
+    data: [13,55,66,77,88,99,30,11,44,77]
+  }],
+  chart: {
+    type: 'bar',
+    height: 350
+  },
+  plotOptions: {
+    bar: {
+      horizontal: true,
+    },
+  },
+  dataLabels: {
+    enabled: false
+  },
+  grid: {
+            show: false
+        },
+        
+  xaxis: {
+    categories: ['uni','study','lofi','homework','vlog','finals','productive','midterms','semester','class'],
+  }
+};
+
+var chart = new ApexCharts(document.querySelector("#frequencyBarChart"), options);
+chart.render();
+
+//////
+
+  // Define the options for the line chart
+  var lineChartOptions = {
+    series: [{
+      name: "Number of Videos",
+      data: [30, 40, 45, 50, 49, 60, 70, 91] // Sample data
+    }],
+    chart: {
+      type: 'line',
+      height: 350
+    },
+    stroke: {
+      width: 7,
+      curve: 'smooth'
+    },
+    xaxis: {
+      type: 'year',
+      categories: ["2023", "2022", "2021", "2020", "2019", "2018", "2017", "2016"] // Sample dates
+    },
+    
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shade: 'dark',
+        gradientToColors: [ '#FDD835'],
+        shadeIntensity: 1,
+        type: 'horizontal',
+        opacityFrom: 1,
+        opacityTo: 1,
+        stops: [0, 100, 100, 100]
+      },
+    },
+    
+    markers: {
+      size: 4,
+      colors: ["#FFA41B"],
+      strokeColors: "#fff",
+      strokeWidth: 2,
+      hover: {
+        size: 7,
+      }
+    },
+    grid: {
+            show: false
+        },
+    yaxis: {
+      min: 20,
+      max: 100
+    }
+  };
+
+  // Render the line chart
+  var lineChart = new ApexCharts(document.querySelector("#lineChart"), lineChartOptions);
+  lineChart.render();
+  ////
+  var radialOptions = {
+    series: [75], // Replace 75 with your actual percentage value
+    chart: {
+      height: 350,
+      type: 'radialBar',
+    },
+    plotOptions: {
+      radialBar: {
+        hollow: {
+          size: '70%',
+        },
+        dataLabels: {
+          name: {
+            show: false,
+          },
+          value: {
+            formatter: function (val) {
+              return parseInt(val) + "%";
+            },
+            color: 'white',
+            fontSize: '36px',
+            show: true,
+          }
+        }
+      }
+    },
+    labels: ['Positive Comments'],
+    colors: ['#20E647'], // Color for the radial bar
+    stroke: {
+      lineCap: 'round',
+    },
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shade: 'light',
+        type: 'horizontal',
+        shadeIntensity: 0.5,
+        gradientToColors: ['#87D4F9'],
+        inverseColors: true,
+        opacityFrom: 1,
+        opacityTo: 1,
+        stops: [0, 100],
+      },
+    },
+  };
+
+  // Render the Radial Bar Chart
+  new ApexCharts(document.querySelector("#positiveCommentsChart"), radialOptions).render();
+
+</script>
+
+<script>
+    // Define a function to draw a word cloud
+    var myColors = ['#D5A9FF', '#7EF7D9', '#12CEE6', '#4686FF', '#FFFFFF', /* more colors */ ];
+
+    function drawWordCloud(selector, words) {
+        // Create a function to generate random sizes for the words
+        var getRandomSize = function() {
+            return 10 + Math.random() * 30; // Random size between 10 and 50
+        };
+    
+        // Set up the word cloud layout
+        var layout = d3.layout.cloud()
+            .size([400, 300]) // The size of the word cloud
+            .words(words.map(function(d) {
+                return {text: d, size: getRandomSize()}; // Assign random size to each word
+            }))
+            .padding(2) // Adjust padding between words
+            .rotate(0) // Set rotation, if desired
+            .font("Raleway")
+            .fontSize(function(d) { return d.size; }) // Use the assigned size
+            .on("end", draw);
+    
+        layout.start();
+    
+        // Draw the word cloud
+        function draw(words) {
+            var svg = d3.select(selector).append("svg")
+                .attr("width", layout.size()[0])
+                .attr("height", layout.size()[1])
+                .append("g")
+                .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")");
+    
+            svg.selectAll("text")
+                .data(words)
+                .enter().append("text")
+                .style("font-size", function(d) { return d.size + "px"; }) // Font size is set by the layout
+                .style("font-family", "Raleway")
+                .style("font-weight", "bold") // Set the font family
+                .style("fill", function(d, i) { return myColors[i % myColors.length]; }) // Set the color
+                .attr("text-anchor", "middle")
+                .attr("transform", function(d) {
+                    return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                })
+                .text(function(d) { return d.text; });
+        }
+    }
+    
+
+// Define your array of words for each channel
+//var channelsTags = jsonData.topTags
+var channelsTags = [['I','love', 'you', 'to', 'the','moon', 'and','back', 'Nana', 'Mwaaah','best', 'GP','Qusasa4Life']]
+
+// Call the drawWordCloud function for each channel
+channelsTags.forEach(function(tags, i) {
+    drawWordCloud("#wordcloud" + (i), tags);
+});
+
+</script>
+
+
+
+
+<script>$(document).ready(function(){
+    $(".owl-carousel").owlCarousel({
+        // Owl Carousel options
+        items: 1,
+        center: true,
+        loop: true,
+        autoplay: true,
+        autoplayTimeout: 3000,
+        autoplayHoverPause: true,
+        nav: true
+        // other options as needed
+    });
+});
+</script>
+
+    <script>
+        AOS.init({
+          duration: 1200, // You can adjust this value for animation duration
+        });
+      </script>
+  </body>
+</html>

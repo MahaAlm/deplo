@@ -1,10 +1,11 @@
 {% load static %}
+{% load custom_filters %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Qusasa | YouTube Features</title>
+    <title>Qusasa | YouTube Competitive Analysis</title>
     <!-- Linking CSS -->
     <link rel="stylesheet" href="{% static 'qusasa/css/signup.css' %}" />
     <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}" />
@@ -170,12 +171,13 @@
             <h1 data-aos="fade-up">Top videos</h1>
             <p data-aos="fade-up"> here we display the top video of each channel, you can hover on each video to get more insights about why is it so successfull!</p>
             <div class="videos">
-                {% for video in top_videos %}
-                <div class="mini-container video-container">
-                    <div class="header">
-                        <img src='{{video.thumbnail}}' alt="">
-                        <div class="header-info">
-                            <h1>{{video.title}}</h1>
+                {% for icon, name, video in zipped_channels %}
+    <div class="mini-container video-container">
+        <div class="header">
+            <img src="{{ video.thumbnail }}" alt="">
+            <div class="header-info">
+                <h1>{{ video.title }}</h1>
+                <h3>From: <img src="{{ icon }}" style="height: 30px; width: 30px; border-radius:50%; margin: 0 1rem;" alt="">{{ name }}</h3>
                             <div class="desc">
                                 <h3>Video's description</h3>
                             <p>{{video.description}}</p>
@@ -307,7 +309,9 @@
 
    
 </div>
-
+<script type="text/javascript">
+    const csrftoken = '{{ csrf_token }}';
+</script>
 
 <script>
    
@@ -325,7 +329,7 @@
     
         // Add or remove expanded class on hover
         videoContainers.forEach(function(container) {
-            container.addEventListener('mouseenter', function() {
+            container.addEventListener('click', function() {
                 container.classList.add('expanded');
                 // Hide other containers
                 videoContainers.forEach(function(otherContainer) {
@@ -457,6 +461,24 @@
     
     var chart = new ApexCharts(document.querySelector("#channel-views-chart"), options);
     chart.render();
+    setTimeout(() => {
+        chart.updateOptions({
+        });
+      
+      }, 300);
+    var originalOptions = chart.w.config;
+
+    // Clone the options and change text color to black for exporting
+    var channel_views_options = JSON.parse(JSON.stringify(originalOptions));
+    channel_views_options.chart.foreColor = '#000'; // Set text color to black
+    channel_views_options.chart.background = '#FFF'; // Set background to white for contrast
+    channel_views_options.chart.height = 300; // Set text color to black
+    channel_views_options.chart.width = 300; // Set background to white for contrast
+    channel_views_options.title.text = "barchart for views";
+    channel_views_options.xaxis.categories = channels
+    channel_views_options.xaxis.labels = {show: false}
+    channel_views_options.legend.show = true
+    channel_views_options.fill = {}
 
     var options_likes = options
     options_likes['series'] = [{
@@ -466,6 +488,25 @@
 
     var chart = new ApexCharts(document.querySelector("#channel-likes-chart"), options_likes);
     chart.render();
+    setTimeout(() => {
+        chart.updateOptions({
+        });
+      
+      }, 300);
+    var originalOptionslikes = chart.w.config;
+
+    // Clone the options and change text color to black for exporting
+    var channel_likes_options = JSON.parse(JSON.stringify(originalOptionslikes));
+    channel_likes_options.chart.foreColor = '#000'; // Set text color to black
+    channel_likes_options.chart.background = '#FFF'; // Set background to white for contrast
+    channel_likes_options.chart.height = 300; // Set text color to black
+    channel_likes_options.chart.width = 300; // Set background to white for contrast
+    channel_likes_options.title.text = "barchart for likes";
+    channel_likes_options.xaxis.categories = channels
+    channel_likes_options.xaxis.labels = {show: false}
+    channel_likes_options.legend.show = true
+    channel_likes_options.fill = {}
+
 
     var options_subscribers = options
     options_subscribers.series = [{
@@ -475,7 +516,24 @@
 
     var chart = new ApexCharts(document.querySelector("#channel-subs-chart"), options_subscribers);
     chart.render();
-    
+    setTimeout(() => {
+        chart.updateOptions({
+        });
+      
+      }, 300);
+    var originalOptionssubs = chart.w.config;
+
+    // Clone the options and change text color to black for exporting
+    var channel_subs_options = JSON.parse(JSON.stringify(originalOptionssubs));
+    channel_subs_options.chart.foreColor = '#000'; // Set text color to black
+    channel_subs_options.chart.background = '#FFF'; // Set background to white for contrast
+    channel_subs_options.chart.height = 300; // Set text color to black
+    channel_subs_options.chart.width = 300; // Set background to white for contrast
+    channel_subs_options.title.text = "barchart for Subscribtions";
+    channel_subs_options.xaxis.categories = channels
+    channel_subs_options.xaxis.labels = {show: false}
+    channel_subs_options.legend.show = true
+    channel_subs_options.fill = {}
 </script>
 
 <script>
@@ -538,12 +596,7 @@ channelsTags.forEach(function(tags, i) {
 
 <script>
         var mostUsedCategories = jsonData.mostUsedCategories
-        var mostUsedCategories = [
-    [["Education", 47],["Science", 30]],
-    [["Education", 38]],
-    [["Education", 12]],
-    [["Education", 39]]
-];
+        
 
 var colorPalette = ['#00E396', '#008FFB', '#FEB019', '#FF4560', '#775DD0', /* more colors */ ];
 
@@ -618,12 +671,27 @@ var seriesData = {};
         }
         // other options (grid, legend, etc.)
     };
+
     
     var chart = new ApexCharts(document.querySelector("#stacked-bar-chart"), options);
-    chart.render();
-    
+    chart.render()
+    setTimeout(() => {
+        chart.updateOptions({
+        });
+      
+      }, 300);
+    var originalOptions = chart.w.config;
+
+    // Clone the options and change text color to black for exporting
+    var exportOptions = JSON.parse(JSON.stringify(originalOptions));
+    exportOptions.chart.foreColor = '#000'; // Set text color to black
+    exportOptions.chart.background = '#FFF'; // Set background to white for contrast
+    exportOptions.chart.height = 250; // Set text color to black
+    exportOptions.chart.width = 250; // Set background to white for contrast
 
 </script>
+
+
 <script>
     
  var durations = jsonData.durations
@@ -687,7 +755,24 @@ var optionsBoxPlot = {
 };
 
 var boxPlotChart = new ApexCharts(document.querySelector("#channel-duration-chart"), optionsBoxPlot);
-boxPlotChart.render();
+boxPlotChart.render()
+setTimeout(() => {
+    boxPlotChart.updateOptions({
+    });
+  
+  }, 300);
+var originalOptionsdur = boxPlotChart.w.config;
+
+    // Clone the options and change text color to black for exporting
+    var channel_dur_options = JSON.parse(JSON.stringify(originalOptionsdur));
+    channel_dur_options.chart.foreColor = '#000'; // Set text color to black
+    channel_dur_options.chart.background = '#FFF'; // Set background to white for contrast
+    channel_dur_options.chart.height = 300; // Set text color to black
+    channel_dur_options.chart.width = 300; // Set background to white for contrast
+    channel_dur_options.title.text = "box plot for channels videos durations";
+    channel_dur_options.xaxis.categories = channels
+    channel_dur_options.xaxis.labels = {show: true}
+    channel_dur_options.fill = {}
 
 </script>
 
@@ -755,3 +840,86 @@ boxPlotChart.render();
       </script>
   </body>
 </html>
+
+
+<script>
+    // Function to handle the rendering and conversion of a single chart to a data URI
+// Function to handle the rendering and conversion of a single chart to a data URI
+function convertChartToDataURI(chartOptions, callback) {
+    console.log('hi');
+    let exportContainer = document.createElement('div');
+    exportContainer.style.position = 'absolute';
+    exportContainer.style.left = '-9999px';
+    exportContainer.style.top = '-9999px';
+    document.body.appendChild(exportContainer);
+
+    let modifiedChartOptions = {
+        ...chartOptions,
+        chart: {
+            ...chartOptions.chart,
+            events: {
+                rendered: function(chartContext, config) {
+                    console.log('rendered');
+                }
+            }
+        }
+    };
+
+    let exportChart = new ApexCharts(exportContainer, modifiedChartOptions);
+    exportChart.render();
+
+    // Manually trigger the rendered event for testing
+    setTimeout(() => {
+        exportChart.dataURI().then(({ imgURI }) => {
+            console.log('Manual trigger:', imgURI);
+            exportChart.destroy();
+            document.body.removeChild(exportContainer);
+            callback(null, imgURI);
+        });
+    }, 1000); // Adjust this delay as needed
+}
+
+
+
+// Function to process all charts and send them to the server
+function processAndSendCharts(chartsOptions) {
+    let chartImagesPromises = chartsOptions.map((options) => {
+        return new Promise((resolve, reject) => {
+            convertChartToDataURI(options, (error, imgURI) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(imgURI);
+                }
+            });
+        });
+    });
+
+    Promise.all(chartImagesPromises).then((imagesURI) => {
+        console.log(imagesURI)
+        // Now you have all the images URI, send them to the server
+        fetch('/doc_competitive/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify({ imgData: imagesURI })
+        }).then(response => response.json())
+        .then(data => {
+            console.log(data); // Handle any response from the server
+        }).catch(error => {
+            console.error('Error sending charts to the server:', error);
+        });
+    }).catch(error => {
+        console.error('Error converting charts to images:', error);
+    });
+}
+
+// Assuming you have an array of chart options for each chart
+let chartsOptions = [channel_views_options, channel_likes_options, channel_subs_options, channel_dur_options];
+
+// Process and send all charts
+processAndSendCharts(chartsOptions);
+
+</script>

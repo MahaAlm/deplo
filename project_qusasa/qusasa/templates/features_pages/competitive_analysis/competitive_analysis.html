@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Qusasa | Competitive analysis for</title>
+    <title>Qusasa | YouTube Competitive Analysis</title>
     <!-- Linking CSS -->
     <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
@@ -76,7 +76,7 @@
                     </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">next <i class="fa-solid fa-circle-chevron-right"></i></button>
+                    <button type="submit" style="display: none;" id="hidden-submit"></button>
                     <a href="{% url 'competitive_analysis_details'%}"><button type="button" class="btn btn-secondary">Cancel</button></a>
                 {% endif %}
 
@@ -111,7 +111,7 @@
                     <!-- {{ wizard.form.as_p }} -->
 
                     <div class="options choices">
-                        <div class="options-box choice-box" data-value="input_list">
+                        <div class="options-box choice-box step-2-choice-box" data-value="input_list">
                             <i class="fa-solid fa-address-book" style="color: #ffffff;"></i>
                             <div class="box-text">
                                 <p class="p-head">I have a list of channels</p>
@@ -120,7 +120,7 @@
                             
                         </div>
     
-                        <div class="options-box choice-box" data-value="search">
+                        <div class="options-box choice-box step-2-choice-box" data-value="search">
                             <i class="fa-solid fa-magnifying-glass"></i>
                             <div class="box-text">
                                 <p class="p-head">Search channels for me</p>
@@ -129,18 +129,11 @@
                             
                         </div>
 
-                        <!-- <div class="options-box choice-box" data-value="category">
-                            <i class="fa-solid fa-photo-film"></i>
-                            <div class="box-text">
-                                <p class="p-head">Choose from a certain category</p>
-                                <p>if there's a youtube category in mind, you can get the top 5 channels from that category.</p>
-                            </div>
-                            
-                        </div> -->
+                        
                     </div>
 
         
-                    <button type="submit" class="btn btn-primary">next <i class="fa-solid fa-circle-chevron-right"></i></button>
+                    <button type="submit" style="display: none;" id="hidden-submit-step-2"></button>
                     <button type="button" class="btn btn-secondary" onclick="history.back()"><i class="fa-solid fa-circle-chevron-left"></i> Back</button>
                     {% endif %}
                     {% if wizard.steps.current == '3' %}
@@ -417,39 +410,38 @@
     </script>
 
     <script>
+
         document.addEventListener('DOMContentLoaded', function() {
-            var currentStep = "{{ wizard.steps.current }}";
             var choiceBoxes = document.querySelectorAll('.choice-box');
-            //var submitButton = document.querySelector('.btn-primary');
-            
-             // Disable the button on initial load
-          //submitButton.disabled = true;
-          //submitButton.style.background = 'grey';
-          //submitButton.style.cursor = 'default';
-          
+            var hiddenSubmitButton = document.getElementById('hidden-submit');
+        
             choiceBoxes.forEach(function(box) {
                 box.addEventListener('click', function() {
-                    // Remove 'selected' class from all boxes
-                    choiceBoxes.forEach(function(box) { box.classList.remove('selected'); });
-                    // Add 'selected' class to clicked box
-                    this.classList.add('selected');
-    
-                    // Update the hidden input value based on the step
-                    if(currentStep === '0') {
-                        console.log(currentStep)
-                        
-                        document.getElementById('id_0-analysis_type').value = this.dataset.value;
-                    } else if (currentStep === '2') {
-                        console.log(currentStep)
-                        document.getElementById('id_2-choice').value = this.dataset.value;
-                    }
-                    // Enable the submit button when a box is selected
-                    //submitButton.disabled = false;
-                    //submitButton.style.background = 'linear-gradient(#379eac, #06a4b9)';
-                    //submitButton.style.cursor = 'pointer';
+                    // Update the hidden input value
+                    document.getElementById('id_0-analysis_type').value = this.dataset.value;
+        
+                    // Trigger form submission
+                    hiddenSubmitButton.click();
                 });
             });
         });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var choiceBoxesStep2 = document.querySelectorAll('.step-2-choice-box');
+            var hiddenSubmitButton = document.getElementById('hidden-submit-step-2');
+            var hiddenChoiceInput = document.getElementById('id_2-choice');
+        
+            choiceBoxesStep2.forEach(function(box) {
+                box.addEventListener('click', function() {
+                    hiddenChoiceInput.value = this.dataset.value;
+                    hiddenSubmitButton.click();
+                });
+            });
+        });
+        
+
+
+       
     </script>
     
     

@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Qusasa | YouTube Features</title>
+    <title>Qusasa | YouTube Video Analysis</title>
     <!-- Linking CSS -->
     <link rel="stylesheet" href="{% static 'qusasa/css/signup.css' %}" />
     <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}" />
@@ -49,7 +49,7 @@
         <div class="mini-container">
             <div class="output-header " data-aos="fade-up">
                 <h1>Analysis Complete!</h1>
-                <p>Video summary and audience engagement insights are now available. Explore the sections below to gain insights into the video's performance and audience interaction</p>
+                <p>Video summary and audience engagement insights are now available. Explore the sections below to gain insights into the video's performance and audience interaction.</p>
             </div>
         </div>
         
@@ -204,12 +204,15 @@
                             <h1 data-aos="fade-up">Look into the top emotions</h1>
                             <p data-aos="fade-up">the top comments from the top emotions</p>
                             <div class="examples">
-                                {% for emotion, comment in top_comments_by_emotion.items %}
-                                <div class="example" data-aos="fade-up">
+                                {% for emotion, comments in top_comments_by_emotion.items %}
+                                <div class="example" data-aos="fade-up" style="width: 20rem; min-width: 20rem; margin-top:3rem;">
                                     <div class="emotion"><h3>{{ emotion }}</h3></div>
                                     <div class="ex">
-                                        <p class="truncated">{{ comments.0.text|truncatechars:150 }}</p>
-                                        <p class="full-comment">{{ comments.0.text }}</p>
+                                        {% for comment in comments %}
+                                        <p>{{ comment.text }}</p>
+                                        <p>-------------------</p>
+                                        <!-- <p class="full-comment">{{ comments.0.text }}</p> -->
+                                        {%endfor%}
                                     </div>
                                 </div>
                                 {%endfor%}
@@ -253,62 +256,7 @@
 
    
 </div>
-<script>
-   
-    document.addEventListener('DOMContentLoaded', function() {
-        var videoContainers = document.querySelectorAll('.video-container');
-    
-        // Function to remove expanded class from all video containers
-        function resetContainers() {
-            videoContainers.forEach(function(container) {
-                container.classList.remove('expanded');
-                container.style.boxShadow = '';
-                container.style.display = ''; // Show all containers
-            });
-        }
-    
-        // Add or remove expanded class on hover
-        videoContainers.forEach(function(container) {
-            container.addEventListener('mouseenter', function() {
-                container.classList.add('expanded');
-                // Hide other containers
-                videoContainers.forEach(function(otherContainer) {
-                    if (otherContainer !== container) {
-                        otherContainer.style.display = 'none';
-                    }
-                });
-            });
-            container.addEventListener('mouseleave', function() {
-                if (!container.classList.contains('clicked')) {
-                    container.classList.remove('expanded');
-                    container.style.boxShadow = '0 0 30px 10px #6b4e8f76'; // Change box shadow
-                    resetContainers();
-                }
-            });
-        });
-    
-        // Remove expanded class and reset on click outside
-        document.addEventListener('click', function(event) {
-            var isClickInsideContainer = Array.from(videoContainers).some(function(container) {
-                return container.contains(event.target);
-            });
-    
-            if (!isClickInsideContainer) {
-                resetContainers();
-            } else {
-                videoContainers.forEach(function(container) {
-                    if (container.contains(event.target)) {
-                        container.classList.add('clicked');
-                    } else {
-                        container.classList.remove('clicked');
-                    }
-                });
-            }
-        });
-    });
-    
-        
-</script>
+
 <script>
     document.getElementById('download-dataset-button').addEventListener('click', function() {
         window.location.href = "{% url 'dataset_zipped_output' %}";
@@ -323,6 +271,7 @@
 
     var jsonData = JSON.parse(document.getElementById('json-data').textContent);
     var likes = jsonData.video_info_dict.likesCount
+    console.log(jsonData.top_comments_by_emotion)
     var comments = 100
     var views = jsonData.video_info_dict.viewsCount
 
@@ -403,8 +352,7 @@
 
     var engagementChart = new ApexCharts(document.querySelector("#engagement-chart"), optionsEngagement);
     engagementChart.render();
-    engagementChart.updateOptions({
-    });
+    
     // Pie Chart: Show the proportion of likes to comments
     var optionsLikeCommentRatio = {
         chart: {
@@ -465,8 +413,7 @@
 
     var likeCommentRatioChart = new ApexCharts(document.querySelector("#like-comment-ratio-chart"), optionsLikeCommentRatio);
     likeCommentRatioChart.render();
-    likeCommentRatioChart.updateOptions({
-    });
+
 
    // Assuming jsonData.top_5_comments_analysis_dist is already defined as shown above
    var emotionData = jsonData.emotion_counts;
@@ -545,11 +492,18 @@
 
    var emotions_chart = new ApexCharts(document.querySelector("#sentiment-chart"), options);
    emotions_chart.render();
-   emotions_chart.updateOptions({
-});
 
 
 
+setTimeout(() => {
+    engagementChart.updateOptions({
+    });
+    likeCommentRatioChart.updateOptions({
+    });
+    emotions_chart.updateOptions({
+    });
+    
+}, 300);
     
 </script>
 
@@ -656,6 +610,7 @@ drawWordCloud("#wordcloud0", channelsTags);
     });
 });
 </script>
+
 
     <script>
         AOS.init({

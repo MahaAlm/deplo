@@ -7,6 +7,8 @@ import torch
 from transformers import pipeline, BertTokenizer, AutoModelForSequenceClassification
 import torch
 from .youtube_api import get_youtube_client
+from googleapiclient.errors import HttpError
+
 #competitive analysis utils
 
 def searchByQuery(youtube, keyword, Type, orderBy='relevance', regionCode='', language=''):
@@ -191,20 +193,34 @@ def get_videos_info(entity_id, youtube, entity_type='channel'):
     most_used_categories = [(category_names.get(cid, 'Unknown'), count) for cid, count in category_count.most_common()]
 
     if top_video_info:
-        # Fetch the top 3 comments for the most viewed video
-        comments_response = youtube.commentThreads().list(part='snippet', videoId=top_video_info['videoId']).execute()
-        comments = [comment['snippet']['topLevelComment']['snippet']['textDisplay'] for comment in comments_response['items']]
-        top_comments = comments[:5]
-        # Perform sentiment analysis on these comments
-        comment_sentiments = analyze_sentiment(comments)
-    
-        # Calculate sentiment percentages
-        sentiment_counts = Counter(comment_sentiments)
-        total_comments = len(comment_sentiments)
-        sentiment_percentages = {sentiment: count / total_comments for sentiment, count in sentiment_counts.items()}
+        try:
+            # Fetch the top 3 comments for the most viewed video
+            comments_response = youtube.commentThreads().list(
+                part='snippet',
+                videoId=top_video_info['videoId'],
+                maxResults=5  # Adjust the maxResults if needed
+            ).execute()
 
-        top_video_info['topComments'] = top_comments
-        top_video_info['commentSentiments'] = sentiment_percentages
+            comments = [comment['snippet']['topLevelComment']['snippet']['textDisplay'] 
+                        for comment in comments_response['items']]
+            top_comments = comments[:5]
+
+            # Perform sentiment analysis on these comments
+            comment_sentiments = analyze_sentiment(comments)
+
+            # Calculate sentiment percentages
+            sentiment_counts = Counter(comment_sentiments)
+            total_comments = len(comment_sentiments)
+            sentiment_percentages = {sentiment: count / total_comments 
+                                    for sentiment, count in sentiment_counts.items()}
+
+            top_video_info['topComments'] = top_comments
+            top_video_info['commentSentiments'] = sentiment_percentages
+        except HttpError as e:
+            print(f"Comments are disabled for video ID {top_video_info['videoId']}. Error: {e}")
+            # Optional: set comments-related info to None or an empty structure
+            top_video_info['topComments'] = []
+            top_video_info['commentSentiments'] = {}
 
 
     return {
@@ -640,15 +656,16 @@ def analyse_video(youtube, video_id):
 def analyse_comments_data(youtube, video_id):
     comments_data = []
 
-    # Fetch all comments
-    comments_response = youtube.commentThreads().list(
+    try:
+        # Fetch all comments
+        comments_response = youtube.commentThreads().list(
             part='snippet',
             videoId=video_id,
             maxResults=30  # Adjust the maxResults if needed
         ).execute()
 
         # Extract comment details and add to the list
-    for item in comments_response['items']:
+        for item in comments_response['items']:
             comment = item['snippet']['topLevelComment']['snippet']
             comments_data.append({
                 'commentId': item['snippet']['topLevelComment']['id'],
@@ -659,10 +676,16 @@ def analyse_comments_data(youtube, video_id):
                 'timestamp': comment['publishedAt']
             })
 
+    except HttpError as e:
+        # Handle the case where comments are disabled or other HTTP errors
+        print(f"Error fetching comments for video ID {video_id}: {e}")
+        # You can return an empty list or a DataFrame, or handle this in another way
+        return []
 
-    # Create a DataFrame from comments data
-    comments_data
-    
+    # Create a DataFrame from comments data if needed
+    # comments_df = pd.DataFrame(comments_data)
+    # return comments_df
+
     return comments_data
 
 
@@ -1125,12 +1148,175 @@ def topic_analysis(youtube, query, orderBy='relevance', regionCode='', language=
     
     top_5_comments = []
     for _, row in top_5_videos.iterrows():
-        video_comments = analyse_comments_data(youtube, row['videoId'])
-        top_5_comments.extend(video_comments)
-    
+        try:
+            # Attempt to analyze comments data
+            video_comments = analyse_comments_data(youtube, row['videoId'])
+            top_5_comments.extend(video_comments)
+        except HttpError as e:
+            # Handle the case where comments are disabled
+            # You can log this error, skip the video, or handle it in another way
+            print(f"Comments are disabled for video ID {row['videoId']}. Error: {e}")
+            continue  # Skip this video and continue with the next one
+
     top_5_comments_df = pd.DataFrame(top_5_comments)
     top_5_comments_analysis = analyze_comments_emotions_for_playlist(top_5_comments_df)
         
     channels_df = pd.concat(channels, ignore_index=True)
 
     return videos_df, channels_df, top_5_videos, top_5_comments_df, top_5_comments_analysis
+
+def get_realted_videos(video_id, order='relevance', region_code='', language='', number_of_videos=10):
+    # Step 1: Fetch the video's details
+    video_details_request = youtube.videos().list(
+        part="snippet",
+        id=video_id
+    )
+    video_details_response = video_details_request.execute()
+
+    if not video_details_response['items']:
+        return pd.DataFrame()  # Return empty DataFrame if no details are found
+
+    video_details = video_details_response['items'][0]
+    tags = video_details['snippet'].get('tags', [])[:5]  # Get top 5 tags
+    category_id = video_details['snippet']['categoryId']
+
+    # Calculate the number of videos to fetch per tag
+
+    # Step 2: Use tags to find related videos
+    related_videos = []
+
+    print(tags)
+    if tags != []:
+        videos_per_tag = max(1, number_of_videos // len(tags)) if tags else number_of_videos
+
+        for tag in tags:
+            related_videos.extend(
+                get_videos(youtube, tag, category_id, order, region_code, language, videos_per_tag)
+            )
+
+        # If tags are less than needed, get more videos with the last tag
+        if len(tags) < number_of_videos:
+            additional_videos_needed = number_of_videos - len(related_videos)
+            related_videos.extend(
+                get_videos(youtube, tags[-1], category_id, order, region_code, language, additional_videos_needed)
+            )
+    else:
+        keywords = keyword_extraction(video_id)
+        videos_per_tag = max(1, number_of_videos // len(keywords)) if keywords else number_of_videos
+        for keyword in keywords:
+            word = keyword[0]
+            related_videos.extend(
+                get_videos(youtube, word, category_id, order, region_code, language, videos_per_tag)
+            )
+
+        # If tags are less than needed, get more videos with the last tag
+        if len(keywords) < number_of_videos:
+            additional_videos_needed = number_of_videos - len(related_videos)
+            related_videos.extend(
+                get_videos(youtube, keywords[-1][0], category_id, order, region_code, language, additional_videos_needed)
+            )
+            
+    # Convert to DataFrame and drop duplicates
+    related_videos_df = pd.DataFrame(related_videos).drop_duplicates(subset=['Id'])
+
+    return related_videos_df
+    
+    
+def get_videos(youtube, search_term, video_category_id='none', order='relevance', region_code='', language='', number_of_videos=10):
+    # Initialize variables
+    related_videos = []
+    total_results = 0
+    nextPageToken = None
+    category_names = {}
+
+    while total_results < number_of_videos:
+        # Adjust max_results based on remaining videos needed
+        current_max_results = min(100, number_of_videos - total_results)
+
+        search_params = {
+            "part": "snippet",
+            "q": search_term,
+            "type": "video",
+            "maxResults": current_max_results,
+            "order": order,
+            "pageToken": nextPageToken
+        }
+
+        # Validate region_code and language
+        if region_code and region_code.isalpha() and len(region_code) == 2:
+            search_params["regionCode"] = region_code
+            
+        if language and re.match("^[a-zA-Z-]+$", language):
+            search_params["relevanceLanguage"] = language
+        
+        if video_category_id != 'none':
+            search_params["videoCategoryId"] = video_category_id
+
+        search_response = youtube.search().list(**search_params).execute()
+        video_ids = [search_result["id"]["videoId"] for search_result in search_response.get("items", [])]
+
+        # Get detailed information for each video
+        videos_response = youtube.videos().list(
+            part="contentDetails,snippet,statistics",
+            id=",".join(video_ids)
+        ).execute()
+
+        # Fetch category names if not already fetched
+        if not category_names:
+            category_response = youtube.videoCategories().list(part="snippet", regionCode=region_code).execute()
+            for item in category_response.get("items", []):
+                category_names[item["id"]] = item["snippet"]["title"]
+
+        for video in videos_response.get("items", []):
+            stats = video["statistics"]
+            video_details = {
+                "Title": video["snippet"]["title"],
+                "Id": video["id"],
+                "URL": f"https://www.youtube.com/watch?v={video['id']}",
+                "Channel": video["snippet"].get("channelTitle", "Unknown Channel"),
+                "Thumbnial": video["snippet"]['thumbnails']['high']['url'],
+                "Description": video["snippet"]["description"],
+                "Tags": video["snippet"].get("tags", []),
+                "Category": category_names.get(video["snippet"]["categoryId"], "Unknown"),
+                "Views": stats.get("viewCount", "0"),
+                "Likes": stats.get("likeCount", "0"),
+                "Dislikes": stats.get("dislikeCount", "0"),
+                "Comments": stats.get("commentCount", "0"),
+                "Duration": parse_duration_to_minutes(video['contentDetails'].get('duration'))
+            }
+            related_videos.append(video_details)
+
+        total_results += len(search_response.get("items", []))
+
+        # Check if there are more results and update the nextPageToken
+        nextPageToken = search_response.get("nextPageToken")
+        if not nextPageToken:
+            break
+        
+
+    return related_videos
+
+
+from keybert import KeyBERT
+
+def keyword_extraction(videoid):
+    kw_model = KeyBERT(model='all-MiniLM-L6-v2')
+    anl = []
+
+    request = youtube.videos().list(
+        part="snippet",
+        id=videoid,
+        regionCode="US"
+    )
+    response = request.execute()
+
+    for item in response.get('items', []):
+        snippet = item.get('snippet', {})
+        video_id = item.get('id')
+        title = snippet.get('title', '')
+        description = snippet.get('description', '')
+        anl.append([video_id, title, description])
+
+    descri = str(title) + '\n' + str(description)
+    keywords = kw_model.extract_keywords(descri, keyphrase_ngram_range=(1, 1))
+    return keywords

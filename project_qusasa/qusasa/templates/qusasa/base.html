@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}">
     <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
-
+    <link rel="stylesheet" href="{% static 'qusasa/css/cards.css' %}" />
 </head>
 <body> 
     <!-- <img class="polygon" src="{% static 'qusasa/images/Frame 2.png'%}" alt="Description of Image" class="full-size-absolute"> -->
@@ -29,14 +29,149 @@
 
     <div class="content">
         <div class="welcome">
-            Welecome,  {{ user.first_name }}!
+            Welcome, {{ user.first_name }}!
         </div>
         <div class="history">
-            <p>You have no previous templates, <br> start using Qusasa's analysis features to serve your data needs now!</p>
-            <button><a href="{% url 'wFeature' %}" {% if request.resolver_match.url_name == 'wFeature' %} id="current" 
-                {% endif %}><span>Go to Qusasa's Features   <i class="fa-solid fa-scissors"></i></a></span></button>
+            <div class="cards">
+                {% if video_histories.exists or topic_histories.exists or playlist_histories.exists or channel_histories.exists or video_retrieving_histories.exists or competitive_histories.exists %}
+                    <!-- Iterate over each type of history -->
+                    {% for history in video_histories %}
+                    <article class="card">
+                        <a href="{% url 'video_analysis_detail' history.id %}">
+        
+                        <header class="card__thumb">
+                            <img src="{% static 'qusasa/images/feature_1.webp' %}"/>
+                            <div class="feature-name">
+    
+                                    Video Analysis {{ forloop.counter }}
+                            </div>
+                        </header>
+                        
+                        <div class="card__body">
+                            <div class="card__category youtube">{{ history.created_at|date:"M d, Y" }}</div>
+                            <h2 class="card__title">Your video was</h2>
+                            <p class="card__description" style="justify-content: center; text-align:center;">{{history.video_url}}</p>
+                        </div>
+                    </a>
+                    </article>
+                    {% endfor %}
+    
+                    {% for history in topic_histories %}
+                    <article class="card">
+                        <a href="{% url 'topic_analysis_detail' history.id %}">
+        
+                        <header class="card__thumb">
+                            <img src="{% static 'qusasa/images/feature_1.webp' %}"/>
+                            <div class="feature-name">
+    
+                                    Topic Analysis {{ forloop.counter }}
+                            </div>
+                        </header>
+                        
+                        <div class="card__body">
+                            <div class="card__category youtube">{{ history.created_at|date:"M d, Y" }}</div>
+                            <h2 class="card__title">Your topic was</h2>
+                            <p class="card__description" style="justify-content: center; text-align:center;">{{history.search_query}}</p>
+                        </div>
+                    </a>
+                    </article>
+                    {% endfor %}
+    
+                    {% for history in playlist_histories %}
+                    <article class="card">
+                        <a href="{% url 'playlist_analysis_detail' history.id %}">
+        
+                        <header class="card__thumb">
+                            <img src="{% static 'qusasa/images/feature_1.webp' %}"/>
+                            <div class="feature-name">
+    
+                                    Playlist Analysis {{ forloop.counter }}
+                            </div>
+                        </header>
+                        
+                        <div class="card__body">
+                            <div class="card__category youtube">{{ history.created_at|date:"M d, Y" }}</div>
+                            <h2 class="card__title">Your playlist was</h2>
+                            <p class="card__description" style="justify-content: center; text-align:center;">{{history.playlist_url}}</p>
+                        </div>
+                    </a>
+                    </article>
+                    {% endfor %}
+    
+                    {% for history in channel_histories %}
+                    <article class="card">
+                        <a href="{% url 'channel_analysis_detail' history.id %}">
+        
+                        <header class="card__thumb">
+                            <img src="{% static 'qusasa/images/feature_1.webp' %}"/>
+                            <div class="feature-name">
+    
+                                    Channel Analysis {{ forloop.counter }}
+                            </div>
+                        </header>
+                        
+                        <div class="card__body">
+                            <div class="card__category youtube">{{ history.created_at|date:"M d, Y" }}</div>
+                            <h2 class="card__title">Your channel was</h2>
+                            <p class="card__description" style="justify-content: center; text-align:center;">{{history.channel_url}}</p>
+                        </div>
+                    </a>
+                    </article>
+                    {% endfor %}
+    
+                    {% for history in video_retrieving_histories %}
+                    <article class="card">
+                        <a href="{% url 'video_retriving_detail' history.id %}">
+        
+                        <header class="card__thumb">
+                            <img src="{% static 'qusasa/images/feature_1.webp' %}"/>
+                            <div class="feature-name">
+    
+                                    Video Retrival {{ forloop.counter }}
+                            </div>
+                        </header>
+                        
+                        <div class="card__body">
+                            <div class="card__category youtube">{{ history.created_at|date:"M d, Y" }}</div>
+                            <h2 class="card__title">Your video was</h2>
+                            <p class="card__description" style="justify-content: center; text-align:center;">{{history.video_url}}</p>
+                        </div>
+                    </a>
+                    </article>
+                    {% endfor %}
+    
+                    {% for history in competitive_histories %}
+                    <article class="card">
+                        <a href="{% url 'competitive_analysis_detail' history.id %}">
+        
+                        <header class="card__thumb">
+                            <img src="{% static 'qusasa/images/feature_1.webp' %}"/>
+                            <div class="feature-name">
+    
+                                    Competitive Analysis {{ forloop.counter }}
+                            </div>
+                        </header>
+                        
+                        <div class="card__body">
+                            <div class="card__category youtube">{{ history.created_at|date:"M d, Y" }}</div>
+                            <h2 class="card__title">Your channel was</h2>
+                            <p class="card__description" style="justify-content: center; text-align:center;">{{history.input_text}}</p>
+                        </div>
+                    </a>
+                    </article>
+                    {% endfor %}
+                {% else %}
+                    <p>You have no previous templates,<br> start using Qusasa's analysis features to serve your data needs now!</p>
+                    <button>
+                        <a href="{% url 'wFeature' %}" {% if request.resolver_match.url_name == 'wFeature' %} id="current"{% endif %}>
+                            <span>Go to Qusasa's Features <i class="fa-solid fa-scissors"></i></span>
+                        </a>
+                    </button>
+                {% endif %}
+            </div>
         </div>
     </div>
+    
 
 
    

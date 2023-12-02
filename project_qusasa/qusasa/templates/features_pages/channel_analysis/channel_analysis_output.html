@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Qusasa | Playlist Analysis</title>
+    <title>Qusasa | Youtube Channel Analysis</title>
     <!-- Linking CSS -->
     <link rel="stylesheet" href="{% static 'qusasa/css/signup.css' %}" />
     <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}" />
@@ -59,7 +59,7 @@
                 <div class="download-text">
                     <div class="text">
                         <h3>The Channel datasets</h3>
-                    <p>A dataset for the channel info, a dataset for each video on the channel, and a dataset for each playlist in the channel.</p>
+                    <p>A dataset for the channel info, a dataset for channel videos, and a dataset for channel palylists</p>
                     </div>
                     
                     <div class="button">
@@ -78,8 +78,8 @@
                     </div>
                     
                     <div class="button">
-                        <button>Download the report</button>
-                    </div>
+                        <a href="{% url 'download_docx' filename=docx_file %}"><button>Download the report</button></a>
+                      </div>
                     
                 </div>
             </div>
@@ -106,11 +106,11 @@
                         
                     </div>
                     <div class="playlist-wordtags">
-                        <h1>Playlist Word tags</h1>
+                        <h1>Channel Word tags</h1>
                         <div id="wordcloud0" class="wordcloud"></div>
 
                     </div>
-                        <h1 class="playlist-stats-h1">Playlist statistics</h1>
+                        <h1 class="playlist-stats-h1">Channel statistics</h1>
                         <div class="video-stats">
                             <div class="video-stat">
                                 <h3 style="text-wrap: nowrap;">{{playlist_publishedAt}}</h3>
@@ -155,7 +155,7 @@
                             <div class="chart-compare ">
                                 <div class="compare-el">
                                     <div class="compare-stats">
-                                        <p>Playlist<br><span>Progress</span> <br>over puplication time</p>
+                                        <p>Channel<br><span>Progress</span> <br>over puplication time</p>
                                         <p>in <span>Views</span> </p>
                         
                                     </div>
@@ -171,7 +171,7 @@
                             <div class="chart-compare ">
                                 <div class="compare-el">
                                     <div class="compare-stats">
-                                        <p>Playlist<br><span>Progress</span> <br>over puplication time</p>
+                                        <p>Channel<br><span>Progress</span> <br>over puplication time</p>
                                         <p>in <span>Likes</span> </p>
                         
                                     </div>
@@ -187,7 +187,7 @@
                             <div class="chart-compare ">
                                 <div class="compare-el">
                                     <div class="compare-stats">
-                                        <p>Playlist<br><span>Progress</span> <br>over puplication time</p>
+                                        <p>Channel<br><span>Progress</span> <br>over puplication time</p>
                                         <p>in <span>Comment counts</span> </p>
                         
                                     </div>
@@ -398,6 +398,43 @@
    
 </div>
 
+<script type="text/javascript">
+    const csrftoken = '{{ csrf_token }}';
+</script>
+
+
+<script>
+    function deepCopy(obj, visited = new WeakMap()) {
+        if (obj === null || typeof obj !== 'object') {
+            return obj;
+        }
+        if (visited.has(obj)) {
+            return visited.get(obj);
+        }
+        let copy;
+        if (Array.isArray(obj)) {
+            copy = [];
+            visited.set(obj, copy);
+            obj.forEach((item, index) => {
+                copy[index] = deepCopy(item, visited);
+            });
+            return copy;
+        }
+        if (obj instanceof Object) {
+            copy = {};
+            visited.set(obj, copy);
+            Object.keys(obj).forEach(key => {
+                // Skip properties that cause circular references
+                if (key !== 'ctx') {
+                    copy[key] = deepCopy(obj[key], visited);
+                }
+            });
+            return copy;
+        }
+        throw new Error('Unable to copy object!');
+    }
+</script>
+
 
 <script>
     document.getElementById('download-dataset-button').addEventListener('click', function() {
@@ -521,6 +558,25 @@
 
     var Piechart = new ApexCharts(document.querySelector("#playlistPieChart"), options);
     Piechart.render();
+
+    setTimeout(() => {
+        Piechart.updateOptions({
+        });
+      
+      }, 300);
+
+    var originalOptions = Piechart.w.config;
+
+    // Clone the options and change text color to black for exporting
+    var playlist_piechart = deepCopy(originalOptions);
+    playlist_piechart.chart.foreColor = '#000'; // Set text color to black
+    playlist_piechart.chart.background = '#FFF'; // Set background to white for contrast
+    playlist_piechart.chart.height = 300; // Set text color to black
+    playlist_piechart.chart.width = 300; // Set background to white for contrast
+    playlist_piechart.title.text = "Channel playlist pie chart";
+    playlist_piechart.legend.show = true
+    playlist_piechart.fill = {}
+
 
 
     var seriesData = videos_publishedAt.map(function(date, index) {
@@ -654,8 +710,64 @@
         var chart3 = new ApexCharts(document.querySelector("#comment-chart"), options3);
 
         chart1.render();
+
+        setTimeout(() => {
+            chart1.updateOptions({
+            });
+          
+          }, 300);
+    
+
+        var chart1Options = chart1.w.config;
+
+        var views_chart = deepCopy(chart1Options);
+        views_chart.chart.foreColor = '#000'; // Set text color to black
+        views_chart.chart.background = '#FFF'; // Set background to white for contrast
+        views_chart.chart.height = 300; // Set text color to black
+        views_chart.chart.width = 300; // Set background to white for contrast
+        views_chart.title.text = "Published At against views";
+        views_chart.legend.show = true
+        views_chart.fill = {}
+
         chart2.render();
+
+        setTimeout(() => {
+            chart2.updateOptions({
+            });
+          
+          }, 300);
+    
+
+        var chart2Options = chart2.w.config;
+
+        var likes_chart = deepCopy(chart2Options);
+        likes_chart.chart.foreColor = '#000'; // Set text color to black
+        likes_chart.chart.background = '#FFF'; // Set background to white for contrast
+        likes_chart.chart.height = 300; // Set text color to black
+        likes_chart.chart.width = 300; // Set background to white for contrast
+        likes_chart.title.text = "Published At against likes";
+        likes_chart.legend.show = true
+        likes_chart.fill = {}
+
         chart3.render();
+
+        setTimeout(() => {
+            chart3.updateOptions({
+            });
+          
+          }, 300);
+    
+
+        var chart3Options = chart3.w.config;
+
+        var comments_chart = deepCopy(chart3Options);
+        comments_chart.chart.foreColor = '#000'; // Set text color to black
+        comments_chart.chart.background = '#FFF'; // Set background to white for contrast
+        comments_chart.chart.height = 300; // Set text color to black
+        comments_chart.chart.width = 300; // Set background to white for contrast
+        comments_chart.title.text = "Published At against comments count";
+        comments_chart.legend.show = true
+        comments_chart.fill = {}
 
         var options4 = {
             chart: {
@@ -743,8 +855,64 @@
         var chart6 = new ApexCharts(document.querySelector("#comment-chart-dur"), options6);
 
         chart4.render();
+
+        setTimeout(() => {
+            chart4.updateOptions({
+            });
+          
+          }, 300);
+    
+
+        var chart4Options = chart4.w.config;
+
+        var views_chart_dur = deepCopy(chart4Options);
+        views_chart_dur.chart.foreColor = '#000'; // Set text color to black
+        views_chart_dur.chart.background = '#FFF'; // Set background to white for contrast
+        views_chart_dur.chart.height = 300; // Set text color to black
+        views_chart_dur.chart.width = 300; // Set background to white for contrast
+        views_chart_dur.title.text = "Duration against views count";
+        views_chart_dur.legend.show = true
+        views_chart_dur.fill = {}
+
         chart5.render();
+
+        setTimeout(() => {
+            chart5.updateOptions({
+            });
+          
+          }, 300);
+    
+
+        var chart5Options = chart5.w.config;
+
+        var likes_chart_dur = deepCopy(chart5Options);
+        likes_chart_dur.chart.foreColor = '#000'; // Set text color to black
+        likes_chart_dur.chart.background = '#FFF'; // Set background to white for contrast
+        likes_chart_dur.chart.height = 300; // Set text color to black
+        likes_chart_dur.chart.width = 300; // Set background to white for contrast
+        likes_chart_dur.title.text = "Duration against likes count";
+        likes_chart_dur.legend.show = true
+        likes_chart_dur.fill = {}
+
         chart6.render();
+
+        setTimeout(() => {
+            chart6.updateOptions({
+            });
+          
+          }, 300);
+    
+
+        var chart6Options = chart6.w.config;
+
+        var comments_chart_dur = deepCopy(chart6Options);
+        comments_chart_dur.chart.foreColor = '#000'; // Set text color to black
+        comments_chart_dur.chart.background = '#FFF'; // Set background to white for contrast
+        comments_chart_dur.chart.height = 300; // Set text color to black
+        comments_chart_dur.chart.width = 300; // Set background to white for contrast
+        comments_chart_dur.title.text = "Duration against comments count";
+        comments_chart_dur.legend.show = true
+        comments_chart_dur.fill = {}
     
         setTimeout(() => {
             chart1.updateOptions({
@@ -759,7 +927,7 @@
             });
             chart6.updateOptions({
             });
-        }, 300); // Adjust the timeout duration as needed
+        }, 300);
     
 </script>
 
@@ -849,12 +1017,45 @@ var categoryCounts = mostUsedCategories.map(item => item[1]);
     var categoryChart = new ApexCharts(document.querySelector("#category-chart"), options);
     categoryChart.render();
 
+    setTimeout(() => {
+        categoryChart.updateOptions({
+        });
+      
+      }, 300);
+
+
+    var chart7Options = categoryChart.w.config;
+
+    var categoryChartOpt = deepCopy(chart7Options);
+    categoryChartOpt.chart.foreColor = '#000'; // Set text color to black
+    categoryChartOpt.chart.background = '#FFF'; // Set background to white for contrast
+    categoryChartOpt.chart.height = 300; // Set text color to black
+    categoryChartOpt.chart.width = 300; // Set background to white for contrast
+    categoryChartOpt.title.text = "Categories in channel barchart";
+    categoryChartOpt.legend.show = true
+    categoryChartOpt.fill = {}
+
 </script>
 
 <script>
       
  var durations = videos_duration
  console.log(durations)
+
+ function calculateBoxPlotValues(dataArray) {
+    dataArray.sort((a, b) => a - b);
+
+    const min = dataArray[0];
+    const max = dataArray[dataArray.length - 1];
+
+    const q1 = dataArray[Math.floor(dataArray.length / 4)];
+    const median = dataArray[Math.floor(dataArray.length / 2)];
+    const q3 = dataArray[Math.floor(dataArray.length * (3 / 4))];
+
+    return [min, q1, median, q3, max];
+}
+
+var boxPlotValues = calculateBoxPlotValues(durations);
  
  
 var optionsBoxPlot = {
@@ -905,7 +1106,8 @@ var optionsBoxPlot = {
         data: [
             {
                 x: 'Durations',
-                y: durations
+                y: boxPlotValues
+
             }
         ]
     }],
@@ -925,6 +1127,23 @@ var optionsBoxPlot = {
  
  var boxPlotChart = new ApexCharts(document.querySelector("#channel-duration-chart"), optionsBoxPlot);
  boxPlotChart.render();
+
+ setTimeout(() => {
+    boxPlotChart.updateOptions({
+    });
+  
+  }, 300);
+
+ var chart8Options = boxPlotChart.w.config;
+
+var boxPlotChartOpt = deepCopy(chart8Options);
+boxPlotChartOpt.chart.foreColor = '#000'; // Set text color to black
+boxPlotChartOpt.chart.background = '#FFF'; // Set background to white for contrast
+boxPlotChartOpt.chart.height = 300; // Set text color to black
+boxPlotChartOpt.chart.width = 300; // Set background to white for contrast
+boxPlotChartOpt.title.text = "Channel Videos Durations Box plot";
+boxPlotChartOpt.legend.show = true
+boxPlotChartOpt.fill = {}
 </script>
 
 <script>
@@ -1068,6 +1287,24 @@ drawWordCloud("#wordcloud0" , channelsTags);
     var emotions_chart = new ApexCharts(document.querySelector("#emotions_radchart"), options);
     emotions_chart.render();
 
+    setTimeout(() => {
+        emotions_chart.updateOptions({
+        });
+      
+      }, 300);
+
+
+    var chart9Options = emotions_chart.w.config;
+
+    var emotions_chartOpt = deepCopy(chart9Options);
+    emotions_chartOpt.chart.foreColor = '#000'; // Set text color to black
+    emotions_chartOpt.chart.background = '#FFF'; // Set background to white for contrast
+    emotions_chartOpt.chart.height = 300; // Set text color to black
+    emotions_chartOpt.chart.width = 300; // Set background to white for contrast
+    emotions_chartOpt.title.text = "Top videos Comments Sentiment";
+    emotions_chartOpt.legend.show = true
+    emotions_chartOpt.fill = {}
+
     var options_worst = options
     options_worst['series'] = [{
         name: 'Emotion Percentage',
@@ -1080,6 +1317,23 @@ drawWordCloud("#wordcloud0" , channelsTags);
 
     var emotions_chart_worst = new ApexCharts(document.querySelector("#emotions_radchart_worst"), options_worst);
     emotions_chart_worst.render();
+
+    setTimeout(() => {
+        emotions_chart_worst.updateOptions({
+        });
+      
+      }, 300);
+
+    var chart10Options = emotions_chart_worst.w.config;
+
+    var emotions_chart_worstOpt = deepCopy(chart10Options);
+    emotions_chart_worstOpt.chart.foreColor = '#000'; // Set text color to black
+    emotions_chart_worstOpt.chart.background = '#FFF'; // Set background to white for contrast
+    emotions_chart_worstOpt.chart.height = 300; // Set text color to black
+    emotions_chart_worstOpt.chart.width = 300; // Set background to white for contrast
+    emotions_chart_worstOpt.title.text = "Worst videos Comments Sentiment";
+    emotions_chart_worstOpt.legend.show = true
+    emotions_chart_worstOpt.fill = {}
 </script>
 
 <script>
@@ -1131,5 +1385,87 @@ drawWordCloud("#wordcloud0" , channelsTags);
           duration: 1200, // You can adjust this value for animation duration
         });
       </script>
+
+      <script>
+        // Function to handle the rendering and conversion of a single chart to a data URI
+    // Function to handle the rendering and conversion of a single chart to a data URI
+    function convertChartToDataURI(chartOptions, callback) {
+        console.log('hi');
+        let exportContainer = document.createElement('div');
+        exportContainer.style.position = 'absolute';
+        exportContainer.style.left = '-9999px';
+        exportContainer.style.top = '-9999px';
+        document.body.appendChild(exportContainer);
+    
+        let modifiedChartOptions = {
+            ...chartOptions,
+            chart: {
+                ...chartOptions.chart,
+                events: {
+                    rendered: function(chartContext, config) {
+                        console.log('rendered');
+                    }
+                }
+            }
+        };
+    
+        let exportChart = new ApexCharts(exportContainer, modifiedChartOptions);
+        exportChart.render();
+    
+        // Manually trigger the rendered event for testing
+        setTimeout(() => {
+            exportChart.dataURI().then(({ imgURI }) => {
+                console.log('Manual trigger');
+                exportChart.destroy();
+                document.body.removeChild(exportContainer);
+                callback(null, imgURI);
+            });
+        }, 1000); // Adjust this delay as needed
+    }
+    
+    
+    
+    // Function to process all charts and send them to the server
+    function processAndSendCharts(chartsOptions) {
+        let chartImagesPromises = chartsOptions.map((options) => {
+            return new Promise((resolve, reject) => {
+                convertChartToDataURI(options, (error, imgURI) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(imgURI);
+                    }
+                });
+            });
+        });
+    
+        Promise.all(chartImagesPromises).then((imagesURI) => {
+            // Now you have all the images URI, send them to the server
+            fetch('/doc_channel/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
+                },
+                body: JSON.stringify({ imgData: imagesURI })
+            }).then(response => response.json())
+            .then(data => {
+                console.log(data); // Handle any response from the server
+            }).catch(error => {
+                console.error('Error sending charts to the server:', error);
+            });
+        }).catch(error => {
+            console.error('Error converting charts to images:', error);
+        });
+    }
+    
+    // Assuming you have an array of chart options for each chart
+    let chartsOptions = [playlist_piechart, views_chart, likes_chart, comments_chart, views_chart_dur, likes_chart_dur, comments_chart_dur, categoryChartOpt, boxPlotChartOpt, emotions_chartOpt, emotions_chart_worstOpt];
+    
+    // Process and send all charts
+    processAndSendCharts(chartsOptions);
+    
+    </script>
   </body>
 </html>
+

@@ -466,3 +466,11 @@ class ChannelAnalysisInputForm(forms.Form):
         if not re.match(youtube_channel_pattern, channel_url):
             raise ValidationError("Please enter a valid YouTube channel URL.")
         return channel_url
+    
+
+class VideoRetrivingInputForm(forms.Form):
+    search_query = forms.CharField(label='Search Query', max_length=100, required=True)
+    num_of_videos = forms.IntegerField(label='Number Of Videos:', required=True)
+    order = forms.ChoiceField(label='Order', choices=ORDER_CHOICES, required=False, initial='relevance')
+    region_code = forms.ChoiceField(label='Region Code', choices=COUNTRY_CHOICES, required=False)
+    language = forms.ChoiceField(label='Language', choices=LANGUAGE_CHOICES, required=False)

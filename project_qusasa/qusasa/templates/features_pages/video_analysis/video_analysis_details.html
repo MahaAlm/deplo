@@ -5,7 +5,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Qusasa | YouTube Features</title>
+    <title>Qusasa | Youtube Video Analysis</title>
     <!-- Linking CSS -->
     <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}" />
     <link rel="stylesheet" href="{% static 'qusasa/css/cards.css' %}" />
@@ -35,7 +35,7 @@
             <li><a href="{% url 'base' %}" {% if request.resolver_match.url_name == 'base' %}  {% endif %}> Home</a></li>
             <li><a href="{% url 'wFeature' %}" {% if request.resolver_match.url_name == 'base' %}  {% endif %}>Qusasa's Features</a></li>
             <li><a href="{% url 'YouTubeFeat' %}" {% if request.resolver_match.url_name == 'base' %}  {% endif %}>YouTube Features</a></li>
-            <li id="current">VideoAnalysis</li>
+            <li id="current">Video Analysis</li>
         </ul>
 
       <div class="history">

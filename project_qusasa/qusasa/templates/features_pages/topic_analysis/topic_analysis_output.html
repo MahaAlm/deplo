@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Qusasa | YouTube Features</title>
+    <title>Qusasa | YouTube Topic Analysis</title>
     <!-- Linking CSS -->
     <link rel="stylesheet" href="{% static 'qusasa/css/signup.css' %}" />
     <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}" />
@@ -193,9 +193,9 @@
                         <p>including all the graphs, statistics, and interpretaions presented.</p>
                     </div>
                     
-                    <div class="button">
-                        <button>Download the report</button>
-                    </div>
+                      <div class="button">
+                        <a href="{% url 'download_docx' filename=docx_file %}"><button>Download the report</button></a>
+                      </div>
                     
                 </div>
             </div>
@@ -233,7 +233,7 @@
             </div>
         </div>
         <h1 data-aos="fade-up">Topic Dashboard</h1>
-        <p data-aos="fade-up"> here we display the top video of each channel, you can hover on each video to get more insights about why is it so successfull!</p>
+        <p data-aos="fade-up"> Enhance your understanding with our topic analysis dashboard.</p>
        
       
 
@@ -244,11 +244,19 @@
                     <div id="pieChart" class="chart"> <p>Video Distribution by Channel</p><h5>A pie chart highlighting the most active channels</h5></div>
                     <div id="barChart" class="chart"><p>Top Video Comment Counts</p><h5>A bar chart showcasing the most popular videos</h5></div>
                   <div class="chart" > <div id="wordcloud0" class="wordcloud"><p>Tags WordCloud</p> <h5>A visual snapshot of trending terms from video content, guiding your focus to prevalent topics</h5></div> </div>
-                    <div id="frequencyBarChart" class="chart"><p>Keyword Frequency</p><h5>The top 10 keywords in video titles and descriptions</h5></div>
-                    <div id="lineChart" class="chart">
-                        <p>Trend Over Time</p>
-                        <h5>A line chart tracking video uploads, revealing patterns and interest in the topic over the years</h5>
-                      </div>
+                  <div class="chart">
+                    <div class="chart-text"></div>
+                    <p>Keyword Frequency</p><h5>The top 10 keywords in video titles and descriptions</h5>  
+                    <div id="frequencyBarChart" class="chart"></div>
+                  </div>
+  
+                  <div class="chart">
+                    <p>Trend Over Time</p>
+                          <h5>A line chart tracking video uploads, revealing patterns and interest in the topic over the years</h5>
+                  </div>
+                  <div id="lineChart" class="chart"></div>
+  
+                  </div>
                 </div>
                 
             </div>
@@ -277,65 +285,56 @@
    
 </div>
 
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    AOS.init({
+      // settings
+    });
+  });
+
+  
+</script>
 <script id="json-data" type="application/json">{{ json_data|safe }}</script>
 
 
-<script>
-   
-    document.addEventListener('DOMContentLoaded', function() {
-        var videoContainers = document.querySelectorAll('.video-container');
-    
-        // Function to remove expanded class from all video containers
-        function resetContainers() {
-            videoContainers.forEach(function(container) {
-                container.classList.remove('expanded');
-                container.style.boxShadow = '';
-                container.style.display = ''; // Show all containers
-            });
-        }
-    
-        // Add or remove expanded class on hover
-        videoContainers.forEach(function(container) {
-            container.addEventListener('mouseenter', function() {
-                container.classList.add('expanded');
-                // Hide other containers
-                videoContainers.forEach(function(otherContainer) {
-                    if (otherContainer !== container) {
-                        otherContainer.style.display = 'none';
-                    }
-                });
-            });
-            container.addEventListener('mouseleave', function() {
-                if (!container.classList.contains('clicked')) {
-                    container.classList.remove('expanded');
-                    container.style.boxShadow = '0 0 30px 10px #6b4e8f76'; // Change box shadow
-                    resetContainers();
-                }
-            });
-        });
-    
-        // Remove expanded class and reset on click outside
-        document.addEventListener('click', function(event) {
-            var isClickInsideContainer = Array.from(videoContainers).some(function(container) {
-                return container.contains(event.target);
-            });
-    
-            if (!isClickInsideContainer) {
-                resetContainers();
-            } else {
-                videoContainers.forEach(function(container) {
-                    if (container.contains(event.target)) {
-                        container.classList.add('clicked');
-                    } else {
-                        container.classList.remove('clicked');
-                    }
-                });
-            }
-        });
-    });
-    
-        
+
+<script type="text/javascript">
+  const csrftoken = '{{ csrf_token }}';
 </script>
+
+
+<script>
+  function deepCopy(obj, visited = new WeakMap()) {
+      if (obj === null || typeof obj !== 'object') {
+          return obj;
+      }
+      if (visited.has(obj)) {
+          return visited.get(obj);
+      }
+      let copy;
+      if (Array.isArray(obj)) {
+          copy = [];
+          visited.set(obj, copy);
+          obj.forEach((item, index) => {
+              copy[index] = deepCopy(item, visited);
+          });
+          return copy;
+      }
+      if (obj instanceof Object) {
+          copy = {};
+          visited.set(obj, copy);
+          Object.keys(obj).forEach(key => {
+              // Skip properties that cause circular references
+              if (key !== 'ctx') {
+                  copy[key] = deepCopy(obj[key], visited);
+              }
+          });
+          return copy;
+      }
+      throw new Error('Unable to copy object!');
+  }
+</script>
+
 <script>
     document.getElementById('download-dataset-button').addEventListener('click', function() {
         window.location.href = "{% url 'topic_dataset_zipped_output' %}";
@@ -452,6 +451,21 @@ jsonData.top_5_videos.forEach(video => {
 
 var chart = new ApexCharts(document.querySelector("#barChart"), options);
 chart.render();
+setTimeout(() => {
+  chart.updateOptions({
+  });
+
+}, 300);
+var comment_barchart = deepCopy(chart.w.config);
+comment_barchart.chart.foreColor = '#000'; // Set text color to black
+comment_barchart.chart.background = '#FFF'; // Set background to white for contrast
+comment_barchart.chart.height = 300; // Set text color to black
+comment_barchart.chart.width = 300; // Set background to white for contrast
+comment_barchart.title.text = "Top Video Comment Counts";
+comment_barchart.xaxis.categories = videosNames
+comment_barchart.xaxis.labels = {show: false}
+comment_barchart.legend.show = true
+comment_barchart.fill = {}
 
 var channelNames = jsonData.channels_dict.map(channel => channel.Name);
 var viewAverages = jsonData.channels_dict.map(channel => parseFloat(channel["View average"]));
@@ -515,6 +529,20 @@ fill: {
 
 var chart = new ApexCharts(document.querySelector("#pieChart"), options);
 chart.render();
+setTimeout(() => {
+  chart.updateOptions({
+  });
+
+}, 300);
+var channels_piechart = deepCopy(chart.w.config);
+channels_piechart.chart.foreColor = '#000'; // Set text color to black
+channels_piechart.chart.background = '#FFF'; // Set background to white for contrast
+channels_piechart.chart.height = 300; // Set text color to black
+channels_piechart.chart.width = 300; // Set background to white for contrast
+channels_piechart.title.text = "Top topic channels views piechart";
+channels_piechart.xaxis.categories = channelNames
+channels_piechart.legend.show = true
+channels_piechart.fill = {}
 
 var options = {
   series: [{
@@ -547,7 +575,19 @@ var options = {
 
 var chart = new ApexCharts(document.querySelector("#frequencyBarChart"), options);
 chart.render();
+setTimeout(() => {
+  chart.updateOptions({
+  });
 
+}, 300);
+var freq_barchart = deepCopy(chart.w.config);
+freq_barchart.chart.foreColor = '#000'; // Set text color to black
+freq_barchart.chart.background = '#FFF'; // Set background to white for contrast
+freq_barchart.chart.height = 300; // Set text color to black
+freq_barchart.chart.width = 300; // Set background to white for contrast
+freq_barchart.title.text = "Topic words frequency";
+freq_barchart.legend.show = true
+freq_barchart.fill = {}
 //////
 
     var videos = jsonData.videos_dict
@@ -624,6 +664,19 @@ chart.render();
   // Render the line chart
   var lineChart = new ApexCharts(document.querySelector("#lineChart"), lineChartOptions);
   lineChart.render();
+  setTimeout(() => {
+    lineChart.updateOptions({
+    });
+  
+  }, 300);
+  var trend_chart = deepCopy(lineChart.w.config);
+  trend_chart.chart.foreColor = '#000'; // Set text color to black
+  trend_chart.chart.background = '#FFF'; // Set background to white for contrast
+  trend_chart.chart.height = 300; // Set text color to black
+  trend_chart.chart.width = 500; // Set background to white for contrast
+  trend_chart.title.text = "Topic words frequency";
+  trend_chart.legend.show = true
+  trend_chart.fill = {}
   ////
   var radialOptions = {
     series: [75], // Replace 75 with your actual percentage value
@@ -670,9 +723,6 @@ chart.render();
       },
     },
   };
-
-  // Render the Radial Bar Chart
-  new ApexCharts(document.querySelector("#positiveCommentsChart"), radialOptions).render();
 
 </script>
 
@@ -751,6 +801,8 @@ channelsTags.forEach(function(tags, i) {
         // other options as needed
     });
 });
+
+
 </script>
 
     <script>
@@ -758,5 +810,87 @@ channelsTags.forEach(function(tags, i) {
           duration: 1200, // You can adjust this value for animation duration
         });
       </script>
+
+
+      <script>
+        // Function to handle the rendering and conversion of a single chart to a data URI
+    // Function to handle the rendering and conversion of a single chart to a data URI
+    function convertChartToDataURI(chartOptions, callback) {
+        console.log('hi');
+        let exportContainer = document.createElement('div');
+        exportContainer.style.position = 'absolute';
+        exportContainer.style.left = '-9999px';
+        exportContainer.style.top = '-9999px';
+        document.body.appendChild(exportContainer);
+    
+        let modifiedChartOptions = {
+            ...chartOptions,
+            chart: {
+                ...chartOptions.chart,
+                events: {
+                    rendered: function(chartContext, config) {
+                        console.log('rendered');
+                    }
+                }
+            }
+        };
+    
+        let exportChart = new ApexCharts(exportContainer, modifiedChartOptions);
+        exportChart.render();
+    
+        // Manually trigger the rendered event for testing
+        setTimeout(() => {
+            exportChart.dataURI().then(({ imgURI }) => {
+                console.log('Manual trigger');
+                exportChart.destroy();
+                document.body.removeChild(exportContainer);
+                callback(null, imgURI);
+            });
+        }, 1000); // Adjust this delay as needed
+    }
+    
+    
+    
+    // Function to process all charts and send them to the server
+    function processAndSendCharts(chartsOptions) {
+        let chartImagesPromises = chartsOptions.map((options) => {
+            return new Promise((resolve, reject) => {
+                convertChartToDataURI(options, (error, imgURI) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(imgURI);
+                    }
+                });
+            });
+        });
+    
+        Promise.all(chartImagesPromises).then((imagesURI) => {
+            // Now you have all the images URI, send them to the server
+            fetch('/doc_topic/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
+                },
+                body: JSON.stringify({ imgData: imagesURI })
+            }).then(response => response.json())
+            .then(data => {
+                console.log(data); // Handle any response from the server
+            }).catch(error => {
+                console.error('Error sending charts to the server:', error);
+            });
+        }).catch(error => {
+            console.error('Error converting charts to images:', error);
+        });
+    }
+    
+    // Assuming you have an array of chart options for each chart
+    let chartsOptions = [comment_barchart, channels_piechart, freq_barchart, trend_chart];
+    
+    // Process and send all charts
+    processAndSendCharts(chartsOptions);
+    
+    </script>
   </body>
 </html>

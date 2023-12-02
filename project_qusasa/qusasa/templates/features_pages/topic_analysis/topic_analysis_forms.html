@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Qusasa | Competitive analysis for</title>
+    <title>Qusasa | Youtube Topic Analysis</title>
     <!-- Linking CSS -->
     <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
@@ -15,9 +15,9 @@
     <link rel="stylesheet" href="{% static 'qusasa/css/simple_form.css' %}">
     <link rel="stylesheet" href="{% static 'qusasa/css/nav.css' %}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="{% static 'qusasa/css/cometitive_analysis_form.css' %}">
     <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <link rel="stylesheet" href="{% static 'qusasa/css/cometitive_analysis_form.css' %}">
 
     <style>
         @keyframes float {
@@ -52,6 +52,12 @@
             color: black !important;
             padding: 2rem !important;
         }
+        label {
+            margin-bottom: 3rem;
+            font-weight: 600;
+        }
+
+        
     </style>
     
 
@@ -71,13 +77,14 @@
                     <div class="category-container">
                         <i class="fa-solid fa-magnifying-glass"></i>
                         <div class="category-text">
-                            <h1 class="p-head">Search channels for me</h1>
-                            <h3>if you want to look through similar channels to you through a search, you can click here.</h3>
+                            <h1 class="p-head">Analyse topics for me</h1>
+                            <h3> you can search for a specific topic and gather information from videos that
+                                contain relevant information about that topic.</h3>
                         </div>
                     </div>
                     
                     <div class="category-field">
-                        <h3>Input a search query:</h3>
+                        <h3>Input topic:</h3>
                         {{ wizard.form.search_query }}
                     </div>
                         
@@ -121,6 +128,9 @@
         
         
     </div>
+
+    
+    
 
     <script>
         document.getElementById('search-query-form').addEventListener('submit', function() {

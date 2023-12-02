@@ -11,12 +11,14 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from .utils import searchByQuery, extractIdFromUrl, analyse_channels, video_analysis, analyze_playlist, analyze_channel, download_audio_from_youtube, transcribe_youtube_video, summarize_youtube_video, create_word_document, topic_analysis
+from .utils import searchByQuery, extractIdFromUrl, analyse_channels, video_analysis, analyze_playlist, analyze_channel, download_audio_from_youtube, transcribe_youtube_video, summarize_youtube_video, create_word_document, topic_analysis, get_realted_videos
 from .youtube_api import get_youtube_client
 from django.core.exceptions import ValidationError
 import re
 import os
 from django.conf import settings
+from decouple import config
+from .models import TopicAnalysisHistory
 
 
 def custom_admin(request):
@@ -42,7 +44,21 @@ def home(request):
 @login_required
 @email_verified_required
 def base(request):
-    return render(request, 'qusasa/base.html')
+    topic_histories = TopicAnalysisHistory.objects.filter(user=request.user).order_by('-created_at')
+    video_histories = VideoAnalysisHistory.objects.filter(user=request.user).order_by('-created_at')
+    playlist_histories = PlaylistAnalysisHistory.objects.filter(user=request.user).order_by('-created_at')
+    channel_histories = ChannelAnalysisHistory.objects.filter(user=request.user).order_by('-created_at')
+    video_retrieving_histories = VideoRetrievingHistory.objects.filter(user=request.user).order_by('-created_at')
+    competitive_histories = CompetitiveAnalysisHistory.objects.filter(user=request.user).order_by('-created_at')
+
+    return render(request, 'qusasa/base.html', {
+        'topic_histories': topic_histories,
+        'video_histories': video_histories,
+        'playlist_histories': playlist_histories,
+        'channel_histories': channel_histories,
+        'video_retrieving_histories': video_retrieving_histories,
+        'competitive_histories': competitive_histories,
+    })
 
 def signup(request):
     if request.method == 'POST':
@@ -120,10 +136,48 @@ def competitive_analysis_details(request):
 from django.http import HttpResponseRedirect
 from formtools.wizard.views import SessionWizardView
 from .forms import CompetitiveAnalysisTypeForm, myChannelPlaylistInputForm, YouTubeSearchForm, YouTubeCategorySearchForm, ChannelsListInput, FindInitialChoiceForm
-
+from .models import CompetitiveAnalysisHistory
 class CompetitiveAnalysisWizard(SessionWizardView):
     form_list = [CompetitiveAnalysisTypeForm, myChannelPlaylistInputForm, FindInitialChoiceForm, ChannelsListInput]
     template_name = 'features_pages/competitive_analysis/competitive_analysis.html'
+    
+    def get_form_initial(self, step):
+        initial = super().get_form_initial(step)
+        history_id = self.kwargs.get('history_id')
+
+        if history_id:
+            history = get_object_or_404(CompetitiveAnalysisHistory, id=history_id, user=self.request.user)
+            if step == '0':
+                initial.update({
+                    'analysis_type': history.analysis_type,
+                    'input_text': history.input_text,
+                })
+            elif step == '2':
+                initial.update({
+                    'choice': history.choice,
+                })
+            elif step == '3':
+                if history.choice == 'search':
+                    initial.update({
+                        'search_query': history.search_query,
+                        'order': history.order,
+                        'region_code': history.region_code,
+                        'language': history.language,
+                    })
+                elif history.choice == 'input_list':
+                    # Assuming you store multiple channel URLs in a JSON field
+                    channel_urls = history.channel_urls
+                    for i, url in enumerate(channel_urls):
+                        initial.update({f'channel_url_{i+1}': url})
+        return initial
+    
+    def get_form(self, step=None, data=None, files=None):
+        history_id = self.kwargs.get('history_id')
+        if history_id and step is None:
+            # If it's a redo, skip to the last step
+            step = self.steps.last
+
+        return super().get_form(step, data, files)
     
     def get_form(self, step=None, data=None, files=None):
         form = super().get_form(step, data, files)
@@ -148,9 +202,9 @@ class CompetitiveAnalysisWizard(SessionWizardView):
         if self.steps.current == '1':  # assuming '1' is the index of InputForm
             previous_data = self.get_cleaned_data_for_step('0') or {}
             analysis_type = previous_data.get('analysis_type')
-            if analysis_type == 'channels':
+            if analysis_type == 'channel':
                 form.fields['input_text'].label = 'channel'
-            elif analysis_type == 'playlists':
+            elif analysis_type == 'playlist':
                 form.fields['input_text'].label = 'playlist'
         
         if self.steps.current == '3':
@@ -161,16 +215,16 @@ class CompetitiveAnalysisWizard(SessionWizardView):
     def done(self, form_list, **kwargs):
         # Process the cleaned data
         cleaned_data = self.get_all_cleaned_data()
-        
+        channel_urls = []
         # Do something with the data and generate dataset/report as required
         entity_type = cleaned_data.get('analysis_type')
         my_link = cleaned_data.get('input_text')
         search_or_list = cleaned_data.get('choice') #('input_list', 'search')
-        print()
+    
+        
         youtube = get_youtube_client()
         
         if(search_or_list == 'search'):
-            search = True
             query = cleaned_data.get('search_query')
             order = cleaned_data.get('order')
             region_code = cleaned_data.get('region_code')
@@ -178,14 +232,45 @@ class CompetitiveAnalysisWizard(SessionWizardView):
             ids_list = searchByQuery(youtube, query, entity_type, order, region_code, language)
             ids_list.insert(0, extractIdFromUrl(my_link))
             
+            
+            
         elif(search_or_list == 'input_list'):
-            ids_list = []
-            ids_list.append(my_link)
-            ids_list.append(extractIdFromUrl(cleaned_data.get('channel_url_1')))
-            ids_list.append(extractIdFromUrl(cleaned_data.get('channel_url_2')))
-            ids_list.append(extractIdFromUrl(cleaned_data.get('channel_url_3')))
-            ids_list.append(extractIdFromUrl(cleaned_data.get('channel_url_4')))
+            ids_list = [my_link]
+        for i in range(1, 5):
+            url_field = f'channel_url_{i}'
+            if url_field in cleaned_data and cleaned_data[url_field]:
+                channel_url = extractIdFromUrl(cleaned_data[url_field])
+                ids_list.append(channel_url)
+                channel_urls.append(channel_url)
         
+        history_id = self.kwargs.get('history_id')
+
+        if history_id:
+            # Update existing history record
+            history = get_object_or_404(CompetitiveAnalysisHistory, id=history_id, user=self.request.user)
+            history.analysis_type = cleaned_data.get('analysis_type')
+            history.input_text = cleaned_data.get('input_text')
+            history.choice = cleaned_data.get('choice')
+            history.search_query = cleaned_data.get('search_query', '')
+            history.order = cleaned_data.get('order', '')
+            history.region_code = cleaned_data.get('region_code', '')
+            history.language = cleaned_data.get('language', '')
+            history.channel_urls = channel_urls
+            history.save()
+        else:
+            # Create new history record
+            CompetitiveAnalysisHistory.objects.create(
+                user=self.request.user,
+                analysis_type=cleaned_data.get('analysis_type'),
+                input_text=cleaned_data.get('input_text'),
+                choice=cleaned_data.get('choice'),
+                search_query=cleaned_data.get('search_query', ''),
+                order=cleaned_data.get('order', ''),
+                region_code=cleaned_data.get('region_code', ''),
+                language=cleaned_data.get('language', ''),
+                channel_urls=channel_urls,
+            )
+            
         print(ids_list)
         channel_data_df, top_videos_df, channel_icons, durations_list = analyse_channels(ids_list, entity_type, youtube)
         
@@ -257,7 +342,14 @@ def competitive_analysis_output_view(request):
     # Zip the lists together in the view
     channels = zip(channel_icons, channel_names)
     channels_tags = zip(request.session.get('topTags', []), channel_names)
+    channel_names = channel_names
+    zipped_channels = zip(channel_icons, channel_names, top_videos)
+
+
     context = {
+        'zipped_channels': zipped_channels,
+        'channel_names': channel_names,
+        'channel_icons': channel_icons,
         'channels': channels,
         'json_data': json_data,
         'top_likes_channel': request.session['top_likes_channel'],
@@ -296,18 +388,44 @@ def video_analysis_details(request):
     return render(request, 'features_pages/video_analysis/video_analysis_details.html')
 
 from .forms import VideoAnalysisInputForm
+from .models import VideoAnalysisHistory
 
 class VideoAnalysisWizard(SessionWizardView):
     form_list = [VideoAnalysisInputForm]
     template_name = 'features_pages/video_analysis/video_analysis_forms.html'  
+    
+    def get_form_initial(self, step):
+        initial = super().get_form_initial(step)
+        history_id = self.kwargs.get('history_id')
+
+        if history_id and step == '0':  # Assuming '0' is the step of VideoAnalysisInputForm
+            history = get_object_or_404(VideoAnalysisHistory, id=history_id, user=self.request.user)
+            initial.update({
+                'video_url': history.video_url,
+                # Add other fields here as necessary
+            })
+        return initial
     
     def done(self, form_list, **kwargs):
         # Process the cleaned data
         youtube = get_youtube_client()
         cleaned_data = self.get_all_cleaned_data()
         video_url = cleaned_data.get('video_url')
-        openai_api_key = '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'
+        openai_api_key = config('OPENAI_API_KEY')
 
+        history_id = self.kwargs.get('history_id')
+        if history_id:
+            # Update the existing history record
+            history = get_object_or_404(VideoAnalysisHistory, id=history_id, user=self.request.user)
+            history.video_url = cleaned_data.get('video_url')
+            # Update other fields as necessary
+            history.save()
+        else:
+            VideoAnalysisHistory.objects.create(
+            user=self.request.user,
+            video_url=cleaned_data.get('video_url'),
+            # Add other fields as necessary
+            )
         
         video_id = extractIdFromUrl(video_url)
         video_info_df, comments_df, emotion_counts, top_comments_by_emotion = video_analysis(youtube, video_id)
@@ -366,7 +484,8 @@ def video_analysis_output_view(request):
               'transcript': request.session['transcript'],
             'summary': request.session['summary'],
             "video_info_dict": request.session['video_info_dict'],
-            'docx_file': docx_file_path
+            'docx_file': docx_file_path,
+            'top_comments_by_emotion': request.session['top_comments_by_emotion']
         }
     
     return render(request, 'features_pages/video_analysis/video_analysis_output.html', context)
@@ -416,16 +535,42 @@ def playlist_analysis_details(request):
     return render(request, 'features_pages/playlist_analysis/playlist_analysis_details.html')
 
 from .forms import PlaylistAnalysisInputForm
-
+from .models import  PlaylistAnalysisHistory
 class PlaylistAnalysisWizard(SessionWizardView):
     form_list = [PlaylistAnalysisInputForm]
     template_name = 'features_pages/playlist_analysis/playlist_analysis_forms.html'  
+    
+    def get_form_initial(self, step):
+        initial = super().get_form_initial(step)
+        history_id = self.kwargs.get('history_id')
+
+        if history_id and step == '0':  # Assuming '0' is the step of PlaylistAnalysisInputForm
+            history = get_object_or_404(PlaylistAnalysisHistory, id=history_id, user=self.request.user)
+            initial.update({
+                'playlist_url': history.playlist_url,
+                # Add other fields as necessary
+            })
+        return initial
     
     def done(self, form_list, **kwargs):
         # Process the cleaned data
         youtube = get_youtube_client()
         cleaned_data = self.get_all_cleaned_data()
         plsylist_url = cleaned_data.get('playlist_url')
+        
+        history_id = self.kwargs.get('history_id')
+        if history_id:
+            # Update the existing history record
+            history = get_object_or_404(PlaylistAnalysisHistory, id=history_id, user=self.request.user)
+            history.playlist_url = cleaned_data.get('playlist_url')
+            # Update other fields as necessary
+            history.save()
+        else:
+            PlaylistAnalysisHistory.objects.create(
+            user=self.request.user,
+            playlist_url=cleaned_data.get('playlist_url'),
+            # Add other fields as necessary
+            )
         
         playlist_id = extractIdFromUrl(plsylist_url)
         playlist_info_df, all_videos_info_df, top_5_videos, worst_5_videos, top_5_comments_analysis, worst_5_comments_analysis = analyze_playlist(youtube, playlist_id)
@@ -477,6 +622,15 @@ class PlaylistAnalysisWizard(SessionWizardView):
 import math
 from datetime import datetime
 
+
+def parse_datetime(date_str):
+    for fmt in ('%Y-%m-%dT%H:%M:%S.%fZ', '%Y-%m-%dT%H:%M:%SZ'):
+        try:
+            return datetime.strptime(date_str, fmt)
+        except ValueError:
+            pass
+    raise ValueError(f"time data {date_str} does not match expected formats")
+
 def playlist_analysis_output_view(request):
     
     output_data = {
@@ -496,7 +650,7 @@ def playlist_analysis_output_view(request):
     
     publishedAt = request.session['publishedAt']
     
-    date_obj = datetime.strptime(publishedAt, '%Y-%m-%dT%H:%M:%SZ')
+    date_obj = parse_datetime(publishedAt)
 
     # Format to 'YYYY MMM DD'
     formatted_date = date_obj.strftime('%Y %b %d')
@@ -506,7 +660,7 @@ def playlist_analysis_output_view(request):
     # Assuming 'top_5_videos' is a list of dictionaries containing video information
     for video in top_5_videos:
         # Parse the 'publishedAt' date string to a datetime object
-        date_obj = datetime.strptime(video['publishedAt'], '%Y-%m-%dT%H:%M:%SZ')
+        date_obj = parse_datetime(video['publishedAt'])
 
         # Reformat the date to 'YYYY MMM DD' and update the video dictionary
         video['publishedAt'] = date_obj.strftime('%Y %b %d')
@@ -515,7 +669,7 @@ def playlist_analysis_output_view(request):
     # Assuming 'top_5_videos' is a list of dictionaries containing video information
     for video in worst_5_videos:
         # Parse the 'publishedAt' date string to a datetime object
-        date_obj = datetime.strptime(video['publishedAt'], '%Y-%m-%dT%H:%M:%SZ')
+        date_obj = parse_datetime(video['publishedAt'])
 
         # Reformat the date to 'YYYY MMM DD' and update the video dictionary
         video['publishedAt'] = date_obj.strftime('%Y %b %d')
@@ -575,10 +729,23 @@ def channel_analysis_details(request):
     return render(request, 'features_pages/channel_analysis/channel_analysis_details.html')
 
 from .forms import ChannelAnalysisInputForm
+from .models import ChannelAnalysisHistory
 
 class ChannelAnalysisWizard(SessionWizardView):
     form_list = [ChannelAnalysisInputForm]
     template_name = 'features_pages/channel_analysis/channel_analysis_forms.html'  
+    
+    def get_form_initial(self, step):
+        initial = super().get_form_initial(step)
+        history_id = self.kwargs.get('history_id')
+
+        if history_id and step == '0':  # Assuming '0' is the step of ChannelAnalysisInputForm
+            history = get_object_or_404(ChannelAnalysisHistory, id=history_id, user=self.request.user)
+            initial.update({
+                'channel_url': history.channel_url,
+                # Add other fields here as necessary
+            })
+        return initial
     
     def done(self, form_list, **kwargs):
         # Process the cleaned data
@@ -586,6 +753,20 @@ class ChannelAnalysisWizard(SessionWizardView):
         cleaned_data = self.get_all_cleaned_data()
         channel_url = cleaned_data.get('channel_url')
         
+        history_id = self.kwargs.get('history_id')
+        if history_id:
+            # Update the existing history record
+            history = get_object_or_404(ChannelAnalysisHistory, id=history_id, user=self.request.user)
+            history.channel_url = cleaned_data.get('channel_url')
+            # Update other fields as necessary
+            history.save()
+        else:
+            # Create a new history record
+            ChannelAnalysisHistory.objects.create(
+                user=self.request.user,
+                channel_url=cleaned_data.get('channel_url'),
+                # Add other fields as necessary
+            )
         channel_id = extractIdFromUrl(channel_url)
         channel_df, all_videos_df, all_playlists_df, top_3_videos, worst_3_videos, top_3_comments_analysis, worst_3_comments_analysis = analyze_channel(youtube, channel_id)
         
@@ -673,7 +854,7 @@ def channel_analysis_output_view(request):
     
     publishedAt = request.session['publishedAt']
     
-    date_obj = datetime.strptime(publishedAt, '%Y-%m-%dT%H:%M:%S.%fZ')
+    date_obj = parse_datetime(publishedAt)
 
     # Format to 'YYYY MMM DD'
     formatted_date = date_obj.strftime('%Y %b %d')
@@ -683,7 +864,7 @@ def channel_analysis_output_view(request):
     # Assuming 'top_5_videos' is a list of dictionaries containing video information
     for video in top_5_videos:
         # Parse the 'publishedAt' date string to a datetime object
-        date_obj = datetime.strptime(video['publishedAt'], '%Y-%m-%dT%H:%M:%SZ')
+        date_obj = parse_datetime(video['publishedAt'])
 
         # Reformat the date to 'YYYY MMM DD' and update the video dictionary
         video['publishedAt'] = date_obj.strftime('%Y %b %d')
@@ -692,7 +873,7 @@ def channel_analysis_output_view(request):
     # Assuming 'top_5_videos' is a list of dictionaries containing video information
     for video in worst_5_videos:
         # Parse the 'publishedAt' date string to a datetime object
-        date_obj = datetime.strptime(video['publishedAt'], '%Y-%m-%dT%H:%M:%SZ')
+        date_obj = parse_datetime(video['publishedAt'])
 
         # Reformat the date to 'YYYY MMM DD' and update the video dictionary
         video['publishedAt'] = date_obj.strftime('%Y %b %d')
@@ -720,6 +901,7 @@ def channel_analysis_output_view(request):
               'videos_likes': request.session['videos_likes'],
               'videos_views': request.session['videos_views'],
               'videos_commentCount': request.session['videos_commentCount'],
+              'docx_file': 'channel_analysis.docx',
               }
     
     
@@ -759,7 +941,23 @@ from .forms import ChannelAnalysisInputForm
 
 class TopicAnalysisWizard(SessionWizardView):
     form_list = [YouTubeSearchForm]
-    template_name = 'features_pages/topic_analysis/topic_analysis_forms.html'  
+    template_name = 'features_pages/topic_analysis/topic_analysis_forms.html'
+
+    def get_form_initial(self, step):
+        initial = super().get_form_initial(step)
+        history_id = self.kwargs.get('history_id')
+
+        if history_id and step == '0':  # Assuming '0' is the step you want to pre-fill
+            history = get_object_or_404(TopicAnalysisHistory, id=history_id)
+            initial.update({
+                'search_query': history.search_query,
+                'order': history.order,
+                'region_code': history.region_code,
+                'language': history.language,
+                # Add other fields as necessary
+            })
+        return initial
+
     
     def done(self, form_list, **kwargs):
         # Process the cleaned data
@@ -791,8 +989,14 @@ class TopicAnalysisWizard(SessionWizardView):
         self.request.session['top_5_comments'] = top_5_comments
 
 
-        
-        return HttpResponseRedirect(reverse('channel_analysis_output'))  # Use the name of the URL pattern
+        TopicAnalysisHistory.objects.create(
+            user=self.request.user,
+            search_query=cleaned_data.get('search_query'),
+            order=cleaned_data.get('order'),
+            region_code = cleaned_data.get('region_code'),
+            language = cleaned_data.get('language')
+        )
+        return HttpResponseRedirect(reverse('topic_analysis_output'))  # Use the name of the URL pattern
 
 import math
 from datetime import datetime
@@ -814,7 +1018,7 @@ def topic_analysis_output_view(request):
     # Assuming 'top_5_videos' is a list of dictionaries containing video information
     for video in top_5_videos:
         # Parse the 'publishedAt' date string to a datetime object
-        date_obj = datetime.strptime(video['publishedAt'], '%Y-%m-%dT%H:%M:%SZ')
+        date_obj = parse_datetime(video['publishedAt'])
 
         # Reformat the date to 'YYYY MMM DD' and update the video dictionary
         video['publishedAt'] = date_obj.strftime('%Y %b %d')
@@ -830,6 +1034,7 @@ def topic_analysis_output_view(request):
         'comments_dict': request.session['comments_dict'],
         'top_5_comments_analysis_dist': request.session['top_5_comments_analysis_dist'],
         'top_5_comments': request.session['top_5_comments'],
+        'docx_file': 'topic_analysis.docx',
               }
     
     
@@ -855,3 +1060,667 @@ def topic_dataset_zipped_output(request):
     response['Content-Disposition'] = 'attachment; filename="topic_analysis_datasets.zip"'
 
     return response
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import base64
+from docx import Document
+from io import BytesIO
+import os
+from docx.shared import Pt
+from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
+
+@csrf_exempt
+def doc_competitive(request):
+    channel_icons = request.session.get('channel_icons', [])
+    channel_names = request.session.get('channel_names', [])
+    top_videos = request.session.get('top_videos', [])
+    durations = request.session.get('durations', [])
+    output_data = {
+        'average_likes': request.session['average_likes'],
+        'average_views': request.session['average_views'],
+        'subs': request.session['subs'],
+        'channel_names': channel_names,
+        'durations': durations,
+        'mostUsedCategories': request.session.get('mostUsedCategories', []),
+        'topTags': request.session.get('topTags', []),
+    }
+    json_data = json.dumps(output_data)
+    
+
+    # Zip the lists together in the view
+    channels = zip(channel_icons, channel_names)
+    channels_tags = zip(request.session.get('topTags', []), channel_names)
+    context = {
+        'channels': channels,
+        'json_data': json_data,
+        'top_likes_channel': request.session['top_likes_channel'],
+        'top_views_channel': request.session['top_views_channel'],
+        'top_subs_channel': request.session['top_subs_channel'],
+        'type': request.session['type'],
+        'top_videos': top_videos,
+        'output_data': output_data,
+        'channels_tags': channels_tags
+        
+    }
+    if request.method == 'POST':
+        doc = Document()
+        doc.add_heading('Compeitive Analysis', 0)
+        doc.add_paragraph('Our youtube competitive analysis will provide you with customizable dataset, statistics, graphs and interpretaions to make your work with data easier.')
+        
+        doc.add_heading('Analysed playlist:', level=1)
+        for name in channel_names:
+            doc.add_paragraph(name, style='ListBullet')
+
+        doc.add_heading('Top videos from each channel:', level=1)
+        for video in top_videos:
+            # Heading for each video title
+            doc.add_heading(video['title'], level=2)
+
+            # Bold description label
+            desc_para = doc.add_paragraph()
+            desc_para.add_run('Description: ').bold = True
+            desc_para.add_run(video['description'])
+            
+            # Bold statistics label
+            stats_para = doc.add_paragraph()
+            stats_para.add_run('Statistics: ').bold = True
+            stats_para.add_run(f"{video['viewsCount']} views, {video['likesCount']} likes, {video['duration']} minutes")
+
+            # Comments as bullet points
+            if video['topComments']:  # Check if there are comments
+                comments_para = doc.add_paragraph()
+                comments_para.add_run('Top Comments:').bold = True
+                for comment in video['topComments']:
+                    doc.add_paragraph(comment, style='ListBullet')
+                    
+        doc.add_heading('Get more insights with graphs:', level=1)
+        
+        data = json.loads(request.body)
+        # The variable here should match what's sent from the frontend
+        imgs_data = data['imgData']  # This should match the key in the JSON sent from the frontend
+        for img_data in imgs_data:
+            # Decode the base64 image
+            img_data = base64.b64decode(img_data.split(',')[1])
+            image_stream = BytesIO(img_data)
+            # Add the image to the Word document
+            doc.add_picture(image_stream)
+
+        # Save the document
+        output_dir = os.path.join(settings.MEDIA_ROOT, 'documents')
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+        file_path = os.path.join(output_dir, "competitive_analysis.docx")
+        doc.save(file_path)
+
+        return JsonResponse({'message': 'Document created successfully'})
+
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+@csrf_exempt
+def doc_channel(request):
+    
+    channel_data= {
+        
+    
+    'top_5_videos': request.session['top_5_videos'],
+    'worst_5_videos': request.session['worst_5_videos'],
+    'top_5_comments_analysis_dist': request.session['top_5_comments_analysis_dist'],
+    'top_5_comments': request.session['top_5_comments'],
+    'worst_5_comments_analysis_dist': request.session['worst_5_comments_analysis_dist'],
+    'worst_5_comments': request.session['worst_5_comments'],
+    'uniqueTags': request.session['uniqueTags'],
+    'all_playlists_dict': request.session['all_playlists_dict'],         
+    'title': request.session['title'],
+    'description': request.session['description'],
+    'thumbnail': request.session['thumbnail'],
+    'videoCount': request.session['videoCount'],
+    'totalViews': request.session['totalViews'],
+    'totalLikes': request.session['totalLikes'],
+    'totalComments': request.session['totalComments'],
+    'averageDuration': request.session['averageDuration'],
+    }
+              
+    
+    if request.method == 'POST':
+        doc = Document()
+        doc.add_heading('Channel Analysis', 0)
+        doc.add_paragraph('Our channel analysis will give you an overview over the channel, what does influence its performance, and a closer look on its top and worst performing videos...')
+        
+        doc.add_heading('Get An Overview', level=1)
+        doc.add_heading(channel_data['title'], level=2)
+        
+        doc.add_heading('Discreption', level=3)
+        doc.add_paragraph(channel_data['description'])
+        doc.add_heading('Word tags', level=3)
+        doc.add_paragraph(channel_data['uniqueTags'])
+        doc.add_heading('Statistics', level=3)
+        stats_para = doc.add_paragraph(style='ListBullet')
+        stats_para.add_run('Video Count: ').bold = True
+        stats_para.add_run(str(channel_data['videoCount']))  # Convert integer to string
+        stats_para = doc.add_paragraph(style='ListBullet')
+        stats_para.add_run('Total Views: ').bold = True
+        stats_para.add_run(str(channel_data['totalViews']))  # Convert integer to string
+        stats_para = doc.add_paragraph(style='ListBullet')
+        stats_para.add_run('Total likes: ').bold = True
+        stats_para.add_run(str(channel_data['totalLikes']))  # Convert integer to string
+        stats_para = doc.add_paragraph(style='ListBullet')
+        stats_para.add_run('Comments Count: ').bold = True
+        stats_para.add_run(str(channel_data['totalComments']))  # Convert integer to string
+        stats_para = doc.add_paragraph(style='ListBullet')
+        stats_para.add_run('Videos Average Duration: ').bold = True
+        stats_para.add_run(str(channel_data['averageDuration']))  # Convert integer to string
+
+        doc.add_heading('Top and worst videos', level=1)
+        
+        doc.add_heading('Top videos', level=2)
+        doc.add_heading('Top videos info', level=3)
+        for video in channel_data['top_5_videos']:
+            # Heading for each video title
+            doc.add_heading(video['title'], level=4)
+
+            # Bold description label
+            desc_para = doc.add_paragraph()
+            desc_para.add_run('Description: ').bold = True
+            desc_para.add_run(video['description'])
+            
+            # Bold statistics label
+            stats_para = doc.add_paragraph()
+            stats_para.add_run('Statistics: ').bold = True
+            stats_para.add_run(f"{video['viewsCount']} views, {video['likesCount']} likes, {video['duration']} minutes")
+
+        doc.add_heading('Top videos Comments and Sentiment', level=3)
+        for emotion, comment in channel_data['top_5_comments'].items():
+            stats_para = doc.add_paragraph(style='ListBullet')
+            stats_para.add_run(f"{emotion} :").bold = True
+            stats_para.add_run(comment)
+            
+            
+            
+        doc.add_heading('Worst videos', level=2)
+        doc.add_heading('Worst videos info', level=3)
+        for video in channel_data['worst_5_videos']:
+            # Heading for each video title
+            doc.add_heading(video['title'], level=4)
+
+            # Bold description label
+            desc_para = doc.add_paragraph()
+            desc_para.add_run('Description: ').bold = True
+            desc_para.add_run(video['description'])
+            
+            # Bold statistics label
+            stats_para = doc.add_paragraph()
+            stats_para.add_run('Statistics: ').bold = True
+            stats_para.add_run(f"{video['viewsCount']} views, {video['likesCount']} likes, {video['duration']} minutes")
+
+        doc.add_heading('Worst videos Comments and Sentiment', level=3)
+        for emotion, comment in channel_data['worst_5_comments'].items():
+            stats_para = doc.add_paragraph(style='ListBullet')
+            stats_para.add_run(f"{emotion} :").bold = True
+            stats_para.add_run(comment)
+
+        
+        doc.add_heading('Get more insights with graphs:', level=1)
+        
+        data = json.loads(request.body)
+        # The variable here should match what's sent from the frontend
+        imgs_data = data['imgData']  # This should match the key in the JSON sent from the frontend
+        for img_data in imgs_data:
+            # Decode the base64 image
+            img_data = base64.b64decode(img_data.split(',')[1])
+            image_stream = BytesIO(img_data)
+            # Add the image to the Word document
+            doc.add_picture(image_stream)
+
+        # Save the document
+        output_dir = os.path.join(settings.MEDIA_ROOT, 'documents')
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+        file_path = os.path.join(output_dir, "channel_analysis.docx")
+        doc.save(file_path)
+
+        return JsonResponse({'message': 'Document created successfully'})
+
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+
+@csrf_exempt
+def doc_playlist(request):
+    
+    channel_data= {
+        
+    
+    'top_5_videos': request.session['top_5_videos'],
+    'worst_5_videos': request.session['worst_5_videos'],
+    'top_5_comments_analysis_dist': request.session['top_5_comments_analysis_dist'],
+    'top_5_comments': request.session['top_5_comments'],
+    'worst_5_comments_analysis_dist': request.session['worst_5_comments_analysis_dist'],
+    'worst_5_comments': request.session['worst_5_comments'],
+    'uniqueTags': request.session['uniqueTags'],
+    'all_playlists_dict': request.session['all_playlists_dict'],         
+    'title': request.session['title'],
+    'description': request.session['description'],
+    'thumbnail': request.session['thumbnail'],
+    'videoCount': request.session['videoCount'],
+    'totalViews': request.session['totalViews'],
+    'totalLikes': request.session['totalLikes'],
+    'totalComments': request.session['totalComments'],
+    'averageDuration': request.session['averageDuration'],
+    }
+              
+    
+    if request.method == 'POST':
+        doc = Document()
+        doc.add_heading('Playlist Analysis', 0)
+        doc.add_paragraph('Our playlist analysis will give you an overview over the playlist, what does influence its performance, and a closer look on its top and worst performing videos...')
+        
+        doc.add_heading('Get An Overview', level=1)
+        doc.add_heading(channel_data['title'], level=2)
+        
+        doc.add_heading('Discreption', level=3)
+        doc.add_paragraph(channel_data['description'])
+        doc.add_heading('Word tags', level=3)
+        doc.add_paragraph(channel_data['uniqueTags'])
+        doc.add_heading('Statistics', level=3)
+        stats_para = doc.add_paragraph(style='ListBullet')
+        stats_para.add_run('Video Count: ').bold = True
+        stats_para.add_run(str(channel_data['videoCount']))  # Convert integer to string
+        stats_para = doc.add_paragraph(style='ListBullet')
+        stats_para.add_run('Total Views: ').bold = True
+        stats_para.add_run(str(channel_data['totalViews']))  # Convert integer to string
+        stats_para = doc.add_paragraph(style='ListBullet')
+        stats_para.add_run('Total likes: ').bold = True
+        stats_para.add_run(str(channel_data['totalLikes']))  # Convert integer to string
+        stats_para = doc.add_paragraph(style='ListBullet')
+        stats_para.add_run('Comments Count: ').bold = True
+        stats_para.add_run(str(channel_data['totalComments']))  # Convert integer to string
+        stats_para = doc.add_paragraph(style='ListBullet')
+        stats_para.add_run('Videos Average Duration: ').bold = True
+        stats_para.add_run(str(channel_data['averageDuration']))  # Convert integer to string
+
+        doc.add_heading('Top and worst videos', level=1)
+        
+        doc.add_heading('Top videos', level=2)
+        doc.add_heading('Top videos info', level=3)
+        for video in channel_data['top_5_videos']:
+            # Heading for each video title
+            doc.add_heading(video['title'], level=4)
+
+            # Bold description label
+            desc_para = doc.add_paragraph()
+            desc_para.add_run('Description: ').bold = True
+            desc_para.add_run(video['description'])
+            
+            # Bold statistics label
+            stats_para = doc.add_paragraph()
+            stats_para.add_run('Statistics: ').bold = True
+            stats_para.add_run(f"{video['viewsCount']} views, {video['likesCount']} likes, {video['duration']} minutes")
+
+        doc.add_heading('Top videos Comments and Sentiment', level=3)
+        for emotion, comment in channel_data['top_5_comments'].items():
+            stats_para = doc.add_paragraph(style='ListBullet')
+            stats_para.add_run(f"{emotion} :").bold = True
+            stats_para.add_run(comment)
+            
+            
+            
+        doc.add_heading('Worst videos', level=2)
+        doc.add_heading('Worst videos info', level=3)
+        for video in channel_data['worst_5_videos']:
+            # Heading for each video title
+            doc.add_heading(video['title'], level=4)
+
+            # Bold description label
+            desc_para = doc.add_paragraph()
+            desc_para.add_run('Description: ').bold = True
+            desc_para.add_run(video['description'])
+            
+            # Bold statistics label
+            stats_para = doc.add_paragraph()
+            stats_para.add_run('Statistics: ').bold = True
+            stats_para.add_run(f"{video['viewsCount']} views, {video['likesCount']} likes, {video['duration']} minutes")
+
+        doc.add_heading('Worst videos Comments and Sentiment', level=3)
+        for emotion, comment in channel_data['worst_5_comments'].items():
+            stats_para = doc.add_paragraph(style='ListBullet')
+            stats_para.add_run(f"{emotion} :").bold = True
+            stats_para.add_run(comment)
+
+        
+        doc.add_heading('Get more insights with graphs:', level=1)
+        
+        data = json.loads(request.body)
+        # The variable here should match what's sent from the frontend
+        imgs_data = data['imgData']  # This should match the key in the JSON sent from the frontend
+        for img_data in imgs_data:
+            # Decode the base64 image
+            img_data = base64.b64decode(img_data.split(',')[1])
+            image_stream = BytesIO(img_data)
+            # Add the image to the Word document
+            doc.add_picture(image_stream)
+
+        # Save the document
+        output_dir = os.path.join(settings.MEDIA_ROOT, 'documents')
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+        file_path = os.path.join(output_dir, "playlist_analysis.docx")
+        doc.save(file_path)
+
+        return JsonResponse({'message': 'Document created successfully'})
+
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+
+@csrf_exempt
+def doc_topic(request):
+    
+    top_5_videos = request.session['top_5_videos']
+    # Assuming 'top_5_videos' is a list of dictionaries containing video information
+    for video in top_5_videos:
+        # Parse the 'publishedAt' date string to a datetime object
+        date_obj = parse_datetime(video['publishedAt'])
+
+        # Reformat the date to 'YYYY MMM DD' and update the video dictionary
+        video['publishedAt'] = date_obj.strftime('%Y %b %d')
+
+            
+    context= {
+        'top_5_videos': top_5_videos,
+        'channels_dict': request.session['channels_dict'],
+        'videos_dict': request.session['videos_dict'],
+        'top_5_comments': request.session['top_5_comments'],
+              }
+              
+    
+    if request.method == 'POST':
+        doc = Document()
+        doc.add_heading('Topic Analysis', 0)
+        doc.add_paragraph('Check out the metrics and insights to dive into the trends and discussions around your chosen subject.')
+                
+        
+        doc.add_heading('Top channels', level=1)
+        for channel in context['channels_dict']:
+            # Heading for each video title
+            doc.add_heading(channel['Name'], level=2)
+
+            
+
+            doc.add_heading('Statistics', level=3)
+            stats_para = doc.add_paragraph(style='ListBullet')
+            stats_para.add_run('Video Count: ').bold = True
+            stats_para.add_run(str(channel['Video count']))  # Convert integer to string
+            stats_para = doc.add_paragraph(style='ListBullet')
+            stats_para.add_run('Views average: ').bold = True
+            stats_para.add_run(str(channel['View average']))  # Convert integer to string
+            stats_para = doc.add_paragraph(style='ListBullet')
+            stats_para.add_run('likes average: ').bold = True
+            stats_para.add_run(str(channel['Like average']))  # Convert integer to string
+            stats_para = doc.add_paragraph(style='ListBullet')
+            stats_para.add_run('Subscriber count: ').bold = True
+            stats_para.add_run(str(channel['Subscriber count']))  # Convert integer to string
+            stats_para = doc.add_paragraph(style='ListBullet')
+            stats_para.add_run('Playlist count: ').bold = True
+            stats_para.add_run(str(channel['Playlist count']))  # Convert integer to string
+            
+            # Bold description label
+            desc_para = doc.add_paragraph()
+            
+            
+        
+        doc.add_heading('Top videos', level=1)
+        for video in context['top_5_videos']:
+            # Heading for each video title
+            doc.add_heading(video['title'], level=2)
+
+            
+            # Bold statistics label
+            stats_para = doc.add_paragraph()
+            stats_para.add_run('Statistics: ').bold = True
+            stats_para.add_run(f"{video['viewsCount']} views, {video['likesCount']} likes, {video['duration']} minutes")
+            # Bold description label
+            desc_para = doc.add_paragraph()
+            
+            
+            
+        doc.add_heading('Top videos Comments and Sentiment', level=1)
+        for emotion, comment in context['top_5_comments'].items():
+            stats_para = doc.add_paragraph(style='ListBullet')
+            stats_para.add_run(f"{emotion} :").bold = True
+            stats_para.add_run(comment)
+            
+            
+    
+        
+
+        
+        doc.add_heading('Get more insights with graphs:', level=1)
+        
+        data = json.loads(request.body)
+        # The variable here should match what's sent from the frontend
+        imgs_data = data['imgData']  # This should match the key in the JSON sent from the frontend
+        for img_data in imgs_data:
+            # Decode the base64 image
+            img_data = base64.b64decode(img_data.split(',')[1])
+            image_stream = BytesIO(img_data)
+            # Add the image to the Word document
+            doc.add_picture(image_stream)
+
+        # Save the document
+        output_dir = os.path.join(settings.MEDIA_ROOT, 'documents')
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+        file_path = os.path.join(output_dir, "topic_analysis.docx")
+        doc.save(file_path)
+
+        return JsonResponse({'message': 'Document created successfully'})
+
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+from docx import Document
+from docx.oxml.shared import OxmlElement
+from docx.opc.constants import RELATIONSHIP_TYPE
+from docx.shared import Pt
+from docx.text.run import Run
+import docx
+def add_hyperlink(paragraph, url, text, color, underline, heading=False):
+    part = paragraph.part
+    r_id = part.relate_to(url, RELATIONSHIP_TYPE.HYPERLINK, is_external=True)
+
+    hyperlink = OxmlElement('w:hyperlink')
+    hyperlink.set(docx.oxml.shared.qn('r:id'), r_id)
+
+    new_run = OxmlElement('w:r')
+    rPr = OxmlElement('w:rPr')
+
+    if color:
+        c = OxmlElement('w:color')
+        c.set(docx.oxml.shared.qn('w:val'), color)
+        rPr.append(c)
+
+    if not underline:
+        u = OxmlElement('w:u')
+        u.set(docx.oxml.shared.qn('w:val'), 'none')
+        rPr.append(u)
+
+    new_run.append(rPr)
+    new_run.text = text
+    hyperlink.append(new_run)
+
+    paragraph._p.append(hyperlink)
+
+    if heading:
+        run = Run(new_run, paragraph)
+        run.font.size = Pt(16)  # Adjust the size as per your heading style
+        run.font.bold = True
+
+    return hyperlink
+
+
+def def_retrive(request):
+              
+        doc = Document()
+        doc.add_heading('Videos Retriving', 0)
+        doc.add_paragraph('Explore the collection below to discover content related to your search. Use these insights to enhance your understanding, create content, or simply enjoy the diversity of videos available on your topic of interest.')
+                
+        related_videos_full_dict = request.session['related_videos_full_dict']
+        
+        doc.add_heading('List of Videos', level=1)
+        for video in related_videos_full_dict:
+            p = doc.add_paragraph()
+            add_hyperlink(p, video['URL'], video['Title'], '0000FF', False, heading=True)
+            stats_para = doc.add_paragraph()
+            stats_para.add_run('Channel: ').bold = True
+            stats_para.add_run(f"{video['Channel']}")
+            stats_para = doc.add_paragraph()
+            stats_para.add_run('Statistics: ').bold = True
+            stats_para.add_run(f"{video['Views']} views, {video['Likes']} likes, {video['Comments']} comments, {video['Duration']} minutes")
+            stats_para = doc.add_paragraph()
+            stats_para.add_run('Category: ').bold = True
+            stats_para.add_run(f"{video['Category']}")
+            stats_para = doc.add_paragraph()
+            stats_para.add_run('Top Tags: ').bold = True
+            stats_para.add_run(f"{video['Tags'][:5]}")
+    
+        # Save the document
+        output_dir = os.path.join(settings.MEDIA_ROOT, 'documents')
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+        file_path = os.path.join(output_dir, "video_retriving.docx")
+        doc.save(file_path)
+
+
+
+@login_required
+def video_retriving_details(request):
+    # You can add code here to fetch and process inquiries
+    return render(request, 'features_pages/video_retriving/video_retriving_details.html')
+
+from .forms import VideoRetrivingInputForm
+from .models import VideoRetrievingHistory
+class VideoRetrivingWizard(SessionWizardView):
+    form_list = [VideoRetrivingInputForm]
+    template_name = 'features_pages/video_retriving/video_retriving_forms.html'  
+    
+    def get_form_initial(self, step):
+        initial = super().get_form_initial(step)
+        history_id = self.kwargs.get('history_id')
+
+        if history_id and step == '0':  # Assuming '0' is the step of VideoRetrivingInputForm
+            history = get_object_or_404(VideoRetrievingHistory, id=history_id, user=self.request.user)
+            initial.update({
+                'search_query': history.search_query,
+                'order': history.order,
+                'region_code': history.region_code,
+                'language': history.language,
+                'num_of_videos': history.num_of_videos,
+                # Add other fields as necessary
+            })
+        return initial
+    
+    def done(self, form_list, **kwargs):
+        # Process the cleaned data
+        youtube = get_youtube_client()
+        cleaned_data = self.get_all_cleaned_data()
+        video_url = cleaned_data.get('search_query')
+        order = cleaned_data.get('order')
+        region_code = cleaned_data.get('region_code')
+        language = cleaned_data.get('language')
+        num_of_videos = cleaned_data.get('num_of_videos')
+        
+        history_id = self.kwargs.get('history_id')
+        if history_id:
+            # Update the existing history record
+            history = get_object_or_404(VideoRetrievingHistory, id=history_id, user=self.request.user)
+            history.search_query=cleaned_data.get('search_query'),
+            history.order=cleaned_data.get('order'),
+            history.region_code=cleaned_data.get('region_code'),
+            history.language=cleaned_data.get('language'),
+            history.num_of_videos=cleaned_data.get('num_of_videos'),
+            # Update other fields as necessary
+            history.save()
+        else:
+            VideoRetrievingHistory.objects.create(
+            user=self.request.user,
+            search_query=cleaned_data.get('search_query'),
+            order=cleaned_data.get('order'),
+            region_code=cleaned_data.get('region_code'),
+            language=cleaned_data.get('language'),
+            num_of_videos=cleaned_data.get('num_of_videos'),
+            )
+        
+        video_id = extractIdFromUrl(video_url)
+        
+        related_videos_df = get_realted_videos(video_id, order, region_code, language, num_of_videos)
+        
+        related_videos_csv = related_videos_df.to_csv(index=False)
+        related_videos_dict = related_videos_df.to_dict(orient='records')[:8]
+        related_videos_full_dict = related_videos_df.to_dict(orient='records')
+        self.request.session['related_videos_csv'] = related_videos_csv
+        self.request.session['related_videos_dict'] = related_videos_dict
+        self.request.session['related_videos_full_dict'] = related_videos_full_dict
+        return HttpResponseRedirect(reverse('video_retriving_output'))  # Use the name of the URL pattern
+
+
+def video_retriving_output_view(request):
+    def_retrive(request)
+    context = {
+        'related_videos_csv': request.session['related_videos_csv'],
+        'related_videos_dict':request.session['related_videos_dict'],
+        'related_videos_full_dict': request.session['related_videos_full_dict'],
+        'docx_file': 'video_retriving.docx',
+    }
+    return render(request, 'features_pages/video_retriving/video_retriving_output.html', context)
+
+
+
+import zipfile
+import io
+
+def dataset_zipped_output_retriving(request):
+    
+    related_videos_csv = request.session.get('related_videos_csv', '')
+
+    # Create a zip file in memory
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(zip_buffer, 'a', zipfile.ZIP_DEFLATED, False) as zip_file:
+        zip_file.writestr('related_videos_csv.csv', related_videos_csv)
+
+    # Set up the HttpResponse
+    zip_buffer.seek(0)
+    response = HttpResponse(zip_buffer, content_type='application/zip')
+    response['Content-Disposition'] = 'attachment; filename="related_videos_dataset.zip"'
+
+    return response
+
+
+from django.shortcuts import render, get_object_or_404
+from .models import TopicAnalysisHistory  # Import your model
+
+def topic_analysis_detail(request, history_id):
+    # Fetch the history instance or return 404 if not found
+    history = get_object_or_404(TopicAnalysisHistory, pk=history_id, user=request.user)
+
+    # Render the detail in a template
+    return render(request, 'features_pages/topic_analysis/topic_analysis_detail.html', {'history': history})
+
+def video_analysis_detail(request, history_id):
+    history = get_object_or_404(VideoAnalysisHistory, pk=history_id, user=request.user)
+    return render(request, 'features_pages/video_analysis/video_analysis_detail.html', {'history': history})
+
+def playlist_analysis_detail(request, history_id):
+    history = get_object_or_404(PlaylistAnalysisHistory, pk=history_id, user=request.user)
+    return render(request, 'features_pages/playlist_analysis/playlist_analysis_detail.html', {'history': history})
+
+def channel_analysis_detail(request, history_id):
+    history = get_object_or_404(ChannelAnalysisHistory, pk=history_id, user=request.user)
+    return render(request, 'features_pages/channel_analysis/channel_analysis_detail.html', {'history': history})
+
+def video_retriving_detail(request, history_id):
+    history = get_object_or_404(VideoRetrievingHistory, pk=history_id, user=request.user)
+    return render(request, 'features_pages/video_retrieving/video_retrieving_detail.html', {'history': history})
+
+def competitive_analysis_detail(request, history_id):
+    history = get_object_or_404(CompetitiveAnalysisHistory, pk=history_id, user=request.user)
+    return render(request, 'features_pages/competitive_analysis/competitive_analysis_detail.html', {'history': history})
