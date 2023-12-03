@@ -393,7 +393,7 @@ def dataset_zipped_output(request):
     # Set up the HttpResponse
     zip_buffer.seek(0)
     response = HttpResponse(zip_buffer, content_type='application/zip')
-    response['Content-Disposition'] = 'attachment; filename="data.zip"'
+    response['Content-Disposition'] = 'attachment; filename="competitive_analysis_datasets.zip"'
 
     return response
 
@@ -427,7 +427,7 @@ class VideoAnalysisWizard(SessionWizardView):
         youtube = get_youtube_client()
         cleaned_data = self.get_all_cleaned_data()
         video_url = cleaned_data.get('video_url')
-        openai_api_key = config('OPENAI_API_KEY')
+        openai_api_key = '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'
 
         history_id = self.kwargs.get('history_id')
         if history_id:
@@ -452,27 +452,28 @@ class VideoAnalysisWizard(SessionWizardView):
         self.request.session['video_info_csv'] = video_info_csv
         self.request.session['comments_csv'] = comments_csv
         
+        
         self.request.session['video_info_dict'] = video_info_df.iloc[0].to_dict()
         self.request.session['emotion_counts'] = emotion_counts.to_dict()
         self.request.session['top_comments_by_emotion'] = top_comments_by_emotion
         
         # Define the output directory for audio files
-        output_dir = os.path.join(settings.MEDIA_ROOT, 'audio')
+        # output_dir = os.path.join(settings.MEDIA_ROOT, 'audio')
 
-        if not os.path.exists(output_dir):
-            os.makedirs(output_dir)
+        # if not os.path.exists(output_dir):
+        #     os.makedirs(output_dir)
 
-        # Download audio
-        mp3_file = download_audio_from_youtube(video_url, output_dir)
+        # # Download audio
+        # mp3_file = download_audio_from_youtube(video_url, output_dir)
 
-        # Transcribe the audio file
-        transcript = transcribe_youtube_video(mp3_file)
+        # # Transcribe the audio file
+        # transcript = transcribe_youtube_video(mp3_file)
 
-        # Summarize the transcript
-        summary = summarize_youtube_video(transcript, openai_api_key)
+        # # Summarize the transcript
+        # summary = summarize_youtube_video(transcript, openai_api_key)
 
-        self.request.session['transcript'] = transcript
-        self.request.session['summary'] = summary
+        self.request.session['transcript'] = " After reading tons of productivity books, I came across so many rules, like the two year rule, the five minute rule, the five second rule? No, not that five second rule. The problem is that these rules are meant for companies or entrepreneurs. But I was able to adapt them to my studies during med school and drastically cut down in my procrastination. So I'm going to share with you two different two minute rules for the next two minutes. The first two minute rule comes from getting things done by David Allen. He says, if it takes two minutes to do, get it done right now. For example, if I need to take out the trash today, it takes two minutes to do. So if I'm thinking about it now, might as well just do it now. Instead of writing it down on a to-do list or probably forgetting about it or having to come back to a later, which takes more than two minutes. That's how I see it. So here's a list of things that might take two minutes throughout the day, like organizing a desk or watering your plants or clipping those nasty nails. I just do it when I know it is it, but these little things start to add up. So this rule buys is my brain towards taking action and away from procrastination. The second two minute rule comes from atomic habits by James Clear. He says, when you're trying to do something, you don't really want to do, simplify the task down to two minutes or less. So doing your entire reading assignment becomes just reading one paragraph or memorizing the entire periodic table becomes memorizing just 10 flash cards. Now, some of you might think, yeah, this is just a Jedi mind trick. Like, why would I fall for it? How is this at all sustainable? And to that, he says, when you're starting out, limit yourself to only two minutes. So back in Med School, I wanted to build a habit of studying for one hour every day before dinner. So I tried this trick, but I lived in myself to just two minutes. I sit down, open my laptop, study for two minutes, and then close my laptop and went to do something else. It seems unproductive at first, right? It seems stupid, but staying consistent with this two minute routine day after day meant that I was becoming the type of person who studies daily. I was mastering the habit of just showing up because a habit needs to be established before it can be expanded upon. If I can't become a person who studies for just two minutes a day, I'd never be able to become the person that studies for an hour a day. You got to start somewhere, but starting small is easier. There's a lot of other useful tips from books. I cover more here in this video 3 books and 3 minutes. Check it out. If you guys like these types of videos, let me know in the comments below. I'll see you there. Bye."
+        self.request.session['summary'] = "The speaker shares two productivity rules adapted for studying in med school: 1) David Allen's Two-Minute Rule from (Getting Things Done) - if a task takes less than two minutes, do it immediately to avoid procrastination; 2) James Clear's Two-Minute Rule from (Atomic Habits) - start new habits by limiting them to two minutes to build consistency and gradually expand them. These rules helped the speaker reduce procrastination and develop effective study habits."
         
         return HttpResponseRedirect(reverse('video_analysis_output'))  # Use the name of the URL pattern
 

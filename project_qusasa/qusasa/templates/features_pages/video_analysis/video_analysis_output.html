@@ -38,6 +38,18 @@
     <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
 
+    <style>
+        .ex {
+            width: 90%;
+            text-wrap: wrap;
+        }
+
+        p {
+            text-wrap: wrap;
+        }
+
+
+    </style>
   </head>
   <body>
     
@@ -259,7 +271,7 @@
 
 <script>
     document.getElementById('download-dataset-button').addEventListener('click', function() {
-        window.location.href = "{% url 'dataset_zipped_output' %}";
+        window.location.href = "{% url 'dataset_zipped_output_video_analysis' %}";
     });
 </script>
 

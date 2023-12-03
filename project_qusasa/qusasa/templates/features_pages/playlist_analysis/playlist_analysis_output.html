@@ -503,7 +503,7 @@
 </script>
 <script>
     document.getElementById('download-dataset-button').addEventListener('click', function() {
-        window.location.href = "{% url 'dataset_zipped_output' %}";
+        window.location.href = "{% url 'playlist_dataset_zipped_output' %}";
     });
 </script>
 <script id="json-data" type="application/json">{{ json_data|safe }}</script>
