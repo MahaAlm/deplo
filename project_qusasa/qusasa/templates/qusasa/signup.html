@@ -69,12 +69,20 @@
                     <br><br>
                 </div>
 
-                <div class="privacy">
+                <div class="privacy" style="margin-bottom: 1rem;">
                     <label>
                         <input type="checkbox" id="myCheckbox" name="myCheckbox">
                         By signing up you agree to <span><a href="#popup1">the privacy policy.</a></span>
                     </label>
+                    
                 </div>
+                <div class="privacy" style="margin-top: 0;">
+                    <label style="margin-top: 0;">
+                        <input type="checkbox" id="myCheckbox2" name="myCheckbox">
+                        I am 13 years old or older
+                    </label>
+                </div>
+                
 
                 <div class="final-row">
                     <div class="login">
@@ -147,12 +155,22 @@
     document.addEventListener('DOMContentLoaded', function() {
         // Get the checkbox and the button elements
         const checkbox = document.getElementById('myCheckbox');
+        const checkbox2 = document.getElementById('myCheckbox2');
         const signupButton = document.getElementById('signupButton');
     
         // Add an event listener for the checkbox's change event
         checkbox.addEventListener('change', function() {
             // If the checkbox is checked, enable the button; otherwise, disable it
-            if (checkbox.checked) {
+            if (checkbox.checked && checkbox2.checked) {
+                signupButton.removeAttribute('disabled');
+            } else {
+                signupButton.setAttribute('disabled', 'true');
+            }
+        });
+
+        checkbox2.addEventListener('change', function() {
+            // If the checkbox is checked, enable the button; otherwise, disable it
+            if (checkbox.checked && checkbox2.checked) {
                 signupButton.removeAttribute('disabled');
             } else {
                 signupButton.setAttribute('disabled', 'true');
