@@ -61,7 +61,6 @@ import re
 
 def extractIdFromUrl(url):
     # youtube = get_youtube_client()
-    url = url.split('?')[0]
 
     # Regular expressions for different YouTube URL formats
     channel_id_pattern = r'youtube\.com/channel/([a-zA-Z0-9_-]+)'
@@ -830,7 +829,7 @@ def analyze_playlist(youtube, playlist_id):
         'totalViews': total_views,
         'totalLikes': total_likes,
         'totalComments': total_comments,
-        'averageDuration': average_duration,
+        'average_duration': average_duration,
         'uniqueTags': list(unique_tags)
     }
 
@@ -860,6 +859,7 @@ def analyze_channel(youtube, channel_id):
         'videoCount': channel_details['statistics']['videoCount'],
         'subscriberCount': channel_details['statistics']['subscriberCount'],
         'publishedAt': channel_details['snippet']['publishedAt'],
+
     }
 
     # Fetch and analyze videos in the channel

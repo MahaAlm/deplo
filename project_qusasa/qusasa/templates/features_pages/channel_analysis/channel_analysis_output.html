@@ -133,7 +133,7 @@
                                 <p>total Comments</p>
                             </div>
                             <div class="video-stat">
-                                <h3 class="number" data-target="{{averageDuration}}">0</h3>
+                                <h3 class="number" data-target="{{average_duration}}">0</h3>
                                 <p>average video duration</p>
                             </div>
                         </div>
@@ -155,8 +155,7 @@
                             <div class="chart-compare ">
                                 <div class="compare-el">
                                     <div class="compare-stats">
-                                        <p>Channel<br><span>Progress</span> <br>over puplication time</p>
-                                        <p>in <span>Views</span> </p>
+                                        <p>Channel Videos<br><span>Views</span> <br>over puplication time</p>
                         
                                     </div>
                                     <div id="views-chart"></div>
@@ -171,8 +170,7 @@
                             <div class="chart-compare ">
                                 <div class="compare-el">
                                     <div class="compare-stats">
-                                        <p>Channel<br><span>Progress</span> <br>over puplication time</p>
-                                        <p>in <span>Likes</span> </p>
+                                        <p>Channel Videos<br><span>Likes</span> <br>over puplication time</p>
                         
                                     </div>
                                     <div id="likes-chart"></div>
@@ -187,8 +185,7 @@
                             <div class="chart-compare ">
                                 <div class="compare-el">
                                     <div class="compare-stats">
-                                        <p>Channel<br><span>Progress</span> <br>over puplication time</p>
-                                        <p>in <span>Comment counts</span> </p>
+                                        <p>Channel Videos<br><span>Comments</span> <br>over puplication time</p>
                         
                                     </div>
                                     <div id="comment-chart"></div>
@@ -207,8 +204,7 @@
                             <div class="chart-compare ">
                                 <div class="compare-el">
                                     <div class="compare-stats">
-                                        <p>How does <br><span>Duration</span> <br> affect the performance?</p>
-                                        <p>in <span>Views</span> </p>
+                                        <p>How does <br><span>Duration</span> <br> affect the Videos <span>Views</span>?</p>
                         
                                     </div>
                                     <div id="views-chart-dur"></div>
@@ -223,8 +219,7 @@
                             <div class="chart-compare ">
                                 <div class="compare-el">
                                     <div class="compare-stats">
-                                        <p>How does <br><span>Duration</span> <br> affect the performance?</p>
-                                        <p>in <span>Likes</span> </p>
+                                        <p>How does <br><span>Duration</span> <br> affect the Videos <span>Likes</span>?</p>
                         
                                     </div>
                                     <div id="likes-chart-dur"></div>
@@ -239,8 +234,7 @@
                             <div class="chart-compare ">
                                 <div class="compare-el">
                                     <div class="compare-stats">
-                                        <p>How does <br><span>Duration</span> <br> affect the performance?</p>
-                                        <p>in <span>Comment counts</span> </p>
+                                        <p>How does <br><span>Duration</span> <br> affect the Videos <span>Comments</span>?</p>
                         
                                     </div>
                                     <div id="comment-chart-dur"></div>
@@ -459,8 +453,12 @@
     var totalLikes = jsonData.totalLikes
     var totalComments = jsonData.totalComments
 
+    var Mainplaylist = jsonData.all_playlists_dict[0]
     var allPlaylists = jsonData.all_playlists_dict
-    var totalVideoCount = jsonData.videoCount
+    allPlaylists.shift()
+    console.log(allPlaylists)
+    
+    var totalVideoCount = Mainplaylist.videoCount
     // Calculate the sum of videos in all playlists
     let playlistVideoSum = 0;
     let playlistViews = []
@@ -499,11 +497,7 @@
             tools: {
                 download: true, // Enable the download tool
                 selection: false,
-            zoom: false,
-            zoomin: false,
-            zoomout: false,
-            pan: false,
-            reset: false
+            
             }        },
         series: chartData.map(item => item.data),
         labels: chartData.map(item => item.name),
@@ -511,13 +505,13 @@
             mode: 'dark'
         },
         title: {
-            text: 'Playlist Videos Distribution',
+            text: 'Playlist Videos Count Distribution',
             align: 'center',
             floating: false,
             offsetY: -5,
             style: {
                 color: '#fff',
-                fontSize: '20px',
+                fontSize: '15px',
                 fontFamily: 'Raleway',
                 fontWeight: 700,
                 
@@ -542,7 +536,7 @@
             dataLabels: {
                 enabled: true,
                 formatter: function (val) {
-                    return Math.round(val); // Round to nearest integer
+                    return Math.round(val) + '%'; // Round to nearest integer
                 },
                 style: {
                     fontSize: '14px',
@@ -563,7 +557,7 @@
         Piechart.updateOptions({
         });
       
-      }, 300);
+      }, 1000);
 
     var originalOptions = Piechart.w.config;
 
@@ -715,7 +709,7 @@
             chart1.updateOptions({
             });
           
-          }, 300);
+          }, 1000);
     
 
         var chart1Options = chart1.w.config;
@@ -735,7 +729,7 @@
             chart2.updateOptions({
             });
           
-          }, 300);
+          }, 1000);
     
 
         var chart2Options = chart2.w.config;
@@ -755,7 +749,7 @@
             chart3.updateOptions({
             });
           
-          }, 300);
+          }, 1000);
     
 
         var chart3Options = chart3.w.config;
@@ -860,7 +854,7 @@
             chart4.updateOptions({
             });
           
-          }, 300);
+          }, 1000);
     
 
         var chart4Options = chart4.w.config;
@@ -880,7 +874,7 @@
             chart5.updateOptions({
             });
           
-          }, 300);
+          }, 1000);
     
 
         var chart5Options = chart5.w.config;
@@ -900,7 +894,7 @@
             chart6.updateOptions({
             });
           
-          }, 300);
+          }, 1000);
     
 
         var chart6Options = chart6.w.config;
@@ -927,7 +921,7 @@
             });
             chart6.updateOptions({
             });
-        }, 300);
+        }, 1000);
     
 </script>
 
@@ -981,7 +975,7 @@ var categoryCounts = mostUsedCategories.map(item => item[1]);
             enabled: false
         },
         series: [{
-            name: 'Category Count',
+            name: 'Videos In Category',
             data: categoryCounts
         }],
         xaxis: {
@@ -1021,7 +1015,7 @@ var categoryCounts = mostUsedCategories.map(item => item[1]);
         categoryChart.updateOptions({
         });
       
-      }, 300);
+      }, 1000);
 
 
     var chart7Options = categoryChart.w.config;
@@ -1081,13 +1075,13 @@ var optionsBoxPlot = {
         palette: 'palette1'
     },
     title: {
-        text: 'Videos Duration boxplot',
+        text: 'Videos Duration boxplot (In Minutes)',
         align: 'center',
         floating: false,
         offsetY: -5,
         style: {
             color: '#fff',
-            fontSize: '20px',
+            fontSize: '15px',
             fontFamily: 'Raleway',
             fontWeight: 700,
             
@@ -1132,7 +1126,7 @@ var optionsBoxPlot = {
     boxPlotChart.updateOptions({
     });
   
-  }, 300);
+  }, 1000);
 
  var chart8Options = boxPlotChart.w.config;
 
@@ -1291,7 +1285,7 @@ drawWordCloud("#wordcloud0" , channelsTags);
         emotions_chart.updateOptions({
         });
       
-      }, 300);
+      }, 1000);
 
 
     var chart9Options = emotions_chart.w.config;
@@ -1322,7 +1316,7 @@ drawWordCloud("#wordcloud0" , channelsTags);
         emotions_chart_worst.updateOptions({
         });
       
-      }, 300);
+      }, 1000);
 
     var chart10Options = emotions_chart_worst.w.config;
 

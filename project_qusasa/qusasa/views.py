@@ -608,7 +608,7 @@ class PlaylistAnalysisWizard(SessionWizardView):
         self.request.session['totalViews'] = int(playlist_info_df['totalViews'].iloc[0])
         self.request.session['totalLikes'] = int(playlist_info_df['totalLikes'].iloc[0])
         self.request.session['totalComments'] = int(playlist_info_df['totalComments'].iloc[0])
-        self.request.session['averageDuration'] = float(playlist_info_df['averageDuration'].iloc[0])
+        self.request.session['average_duration'] = float(playlist_info_df['average_duration'].iloc[0])
 
         # Convert the lists to native Python lists
         self.request.session['videos_publishedAt'] = all_videos_info_df['publishedAt'].tolist()
@@ -706,7 +706,7 @@ def playlist_analysis_output_view(request):
               'totalViews': request.session['totalViews'],
               'totalLikes': request.session['totalLikes'],
               'totalComments': request.session['totalComments'],
-              'averageDuration': request.session['averageDuration'],
+              'average_duration': request.session['average_duration'],
               'uniqueTags': request.session['uniqueTags'],
               'videos_publishedAt': request.session['videos_publishedAt'],
               'videos_duration': request.session['videos_duration'],
@@ -802,13 +802,13 @@ class ChannelAnalysisWizard(SessionWizardView):
         self.request.session['uniqueTags'] = list(channel_df['uniqueTags'].iloc[0])
         self.request.session['thumbnail'] = channel_df['thumbnail'].iloc[0]
         self.request.session['mostUsedCategories'] = channel_df['mostUsedCategories'].iloc[0]
+        self.request.session['average_duration'] = int(channel_df['average_duration'].iloc[0])
 
        # Convert Pandas int64 values to native Python types for JSON serialization
         self.request.session['videoCount'] = int(channel_df['videoCount'].iloc[0])
         self.request.session['totalViews'] = int(channel_df['viewCount'].iloc[0])
         self.request.session['totalLikes'] = int(channel_df['likesCount'].iloc[0])
         self.request.session['totalComments'] = int(channel_df['commentCount'].iloc[0])
-        self.request.session['average_duration'] = float(channel_df['average_duration'].iloc[0])
         self.request.session['subscriberCount'] = float(channel_df['subscriberCount'].iloc[0])
         self.request.session['PlaylistCount'] = int(channel_df['PlaylistCount'].iloc[0])
 
@@ -910,7 +910,7 @@ def channel_analysis_output_view(request):
               'totalViews': request.session['totalViews'],
               'totalLikes': request.session['totalLikes'],
               'totalComments': request.session['totalComments'],
-              'averageDuration': request.session['averageDuration'],
+              'average_duration': request.session['average_duration'],
               'uniqueTags': request.session['uniqueTags'],
               'videos_publishedAt': request.session['videos_publishedAt'],
               'videos_duration': request.session['videos_duration'],
@@ -1195,7 +1195,7 @@ def doc_channel(request):
     'totalViews': request.session['totalViews'],
     'totalLikes': request.session['totalLikes'],
     'totalComments': request.session['totalComments'],
-    'averageDuration': request.session['averageDuration'],
+    'average_duration': request.session['average_duration'],
     }
               
     
@@ -1226,7 +1226,7 @@ def doc_channel(request):
         stats_para.add_run(str(channel_data['totalComments']))  # Convert integer to string
         stats_para = doc.add_paragraph(style='ListBullet')
         stats_para.add_run('Videos Average Duration: ').bold = True
-        stats_para.add_run(str(channel_data['averageDuration']))  # Convert integer to string
+        stats_para.add_run(str(channel_data['average_duration']))  # Convert integer to string
 
         doc.add_heading('Top and worst videos', level=1)
         
@@ -1323,7 +1323,7 @@ def doc_playlist(request):
     'totalViews': request.session['totalViews'],
     'totalLikes': request.session['totalLikes'],
     'totalComments': request.session['totalComments'],
-    'averageDuration': request.session['averageDuration'],
+    'average_duration': request.session['average_duration'],
     }
               
     
@@ -1354,7 +1354,7 @@ def doc_playlist(request):
         stats_para.add_run(str(channel_data['totalComments']))  # Convert integer to string
         stats_para = doc.add_paragraph(style='ListBullet')
         stats_para.add_run('Videos Average Duration: ').bold = True
-        stats_para.add_run(str(channel_data['averageDuration']))  # Convert integer to string
+        stats_para.add_run(str(channel_data['average_duration']))  # Convert integer to string
 
         doc.add_heading('Top and worst videos', level=1)
         
