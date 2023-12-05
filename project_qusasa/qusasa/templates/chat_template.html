@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with AI</title>
+</head>
+<body>
+    <div id="chat-container">
+        <div id="messages"></div>
+        <input type="text" id="user-input" placeholder="Your message">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+    
+    <script>
+        function sendMessage() {
+            var userInput = document.getElementById('user-input').value;
+            fetch('/chat/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: 'user_input=' + encodeURIComponent(userInput)
+            })
+            .then(response => response.json())
+            .then(data => {
+                var messagesDiv = document.getElementById('messages');
+                messagesDiv.innerHTML += '<div>User: ' + userInput + '</div>';
+                messagesDiv.innerHTML += '<div>Assistant: ' + data.ai_response + '</div>';
+            });
+            document.getElementById('user-input').value = '';
+        }
+    </script>
+</body>
+</html>

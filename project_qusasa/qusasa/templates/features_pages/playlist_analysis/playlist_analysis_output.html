@@ -80,7 +80,7 @@
                     </div>
                     
                     <div class="button">
-                        <button onclick="downloadPDF()">Download the report</button>
+                        <a href="{% url 'download_docx' filename=docx_file %}"><button>Download the report</button></a>
                     </div>
                     
                 </div>

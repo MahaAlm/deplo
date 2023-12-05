@@ -120,6 +120,7 @@ def get_videos_info(entity_id, youtube, entity_type='channel'):
     category_count = Counter()
     total_likes = 0  # Initialize total likes
     total_views = 0  # Initialize total views
+    total_comments = 0
     name = None  # Initialize name variable
     video_data_list = []  # List to store video data
     top_video_info = None  # Initialize top video info
@@ -157,6 +158,7 @@ def get_videos_info(entity_id, youtube, entity_type='channel'):
             category_count[video_details['snippet']['categoryId']] += 1
             likes = int(video_details['statistics'].get('likeCount', 0))
             views = int(video_details['statistics'].get('viewCount', 0))
+            comments = int(video_details['statistics'].get('commentCount', 0))
             total_likes += likes
             total_views += views
             duration = parse_duration_to_minutes(video_details['contentDetails'].get('duration'))
@@ -178,8 +180,7 @@ def get_videos_info(entity_id, youtube, entity_type='channel'):
             if name is None:
                 name = video_details['snippet']['channelTitle'] if entity_type == 'channel' else video_details['snippet']['title']
 
-    average_likes = total_likes / len(video_data_list) if video_data_list else 0
-    average_views = total_views / len(video_data_list) if video_data_list else 0
+
 
 
     # Convert category IDs to names
@@ -201,7 +202,7 @@ def get_videos_info(entity_id, youtube, entity_type='channel'):
                 maxResults=5  # Adjust the maxResults if needed
             ).execute()
 
-            comments = [comment['snippet']['topLevelComment']['snippet']['textDisplay'] 
+            comments = [clean_text(comment['snippet']['topLevelComment']['snippet']['textDisplay']) 
                         for comment in comments_response['items']]
             top_comments = comments[:5]
 
@@ -229,8 +230,8 @@ def get_videos_info(entity_id, youtube, entity_type='channel'):
         'durations': durations,
         'uniqueTags': list(unique_tags),
         'mostUsedCategories': most_used_categories,
-        'averageLikes': average_likes,
-        'averageViews': average_views,
+        'totalLikes': total_likes,
+        'totalViews': total_views,
         # 'videoData': video_data_list  # Optionally include detailed video data
     }
 
@@ -287,7 +288,7 @@ def analyze_youtube_entity(entity_id, youtube, entity_type='channel'):
 
 
         # Calculate average views from the original viewCount
-        view_average = int(entity_stat['viewCount']) / int(entity_stat['videoCount']) if int(entity_stat['videoCount']) > 0 else 0
+        total_views = int(entity_stat['viewCount'])
         subscriber_count = entity_stat.get('subscriberCount', 0)
 
         request_playlists = youtube.playlists().list(part="snippet", channelId=entity_id)
@@ -297,8 +298,8 @@ def analyze_youtube_entity(entity_id, youtube, entity_type='channel'):
         data_list.append([
             channel_url,
             name,
-            view_average,
-            videos_info['averageLikes'],
+            total_views,
+            videos_info['totalViews'],
             categ,
             entity_stat['videoCount'],
             subscriber_count,
@@ -306,10 +307,10 @@ def analyze_youtube_entity(entity_id, youtube, entity_type='channel'):
             mostUsedCategories,
             playlist_count
         ])
-        columns = ['Channel URL', 'Name', 'View average', 'Like average', 'Categories', 'Video count', 'Subscriber count', 'Top tags', 'mostUsedCategories', 'Playlist count']
+        columns = ['Channel URL', 'Name', 'TotalViews', 'TotalLikes', 'Categories', 'Video count', 'Subscriber count', 'Top tags', 'mostUsedCategories', 'Playlist count']
     else:  # For playlist
         # Use averageViews for playlists
-        view_average = videos_info['averageViews']
+        total_views = videos_info['totalViews']
         request_entity = youtube.playlists().list(part="snippet", id=entity_id)
         response_entity = request_entity.execute()
 
@@ -330,19 +331,18 @@ def analyze_youtube_entity(entity_id, youtube, entity_type='channel'):
         data_list.append([
             channel_url,
             name,
-            view_average,
-            videos_info['averageLikes'],
+            total_views,
+            videos_info['totalLikes'],
             categ,
             len(videos_info['durations']),
             subscriber_count,
             topTags,
             mostUsedCategories
         ])
-        columns = ['Playlist URL', 'Name', 'View average', 'Like average', 'Categories', 'Video count', 'Subscriber count', 'Top tags', 'mostUsedCategories']
+        columns = ['Playlist URL', 'Name', 'TotalViews', 'TotalLikes', 'Categories', 'Video count', 'Subscriber count', 'Top tags', 'mostUsedCategories']
 
     df = pd.DataFrame(data_list, columns=columns)
-    numeric_columns = ['View average', 'Like average', 'Video count', 'Subscriber count', 'Playlist count'] if entity_type == 'channel' else ['View average', 'Like average', 'Video count', 'Subscriber count']
-    df[numeric_columns] = df[numeric_columns].round(2)
+
 
     return df, topVideo, channel_icon_url, durations
 
@@ -429,7 +429,7 @@ def video_analysis(youtube, video_id):
     if video_info:
         # Fetch the top 3 comments for the most viewed video
         comments_response = youtube.commentThreads().list(part='snippet', videoId=video_info['videoId']).execute()
-        comments = [comment['snippet']['topLevelComment']['snippet']['textDisplay'] for comment in comments_response['items']]
+        comments = [clean_text(comment['snippet']['topLevelComment']['snippet']['textDisplay']) for comment in comments_response['items']]
       
         video_info['comments'] = comments
         
@@ -552,13 +552,16 @@ def video_analysis(youtube, video_id):
             maxResults=100  # Adjust the maxResults if needed
         ).execute()
 
+        
         # Extract comment details and add to the list
         for item in comments_response['items']:
             comment = item['snippet']['topLevelComment']['snippet']
+            comment_text = comment['textDisplay']
+            clean_comment = clean_text(comment_text)
             comments_data.append({
                 'commentId': item['snippet']['topLevelComment']['id'],
                 'author': comment['authorDisplayName'],
-                'text': comment['textDisplay'],
+                'text': clean_comment,
                 'likeCount': int(comment.get('likeCount', 0)),
                 'replyCount': int(item['snippet']['totalReplyCount']),
                 'timestamp': comment['publishedAt']
@@ -568,11 +571,14 @@ def video_analysis(youtube, video_id):
         next_page_token = comments_response.get('nextPageToken')
         if not next_page_token:
             break
-
-    # Create a DataFrame from comments data
-    comments_df = pd.DataFrame(comments_data)
-    
-    emotion_counts, top_comments_by_emotion = analyze_comments_emotions(comments_df)
+    if(comments_data != []):
+        # Create a DataFrame from comments data
+        comments_df = pd.DataFrame(comments_data)
+        print(comments_df.columns)
+        emotion_counts, top_comments_by_emotion = analyze_comments_emotions(comments_df)
+    else:
+        emotion_counts = []
+        top_comments_by_emotion = []
     return video_info_df, comments_df, emotion_counts, top_comments_by_emotion
 
 import googleapiclient.discovery
@@ -667,10 +673,12 @@ def analyse_comments_data(youtube, video_id):
         # Extract comment details and add to the list
         for item in comments_response['items']:
             comment = item['snippet']['topLevelComment']['snippet']
+            comment_text = comment['textDisplay']
+            clean_comment = clean_text(comment_text)
             comments_data.append({
                 'commentId': item['snippet']['topLevelComment']['id'],
                 'author': comment['authorDisplayName'],
-                'text': comment['textDisplay'],
+                'text': clean_comment,
                 'likeCount': int(comment.get('likeCount', 0)),
                 'replyCount': int(item['snippet']['totalReplyCount']),
                 'timestamp': comment['publishedAt']
@@ -1058,7 +1066,9 @@ def topic_analysis(youtube, query, orderBy='relevance', regionCode='', language=
 
     one_year_ago = datetime.now() - timedelta(days=365)
     one_year_ago_str = one_year_ago.strftime('%Y-%m-%dT%H:%M:%SZ')
-
+    
+    kw_model = KeyBERT(model='all-MiniLM-L6-v2')
+    descri = ''
     
     
     request_parameters = {
@@ -1116,7 +1126,11 @@ def topic_analysis(youtube, query, orderBy='relevance', regionCode='', language=
             'categoryId': video_details['snippet']['categoryId']
 
         }
-
+        
+        title = video_info['title']
+        description = video_info['description']
+        descri = descri + str(title) + ', ' + str(description) + ', '
+        
         category_names = {}
         category_ids = list(category_count.keys())
         if category_ids:
@@ -1164,7 +1178,15 @@ def topic_analysis(youtube, query, orderBy='relevance', regionCode='', language=
         
     channels_df = pd.concat(channels, ignore_index=True)
 
-    return videos_df, channels_df, top_5_videos, top_5_comments_df, top_5_comments_analysis
+    
+
+   
+    keybert_keywords = kw_model.extract_keywords(descri, keyphrase_ngram_range=(1, 2), top_n=10)
+
+    return videos_df, channels_df, top_5_videos, top_5_comments_df, top_5_comments_analysis, keybert_keywords
+
+
+
 
 def get_realted_videos(video_id, order='relevance', region_code='', language='', number_of_videos=10):
     # Step 1: Fetch the video's details
@@ -1216,7 +1238,8 @@ def get_realted_videos(video_id, order='relevance', region_code='', language='',
             related_videos.extend(
                 get_videos(youtube, keywords[-1][0], category_id, order, region_code, language, additional_videos_needed)
             )
-            
+    
+
     # Convert to DataFrame and drop duplicates
     related_videos_df = pd.DataFrame(related_videos).drop_duplicates(subset=['Id'])
 
@@ -1321,3 +1344,16 @@ def keyword_extraction(videoid):
     descri = str(title) + '\n' + str(description)
     keywords = kw_model.extract_keywords(descri, keyphrase_ngram_range=(1, 1))
     return keywords
+
+import re
+import html
+
+def clean_text(input_text):
+    # Remove HTML tags and extra whitespaces
+    cleaned_text = re.sub(r'<.*?>', '', input_text)
+    cleaned_text = re.sub(r'\s+', ' ', cleaned_text).strip()
+
+    # Decode HTML entities
+    cleaned_text = html.unescape(cleaned_text)
+
+    return cleaned_text

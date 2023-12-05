@@ -534,9 +534,9 @@
                 stops: [0, 100],
             }},
             dataLabels: {
-                enabled: true,
+                enabled: false,
                 formatter: function (val) {
-                    return Math.round(val) + '%'; // Round to nearest integer
+                    return val; // Round to nearest integer
                 },
                 style: {
                     fontSize: '14px',

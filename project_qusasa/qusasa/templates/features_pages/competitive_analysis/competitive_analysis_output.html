@@ -95,7 +95,7 @@
                     </div>
                     
                     <div class="button">
-                        <button id ='print'>Download the report</button>
+                        <a href="{% url 'download_docx' filename=docx_file %}"><button>Download the report</button></a>
                     </div>
                     
                 </div>
@@ -705,6 +705,7 @@ var seriesData = {};
 <script>
     
  var durations = jsonData.durations
+ console.log(durations)
 var boxPlotData = durations.map((channelDurations, index) => {
     return {
         x: trimmedChannels[index],

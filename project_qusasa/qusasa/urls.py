@@ -75,7 +75,7 @@ urlpatterns = [
     path('topic-analysis/<int:history_id>/', views.topic_analysis_detail, name='topic_analysis_detail'),
       path('delete_history/<str:history_type>/<int:history_id>/', views.delete_history, name='delete_history'),
 
-
+    path('chat/', views.chat_view, name='chat_view'),
 
 
 

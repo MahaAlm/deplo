@@ -19,15 +19,14 @@ import os
 from django.conf import settings
 from decouple import config
 from .models import TopicAnalysisHistory
-
-
+import openai
+import pandas as pd
 def custom_admin(request):
     users = User.objects.all()
     context = {
         'users': users,
     }
     return render(request, 'admin/custom_admin.html', context)
-
 
 
 def email_verified_required(function):
@@ -289,7 +288,8 @@ class CompetitiveAnalysisWizard(SessionWizardView):
             
         print(ids_list)
         channel_data_df, top_videos_df, channel_icons, durations_list = analyse_channels(ids_list, entity_type, youtube)
-        
+        if 'engagementScore' in top_videos_df.columns:
+            top_videos_df.drop('engagementScore', axis=1, inplace=True)
         channel_data_csv = channel_data_df.to_csv(index=False)
         top_videos_csv = top_videos_df.to_csv(index=False)
         # Extract channel names
@@ -308,11 +308,11 @@ class CompetitiveAnalysisWizard(SessionWizardView):
         self.request.session['top_videos_csv'] = top_videos_csv
         self.request.session['durations'] = durations_list
         
-        average_likes = channel_data_df['Like average'].tolist()
-        top_likes_channel = channel_data_df.sort_values('Like average', ascending=False)['Name'].iloc[0]
+        average_likes = channel_data_df['TotalLikes'].tolist()
+        top_likes_channel = channel_data_df.sort_values('TotalLikes', ascending=False)['Name'].iloc[0]
         
-        average_views = channel_data_df['View average'].tolist()
-        top_views_channel = channel_data_df.sort_values('View average', ascending=False)['Name'].iloc[0]
+        average_views = channel_data_df['TotalViews'].tolist()
+        top_views_channel = channel_data_df.sort_values('TotalViews', ascending=False)['Name'].iloc[0]
 
         subs = channel_data_df['Subscriber count'].tolist()
         top_subs_channel = channel_data_df.sort_values('Subscriber count', ascending=False)['Name'].iloc[0]
@@ -351,6 +351,7 @@ def competitive_analysis_output_view(request):
         'durations': durations,
         'mostUsedCategories': request.session.get('mostUsedCategories', []),
         'topTags': request.session.get('topTags', []),
+        
     }
     json_data = json.dumps(output_data)
     
@@ -374,7 +375,8 @@ def competitive_analysis_output_view(request):
         'type': request.session['type'],
         'top_videos': top_videos,
         'output_data': output_data,
-        'channels_tags': channels_tags
+        'channels_tags': channels_tags,
+        'docx_file':'competitive_analysis.docx'
         
     }
     return render(request, 'features_pages/competitive_analysis/competitive_analysis_output.html', context)
@@ -427,7 +429,7 @@ class VideoAnalysisWizard(SessionWizardView):
         youtube = get_youtube_client()
         cleaned_data = self.get_all_cleaned_data()
         video_url = cleaned_data.get('video_url')
-        openai_api_key = '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'
+        openai_api_key = config('OPENAI_API_KEY')
 
         history_id = self.kwargs.get('history_id')
         if history_id:
@@ -445,7 +447,8 @@ class VideoAnalysisWizard(SessionWizardView):
         
         video_id = extractIdFromUrl(video_url)
         video_info_df, comments_df, emotion_counts, top_comments_by_emotion = video_analysis(youtube, video_id)
-        
+        if 'engagementScore' in video_info_df.columns:
+            video_info_df.drop('engagementScore', axis=1, inplace=True)
         video_info_csv = video_info_df.to_csv(index=False)
         comments_csv = comments_df.to_csv(index=False)
         
@@ -458,22 +461,22 @@ class VideoAnalysisWizard(SessionWizardView):
         self.request.session['top_comments_by_emotion'] = top_comments_by_emotion
         
         # Define the output directory for audio files
-        # output_dir = os.path.join(settings.MEDIA_ROOT, 'audio')
+        output_dir = os.path.join(settings.MEDIA_ROOT, 'audio')
 
-        # if not os.path.exists(output_dir):
-        #     os.makedirs(output_dir)
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
 
-        # # Download audio
-        # mp3_file = download_audio_from_youtube(video_url, output_dir)
+        # Download audio
+        mp3_file = download_audio_from_youtube(video_url, output_dir)
 
-        # # Transcribe the audio file
-        # transcript = transcribe_youtube_video(mp3_file)
+        # Transcribe the audio file
+        transcript = transcribe_youtube_video(mp3_file)
 
-        # # Summarize the transcript
-        # summary = summarize_youtube_video(transcript, openai_api_key)
+        # Summarize the transcript
+        summary = summarize_youtube_video(transcript, openai_api_key)
 
-        self.request.session['transcript'] = " After reading tons of productivity books, I came across so many rules, like the two year rule, the five minute rule, the five second rule? No, not that five second rule. The problem is that these rules are meant for companies or entrepreneurs. But I was able to adapt them to my studies during med school and drastically cut down in my procrastination. So I'm going to share with you two different two minute rules for the next two minutes. The first two minute rule comes from getting things done by David Allen. He says, if it takes two minutes to do, get it done right now. For example, if I need to take out the trash today, it takes two minutes to do. So if I'm thinking about it now, might as well just do it now. Instead of writing it down on a to-do list or probably forgetting about it or having to come back to a later, which takes more than two minutes. That's how I see it. So here's a list of things that might take two minutes throughout the day, like organizing a desk or watering your plants or clipping those nasty nails. I just do it when I know it is it, but these little things start to add up. So this rule buys is my brain towards taking action and away from procrastination. The second two minute rule comes from atomic habits by James Clear. He says, when you're trying to do something, you don't really want to do, simplify the task down to two minutes or less. So doing your entire reading assignment becomes just reading one paragraph or memorizing the entire periodic table becomes memorizing just 10 flash cards. Now, some of you might think, yeah, this is just a Jedi mind trick. Like, why would I fall for it? How is this at all sustainable? And to that, he says, when you're starting out, limit yourself to only two minutes. So back in Med School, I wanted to build a habit of studying for one hour every day before dinner. So I tried this trick, but I lived in myself to just two minutes. I sit down, open my laptop, study for two minutes, and then close my laptop and went to do something else. It seems unproductive at first, right? It seems stupid, but staying consistent with this two minute routine day after day meant that I was becoming the type of person who studies daily. I was mastering the habit of just showing up because a habit needs to be established before it can be expanded upon. If I can't become a person who studies for just two minutes a day, I'd never be able to become the person that studies for an hour a day. You got to start somewhere, but starting small is easier. There's a lot of other useful tips from books. I cover more here in this video 3 books and 3 minutes. Check it out. If you guys like these types of videos, let me know in the comments below. I'll see you there. Bye."
-        self.request.session['summary'] = "The speaker shares two productivity rules adapted for studying in med school: 1) David Allen's Two-Minute Rule from (Getting Things Done) - if a task takes less than two minutes, do it immediately to avoid procrastination; 2) James Clear's Two-Minute Rule from (Atomic Habits) - start new habits by limiting them to two minutes to build consistency and gradually expand them. These rules helped the speaker reduce procrastination and develop effective study habits."
+        self.request.session['transcript'] = transcript
+        self.request.session['summary'] = summary
         
         return HttpResponseRedirect(reverse('video_analysis_output'))  # Use the name of the URL pattern
 
@@ -591,7 +594,8 @@ class PlaylistAnalysisWizard(SessionWizardView):
         
         playlist_id = extractIdFromUrl(plsylist_url)
         playlist_info_df, all_videos_info_df, top_5_videos, worst_5_videos, top_5_comments_analysis, worst_5_comments_analysis = analyze_playlist(youtube, playlist_id)
-        
+        if 'engagementScore' in all_videos_info_df.columns:
+            all_videos_info_df.drop('engagementScore', axis=1, inplace=True)
         playlist_info_csv = playlist_info_df.to_csv(index=False)
         all_videos_info_csv = all_videos_info_df.to_csv(index=False)
         
@@ -714,6 +718,7 @@ def playlist_analysis_output_view(request):
               'videos_likes': request.session['videos_likes'],
               'videos_views': request.session['videos_views'],
               'videos_commentCount': request.session['videos_commentCount'],
+              'docx_file': 'playlist_analysis.docx'
               }
     
     return render(request, 'features_pages/playlist_analysis/playlist_analysis_output.html', context)
@@ -786,7 +791,8 @@ class ChannelAnalysisWizard(SessionWizardView):
             )
         channel_id = extractIdFromUrl(channel_url)
         channel_df, all_videos_df, all_playlists_df, top_3_videos, worst_3_videos, top_3_comments_analysis, worst_3_comments_analysis = analyze_channel(youtube, channel_id)
-        
+        if 'engagementScore' in all_videos_df.columns:
+            all_videos_df.drop('engagementScore', axis=1, inplace=True)
         channel_df_csv = channel_df.to_csv(index=False)
         all_videos_csv = all_videos_df.to_csv(index=False)
         all_playlists_csv = all_playlists_df.to_csv(index=False)
@@ -985,8 +991,9 @@ class TopicAnalysisWizard(SessionWizardView):
         region_code = cleaned_data.get('region_code')
         language = cleaned_data.get('language')
         
-        videos_df, channels_df, top_5_videos, comments_df, top_5_comments_analysis = topic_analysis(youtube, query, order, region_code, language, max_results=100)
-        
+        videos_df, channels_df, top_5_videos, comments_df, top_5_comments_analysis, keybert_keywords = topic_analysis(youtube, query, order, region_code, language, max_results=100)
+        if 'engagementScore' in videos_df.columns:
+            videos_df.drop('engagementScore', axis=1, inplace=True)
         channel_df_csv = channels_df.to_csv(index=False)
         all_videos_csv = videos_df.to_csv(index=False)
         comments_csv = comments_df.to_csv(index=False)
@@ -1004,6 +1011,7 @@ class TopicAnalysisWizard(SessionWizardView):
         
         self.request.session['top_5_comments_analysis_dist'] = top_5_comments_analysis_dist.to_dict()
         self.request.session['top_5_comments'] = top_5_comments
+        self.request.session['keybert_keywords'] = keybert_keywords
 
 
         TopicAnalysisHistory.objects.create(
@@ -1028,6 +1036,7 @@ def topic_analysis_output_view(request):
         'comments_dict': request.session['comments_dict'],
         'top_5_comments_analysis_dist': request.session['top_5_comments_analysis_dist'],
         'top_5_comments': request.session['top_5_comments'],
+        'keybert_keywords': request.session['keybert_keywords'],
     }
     
     
@@ -1211,7 +1220,8 @@ def doc_channel(request):
         doc.add_heading('Discreption', level=3)
         doc.add_paragraph(channel_data['description'])
         doc.add_heading('Word tags', level=3)
-        doc.add_paragraph(channel_data['uniqueTags'])
+        tags_str = ', '.join(channel_data['uniqueTags'])
+        doc.add_paragraph(tags_str)
         doc.add_heading('Statistics', level=3)
         stats_para = doc.add_paragraph(style='ListBullet')
         stats_para.add_run('Video Count: ').bold = True
@@ -1339,7 +1349,8 @@ def doc_playlist(request):
         doc.add_heading('Discreption', level=3)
         doc.add_paragraph(channel_data['description'])
         doc.add_heading('Word tags', level=3)
-        doc.add_paragraph(channel_data['uniqueTags'])
+        tags_str = ', '.join(channel_data['uniqueTags'])
+        doc.add_paragraph(tags_str)
         doc.add_heading('Statistics', level=3)
         stats_para = doc.add_paragraph(style='ListBullet')
         stats_para.add_run('Video Count: ').bold = True
@@ -1471,10 +1482,10 @@ def doc_topic(request):
             stats_para.add_run(str(channel['Video count']))  # Convert integer to string
             stats_para = doc.add_paragraph(style='ListBullet')
             stats_para.add_run('Views average: ').bold = True
-            stats_para.add_run(str(channel['View average']))  # Convert integer to string
+            stats_para.add_run(str(channel['TotalViews']))  # Convert integer to string
             stats_para = doc.add_paragraph(style='ListBullet')
             stats_para.add_run('likes average: ').bold = True
-            stats_para.add_run(str(channel['Like average']))  # Convert integer to string
+            stats_para.add_run(str(channel['TotalLikes']))  # Convert integer to string
             stats_para = doc.add_paragraph(style='ListBullet')
             stats_para.add_run('Subscriber count: ').bold = True
             stats_para.add_run(str(channel['Subscriber count']))  # Convert integer to string
@@ -1670,7 +1681,9 @@ class VideoRetrivingWizard(SessionWizardView):
         video_id = extractIdFromUrl(video_url)
         
         related_videos_df = get_realted_videos(video_id, order, region_code, language, num_of_videos)
-        
+        if 'engagementScore' in related_videos_df.columns:
+            related_videos_df.drop('engagementScore', axis=1, inplace=True)
+            
         related_videos_csv = related_videos_df.to_csv(index=False)
         related_videos_dict = related_videos_df.to_dict(orient='records')[:8]
         related_videos_full_dict = related_videos_df.to_dict(orient='records')
@@ -1682,6 +1695,7 @@ class VideoRetrivingWizard(SessionWizardView):
 
 def video_retriving_output_view(request):
     def_retrive(request)
+    
     context = {
         'related_videos_csv': request.session['related_videos_csv'],
         'related_videos_dict':request.session['related_videos_dict'],
@@ -1765,3 +1779,123 @@ def delete_history(request, history_type, history_id):
     history = get_object_or_404(model, pk=history_id, user=request.user)
     history.delete()
     return redirect('base')  # Redirect to an appropriate page
+
+
+# views.py
+import traceback
+
+from django.shortcuts import render
+from django.http import JsonResponse
+import openai
+import json
+
+def chat_view(request):
+    
+    function = {
+    "name": "generate_code",
+    "description": "Generates Python code for data manipulation based on user input, it takes in json string of the dataframe structure and the first 5 rows, and generate code to edit it based on user request, the end results should be a pandas dataframe named df.",
+    "parameters": {
+        "type": "object",
+        "properties": {
+        "generated_code": {
+            "type": "string",
+            "description": "Python code to be generated for manipulating a dataset. Format example: {'generated_code': 'all_videos_info_df= pd.DataFrame([all_videos_info_dict]) all_videos_info_df[\\'sum_likes_comments\\'] = all_videos_info_df[\\'likesCount\\'] + all_videos_info_df[\\'commentCount\\']'}"
+        },
+        "explanation": {
+            "type": "string",
+            "description": "Explain what has changed to ther user."
+        },
+        },
+        "required": [
+        "generated_code", "explanation"
+        ]
+    }}
+    
+    # Initialize or get the existing conversation from the session
+    if 'conversation' not in request.session or request.method == 'GET':
+        request.session['conversation'] = [
+            {"role": "system", "content": "You are a Python code generator for data manipulation. Please provide your data manipulation request."},
+            # Assuming the dataset JSON structure is passed initially from the view
+            {"role": "assistant", "content": "Here is your dataset: [Your dataset structure here]"},
+        ]
+        
+    if 'error_count' not in request.session:
+        request.session['error_count'] = 0
+
+    if request.method == 'POST':
+        did_not_execute = True
+        while did_not_execute:
+            try:
+                user_input = request.POST.get('user_input')
+
+                request.session['conversation'].append({"role": "user", "content": user_input})
+
+                response = openai.ChatCompletion.create(
+                        model="gpt-3.5-turbo-0613",
+                        messages=request.session['conversation'],
+                        functions=[function],
+                        function_call={
+                            "name": "generate_code",
+                            "data": {
+                                "json_dataset": json.dumps([request.session['videos_dict'][:5]]),
+                                "user_request": user_input
+                            }
+                        }
+                    )
+
+                # Process the response
+                content = response.choices[0]["message"]["function_call"]["arguments"]
+                content_json = json.loads(content)
+                generated_code = content_json['generated_code']
+                print(generated_code)
+                # Attempt to execute the generated code
+                df = pd.DataFrame(request.session['videos_dict'])
+                exec(generated_code)
+
+                # Reset error count on successful execution
+                request.session['error_count'] = 0
+
+                # Append successful response to the conversation
+                response_content = generated_code
+
+                # Ask if the user has more changes after successful execution
+                request.session['conversation'].append({"role": "assistant", "content": "Do you have any more changes?"})
+
+                # Send response back to user
+                did_not_execute = False
+                send_response = True
+
+            except Exception as e:
+                # print(str(e))
+                # Increment error count
+                request.session['error_count'] += 1
+
+                full_traceback = traceback.format_exc().splitlines()
+                error_traceback = "\n".join(full_traceback[-3:]) if len(full_traceback) >= 3 else str(e)
+                print(error_traceback)
+                # Append error message to the conversation for the assistant to process internally
+                error_message = f"Error occurred, please try to modify, stick to the columns names in the example provided {json.dumps([request.session['videos_dict'][:1]])}, the error: {error_traceback}."
+                request.session['conversation'].append({"role": "user", "content": error_message})
+                
+                # Check if errors have occurred 3 times consecutively
+                if request.session['error_count'] >= 3:
+                    # Inform the user about persistent issues
+                    response_content = "Sorry, this request doesn't seem to work. Let's try something else."
+                    request.session['error_count'] = 0  # Reset error count
+                    send_response = True
+                    did_not_execute = False
+                else:
+                    # Continue trying to resolve internally, do not send response to user yet
+                    send_response = False
+                    did_not_execute = True
+
+        # Save the updated conversation and error count to the session
+        request.session.modified = True
+
+        if send_response:
+            # Return the response
+            return JsonResponse({"ai_response": response_content})
+
+    return render(request, 'chat_template.html')
+
+#edit the published at date to this format MM/YYYY
