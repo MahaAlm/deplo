@@ -621,28 +621,27 @@ def analyse_video(youtube, video_id):
         id=video_id
     ).execute()
 
-    if 'items' in video_response and video_response['items']:
-        video_details = video_response['items'][0]
-        statistics = video_details['statistics']
+    video_details = video_response['items'][0]
+    statistics = video_details['statistics']
 
-        unique_tags.update(video_details['snippet'].get('tags', []))
-        category_count[video_details['snippet']['categoryId']] += 1
-        
-        # Construct a dictionary with all the video info
-        video_info = {
-            'videoId': video_details['id'],
-            'title': video_details['snippet']['title'],
-            'description': video_details['snippet']['description'],
-            'publishedAt': video_details['snippet']['publishedAt'],
-            'thumbnail': video_details['snippet']['thumbnails']['high']['url'],
-            'viewsCount': int(statistics.get('viewCount', 0)),
-            'likesCount': int(statistics.get('likeCount', 0)),
-            'commentCount': int(statistics.get('commentCount', 0)),
-            'duration': parse_duration_to_minutes(video_details['contentDetails'].get('duration')),
-            'unique_tags': list(unique_tags),
-            'categoryId': video_details['snippet']['categoryId']
-        }
-        
+    unique_tags.update(video_details['snippet'].get('tags', []))
+    category_count[video_details['snippet']['categoryId']] += 1
+    
+    # Construct a dictionary with all the video info
+    video_info = {
+        'videoId': video_details['id'],
+        'title': video_details['snippet']['title'],
+        'description': video_details['snippet']['description'],
+        'publishedAt': video_details['snippet']['publishedAt'],
+        'thumbnail': video_details['snippet']['thumbnails']['high']['url'],
+        'viewsCount': int(statistics.get('viewCount', 0)),
+        'likesCount': int(statistics.get('likeCount', 0)),
+        'commentCount': int(statistics.get('commentCount', 0)),
+        'duration': parse_duration_to_minutes(video_details['contentDetails'].get('duration')),
+        'unique_tags': list(unique_tags),
+        'categoryId': video_details['snippet']['categoryId']
+    }
+    
     # Convert category IDs to names
     category_names = {}
     category_ids = list(category_count.keys())
@@ -775,12 +774,14 @@ def analyze_playlist(youtube, playlist_id):
         ).execute()
 
         for item in playlist_videos_response['items']:
-            video_id = item['contentDetails']['videoId']
-            video_info_df = analyse_video(youtube, video_id)
-            video_info = video_info_df.iloc[0]
-            video_info['engagementScore'] = calculate_engagement_score(video_info, datetime.now())
-            videos_info_list.append(video_info)
-
+            try:
+                video_id = item['contentDetails']['videoId']
+                video_info_df = analyse_video(youtube, video_id)
+                video_info = video_info_df.iloc[0]
+                video_info['engagementScore'] = calculate_engagement_score(video_info, datetime.now())
+                videos_info_list.append(video_info)
+            except:
+                continue
         next_page_token = playlist_videos_response.get('nextPageToken')
         if not next_page_token:
             break
