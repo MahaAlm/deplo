@@ -1,0 +1,181 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qusasa | Sign up</title>
+    <!-- Linking CSS -->
+    <link rel="stylesheet" href="{% static 'qusasa/css/signup.css' %}">
+    <link rel="stylesheet" href="{% static 'qusasa/css/nav.css' %}">
+
+    <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
+
+</head>
+<body> 
+    <img class="polygon" src="{% static 'qusasa/images/Frame 2.png'%}" alt="Description of Image" class="full-size-absolute">
+    
+    {% include "nav.html" %}
+
+
+    <div class="content">
+        <h2>Sign Up</h2>
+
+        <div class="signup-container">
+            <form method="post">
+                {% csrf_token %}
+                
+                {% for field in form %}
+                    <div class="error-msgs">
+                        {% if field.errors %}
+                            <div class="error"><i class="fas fa-exclamation-circle"></i>
+                                {{ field.errors|first }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                
+                
+                <div class="names">
+                    <div class="input-field">
+                        <label for="{{ form.first_name.id_for_label }}">First Name:</label>
+                        <input type="text" name="{{ form.first_name.name }}" id="{{ form.first_name.id_for_label }}" value="{{ form.first_name.value|default:'' }}" required>
+                        <br><br>
+                    </div>
+
+                    <div class="input-field">
+                        <label for="{{ form.last_name.id_for_label }}">Last Name:</label>
+                        <input type="text" name="{{ form.last_name.name }}" id="{{ form.last_name.id_for_label }}" value="{{ form.last_name.value|default:'' }}" required>
+                        <br><br>
+                    </div>
+                </div>
+
+                <div class="input-field">
+                    <label for="{{ form.email.id_for_label }}">Email:</label>
+                    <input type="email" name="{{ form.email.name }}" id="{{ form.email.id_for_label }}" value="{{ form.email.value|default:'' }}" required>
+                    <br><br>
+                </div>
+
+                <div class="input-field">
+                    <label for="{{ form.password1.id_for_label }}">Password:</label>
+                    <input placeholder="Password should be longer than 8 characters with numeric and alphabetic characters" type="password" name="{{ form.password1.name }}" id="{{ form.password1.id_for_label }}" required>
+                    <br><br>
+                </div>
+                
+                <div class="input-field">
+                    <label for="{{ form.password2.id_for_label }}">Confirm Password:</label>
+                    <input placeholder="Enter the same password" type="password" name="{{ form.password2.name }}" id="{{ form.password2.id_for_label }}" required>
+                    <br><br>
+                </div>
+
+                <div class="privacy" style="margin-bottom: 1rem;">
+                    <label>
+                        <input type="checkbox" id="myCheckbox" name="myCheckbox">
+                        By signing up you agree to <span><a href="#popup1">the privacy policy.</a></span>
+                    </label>
+                    
+                </div>
+                <div class="privacy" style="margin-top: 0;">
+                    <label style="margin-top: 0;">
+                        <input type="checkbox" id="myCheckbox2" name="myCheckbox">
+                        I am 13 years old or older
+                    </label>
+                </div>
+                
+
+                <div class="final-row">
+                    <div class="login">
+                    <a class="log-in">
+                        Already Registered?
+                    </a>
+                </div>
+                <button type="submit" id="signupButton" disabled><span>Sign up</span></button>
+
+                </div>
+            </form>
+        </div>
+        <div id="popup1" class="overlay">
+            <div class="popup">
+                <h2>Qusasa's Privacy Policy</h2>
+                <a class="close" href="#">&times;</a>
+                <div class="text">
+                    Effective Date: [10th of October 2023]<br>
+                    <br>
+                    1.	Introduction <br>
+                    Thank you for using Qusasa ("we," "our," or "us"). At Qusasa website, we value your privacy and are committed to protecting your personal information. This Privacy Policy outlines our practices regarding data collection, usage, storage, and protection. Please take the time to read this policy carefully to understand how we handle your data. You can contact us by email if you are confused about any clause at:
+                    <br>qusasacustomerservice@gmail.com <br>
+                    <br>
+                    2.	Information we collect. <br>
+                    a.	     Personal Information: This may include but is not limited to your first name, last name, and email address to maintain your profile.<br>
+                    b.	     Non-Personal Information: This may include your IP address, browser type, device type, and other technical information when you use our website due to technical uses to insure better experience on the website.<br>
+                    c.	     Cookies: We use cookies and similar technologies to collect information about your browsing activities and preferences.<br>
+                    <br>
+                    3.	How we use your information.<br>
+                    a.	    To Communicate: To send updates and respond to your inquiries to your email address.<br>
+                    b.	    Analytics and Improvement: To analyze how you use our website to improve our user journey, improve our services, and customize your user experience by seeing the most used templates and enhance it.<br>
+                    <br>4.	Data sharing.<br>
+                    We do not sell, rent, or trade your personal information to third parties without your consent, except in the following circumstances:<br>
+                    <br>
+                    a.	    Legal Obligations: We may disclose your information when required by law, in response to a court order, or to protect our rights.<br>
+                    b.	    Service providers: To provide products or services you've requested. We do use some third-party services to run our applications and only to the extent necessary process some or all of your personal information via these third parties.
+                    5.	Your Rights with Respect to Your Information.<br>
+                    a.	You can request to see or delete your personal data.<br>
+                        i.	  You can sign into your account to see or delete any personally identifiable information we have stored, such as your name and email. You can also contact us by email to request to see or delete this information.<br>
+                    b.	We keep personal data until you delete it.<br>
+                        i.	    We remove personally identifiable information (such as your name, or email) and other preferences associated with your account promptly after you delete your account. We may retain other data indefinitely.<br>
+                    c.	We don’t share your personal data with other companies.<br>
+                    <br>
+                    <br>
+                    6.	Your responsibility.<br>
+                    Our website offers automation services for data seekers. This Website offers many functionalities allowing in particular to extract data from third-party services, create databases from this data and automate workflows on these third-party services. HOWEVER, QUSASA HAS NO LINK OR COMMERCIAL RELATIONSHIP WITH THESE THIRD-PARTY SERVICES EVEN WITH THE ONES EXPRESSLY MENTIONED ON ITS WEBSITE. AS SUCH, THE CLIENT IS RESPONSIBLE FOR VERIFYING THAT IT HAS THE RIGHTS AND/OR AUTHORIZATIONS REQUIRED TO USE THE SERVICES OF QUSASA IN CONNECTION WITH THESE THIRD-PARTY SERVICES. QUSASA WILL HAVE NO RESPONSIBILITY IF ITS SERVICES ARE USED IN AN UNLAWFUL MANNER OR IN VIOLATION OF THIRD-PARTY RIGHTS. <br>
+                            -Meta privacy policy<br>
+                            -Google privacy policy<br>
+                    <br>
+                    7.Age Restriction for Users Under 13<br>
+                        a.   Users under the age of 13 are not permitted to use our services. We do not knowingly collect or maintain personal information from children under the age of 13. If we discover that a user under the age of 13 has provided us with personal information, we will take steps to delete this information promptly.<br>
+                    <br>8.	changes to this Policy. <br>
+                    We may update this Privacy Policy to reflect changes in our practices. The updated version will be posted on our website, and the "Effective Date" will be updated accordingly.<br>
+                    <br>
+                    9.	Contact Us:<br>
+                    If you have questions, concerns, or requests regarding your privacy or this policy, please contact us at:<br>
+                    qusasacustomerservice@gmail.com  <br>              </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        Created in 2023, Qusasa team
+    </footer>
+
+    <!-- Linking JS at the bottom for better performance -->
+    <script src="{% static 'qusasa/js/script.js' %}"></script>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get the checkbox and the button elements
+        const checkbox = document.getElementById('myCheckbox');
+        const checkbox2 = document.getElementById('myCheckbox2');
+        const signupButton = document.getElementById('signupButton');
+    
+        // Add an event listener for the checkbox's change event
+        checkbox.addEventListener('change', function() {
+            // If the checkbox is checked, enable the button; otherwise, disable it
+            if (checkbox.checked && checkbox2.checked) {
+                signupButton.removeAttribute('disabled');
+            } else {
+                signupButton.setAttribute('disabled', 'true');
+            }
+        });
+
+        checkbox2.addEventListener('change', function() {
+            // If the checkbox is checked, enable the button; otherwise, disable it
+            if (checkbox.checked && checkbox2.checked) {
+                signupButton.removeAttribute('disabled');
+            } else {
+                signupButton.setAttribute('disabled', 'true');
+            }
+        });
+    });
+</script>
+</html>

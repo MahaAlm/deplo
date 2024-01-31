@@ -1,0 +1,82 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Qusasa | Video Analysis Template</title>
+    <!-- Linking CSS -->
+    <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/cards.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/feature_details.css' %}" />
+
+    <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
+
+  </head>
+  <body>
+    <!-- <img class="polygon" src="{% static 'qusasa/images/Frame 2.png'%}" alt="Description of Image" class="full-size-absolute"> -->
+
+    <!--   <div class="navigation">
+        <img class="static-img" src="{% static 'qusasa/images/qusasa.png' %}" alt="">
+
+        <div class="navs">
+            <a href="{% url 'logout' %}">Log out</a>
+        </div>
+    </div>   -->
+    <a class="log-out" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i> Log out</a>
+
+    {% include 'side_nav.html' %}
+
+    <div class="content">
+    
+        <ul class="breadcrumbs">
+            <li><a href="{% url 'base' %}" {% if request.resolver_match.url_name == 'base' %}  {% endif %}> Home</a></li>
+            <li id="current">Video Analysis {{history.id}} template</li>
+        </ul>
+
+      <div class="history">
+        <div class="header">
+            <div class="feature-head">
+                    <img src="{% static 'qusasa/images/video analysis.webp'  %}" style="object-fit: contain; max-width: 22rem;" alt="">
+                <div class="feature-text">
+                  <h1>Video Analysis</h1>
+                    <p>This feature allows for the conversion of video content into a written summary, paired with in-depth analysis of audience engagement metrics. It's a tool for distilling video information and understanding viewer interactions to refine content strategy.</p>
+                    <div class="input-output">
+                        <div class="input">
+                            <h3><i class="fa-solid fa-circle-chevron-right"></i> Your previous inputs:</h3>
+                            <p><div class="details">
+                                <p><strong>Video URL:</strong> {{ history.video_url }}</p>
+                                <p><strong>Date:</strong> {{ history.created_at|date:"M d, Y" }}</p>
+                                <!-- Add more fields as necessary -->
+                            </div>
+                            </p>
+                
+                        </div>
+                        <br>
+        
+                        <div class="output">
+                            <a href="{% url 'video_analysis_redo' history.id %}"><button style="width: 20rem"><i class="fa-solid fa-circle-play" style="color: white; margin-right: 0.5rem;"></i> Redo this template</button></a>
+                            <a href="{% url 'delete_history' 'video' history.id %}" onclick="return confirm('Are you sure you want to delete this template?');">
+                              <button style="width: 20rem; margin-top: 1rem; background: linear-gradient(rgb(124, 36, 36), rgb(178, 96, 96))">
+                                <i class="fa-solid fa-trash" style="color: white; margin-right: 0.5rem;"></i> Delete this template
+                              </button>
+                          </a>
+                          </div>
+                    </div>                </div>
+            </div>
+            
+            
+
+        </div>
+            
+        
+      </div>
+    </div>
+    
+
+    <!-- Linking JS at the bottom for better performance -->
+    <script src="{% static 'qusasa/js/script.js' %}"></script>
+  </body>
+</html>

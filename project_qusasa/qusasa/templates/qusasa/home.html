@@ -1,0 +1,178 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcom to Qusasa </title>
+    <link rel="stylesheet" href="{% static 'qusasa/css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'qusasa/css/nav.css' %}">
+    <link href="https://cdn.rawgit.com/michalsnik/aos/2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.rawgit.com/michalsnik/aos/2.3.1/dist/aos.js"></script>
+
+    <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
+    
+</head>
+<body> 
+    <img class="polygon" src="{% static 'qusasa/images/Frame 2.png'%}" alt="Description of Image" class="full-size-absolute">
+    
+    {% include 'nav.html' %}
+
+    <div class="content">
+
+        <div class="part1Content">
+          <h1 data-aos="fade-up"> Welcome to the quantum leap in the data world!</h1>
+          <h3 data-aos="fade-up"> Explore our platform today and unlock the power of data!</h3>
+          <br>
+          <button class="buttonWelcomPage" data-aos="fade-up"><a href="#part2Content">get started now </a> </button>
+        </div>
+
+        <div class="part2Content" id="part2Content">
+            <h3 data-aos="fade-up"> With Qusasa, enjoy the realm of data exploration fratures...</h3>
+            <div class="features" data-aos="fade-up">
+                <div alt="mainFeatures" class="mainFeatures">
+                    <i class="fa-solid fa-magnifying-glass-chart"></i>
+                    <p>Data collection</p>
+                </div>
+                <div alt="mainFeatures2" class="mainFeatures">
+                    <i class="fa-solid fa-chart-pie"></i>
+                <p> Data visualisation </p>                   
+                </div>
+                <div alt="mainFeatures3" class="mainFeatures">
+                    <i class="fa-solid fa-chart-bar"></i>
+                 <p>Advanced Analytics</p>
+                </div>
+                <div alt="mainFeatures4" class="mainFeatures">
+                    <i class="fa-solid fa-note-sticky"></i>
+                <p>Videos Summary</p>
+                </div>
+            </div>
+                
+              
+          </div>
+
+          <div class="part3Content">
+            <h3 data-aos="fade-up">From the vast amount of content in youtube and instagram, get to the bottom of your <span>data needs</span></h3>
+            <img id="responsiveImage"src="{% static 'qusasa/images/analysis.png' %}" alt="" data-aos="fade-up" style="max-width: 100%; height: auto;">
+          </div>
+
+          <div class="part4Content">
+            <div class="text" data-aos="fade-up">
+                <h3 >Analytics that will help you</h3>
+                <p>Unlock Insights with Interactive Charts: Explore, Analyze, Decide.</p>
+            </div>
+
+                <div class="charts">
+                    <div class="chart area" data-aos="fade-up">
+                        <p>Post likes over time</p>
+
+                        {% include 'area_chart.html'%}
+                        
+                    </div>
+                    <div class="chart" data-aos="fade-up">
+                        {% include 'radial_chart.html'%}
+                    </div>
+
+                </div>
+                <div class="charts barchart" data-aos="fade-up">
+                        {% include 'barchart.html'%}
+
+                </div>
+
+            </div>
+            <div class="part5Content">
+                <br><br><br><br><br><br>
+<h2 data-aos="fade-up">Take a closer look!</h2>
+<h3 data-aos="fade-up">See our most popular use cases</h3><br><br> <br><br><br><br><br>
+                <div class="flex-container">
+                    <div class="card-container">
+                        <!-- Card 1 -->
+                        <div class="card" data-aos="fade-up">
+                            <div class="card-icon"><i class="fa-solid fa-square-poll-horizontal fa-xl"></i></div>
+                            <div class="card-title">Marketing Research</div>
+                            <div class="card-description">Marketers can utilize Qusasa to gather data from social media platforms, allowing them to identify trends, customer preferences, and competitive insights.</div>
+                            <a href="#" class="learn-more">Learn more →</a>
+                        </div>
+                    
+                        <div class="card" data-aos="fade-up">
+                            <div class="card-icon"><i class="fa-solid fa-book fa-xl"></i></div>
+                            <div class="card-title">Academic Studies</div>
+                            <div class="card-description">Researchers can extract and analyze online data for their studies, especially those focusing on digital behavior, online cultures, or trends.</div>
+                            <a href="#" class="learn-more">Learn more →</a>
+                        </div>
+        
+                        <div class="card" data-aos="fade-up">
+                            <div class="card-icon"><i class="fa-solid fa-folder-plus fa-xl"></i></div>
+                            <div class="card-title">Content Creation</div>
+                            <div class="card-description">Bloggers, YouTubers, and other content creators can gauge popular topics, comments, and feedback from their audience to produce content that resonates with their followers.</div>
+                            <a href="#" class="learn-more">Learn more →</a>
+                        </div>
+        
+                        <div class="card" data-aos="fade-up">
+                            <div class="card-icon"><i class="fa-solid fa-tag fa-xl"></i></div>
+                            <div class="card-title">Product Development</div>
+                            <div class="card-description">Companies can extract feedback, reviews, and suggestions from users across various online platforms to inform product enhancements or new product creation.</div>
+                            <a href="#" class="learn-more">Learn more →</a>
+                        </div>
+                         <div class="card" data-aos="fade-up">
+                            <div class="card-icon"><i class="fa-solid fa-money-bill-1-wave fa-xl"></i></div>
+                            <div class="card-title">Financial Analysis</div>
+                            <div class="card-description">Investors and analysts can use Qusasa to gather data from social media to predict market movements or evaluate company performances.</div>
+                            <a href="#" class="learn-more">Learn more →</a>
+                        </div>
+                        <div class="card" data-aos="fade-up">
+                            <div class="card-icon"><i class="fa-solid fa-briefcase fa-xl"></i></div>
+                            <div class="card-title">Recruitment and HR</div>
+                            <div class="card-description">Firms can scout potential hires by analyzing online portfolios, professional social networks, and public posts, ensuring a cultural and professional fit.</div>
+                            <a href="#" class="learn-more">Learn more →</a>
+                        </div>
+                    
+                    </div>
+                    
+                </div>
+              </div>
+            </div>
+        
+            <div class="part6Content">
+                <h2 data-aos="fade-up">Researcher, markiting analyst, content maker, student, or a simple data enthusiest?</h2>
+                <h3 data-aos="fade-up" style="width: 100%;">Your journey through data never been easier, <br>Join us in Qusasa now and enjoy data analysis within a click of a button!</h3>
+                <a href="{% url 'signup' %}"  {% if request.resolver_match.url_name == 'signup' %} id="current" {% endif %}><button data-aos="fade-up">Sign up with Qusasa</a></button>
+
+            </div>
+
+    </div>
+
+
+    <footer>
+        Created in 2023, Qusasa team
+    </footer>
+
+    <!-- Linking JS at the bottom for better performance -->
+    <script>
+        AOS.init({
+          duration: 1200, // You can adjust this value for animation duration
+        });
+      </script>
+
+      <script>
+        function updateImageSource() {
+            var img = document.getElementById('responsiveImage');
+            if (window.innerWidth < 800) {
+                img.src = "{% static 'qusasa/images/alternative_image.png' %}";  // Change to your desired alternative image path
+            } else {
+                img.src = "{% static 'qusasa/images/analysis.png' %}";
+            }
+        }
+    
+        // Call the function when the page loads
+        window.onload = updateImageSource;
+    
+        // Call the function when the window is resized
+        window.onresize = updateImageSource;
+    </script>
+    
+      
+</body>
+</html>

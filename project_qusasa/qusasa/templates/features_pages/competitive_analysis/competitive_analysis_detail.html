@@ -1,0 +1,87 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Qusasa | Competitive Analysis Template</title>
+    <!-- Linking CSS -->
+    <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/cards.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/feature_details.css' %}" />
+
+    <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
+
+  </head>
+  <body>
+    
+    <a class="log-out" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i> Log out</a>
+
+    {% include 'side_nav.html' %}
+
+    <div class="content">
+    
+        <ul class="breadcrumbs">
+            <li><a href="{% url 'base' %}" {% if request.resolver_match.url_name == 'base' %}  {% endif %}> Home</a></li>
+            <li id="current">Competitive Analysis {{history.id}} template</li>
+        </ul>
+
+      <div class="history">
+        <div class="header">
+            <div class="feature-head">
+                    <img src="{% static 'qusasa/images/competitive_analysis.webp'  %}" style="object-fit: contain; max-width: 22rem;" alt="">
+                <div class="feature-text">
+                  <h1>Competitive Analysis</h1>
+                  <p>This feature enables you to study your competitors by gathering statistical information about their activities and comparing them with each other. It helps you understand the strategies and performance of competing channels, allowing you to make informed decisions for your own channel.</p>
+                    <div class="input-output">
+                        <div class="input">
+                            <h3><i class="fa-solid fa-circle-chevron-right"></i> Your previous inputs:</h3>
+                            <p>
+                              <div class="details">
+                                <p><strong>Analyse For:</strong> {{ history.analysis_type }}</p>
+                                <p><strong>Using:</strong> {{ history.choice }}</p>
+                                <p><strong>My {{ history.choice  }}:</strong> {{ history.input_text }}</p>
+
+                                {% if history.choice == 'search' %}
+                                    <p><strong>Search Query:</strong> {{ history.search_query }}</p>
+                                    <p><strong>Order:</strong> {{ history.order }}</p>
+                                    <p><strong>Region Code:</strong> {{ history.region_code }}</p>
+                                    <p><strong>Language:</strong> {{ history.language }}</p>
+                                {% elif history.choice == 'input_list' %}
+                                    {% for url in history.channel_urls %}
+                                        <p><strong>Channel URL:</strong> {{ url }}</p>
+                                    {% endfor %}
+                                {% endif %}
+                                <p><strong>Date:</strong> {{ history.created_at|date:"M d, Y" }}</p>
+                            </div>
+                            </p>
+                
+                        </div>
+                        <br>
+        
+                        <div class="output">
+                            <a href="{% url 'competitive_analysis_redo' history.id %}"><button style="width: 20rem"><i class="fa-solid fa-circle-play" style="color: white; margin-right: 0.5rem;"></i> Redo this template</button></a>
+                            <a href="{% url 'delete_history' 'competitive' history.id %}" onclick="return confirm('Are you sure you want to delete this template?');">
+                              <button style="width: 20rem; margin-top: 1rem; background: linear-gradient(rgb(124, 36, 36), rgb(178, 96, 96))">
+                                  <i class="fa-solid fa-trash" style="color: white; margin-right: 0.5rem;"></i> Delete this template
+                              </button>
+                          </a>
+                          </div>
+                    </div>                </div>
+            </div>
+            
+            
+
+        </div>
+            
+        
+      </div>
+    </div>
+    
+
+    <!-- Linking JS at the bottom for better performance -->
+    <script src="{% static 'qusasa/js/script.js' %}"></script>
+  </body>
+</html>

@@ -1,0 +1,331 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;400;500;600;700;800;900&display=swap');
+
+
+html {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(-45deg, #0B0B25, #250D44, #0A2240);
+    background-repeat: no-repeat; /* Prevent gradient from repeating */
+    background-attachment: fixed;
+    font-family: 'Raleway', sans-serif;
+    color: white;
+    
+}
+
+body {
+    min-height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-repeat: no-repeat; /* Prevent gradient from repeating */
+    background-attachment: fixed;
+    display: flex;
+    flex-direction: column; /* Change this */
+    min-height: 100vh; 
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+}
+.polygon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+.content {
+    margin-top: 15vh;
+    margin-bottom: 40vh;
+    height: 80vh;
+    width: 30vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.signup-container {
+    border-radius: 15px;
+    /* Glassmorphism properties */
+    background: linear-gradient(rgba(255, 255, 255, 0.291), rgba(255, 255, 255, 0.3));
+    backdrop-filter: blur(100px); /* Apply blur */
+    box-shadow: 0 0px 20px rgba(255, 255, 255, 0.156); /* Soft shadow */
+    width: 100%;
+    padding: 8vh 6vw;
+
+}
+
+.content h2 {
+    font-weight: 800;
+    opacity: 1;
+    font-size: 2rem;
+    justify-self: center;
+    align-self: center;
+    width: 120%;
+    text-align: center;
+}
+
+.content form {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    width: 100%;
+}
+
+.input-field {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+}
+.input-field label {
+    margin: 2px;
+    font-weight: 600;
+}
+.input-field input {
+    border-radius: 50px;
+    border: none;
+    outline: none;
+    padding: 8px;
+}
+
+.names {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.names .input-field:first-child{
+    margin-right: 20px;
+}
+
+
+
+
+.privacy {
+    font-weight: 600;
+    margin-bottom: 5vh;
+    margin-top: 7vh;
+}
+
+
+.privacy span{
+    font-weight: 700;
+    color: rgb(167, 243, 255);
+}
+
+.final-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap;
+    margin-top: 5vh;
+
+}
+
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.log-in {
+    font-weight: 600;
+    border-bottom: solid 2px white;
+    padding-bottom: 5px;
+    text-align: left;
+    transition-duration: 0.5s;
+}
+
+.log-in:hover {
+    padding-bottom: 6px;
+    transition-duration: 0.5s;
+    cursor: pointer;
+    text-shadow: 0 0px 20px rgba(255, 255, 255, 0.518);
+    cursor: pointer;
+
+}
+
+
+
+.final-row button {
+    padding: 15px 40px;
+    border-radius: 50px;
+    border: none;
+    outline: none;
+    background: linear-gradient(#00eeffb6, #1C93B9);
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+}
+
+.final-row button::before {
+    content: "";
+    position: absolute;
+    border-radius: 50px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;  /* Put the pseudo-element above the button content */
+    background: linear-gradient(#36f2ffd8, #29abd6);  /* Default gradient */
+    transition: 0.3s;
+    opacity: 0;
+}
+
+.final-row button:hover::before {
+    opacity: 1;
+    margin-bottom: 3px;
+}
+
+.final-row button span {
+        position: relative;  /* Make it appear above the pseudo-element */
+        z-index: 2;
+    
+}
+
+.final-row button:disabled {
+    background: linear-gradient(#b3b3b3b6, #888888);
+    cursor: auto;
+}
+
+.final-row button:disabled:hover::before  {
+    opacity: 0;
+    margin-bottom: 0;
+}
+
+
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    visibility: hidden;
+    opacity: 0;
+  }
+  .overlay:target {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  .popup {
+    margin: 70px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    width: 30%;
+    position: relative;
+    transition: all 5s ease-in-out;
+    height: 70vh;
+  }
+  
+  .popup h2 {
+    margin-top: 0;
+    color: #333;
+    font-family: Tahoma, Arial, sans-serif;
+  }
+  .popup .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+  }
+
+  .popup .close:hover {
+    color: blue;
+  }
+  .popup .text {
+    color: black;
+    overflow: scroll;
+    height: 70%;
+    padding-bottom: 20px;
+
+
+  }
+
+  .error {
+    background: rgb(255, 238, 238);
+    color: rgb(33, 33, 41);
+    border-radius: 10px;
+    max-width: 100%;
+    padding: 10px;
+    padding-right: 20px;
+    font-weight: 700;
+    margin-bottom: 30px;
+  }
+
+  footer {
+    height: 15vh;
+    background: linear-gradient(rgba(73, 79, 143, 0.753), rgba(78, 47, 112, 0.358));
+    color: white;
+    position: unset;
+    width: 100%;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+  }
+  
+  .content p {
+    text-align: center;
+  }
+
+  .content p span {
+    font-weight: 700;
+  }
+
+  .content a {
+    text-decoration: none;
+    color: white;
+    z-index: 2;
+  }
+
+
+@media (max-width: 1024px) {
+    .content {
+        width: 60vw;
+    }
+    
+}
+
+@media (max-width: 500px) {
+    .final-row {
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .final-row .log-in {
+        margin-bottom: 2rem;
+    }
+
+    .content {
+        width: 70vw;
+    }
+    
+}

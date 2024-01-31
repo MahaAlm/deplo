@@ -1,0 +1,1146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Qusasa | YouTube Playlist Analysis</title>
+    <!-- Linking CSS -->
+    <link rel="stylesheet" href="{% static 'qusasa/css/signup.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/cards.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/feature_details.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/output.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/playlist_analysis_output.css' %}" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    
+    <link href="https://cdn.rawgit.com/michalsnik/aos/2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.rawgit.com/michalsnik/aos/2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <!-- Make sure to include the cloud layout plugin after the main D3 library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Include Owl Carousel CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+
+    <!-- Include jQuery Library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Include Owl Carousel JS File -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+
+    <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
+
+  </head>
+  <body>
+    
+    <a class="log-out" href="#popup1"><i class="fa-solid fa-right-from-bracket"></i> Exit Analysis</a>
+
+    
+    <div class="output-container">
+
+        <div class="mini-container">
+            <div class="output-header " data-aos="fade-up">
+                <h1>Your Playlist Analysis is ready!</h1>
+                <p>Our playlist analysis will give you an overview over the playlist, what does influence its performance, and a closer look on its top and worst performing videos...</p>
+            </div>
+        </div>
+        
+        <div class="mini-container">
+            <h2 data-aos="fade-up">Download your results:</h2>
+            <div class="downlaodables" data-aos="fade-up">
+            <div class="download-dataset download-el">
+                <i class="fa-solid fa-table"></i>
+                <div class="download-text">
+                    <div class="text">
+                        <h3>The playlist datasets</h3>
+                    <p>A dataset for the playlist info, and a dataset for each video on the playlist.</p>
+                    </div>
+                    
+                    <div class="button">
+                        <button id="download-dataset-button">Download the dataset</button>
+                    </div>
+                    
+                </div>
+
+            </div>
+            <div class="download-report download-el">
+                <i class="fa-solid fa-file-contract"></i>
+                <div class="download-text ">
+                    <div class="text">
+                        <h3>Analysis report</h3>
+                        <p>including all the graphs, statistics, and interpretaions presented.</p>
+                    </div>
+                    
+                    <div class="button">
+                        <a href="{% url 'download_docx' filename=docx_file %}"><button>Download the report</button></a>
+                    </div>
+                    
+                </div>
+            </div>
+            </div>
+
+        </div>
+
+        <div class="mini-container stats-graphs-container">
+            <div class="stats-graphs" data-aos="fade-up">
+                <h1>Get An Overview</h1>
+                <p>take a look over playlist in general, what is it about and how is it performing</p>
+                <div class="overview">
+                    <div class="header">
+                        
+                        <div class="header-info">
+                            <img src='{{thumbnail}}' alt="">
+                            <h1>{{title}}</h1>
+                              
+                        </div>
+                        {% if description != ''%}
+                        <div class="desc">
+                            <h3>Playlist description</h3>
+                        <p>{{description}}</p>
+                        </div>
+                        {%endif%}
+                    </div>
+                    <div class="playlist-wordtags">
+                        <h1>Playlist Word tags</h1>
+                        <div id="wordcloud0" class="wordcloud"></div>
+
+                    </div>
+                        <h1 class="playlist-stats-h1">Playlist statistics</h1>
+                        <div class="video-stats">
+                            <div class="video-stat">
+                                <h3 >{{playlist_publishedAt}}</h3>
+                                <p>publishedAt</p>
+                            </div>
+                            <div class="video-stat">
+                                <h3 class="number" data-target="{{videoCount}}">1000</h3>
+                                <p>videos</p>
+                            </div>
+                            <div class="video-stat">
+                                <h3 class="number" data-target="{{totalViews}}">1000</h3>
+                                <p>total Views</p>
+                            </div>
+                            <div class="video-stat">
+                                <h3 class="number" data-target="{{totalLikes}}">1000</h3>
+                                <p>total Likes</p>
+                            </div>
+                            <div class="video-stat">
+                                <h3 class="number" data-target="{{totalComments}}">0</h3>
+                                <p>total Comments</p>
+                            </div>
+                            <div class="video-stat">
+                                <h3 class="number" data-target="{{average_duration}}">0</h3>
+                                <p>average video duration</p>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mini-container stats-graphs-container">
+            <div class="stats-graphs" data-aos="fade-up">
+                <h1>Get a deeper understanding</h1>
+                <div class="overview">
+                    <div class="owl-carousel">
+                        <div class="item">
+                            <div class="chart-compare ">
+                                <div class="compare-el">
+                                    <div class="compare-stats">
+                                        <p>Playlist Videos<br><span>Views</span> <br>over puplication time</p>
+                        
+                                    </div>
+                                    <div id="views-chart"></div>
+
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="chart-compare ">
+                                <div class="compare-el">
+                                    <div class="compare-stats">
+                                        <p>Playlist Videos<br><span>Likes</span> <br>over puplication time</p>
+                        
+                                    </div>
+                                    <div id="likes-chart"></div>
+
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="chart-compare ">
+                                <div class="compare-el">
+                                    <div class="compare-stats">
+                                        <p>Playlist Videos<br><span>Comments</span> <br>over puplication time</p>
+                        
+                                    </div>
+                                    <div id="comment-chart"></div>
+
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                    
+                    <div class="owl-carousel">
+                        <div class="item">
+                            <div class="chart-compare ">
+                                <div class="compare-el">
+                                    <div class="compare-stats">
+                                        <p>How does <br><span>Duration</span> <br> affect the Videos <span>Views</span>?</p>
+                        
+                                    </div>
+                                    <div id="views-chart-dur"></div>
+
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="chart-compare ">
+                                <div class="compare-el">
+                                    <div class="compare-stats">
+                                        <p>How does <br><span>Duration</span> <br> affect the Videos <span>Likes</span>?</p>
+                        
+                                    </div>
+                                    <div id="likes-chart-dur"></div>
+
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="chart-compare ">
+                                <div class="compare-el">
+                                    <div class="compare-stats">
+                                        <p>How does <br><span>Duration</span> <br> affect the Videos <span>Comments</span>?</p>
+                        
+                                    </div>
+                                    <div id="comment-chart-dur"></div>
+
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="top-videos" data-aos="fade-up">
+            <h1 data-aos="fade-up">Look closer</h1>
+            <p data-aos="fade-up">observe the top and worst performing videos on the playlist to have a closer look on the people opinions and engagement with the content</p>
+            <div class="videos" >
+                <div class="mini-container"  data-aos="fade-up">
+                    <h1 data-aos="fade-up" style="margin-bottom: 4rem;">Top performing videos</h1>
+                    {% for video in top_5_videos%}
+                        <div class="video" data-aos="fade-up">
+                            <div class="video-header" >
+                                <img src="{{video.thumbnail}}" alt="">
+                                <h3>{{video.title}}</h3>
+                                <div class="video-stats">
+                                    <div class="video-stat">
+                                        <p>{{video.viewsCount}}</p>
+                                        <p>views</p>
+                                    </div>
+                                    <div class="video-stat">
+                                        <p>{{video.duration}}</p>
+                                        <p>minutes</p>
+                                    </div>
+                                    <div class="video-stat">
+                                        <p>{{video.publishedAt}}</p>
+                                        <p>publishedAt</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    
+                    <div class="emotions_radchart" style="margin-bottom: 5rem; margin-top: 5rem;">
+                        <h1 data-aos="fade-up">Commetns emotions distribution</h1>
+                    <p data-aos="fade-up">Get a deeper understanding of why the viewers likes this content through comments sentiment analysis</p>
+                    <div id="emotions_radchart" data-aos="fade-up"></div>
+                    </div>
+                    
+                  
+                    <div class="emotions-examples">
+                        <h1 data-aos="fade-up">Look into the top emotions</h1>
+                        <p data-aos="fade-up">the top comments from the top emotions</p>
+                        <div class="examples">
+                            {% for emotion, comment in top_5_comments.items %}
+                            <div class="example" data-aos="fade-up">
+                                <div class="emotion"><h3>{{ emotion }}</h3></div>
+                                <div class="ex">
+                                    <p class="truncated">{{ comment|truncatechars:150 }}</p>
+                                    <p class="full-comment">{{ comment }}</p>
+                                </div>
+                            </div>
+                            {%endfor%}
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                
+            </div>
+
+            <div class="videos" >
+                <div class="mini-container"  data-aos="fade-up">
+                    <h1 data-aos="fade-up" style="margin-bottom: 4rem;">Worst performing videos</h1>
+                    {% for video in worst_5_videos%}
+                        <div class="video" data-aos="fade-up">
+                            <div class="video-header" >
+                                <img src="{{video.thumbnail}}" alt="">
+                                <h3>{{video.title}}</h3>
+                                <div class="video-stats">
+                                    <div class="video-stat">
+                                        <p>{{video.viewsCount}}</p>
+                                        <p>views</p>
+                                    </div>
+                                    <div class="video-stat">
+                                        <p>{{video.duration}}</p>
+                                        <p>minutes</p>
+                                    </div>
+                                    <div class="video-stat">
+                                        <p>{{video.publishedAt}}</p>
+                                        <p>publishedAt</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    
+                    <div class="emotions_radchart" style="margin-bottom: 5rem; margin-top: 5rem;">
+                        <h1 data-aos="fade-up">Commetns emotions distribution</h1>
+                    <p data-aos="fade-up">Get a deeper understanding of why the viewers likes this content through comments sentiment analysis</p>
+                    <div id="emotions_radchart_worst" data-aos="fade-up"></div>
+                    </div>
+                    
+                  
+                    <div class="emotions-examples">
+                        <h1 data-aos="fade-up">Look into the top emotions</h1>
+                        <p data-aos="fade-up">the top comments from the top emotions</p>
+                        <div class="examples">
+                            {% for emotion, comment in worst_5_comments.items %}
+                            <div class="example" data-aos="fade-up">
+                                <div class="emotion"><h3>{{ emotion }}</h3></div>
+                                <div class="ex">
+                                    <p class="truncated">{{ comment|truncatechars:150 }}</p>
+                                    <p class="full-comment">{{ comment }}</p>
+                                </div>
+                            </div>
+                            {%endfor%}
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                
+            </div>
+            
+        </div>
+
+       
+
+
+        
+
+        <div id="popup1" class="overlay">
+            <div class="popup">
+                <h2>Are you sure you want to quit the analysis?</h2>
+                <div class="text">
+                    if you did you will not be able to access its content anymore...
+                    <div class="popup-buttons">
+                        <a href="{% url 'base' %}"><button class="yes">Yes I'm sure</button></a>
+                    <a href="#"><button>Go back</button></a>
+                    </div>   
+                </div>
+                
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+   
+</div>
+
+
+<script type="text/javascript">
+    const csrftoken = '{{ csrf_token }}';
+</script>
+
+
+<script>
+    function deepCopy(obj, visited = new WeakMap()) {
+        if (obj === null || typeof obj !== 'object') {
+            return obj;
+        }
+        if (visited.has(obj)) {
+            return visited.get(obj);
+        }
+        let copy;
+        if (Array.isArray(obj)) {
+            copy = [];
+            visited.set(obj, copy);
+            obj.forEach((item, index) => {
+                copy[index] = deepCopy(item, visited);
+            });
+            return copy;
+        }
+        if (obj instanceof Object) {
+            copy = {};
+            visited.set(obj, copy);
+            Object.keys(obj).forEach(key => {
+                // Skip properties that cause circular references
+                if (key !== 'ctx') {
+                    copy[key] = deepCopy(obj[key], visited);
+                }
+            });
+            return copy;
+        }
+        throw new Error('Unable to copy object!');
+    }
+</script>
+
+<script>
+    function downloadPDF() {
+        var container = document.querySelector('.stats-graphs-container');
+
+    html2canvas(container, { scale: 2 }).then(function(canvas) {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jspdf.jsPDF({
+            orientation: 'landscape', // Change according to the layout of your content
+            unit: 'pt',
+            format: [canvas.width, canvas.height]
+        });
+        pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+        pdf.save("stats-graphs-report.pdf");
+    });
+    }
+</script>
+
+<script>
+   
+    document.addEventListener('DOMContentLoaded', function() {
+        var videoContainers = document.querySelectorAll('.video-container');
+    
+        // Function to remove expanded class from all video containers
+        function resetContainers() {
+            videoContainers.forEach(function(container) {
+                container.classList.remove('expanded');
+                container.style.boxShadow = '';
+                container.style.display = ''; // Show all containers
+            });
+        }
+    
+        // Add or remove expanded class on hover
+        videoContainers.forEach(function(container) {
+            container.addEventListener('mouseenter', function() {
+                container.classList.add('expanded');
+                // Hide other containers
+                videoContainers.forEach(function(otherContainer) {
+                    if (otherContainer !== container) {
+                        otherContainer.style.display = 'none';
+                    }
+                });
+            });
+            container.addEventListener('mouseleave', function() {
+                if (!container.classList.contains('clicked')) {
+                    container.classList.remove('expanded');
+                    container.style.boxShadow = '0 0 30px 10px #6b4e8f76'; // Change box shadow
+                    resetContainers();
+                }
+            });
+        });
+    
+        // Remove expanded class and reset on click outside
+        document.addEventListener('click', function(event) {
+            var isClickInsideContainer = Array.from(videoContainers).some(function(container) {
+                return container.contains(event.target);
+            });
+    
+            if (!isClickInsideContainer) {
+                resetContainers();
+            } else {
+                videoContainers.forEach(function(container) {
+                    if (container.contains(event.target)) {
+                        container.classList.add('clicked');
+                    } else {
+                        container.classList.remove('clicked');
+                    }
+                });
+            }
+        });
+    });
+    
+        
+</script>
+<script>
+    document.getElementById('download-dataset-button').addEventListener('click', function() {
+        window.location.href = "{% url 'playlist_dataset_zipped_output' %}";
+    });
+</script>
+<script id="json-data" type="application/json">{{ json_data|safe }}</script>
+
+<script>
+
+    var jsonData = JSON.parse(document.getElementById('json-data').textContent);
+
+    var videos_publishedAt = jsonData.videos_publishedAt
+    var videos_duration = jsonData.videos_duration
+
+
+    var videos_likes = jsonData.videos_likes.reverse()
+    var videos_views = jsonData.videos_views.reverse()
+    var videos_commentCount = jsonData.videos_commentCount.reverse()
+
+    var seriesData = videos_publishedAt.map(function(date, index) {
+        return {
+            x: new Date(date).getTime(), // Convert to timestamp
+            y: videos_views[index]
+        };
+    });
+
+    var seriesDataLikes = videos_publishedAt.map(function(date, index) {
+        return {
+            x: new Date(date).getTime(), // Convert to timestamp
+            y: videos_likes[index]
+        };
+    });
+
+
+    var seriesDataComments = videos_publishedAt.map(function(date, index) {
+        return {
+            x: new Date(date).getTime(), // Convert to timestamp
+            y: videos_commentCount[index]
+        };
+    });
+
+    var seriesDataDur = videos_duration.map(function(time, index) {
+        return {
+            x: time, // Convert to timestamp
+            y: videos_views[index]
+        };
+    });
+
+    var seriesDataLikesDur = videos_duration.map(function(time, index) {
+        return {
+            x: time, // Convert to timestamp
+            y: videos_likes[index]
+        };
+    });
+
+
+    var seriesDataCommentsDur = videos_duration.map(function(time, index) {
+        return {
+            x: time, // Convert to timestamp
+            y: videos_commentCount[index]
+        };
+    });
+
+
+
+    console.log(videos_publishedAt)
+    console.log(videos_views)
+    var options1 = {
+        chart: {
+            id: "chart2",
+            type: "area",
+            height: 300,
+            width: 500,
+            foreColor: "#ccc",
+            toolbar: {
+                show: true, // Show the toolbar
+                tools: {
+                    download: true, // Enable the download tool
+                    selection: false,
+                zoom: false,
+                zoomin: false,
+                zoomout: false,
+                pan: false,
+                reset: false
+                }        },
+        },
+       
+        colors: ["#00BAEC"],
+        stroke: {
+            width: 3,
+            curve: 'smooth'
+        },
+        grid: {
+            borderColor: "#555",
+            clipMarkers: false,
+            yaxis: {
+            lines: {
+                show: false
+            }
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        fill: {
+            gradient: {
+            enabled: true,
+            opacityFrom: 0.9,
+            opacityTo: 0.3
+            }
+        },
+        
+        series: [
+            {
+                name: "views",
+            data: seriesData
+            }
+        ],
+        tooltip: {
+            theme: "dark",
+            x: {
+                format: "dd MMM yyyy" // Format: 01 Jan 2023
+            }
+        },
+        xaxis: {
+            type: "datetime",
+            labels: {
+                formatter: function(value, timestamp) {
+                    return new Date(timestamp).getFullYear();
+                }}
+        },
+        
+        yaxis: {
+            min: 0,
+            tickAmount: 4
+        },
+        grid: {
+            show: true
+        }
+        };
+
+        var chart1 = new ApexCharts(document.querySelector("#views-chart"), options1);
+
+        const options2 = options1
+        options2.series = [{name: "likes", data: seriesDataLikes}]
+        var chart2 = new ApexCharts(document.querySelector("#likes-chart"), options2);
+
+        const options3 = options1
+        options3.series = [{name: "comment count", data: seriesDataComments}]
+        var chart3 = new ApexCharts(document.querySelector("#comment-chart"), options3);
+
+        chart1.render();
+
+        var chart1Options = chart1.w.config;
+
+        var views_chart = deepCopy(chart1Options);
+        views_chart.chart.foreColor = '#000'; // Set text color to black
+        views_chart.chart.background = '#FFF'; // Set background to white for contrast
+        views_chart.chart.height = 300; // Set text color to black
+        views_chart.chart.width = 300; // Set background to white for contrast
+        views_chart.title.text = "Published At against views";
+        views_chart.legend.show = true
+        views_chart.fill = {}
+
+        chart2.render();
+
+        var chart2Options = chart2.w.config;
+
+        var likes_chart = deepCopy(chart2Options);
+        likes_chart.chart.foreColor = '#000'; // Set text color to black
+        likes_chart.chart.background = '#FFF'; // Set background to white for contrast
+        likes_chart.chart.height = 300; // Set text color to black
+        likes_chart.chart.width = 300; // Set background to white for contrast
+        likes_chart.title.text = "Published At against likes";
+        likes_chart.legend.show = true
+        likes_chart.fill = {}
+
+        chart3.render();
+
+        var chart3Options = chart3.w.config;
+
+        var comments_chart = deepCopy(chart3Options);
+        comments_chart.chart.foreColor = '#000'; // Set text color to black
+        comments_chart.chart.background = '#FFF'; // Set background to white for contrast
+        comments_chart.chart.height = 300; // Set text color to black
+        comments_chart.chart.width = 300; // Set background to white for contrast
+        comments_chart.title.text = "Published At against comments count";
+        comments_chart.legend.show = true
+        comments_chart.fill = {}
+
+        var options4 = {
+            chart: {
+                id: "chart2",
+                type: "bar",
+                height: 300,
+                width: 500,
+                foreColor: "#ccc",
+                toolbar: {
+                    show: true, // Show the toolbar
+                    tools: {
+                        download: true, // Enable the download tool
+                        selection: false,
+                    zoom: false,
+                    zoomin: false,
+                    zoomout: false,
+                    pan: false,
+                    reset: false
+                    }        },
+            },
+
+            plotOptions: {
+                bar: {
+                    columnWidth: '50%',
+                    borderRadius: [4, 4, 0, 0],
+                    // other bar options
+                }
+            },
+           
+            colors: ["#00BAEC"],
+            stroke: {
+                curve: 'smooth'
+            },
+            grid: {
+                borderColor: "#555",
+                clipMarkers: false,
+                yaxis: {
+                lines: {
+                    show: false
+                }
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            fill: {
+                gradient: {
+                enabled: true,
+                opacityFrom: 0.9,
+                opacityTo: 0.3
+                }
+            },
+            
+            series: [
+                {
+                    name: "views",
+                data: seriesDataDur
+                }
+            ],
+            tooltip: {
+                theme: "dark",
+            
+            },
+            xaxis: {            
+            },
+            
+            yaxis: {
+                min: 0,
+                tickAmount: 4
+            },
+            grid: {
+                show: true
+            }
+            };
+
+        options4.series = [{name: "views", data: seriesDataDur}]
+        var chart4 = new ApexCharts(document.querySelector("#views-chart-dur"), options4);
+
+        const options5 = options4
+        options5.series = [{name: "likes", data: seriesDataLikesDur}]
+        var chart5 = new ApexCharts(document.querySelector("#likes-chart-dur"), options5);
+
+        const options6 = options4
+        options6.series = [{name: "comment count", data: seriesDataCommentsDur}]
+        var chart6 = new ApexCharts(document.querySelector("#comment-chart-dur"), options6);
+
+        chart4.render();
+
+        var chart4Options = chart4.w.config;
+
+        var views_chart_dur = deepCopy(chart4Options);
+        views_chart_dur.chart.foreColor = '#000'; // Set text color to black
+        views_chart_dur.chart.background = '#FFF'; // Set background to white for contrast
+        views_chart_dur.chart.height = 300; // Set text color to black
+        views_chart_dur.chart.width = 300; // Set background to white for contrast
+        views_chart_dur.title.text = "Duration against views count";
+        views_chart_dur.legend.show = true
+        views_chart_dur.fill = {}
+
+        chart5.render();
+
+        var chart5Options = chart5.w.config;
+
+        var likes_chart_dur = deepCopy(chart5Options);
+        likes_chart_dur.chart.foreColor = '#000'; // Set text color to black
+        likes_chart_dur.chart.background = '#FFF'; // Set background to white for contrast
+        likes_chart_dur.chart.height = 300; // Set text color to black
+        likes_chart_dur.chart.width = 300; // Set background to white for contrast
+        likes_chart_dur.title.text = "Duration against likes count";
+        likes_chart_dur.legend.show = true
+        likes_chart_dur.fill = {}
+
+
+        chart6.render();
+
+        var chart6Options = chart6.w.config;
+
+        var comments_chart_dur = deepCopy(chart6Options);
+        comments_chart_dur.chart.foreColor = '#000'; // Set text color to black
+        comments_chart_dur.chart.background = '#FFF'; // Set background to white for contrast
+        comments_chart_dur.chart.height = 300; // Set text color to black
+        comments_chart_dur.chart.width = 300; // Set background to white for contrast
+        comments_chart_dur.title.text = "Duration against comments count";
+        comments_chart_dur.legend.show = true
+        comments_chart_dur.fill = {}
+    
+    
+        setTimeout(() => {
+            chart1.updateOptions({
+            });
+            chart2.updateOptions({
+            });
+            chart3.updateOptions({
+            });
+            chart4.updateOptions({
+            });
+            chart5.updateOptions({
+            });
+            chart6.updateOptions({
+            });
+        }, 1000); // Adjust the timeout duration as needed
+    
+</script>
+
+<script>
+    // Define a function to draw a word cloud
+    var myColors = ['#D5A9FF', '#7EF7D9', '#12CEE6', '#4686FF', '#FFFFFF', /* more colors */ ];
+
+    function drawWordCloud(selector, words) {
+        // Create a function to generate random sizes for the words
+        var getRandomSize = function() {
+            return 10 + Math.random() * 30; // Random size between 10 and 50
+        };
+    
+        // Set up the word cloud layout
+        var layout = d3.layout.cloud()
+            .size([800, 300]) // The size of the word cloud
+            .words(words.map(function(d) {
+                return {text: d, size: getRandomSize()}; // Assign random size to each word
+            }))
+            .padding(2) // Adjust padding between words
+            .rotate(0) // Set rotation, if desired
+            .font("Raleway")
+            .fontSize(function(d) { return d.size; }) // Use the assigned size
+            .on("end", draw);
+    
+        layout.start();
+    
+        // Draw the word cloud
+        function draw(words) {
+            var svg = d3.select(selector).append("svg")
+                .attr("width", layout.size()[0])
+                .attr("height", layout.size()[1])
+                .append("g")
+                .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")");
+    
+            svg.selectAll("text")
+                .data(words)
+                .enter().append("text")
+                .style("font-size", function(d) { return d.size + "px"; }) // Font size is set by the layout
+                .style("font-family", "Raleway")
+                .style("font-weight", "bold") // Set the font family
+                .style("fill", function(d, i) { return myColors[i % myColors.length]; }) // Set the color
+                .attr("text-anchor", "middle")
+                .attr("transform", function(d) {
+                    return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                })
+                .text(function(d) { return d.text; });
+        }
+    }
+    
+
+// Define your array of words for each channel
+//var channelsTags = jsonData.topTags
+var channelsTags = jsonData.uniqueTags
+drawWordCloud("#wordcloud0" , channelsTags);
+
+</script>
+
+<script>
+    // Assuming jsonData.top_5_comments_analysis_dist is already defined as shown above
+    var emotionData = jsonData.top_5_comments_analysis_dist;
+
+   
+    const emotionDatasliced = Object.fromEntries(
+  Object.entries(emotionData).slice(0, 10)
+);
+
+    var emotions = Object.keys(emotionDatasliced);
+    var emotionValues = Object.values(emotionDatasliced).map(value => Math.round(value * 100));  // Convert to percentages
+
+    var emotionDataWorst = jsonData.worst_5_comments_analysis_dist;
+
+   
+    const emotionDataslicedWorst = Object.fromEntries(
+  Object.entries(emotionData).slice(0, 10)
+);
+
+    var emotionsWorst = Object.keys(emotionDataslicedWorst);
+    var emotionValuesWorst = Object.values(emotionDataslicedWorst).map(value => Math.round(value * 100));  // Convert to percentages
+
+    var options = {
+        chart: {
+            type: 'bar',
+            height: 500,
+            width: '100%',
+            foreColor: '#fff',        
+            // white text for the dark theme,
+            background: 'transparent'
+
+        },
+        plotOptions: {
+            bar: {
+                horizontal: true,
+                distributed: true, 
+                columnWidth: '50%', 
+                endingShape: 'rounded' ,
+                dataLabels: {
+                    position: 'top' // Ensuring data labels appear on top of the bars
+                }
+            }
+        },
+        
+        theme: {
+            mode: 'dark',
+            palette: 'palette1'
+        },
+        dataLabels: {
+            enabled: false
+        },
+        series: [{
+            name: 'Emotion Percentage',
+            data: emotionValues
+        }],
+        xaxis: {
+            categories: emotions,
+            
+        },
+        grid: {
+            show: false
+        },
+        legend: {
+            show: false
+        },
+        fill: {
+            type: 'gradient',
+            gradient: {
+                shade: 'light',
+                type: "vertical",
+                shadeIntensity: 0.5,
+                gradientToColors: undefined, 
+                inverseColors: true,
+                opacityFrom: 0.85,
+                opacityTo: 0.85,
+                stops: [0, 100]
+            }
+        },
+        stroke: {
+        lineCap: 'round' // This gives a slight radius effect on the chart
+    }
+    };
+
+    var emotions_chart = new ApexCharts(document.querySelector("#emotions_radchart"), options);
+    emotions_chart.render();
+
+    var chart9Options = emotions_chart.w.config;
+
+    var emotions_chartOpt = deepCopy(chart9Options);
+    emotions_chartOpt.chart.foreColor = '#000'; // Set text color to black
+    emotions_chartOpt.chart.background = '#FFF'; // Set background to white for contrast
+    emotions_chartOpt.chart.height = 300; // Set text color to black
+    emotions_chartOpt.chart.width = 300; // Set background to white for contrast
+    emotions_chartOpt.title.text = "Top videos Comments Sentiment";
+    emotions_chartOpt.legend.show = true
+    emotions_chartOpt.fill = {}
+
+    var options_worst = options
+    options_worst['series'] = [{
+        name: 'Emotion Percentage',
+        data: emotionValuesWorst
+    }],
+
+    options_worst['xaxis'] = {
+        categories: emotionsWorst
+    }
+
+    var emotions_chart_worst = new ApexCharts(document.querySelector("#emotions_radchart_worst"), options_worst);
+    emotions_chart_worst.render();
+
+    var chart10Options = emotions_chart_worst.w.config;
+
+    var emotions_chart_worstOpt = deepCopy(chart10Options);
+    emotions_chart_worstOpt.chart.foreColor = '#000'; // Set text color to black
+    emotions_chart_worstOpt.chart.background = '#FFF'; // Set background to white for contrast
+    emotions_chart_worstOpt.chart.height = 300; // Set text color to black
+    emotions_chart_worstOpt.chart.width = 300; // Set background to white for contrast
+    emotions_chart_worstOpt.title.text = "Worst videos Comments Sentiment";
+    emotions_chart_worstOpt.legend.show = true
+    emotions_chart_worstOpt.fill = {}
+
+</script>
+
+<script>
+    function animateNumber(element, start, end, duration) {
+        let startTime = null;
+    
+        function animation(currentTime) {
+            if (startTime === null) startTime = currentTime;
+            const timeElapsed = currentTime - startTime;
+            const progress = Math.min((timeElapsed / duration), 1); // Ensure progress doesn't exceed 1
+    
+            element.textContent = Math.floor(progress * (end - start) + start);
+    
+            if (timeElapsed < duration) {
+                requestAnimationFrame(animation);
+            }
+        }
+    
+        requestAnimationFrame(animation);
+    }
+    
+    const numberElements = document.querySelectorAll('.number');
+    
+    numberElements.forEach(numberElement => {
+        const targetValue = parseInt(numberElement.getAttribute('data-target'), 10);
+        animateNumber(numberElement, 0, targetValue, 4000); // 2000ms = 2 seconds for animation
+    });
+    
+</script>
+
+
+<script>$(document).ready(function(){
+    $(".owl-carousel").owlCarousel({
+        // Owl Carousel options
+        items: 1,
+        center: true,
+        loop: true,
+        autoplay: true,
+        autoplayTimeout: 3000,
+        autoplayHoverPause: true,
+        nav: true
+        // other options as needed
+    });
+});
+</script>
+
+    <script>
+        AOS.init({
+          duration: 1200, // You can adjust this value for animation duration
+        });
+      </script>
+
+      <script>
+        // Function to handle the rendering and conversion of a single chart to a data URI
+    // Function to handle the rendering and conversion of a single chart to a data URI
+    function convertChartToDataURI(chartOptions, callback) {
+        console.log('hi');
+        let exportContainer = document.createElement('div');
+        exportContainer.style.position = 'absolute';
+        exportContainer.style.left = '-9999px';
+        exportContainer.style.top = '-9999px';
+        document.body.appendChild(exportContainer);
+    
+        let modifiedChartOptions = {
+            ...chartOptions,
+            chart: {
+                ...chartOptions.chart,
+                events: {
+                    rendered: function(chartContext, config) {
+                        console.log('rendered');
+                    }
+                }
+            }
+        };
+    
+        let exportChart = new ApexCharts(exportContainer, modifiedChartOptions);
+        exportChart.render();
+    
+        // Manually trigger the rendered event for testing
+        setTimeout(() => {
+            exportChart.dataURI().then(({ imgURI }) => {
+                console.log('Manual trigger');
+                exportChart.destroy();
+                document.body.removeChild(exportContainer);
+                callback(null, imgURI);
+            });
+        }, 1000); // Adjust this delay as needed
+    }
+    
+    
+    
+    // Function to process all charts and send them to the server
+    function processAndSendCharts(chartsOptions) {
+        let chartImagesPromises = chartsOptions.map((options) => {
+            return new Promise((resolve, reject) => {
+                convertChartToDataURI(options, (error, imgURI) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(imgURI);
+                    }
+                });
+            });
+        });
+    
+        Promise.all(chartImagesPromises).then((imagesURI) => {
+            // Now you have all the images URI, send them to the server
+            fetch('/doc_playlist/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
+                },
+                body: JSON.stringify({ imgData: imagesURI })
+            }).then(response => response.json())
+            .then(data => {
+                console.log(data); // Handle any response from the server
+            }).catch(error => {
+                console.error('Error sending charts to the server:', error);
+            });
+        }).catch(error => {
+            console.error('Error converting charts to images:', error);
+        });
+    }
+    
+    // Assuming you have an array of chart options for each chart
+    let chartsOptions = [views_chart, likes_chart, comments_chart, views_chart_dur, likes_chart_dur, comments_chart_dur, emotions_chartOpt, emotions_chart_worstOpt];
+    
+    // Process and send all charts
+    processAndSendCharts(chartsOptions);
+    
+    </script>
+  </body>
+</html>

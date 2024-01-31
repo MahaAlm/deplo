@@ -1,0 +1,754 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;400;500;600;700;800;900&display=swap');
+
+
+
+a {
+    text-decoration: none;
+}
+html {
+    scroll-behavior: smooth;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(-45deg, #0B0B25, #250D44, #0A2240);
+    background-repeat: no-repeat; /* Prevent gradient from repeating */
+    background-attachment: fixed;
+    font-family: 'Raleway', sans-serif;
+    color: white;
+    
+}
+
+body {
+    min-height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-image: url("images/Frame 2.png");
+    background-repeat: no-repeat; /* Prevent gradient from repeating */
+    background-attachment: fixed;
+    display: flex;
+    flex-direction: column; /* Change this */
+    min-height: 100vh; 
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+}
+.polygon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+/* Base styles - Desktop first */
+.content  {
+    width: 70%;
+    margin-top: -30px; /* Adjust the margin-top value to center the content vertically */
+    margin-bottom: 2%; /* Adjust the margin-bottom value for desired spacing */
+    min-height: 1300px; /* Adjust the height value to fit the content properly */
+    width: 70%; /* Adjust the width value for desired width on the page */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+.part1Content{
+	display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+	text-align: center;
+    flex: 1;
+	width: 100%;
+    height: 100vh;
+    margin: 25% 0;
+    margin-bottom: 10%;
+
+
+
+}
+
+.part1Content h1 {
+  font-size: 5rem;
+	justify-content: right;
+	font-size: 70px;
+	margin-bottom: 10px;
+}
+
+.part1Content h3 {
+
+	font-size: 20px;
+	display: inline-block;
+	margin-top: 5px;
+
+}
+
+
+.buttonWelcomPage {
+  padding: 15px 50px;
+  font-size: 2rem;
+	display: block;
+	padding: 15px 50px;
+	font-size: 18px;
+	background-color:  #16b3bed3 ;
+	color: white;
+	border: none;
+	border-radius: 30px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	transition: all 0.3s ease-in-out;
+	font-family: 'Raleway', sans-serif;
+    font-weight: 700;
+    box-shadow: 0  0 5px #1ddfedd3;
+	
+  }
+  
+  .buttonWelcomPage:hover {
+	background-color: #1ddfedd3;
+	transform: translateY(-8%);
+	
+  }
+
+a {
+    text-decoration: none;
+    color: white;
+    margin-left: auto;    
+} 
+
+
+.part2Content {
+	display: flex;
+    flex-direction: column;
+	justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+	
+  }
+
+  .part2Content h3 {
+    font-size: 3rem;
+    margin-bottom: 5rem;
+    text-align: center;
+  }
+
+  .features {
+    display: flex;
+    flex-direction: row;
+    height: 15rem;
+    border-radius: 2rem;
+    background: linear-gradient(#0a224000, #8a25bda9);
+  }
+  
+  .mainFeatures {
+  margin: 30px;
+	width: 200px;
+	height: 200px;
+	transition: transform 0.3s ease;
+	margin: 30px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+  }
+
+  .mainFeatures i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+  }
+
+  
+  .mainFeatures:hover {
+	transform: scale(1.1);
+  }
+
+
+  .part3Content{
+	padding: 100px 100px;
+	border: #0B0B25 ;
+	width: 100%;
+    height: 100vh;
+    text-align: center;
+
+
+  }
+
+  .part3Content h3 {
+    font-size: 2rem;
+    margin-bottom: 5rem;
+
+  }
+
+  .part3Content h3 span {
+    position: relative;
+  }
+
+  .part3Content h3 span::after {
+
+    content: "";
+    position: absolute;
+    top: 20px;  /* Start right after the bottom edge of the link */
+    height: 40px; /* Control the extent of the bottom glow */
+    width: 150%;
+    left: 50%;  /* Position the left edge at the center */
+    transform: translateX(-50%); /* Pull it back to truly center it */
+    background: radial-gradient(ellipse at center, #de38ff, #a4178ca7 30%, transparent 60%);
+    opacity: 1; /* Hide it initially */
+    z-index: -1;
+}
+
+
+
+  .part3Content img {
+    height: 50%;
+  }
+
+
+  footer {
+    height: 15vh;
+    background: linear-gradient(rgba(73, 79, 143, 0.753), rgba(78, 47, 112, 0.358));
+    color: white;
+    position: unset;
+    width: 100%;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+  }
+
+  .part4Content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+  }
+
+  .part4Content .text {
+    width: 130%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .part4Content .text h3 {
+    font-size: 2.5rem;
+    width: 30%;
+    text-align: left;
+    margin: 0;
+
+  }
+
+.part4Content .text p {
+    width: 30%;
+    text-align: right;
+    font-size: 1.2rem;
+    font-weight: 500;
+
+}
+
+.part4Content .charts {
+    display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+
+}
+
+.part4Content .charts .chart {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.area {
+  width: 50%;
+}
+
+
+  
+.part4Content .charts p {
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin-left: 1.8rem;
+    
+}
+
+
+.barchart {
+    width: 100%;
+}
+.part5Content {
+  height: 150vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.part5Content h2 {
+  margin: 1.8%;
+  font-size: 3rem;
+}
+
+.part5Content h3 {
+  margin: 0%;
+  font-size: 1.8rem;
+  position: relative;
+
+}
+
+
+.part5Content h3::after {
+
+  content: "";
+  position: absolute;
+  top: 10px;  /* Start right after the bottom edge of the link */
+  height: 40px; /* Control the extent of the bottom glow */
+  width: 80%;
+  left: 50%;  /* Position the left edge at the center */
+  transform: translateX(-50%); /* Pull it back to truly center it */
+  background: radial-gradient(ellipse at center, #38d7ff, #17a4a2a7 30%, transparent 60%);
+  opacity: 1; /* Hide it initially */
+  z-index: -1;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  margin: 0%;
+}
+
+/* Individual cards styling */
+.card {
+  width: 250px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  background: linear-gradient(#0a224000, #8a25bda9);
+  opacity: 30%;
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.card-icon {
+  background-color:  #16b3bed3 ;
+  padding: 15px;
+  border-radius: 50%;
+  font-size: 24px;
+  color: #fff;
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.card-title {
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.card-description {
+  font-size: 0.8rem;
+  margin-bottom: 1.5rem;
+  font-weight: 400;
+}
+
+.learn-more {
+  color: #9c6ade;
+  font-weight: 600;
+}
+.card:hover {
+transform: scale(1.05);
+background: linear-gradient(#0a224000, #a169bea9);
+transition: all 0.4s ;
+}
+
+.learn-more:hover {
+color: #cab8ee;
+text-decoration: underline;
+transition: color 0.4s ;
+}
+
+.flex-container {
+margin-left:0% ;
+display: flex;
+justify-content: space-evenly;
+flex-wrap: wrap; 
+}
+
+
+
+
+.part6Content {
+  width: 80%;
+    height: 120vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.part6Content h2 {
+    font-size: 3rem;
+    position: relative;
+}
+
+.part6Content h3 {
+  width: 80%;
+    font-size: 1.8rem;
+    position: relative;
+
+}
+
+
+.part6Content h3::after {
+
+    content: "";
+    position: absolute;
+    top: 10px;  /* Start right after the bottom edge of the link */
+    height: 40px; /* Control the extent of the bottom glow */
+    width: 80%;
+    left: 30%;  /* Position the left edge at the center */
+    transform: translateX(-50%); /* Pull it back to truly center it */
+    background: radial-gradient(ellipse at center, #38d7ff, #17a4a2a7 30%, transparent 60%);
+    opacity: 1; /* Hide it initially */
+    z-index: -1;
+}
+
+
+.part6Content button {
+    padding: 25px 80px;
+    border-radius: 50px;
+    border: none;
+    outline: none;
+    background: linear-gradient(#e340c0, #af2c8c);
+    color: white;
+    font-weight: 700;
+    font-size: 1.3rem;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    align-self: flex-start;
+    margin-top: 3rem;
+}
+
+
+.part6Content button::before {
+    content: "";
+    position: absolute;
+    border-radius: 50px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;  /* Put the pseudo-element above the button content */
+    background: linear-gradient(#ff6cd8, #c81ca3);  /* Default gradient */
+    transition: 0.3s;
+    opacity: 0;
+}
+
+.part6Content button:hover::before {
+    opacity: 1;
+    margin-bottom: 3px;
+}
+
+
+.part6Content button:disabled {
+    background: linear-gradient(#b3b3b3b6, #888888);
+    cursor: auto;
+}
+
+.part6Content button:disabled:hover::before  {
+    opacity: 0;
+    margin-bottom: 0;
+}
+
+.part6Content a {
+    z-index: 2;
+}
+
+/* Tablet styles */
+@media screen and (max-width: 899px) {
+
+.part1Content h1 {
+  font-size: 3.8rem;
+}
+
+.part1Content h3 {
+	font-size: 20px;
+}
+.part2Content h3 {
+  font-size: 2.5rem;
+}
+.part3Content h3 {
+  font-size: 2rem;
+}
+.part4Content .text h3 {
+  font-size: 2.3rem;
+  width: 30%;
+}
+
+.part4Content .text p {
+  width: 30%;
+}
+.part4Content .charts p {
+  font-size: 1rem;
+}
+.mainFeatures {
+    width: 150px;
+    height: 150px;
+}
+
+.mainFeatures i {
+    font-size: 3rem;
+}
+.mainFeatures p {
+  font-size: 1.3rem;
+}
+  .content  {
+      width: 80%;
+  }
+
+  .buttonWelcomPage {
+      padding: 15px 40px;
+      font-size: 1.5rem;
+  }
+
+  .mainFeatures {
+      margin: 25px; 
+  }
+  .features {
+    padding: 3%;
+    width: 95%;
+    justify-content: center;
+    align-items: center;
+  }
+  
+
+}
+
+/* Mobile styles */
+@media screen and (max-width: 599px) {
+
+ 
+
+  body {
+    max-width: 100vw;
+  }
+
+  .part1Content h1 {
+    font-size: 2rem;
+  }
+
+  .part1Content .buttonWelcomPage {
+    font-size: 1.2rem;
+    padding: 0.5rem 2rem;
+  }
+
+  .part1Content {
+    min-height: 80vh;
+    margin: 0;
+    padding: 0;
+  }
+
+  
+  .part1Content h3 {
+    font-size: 1rem;
+  }
+
+  .part2Content {
+    margin: 0;
+    width: 80%;
+    
+
+  }
+
+
+  .part2Content h3 {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    padding: 0;
+  }
+
+  .part3Content {
+    padding: 0;
+  }
+  .part3Content h3 {
+    font-size: 1.5rem;
+    width: 80%;
+    margin: 0;
+  }
+
+  .part4Content .text {
+    flex-direction: column;
+  }
+  
+
+  .part3Content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 5vh 0;
+  }
+
+  .part3Content img {
+    max-width: 80%;
+    width: 70%;
+    align-self: center;
+    margin: 0;
+    padding: 0;
+    margin: 10vh;
+  }
+  
+  .part4Content .text p {
+    margin: 0;
+    width: 70%;
+    text-align: center;
+    margin-bottom: 1rem;
+
+  }
+
+  .part4Content .text h3 {
+    margin: 0;
+    width: 70%;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+
+  }
+  .part4Content .charts p {
+    font-size: 1rem;
+  }
+
+  .part6Content h2 {
+    font-size: 1.6rem;
+}
+
+.part6Content h3 {
+    font-size: 1rem;
+}
+.features {
+  flex-direction: row;
+  flex-wrap: wrap; 
+  justify-content: space-between; 
+  padding: 10%;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+}
+
+.features p {
+  margin: 0;
+  text-align: center;
+}
+
+.mainFeatures {
+    width: 100px;
+    height: 80px;
+    margin: 20px 0;
+}
+
+.mainFeatures i {
+    font-size: 1.8rem;
+}
+.mainFeatures p {
+  font-size: 0.7rem;
+}
+  .content  {
+      width: 90%;
+  }
+
+  .buttonWelcomPage {
+      padding: 5px 15px;
+      font-size: 0.9rem;
+  }
+
+  .mainFeatures {
+      margin: 15px; 
+  }
+  .part6Content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    margin: 0;
+    height: auto;
+    margin: 15vh 0;
+}
+
+.part6Content h3::after {
+  opacity: 0;
+  width: 100%;
+}
+
+
+.part6Content h3 {
+  width: 100%;
+  background: linear-gradient(#ffffff, #f0f0f0b2);
+  border-radius: 50px;
+  color: #0A2240;
+  padding: 2rem;
+}
+.part6Content button {
+  font-size: 1rem;
+  padding: 1rem;
+width: 100%;
+}
+
+.part4Content .charts {
+  display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+}
+
+.part4Content .charts .chart {
+width: 100;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+
+
+footer {
+  height: 10vh;
+  background-color: #0A2240;
+}
+
+  
+
+.part4Content .charts p {
+  font-weight: 700;
+  font-size: 1.3rem;
+  margin-left: 0;
+  
+}
+
+}

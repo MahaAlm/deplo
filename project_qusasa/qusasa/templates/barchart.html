@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bar Chart - Channel Views</title>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <style>
+        #channel-views-chart {
+            width: 100%
+        }
+    </style>
+</head>
+<body>
+    <p>Channels views comparasion</p>
+    <div id="channel-views-chart"></div>
+
+    <script>
+        var channels = ['Channel A', 'Channel B', 'Channel C', 'Channel D', 'Channel E'];
+        var views = [45000, 32000, 50000, 27000, 36000];
+        
+        var options = {
+            chart: {
+                type: 'bar',
+                height: 350,
+                width: '100%',
+                foreColor: '#fff',        
+                // white text for the dark theme,
+                background: 'transparent'
+
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    distributed: true, 
+                    columnWidth: '50%', 
+                    endingShape: 'rounded' 
+                }
+            },
+            theme: {
+                mode: 'dark',
+                palette: 'palette1'
+            },
+            dataLabels: {
+                enabled: false
+            },
+            series: [{
+                name: 'Views',
+                data: views
+            }],
+            xaxis: {
+                categories: channels
+            },
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shade: 'dark',
+                    type: "vertical",
+                    shadeIntensity: 0.5,
+                    gradientToColors: undefined, 
+                    inverseColors: true,
+                    opacityFrom: 0.85,
+                    opacityTo: 0.85,
+                    stops: [0, 100]
+                }
+            }
+        };
+        
+        var chart = new ApexCharts(document.querySelector("#channel-views-chart"), options);
+        chart.render();
+        
+    </script>
+</body>
+</html>
+

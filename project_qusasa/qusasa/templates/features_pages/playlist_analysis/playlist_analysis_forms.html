@@ -1,0 +1,244 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qusasa | YouTube Playlist Analysis</title>
+    <!-- Linking CSS -->
+    <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <link rel="stylesheet" href="{% static 'qusasa/css/simple_form.css' %}">
+    <link rel="stylesheet" href="{% static 'qusasa/css/nav.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/cometitive_analysis_form.css' %}">
+    <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
+    <style>
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+            width: 200px;
+        }
+
+        #loading-spinner h2 {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            width: auto;
+        }
+
+
+        #loading-spinner {
+            display: none;
+        }
+
+    </style>
+    
+
+</head>
+<body> 
+    <img class="polygon" src="{% static 'qusasa/images/Frame 2.png'%}" alt="Description of Image" class="full-size-absolute">
+    
+
+
+    <div class="content">
+        <form id="playlist-url-form" action="{% url 'playlist_analysis' %}" method="post">
+            {% csrf_token %}
+            {{ wizard.management_form }}
+            {{ form.media }}
+        
+            <h1>Welcome to Playlist Analysis!</h1>
+            <h3>Have a playlist to explore? Paste the URL below and let’s start analyzing. Insights are just a moment away.</h3>
+            <div class="channel-playlist-con">
+                {% if wizard.form.playlist_url.errors %}
+                            <div class="error-msgs">
+                                    <div class="error"><i class="fas fa-exclamation-circle"></i>
+                                        {{ wizard.form.playlist_url.errors.as_text }}
+                                    </div>
+                            </div>
+                    {% endif %}
+                <p style="font-weight: 600; margin: 0;">Youtube Playlist Link:</p>
+                <br>
+                <div class="channel-playlist-input">
+                    
+                    
+
+                    {{ wizard.form.playlist_url }}
+                </div>
+            </div>
+        
+            <button type="submit" class="btn btn-primary">Next <i class="fa-solid fa-circle-chevron-right"></i></button>
+            <button type="button" class="btn btn-secondary" onclick="history.back()"><i class="fa-solid fa-circle-chevron-left"></i> Back</button>
+        </form>
+        
+            <!-- Add this in your form submission page -->
+            <div id="loading-spinner" class="loading-spinner">
+                <!-- Your spinner or loading message here -->
+                <img src="{% static 'qusasa/images/Qusasa end.png' %}" class="floating" alt="Floating Image">
+                <h2>We are preparing it all for you, please wait...</h2>
+            </div>
+
+
+        
+        
+    </div>
+
+    <script>
+        document.getElementById('playlist-url-form').addEventListener('submit', function() {
+            // Show the loading spinner/message when the form is submitted
+            document.getElementById('loading-spinner').style.display = 'block';
+            document.getElementById('playlist-url-form').style.visibility = 'hidden';
+            document.getElementById('playlist-url-form').style.display = 'none';
+            
+        });
+    </script>
+
+    <script>
+        // Wait for the DOM to load
+        document.addEventListener('DOMContentLoaded', (event) => {
+          // Get all the custom-checkbox divs
+          const checkBoxContainers = document.querySelectorAll('.custom-checkbox');
+          
+          // Add click event listener to each container
+          checkBoxContainers.forEach(container => {
+            container.addEventListener('click', function() {
+              // Get the first input element within this container which should be the checkbox
+              const checkbox = this.querySelector('input[type="checkbox"]');
+              // Toggle the checked state of the checkbox
+              checkbox.checked = !checkbox.checked;
+        
+              // Change background of the .custom-checkbox
+              if (checkbox.checked) {
+                this.style.background = 'linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.984))';
+              } else {
+                this.style.background = 'linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.7))'; // Resets to default
+              }
+        
+              // Manually trigger the change event on the checkbox
+              // This is necessary if other scripts rely on the 'change' event of checkboxes
+              const changeEvent = new Event('change');
+              checkbox.dispatchEvent(changeEvent);
+            });
+        
+            
+          });
+        });
+      </script>
+      
+        
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var channelContainer = document.getElementById('channel-inputs-container');
+            var addButton = document.getElementById('add-channel-btn');
+            var maxInputs = 4;
+            var inputCount = 1;
+        
+            addButton.addEventListener('click', function () {
+                if (inputCount < maxInputs) {
+                    inputCount++;
+                    var newInput = document.createElement('p');
+                    newInput.classList.add('channel-input');
+                    newInput.innerHTML = '<label>Channel URL ' + inputCount + ':</label>' +
+                        '<input type="url" name="3-channel_url_' + inputCount + '" id="id_3-channel_url_' + inputCount + '">' +
+                        '<button type="button" class="remove-channel-btn">-</button>';
+                    channelContainer.appendChild(newInput);
+                    addButton.disabled = inputCount >= maxInputs;
+                }
+            });
+        
+            // Event delegation for remove buttons
+            channelContainer.addEventListener('click', function (e) {
+                if (e.target && e.target.classList.contains('remove-channel-btn')) {
+                    var parent = e.target.parentNode;
+                    channelContainer.removeChild(parent);
+                    inputCount--;
+                    // If we remove an input, we should re-enable the add button if it was disabled.
+                    addButton.disabled = false;
+                    // Update labels of all channel URLs
+                    updateLabels();
+                }
+            });
+        
+            function updateLabels() {
+                var allInputs = channelContainer.querySelectorAll('.channel-input');
+        allInputs.forEach((input, index) => {
+            var label = input.querySelector('label');
+            var inputField = input.querySelector('input');
+            label.textContent = 'Channel URL ' + (index + 2) + ':';
+            inputField.name = '3-channel_url_' + (index + 2);
+            inputField.id = 'id_3-channel_url_' + (index + 2);
+        });
+            }
+        });
+        
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#id_3-category').select2();
+            $('#id_3-order').select2();
+            $('#id_3-region_code').select2();
+            $('#id_3-language').select2();
+        });
+
+        $(document).ready(function() {
+            $('#filter-toggle').click(function() {
+                $('.filter-fields').slideToggle();
+            });
+        });
+        
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var currentStep = "{{ wizard.steps.current }}";
+            var choiceBoxes = document.querySelectorAll('.choice-box');
+            //var submitButton = document.querySelector('.btn-primary');
+            
+             // Disable the button on initial load
+          //submitButton.disabled = true;
+          //submitButton.style.background = 'grey';
+          //submitButton.style.cursor = 'default';
+          
+            choiceBoxes.forEach(function(box) {
+                box.addEventListener('click', function() {
+                    // Remove 'selected' class from all boxes
+                    choiceBoxes.forEach(function(box) { box.classList.remove('selected'); });
+                    // Add 'selected' class to clicked box
+                    this.classList.add('selected');
+    
+                    // Update the hidden input value based on the step
+                    if(currentStep === '0') {
+                        console.log(currentStep)
+                        
+                        document.getElementById('id_0-analysis_type').value = this.dataset.value;
+                    } else if (currentStep === '2') {
+                        console.log(currentStep)
+                        document.getElementById('id_2-choice').value = this.dataset.value;
+                    }
+                    // Enable the submit button when a box is selected
+                    //submitButton.disabled = false;
+                    //submitButton.style.background = 'linear-gradient(#379eac, #06a4b9)';
+                    //submitButton.style.cursor = 'pointer';
+                });
+            });
+        });
+    </script>
+    
+    
+        
+</body>
+</html>

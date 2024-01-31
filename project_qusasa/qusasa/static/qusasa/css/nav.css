@@ -1,0 +1,171 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;400;500;600;700;800;900&display=swap');
+
+.navigation {
+    box-sizing: border-box;
+    position: absolute;  /* or you can use 'fixed' if you want it to stay on top even when scrolling */
+    top: 0;              /* Aligns the navbar to the top of its containing element or viewport */
+    left: 0;             /* Aligns the navbar to the left of its containing element or viewport */
+    width: 100%;         /* Ensures the navbar stretches the full width of its parent or viewport */
+    padding: 15px 30px;        /* Optional padding */
+    z-index: 1000;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; 
+    align-items: center;
+    max-width: 100%;
+    margin: 0;
+}
+.navs a {
+    text-decoration: none;  /* Removes the default underline */
+    display: inline-block;
+    transition: all 0.3s ease-in-out; /* Smoothens the hover effect */
+    position: relative;
+    z-index: 1;
+    overflow: visible; 
+    cursor: pointer;
+}
+
+.navs {
+
+}
+.navigation .navs a::after {
+    content: "";
+    position: absolute;
+    top: 0;  /* Start right after the bottom edge of the link */
+    height: 40px; /* Control the extent of the bottom glow */
+    width: 180%;
+    left: 50%;  /* Position the left edge at the center */
+    transform: translateX(-50%); /* Pull it back to truly center it */
+    background: radial-gradient(ellipse at center, #04cae4, #1781a4a7 30%, transparent 60%);
+    opacity: 0; /* Hide it initially */
+    transition: opacity 0.3s ease-in-out;
+    z-index: -1;
+}
+
+.navigation .navs a:hover::after {
+    opacity: 1; /* Show the glow on hover */
+}
+
+.navs a:hover {
+    transform: translateY(-8%);
+}
+
+
+.navigation img {
+    max-height: 100%;
+    height: 8vh;
+    margin: 0;
+    padding: 0;
+}
+
+
+.navigation .static-image {
+    max-height: 100%;
+    max-height: 5vh;
+    visibility: visible;
+    
+}
+
+.navigation .static-image:hover > .animated-img{
+    visibility: visible;
+}
+
+
+.navigation .navs {
+    display: flex;
+    flex-direction: row;
+    min-width: 300px;
+    justify-content: space-between; 
+    padding: 0;
+    margin: 0;
+    font-weight: 700;
+    margin-right: 1vw;
+}
+
+.navs #current::after {
+    opacity: 1; /* Show the glow on hover */
+} 
+.navs a {
+    text-decoration: none;
+    color: white;
+    margin-left: auto; 
+    margin: 0 20px;   
+}   
+
+.hamburger {
+    display: none; /* Initially, it will be hidden. */
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.bar {
+    background-color: white;
+    height: 4px;
+    width: 25px;
+    margin: 3px;
+}
+
+.navigation .navs img {
+    display: none;
+    
+}
+
+@media (max-width: 1000px) {
+
+    
+    .navigation .navs {
+        display: none; /* Hide the regular navigation. */
+        top: -300px;
+        right: 0;
+        transition: top 0.3s ease;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .hamburger {
+        display: flex; /* Show the hamburger icon. */
+    }
+}
+
+@media (max-width: 1000px) {
+
+    .navigation {
+        width: 100%;
+        transition: top 0.3s ease;
+
+    }
+    .navigation .navs {
+        flex-direction: column;
+        width: 100%;
+        min-height: 100%;
+        position: absolute;
+        top: 0;
+        margin: 0;
+        padding: 30px;
+        justify-content: center;
+        align-items: center;
+        background-color: #090916d4; 
+        transition: right 0.3s ease;
+        padding-right: 0;
+        /* Or any color you prefer for the background. */
+    }
+
+    .navigation .navs a {
+        margin: 20px 0;
+        width: 20%;
+        text-align: center;
+        color: white;
+        padding-bottom: 10px;
+        cursor: pointer;
+    }
+
+    .navigation .navs img {
+        color: white;
+        display: block;
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        max-width: 35px;
+        max-height: 25px;
+    }
+}

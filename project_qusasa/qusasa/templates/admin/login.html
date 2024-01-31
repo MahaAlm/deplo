@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Qusasa | Admin Login</title>
+    <!-- Add your custom CSS or link to external CSS files here -->
+        <link rel="stylesheet" href="{% static 'qusasa/css/login.css' %}">
+        <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
+
+
+</head>
+<body>
+    <img class="polygon" src="{% static 'qusasa/images/Frame 2.png'%}" alt="Description of Image" class="full-size-absolute">
+
+    <div class="content">
+        <h1>Admin Login</h1>
+        <div class="signup-container">
+            <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                    <div class="error-msgs">
+                        {% if field.errors %}
+                            <div class="error"><i class="fas fa-exclamation-circle"></i>
+                                {{ field.errors|first }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            <div class="input-field">
+                <label for="{{ form.username.id_for_label }}">Email:</label>
+                {{ form.username }}
+            </div>
+            <div class="input-field">
+                <label for="{{ form.password.id_for_label }}">Password:</label>
+                {{ form.password }}
+            </div>
+            <div class="final-row">
+                
+            <button type="submit"><span>Log in</span></button>
+            </div>
+        </form>
+    </div>
+    </div>
+</body>
+</html>

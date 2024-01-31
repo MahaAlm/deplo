@@ -1,0 +1,936 @@
+{% load static %}
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Qusasa | YouTube Competitive Analysis</title>
+    <!-- Linking CSS -->
+    <link rel="stylesheet" href="{% static 'qusasa/css/signup.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/cards.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/feature_details.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/output.css' %}" />
+    <link href="https://cdn.rawgit.com/michalsnik/aos/2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.rawgit.com/michalsnik/aos/2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <!-- Make sure to include the cloud layout plugin after the main D3 library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Include Owl Carousel CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+
+    <!-- Include jQuery Library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Include Owl Carousel JS File -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+
+    <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
+
+  </head>
+  <body>
+    
+    <a class="log-out" href="#popup1"><i class="fa-solid fa-right-from-bracket"></i> Exit Analysis</a>
+
+    
+    <div class="output-container">
+
+        <div class="mini-container">
+            <div class="output-header " data-aos="fade-up">
+                <h1>Your Competitive Analysis is ready!</h1>
+                <p>Our youtube competitive analysis will provide you with customizable dataset, statistics, graphs and interpretaions to make your work with data easier.</p>
+            </div>
+        </div>
+        
+        <div class="mini-container">
+            <div class="youtube-channels" data-aos="fade-up">
+                <h3>Analysed {{type}}s</h3>
+                <div class="channels-container">
+                    {% for icon_url, channel_name in channels %}
+                        <div class="channel-el">
+                            <img src="{{ icon_url }}" alt="{{ channel_name }}">
+                            <p>{{ channel_name }}</p>
+                        </div>
+                    {% empty %}
+                        <p>No {{type}}s available.</p>
+                    {% endfor %}
+                </div>
+                
+            </div>
+        </div>
+        
+
+        <div class="mini-container">
+            <h2 data-aos="fade-up">Download your results:</h2>
+        <div class="downlaodables" data-aos="fade-up">
+            <div class="download-dataset download-el">
+                <i class="fa-solid fa-table"></i>
+                <div class="download-text">
+                    <div class="text">
+                        <h3>The {{type}}s dataset</h3>
+                    <p>Have each {{type}} as a row with its assoicated data.</p>
+                    </div>
+                    
+                    <div class="button">
+                        <button id="download-dataset-button">Download the dataset</button>
+                    </div>
+                    
+                </div>
+
+            </div>
+            <div class="download-report download-el">
+                <i class="fa-solid fa-file-contract"></i>
+                <div class="download-text ">
+                    <div class="text">
+                        <h3>Analysis report</h3>
+                        <p>including all the graphs, statistics, and interpretaions presented.</p>
+                    </div>
+                    
+                    <div class="button">
+                        <a href="{% url 'download_docx' filename=docx_file %}"><button>Download the report</button></a>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        </div>
+        
+        <div class="mini-container stats-graphs-container">
+            <div class="stats-graphs" data-aos="fade-up">
+                <h1>Get An Overview</h1>
+                <p>take a look over the general likes, views, and subscribtions for each {{ type }}</p>
+                <div class="overview">
+                    <div class="owl-carousel">
+                        <div class="item">
+                            <div class="chart-compare ">
+                                <div class="compare-el">
+                                    <div class="compare-stats">
+                                        <p style="margin: 0; padding: 0;">Top {{type}} in <span>views</span>:</p>
+                                        <p style="margin: 0; padding: 0;">{{top_views_channel}}</p>
+                                        <p style="margin: 0; padding: 0; margin-top: 0.5rem;">Top {{type}} in <span>likes</span>:</p>
+                                        <p style="margin: 0; padding: 0;">{{top_likes_channel}}</p>
+                                        <p style="margin: 0; padding: 0; margin-top: 0.5rem;">Top in <span>subscribtions</span>:</p>
+                                        <p style="margin: 0; padding: 0;">{{top_subs_channel}}</p>
+                                    </div>
+                                    <div id="channel-views-chart"></div>
+
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="chart-compare ">
+                                <div class="compare-el">
+                                    <div class="compare-stats">
+                                        <p style="margin: 0; padding: 0;">Top {{type}} in <span>views</span>:</p>
+                                        <p style="margin: 0; padding: 0;">{{top_views_channel}}</p>
+                                        <p style="margin: 0; padding: 0; margin-top: 0.5rem;">Top {{type}} in <span>likes</span>:</p>
+                                        <p style="margin: 0; padding: 0;">{{top_likes_channel}}</p>
+                                        <p style="margin: 0; padding: 0; margin-top: 0.5rem;">Top in <span>subscribtions</span>:</p>
+                                        <p style="margin: 0; padding: 0;">{{top_subs_channel}}</p>
+                                    </div>
+                                    <div id="channel-likes-chart"></div>
+
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="chart-compare ">
+                                <div class="compare-el">
+                                    <div class="compare-stats">
+                                        <p style="margin: 0; padding: 0;">Top {{type}} in <span>views</span>:</p>
+                                        <p style="margin: 0; padding: 0;">{{top_views_channel}}</p>
+                                        <p style="margin: 0; padding: 0; margin-top: 0.5rem;">Top {{type}} in <span>likes</span>:</p>
+                                        <p style="margin: 0; padding: 0;">{{top_likes_channel}}</p>
+                                        <p style="margin: 0; padding: 0; margin-top: 0.5rem;">Top in <span>subscribtions</span>:</p>
+                                        <p style="margin: 0; padding: 0;">{{top_subs_channel}}</p>
+                        
+                                    </div>
+                                    <div id="channel-subs-chart"></div>
+
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+
+                        
+                        <!-- more items -->
+                    </div>
+                    
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="top-videos" data-aos="fade-up">
+            <h1 data-aos="fade-up">Top videos</h1>
+            <p data-aos="fade-up"> here we display the top video of each channel, you can hover on each video to get more insights about why is it so successfull!</p>
+            <div class="videos">
+                {% for icon, name, video in zipped_channels %}
+    <div class="mini-container video-container">
+        <div class="header">
+            <img src="{{ video.thumbnail }}" alt="">
+            <div class="header-info">
+                <h1>{{ video.title }}</h1>
+                <h3>From: <img src="{{ icon }}" style="height: 30px; width: 30px; border-radius:50%; margin: 0 1rem;" alt="">{{ name }}</h3>
+                            <div class="desc">
+                                <h3>Video's description</h3>
+                            <p>{{video.description}}</p>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <h2 class="video-stats-h2">Video statistics</h2>
+                        <div class="video-stats">
+                            <div class="video-stat">
+                                <h3 class="number" data-target="{{video.viewsCount}}">0</h3>
+                                <p>views</p>
+                            </div>
+                            <div class="video-stat">
+                                <h3 class="number" data-target="{{video.likesCount}}">0</h3>
+                                <p>likes</p>
+                            </div>
+                            <div class="video-stat">
+                                <h3 class="number" data-target="{{video.duration}}">0</h3>
+                                <p>minutes</p>
+                            </div>
+                        </div>
+                        
+                        <div class="video-comments">
+                            <p>Top comments</p>
+                            {% for comment in video.topComments %}
+                            <div class="comment" data-aos="fade-up">
+                                <p><i class="fa-solid fa-comment"></i> {{comment}}</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    
+                </div>
+            {% endfor %}
+                
+                
+            </div>
+            
+        </div>
+
+
+        <div class="mini-container stats-graphs-container" data-aos="fade-up">
+            <div class="stats-graphs" data-aos="fade-up">
+                <h1>Get more insights</h1>
+                <p class="stats-graphs-p">We present you with some graphs that could help you in understanding your competition better</p>
+                <div class="overview">
+                            <div class="chart-compare " data-aos="fade-up">
+                                <div class="compare-el">
+                                    <div class="compare-stats">
+                                        <p><span>Duration</span> box plots (in minutes)</p>
+                                        <p style="font-size: 1.1rem; width:80%;">Box plots of video durations reveal trends in content length across channels, providing insights into audience preferences and guiding content strategy to enhance viewer engagement and channel success.
+                                        </p>
+                        
+                                    </div>
+                                    <div id="channel-duration-chart"></div>
+
+
+                                </div>
+                                
+                                
+                            </div>
+
+                            
+                            <div class="chart-compare " data-aos="fade-up">
+                                <div class="compare-el">
+                                    <div class="compare-stats">
+                                        <p>look through videos <span>Categories</span></p>
+                                        <p style="font-size: 1.1rem; width:80%;">
+                                            Analyzing a stacked bar chart of video categories across channels can swiftly highlight which categories are most prevalent in your successful content, offering insights into competitive trends and audience preferences, to help you in strategic content planning.
+                                        </p>
+                        
+                                    </div>
+                                    <div id="stacked-bar-chart"></div>
+
+
+                                </div>
+                                
+                                
+                            </div>
+                            
+                            
+                                
+                                
+                                <div class="owl-carousel" data-aos="fade-up">
+                                    {% for tags, channel_name in channels_tags %}
+                                        <div class="item">
+                                            <div class="chart-compare tags-chart">
+                                                <div class="compare-el">
+                                                    <div class="compare-stats">
+                                                        <p>Look through <span>Tags</span></p>
+                                                        <p><span>{{channel_name}}</span></p>
+                                                        <p style="font-size: 1.1rem; width:80%;">
+                                                            Analyzing a stacked bar chart of video categories across channels can swiftly highlight which categories are most prevalent in your successful content, offering insights into competitive trends and audience preferences, to help you in strategic content planning.
+                                                        </p>
+                                                    </div>
+                                                    <!-- Generate a unique ID for each word cloud container using the forloop.counter -->
+                                                    <div id="wordcloud{{ forloop.counter }}" class="wordcloud"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                
+                                </div>
+                                
+                        </div>
+            </div>
+        </div>
+
+        
+
+        <div id="popup1" class="overlay">
+            <div class="popup">
+                <h2>Are you sure you want to quit the analysis?</h2>
+                <div class="text">
+                    if you did you will not be able to access its content anymore...
+                    <div class="popup-buttons">
+                        <a href="{% url 'base' %}"><button class="yes">Yes I'm sure</button></a>
+                    <a href="#"><button>Go back</button></a>
+                    </div>   
+                </div>
+               
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+   
+</div>
+<script type="text/javascript">
+    const csrftoken = '{{ csrf_token }}';
+</script>
+
+<script>
+   
+    document.addEventListener('DOMContentLoaded', function() {
+        var videoContainers = document.querySelectorAll('.video-container');
+    
+        // Function to remove expanded class from all video containers
+        function resetContainers() {
+            videoContainers.forEach(function(container) {
+                container.classList.remove('expanded');
+                container.style.boxShadow = '';
+                container.style.display = ''; // Show all containers
+            });
+        }
+    
+        // Add or remove expanded class on hover
+        videoContainers.forEach(function(container) {
+            container.addEventListener('click', function() {
+                container.classList.add('expanded');
+                // Hide other containers
+                videoContainers.forEach(function(otherContainer) {
+                    if (otherContainer !== container) {
+                        otherContainer.style.display = 'none';
+                    }
+                });
+            });
+            container.addEventListener('mouseleave', function() {
+                if (!container.classList.contains('clicked')) {
+                    container.classList.remove('expanded');
+                    container.style.boxShadow = '0 0 30px 10px #6b4e8f76'; // Change box shadow
+                    resetContainers();
+                }
+            });
+        });
+    
+        // Remove expanded class and reset on click outside
+        document.addEventListener('click', function(event) {
+            var isClickInsideContainer = Array.from(videoContainers).some(function(container) {
+                return container.contains(event.target);
+            });
+    
+            if (!isClickInsideContainer) {
+                resetContainers();
+            } else {
+                videoContainers.forEach(function(container) {
+                    if (container.contains(event.target)) {
+                        container.classList.add('clicked');
+                    } else {
+                        container.classList.remove('clicked');
+                    }
+                });
+            }
+        });
+    });
+    
+        
+</script>
+<script>
+    document.getElementById('download-dataset-button').addEventListener('click', function() {
+        window.location.href = "{% url 'dataset_zipped_output' %}";
+    });
+</script>
+<script id="json-data" type="application/json">{{ json_data|safe }}</script>
+
+<script>
+
+    var jsonData = JSON.parse(document.getElementById('json-data').textContent);
+    var channels = jsonData.channel_names
+    var views = jsonData.average_views
+    var likes = jsonData.average_likes
+    var subscribers = jsonData.subs
+    const trimmedChannels = channels.map(label => 
+    label.length > 15 ? label.substring(0, 5) + '...' : label);
+
+    console.log(jsonData.topTags)
+    var options = {
+        chart: {
+            type: 'bar',
+            height: 250,
+            width: '100%',
+            foreColor: '#fff',        
+            // white text for the dark theme,
+            background: 'transparent'
+
+        },
+        plotOptions: {
+            bar: {
+                distributed: true, 
+                columnWidth: '50%', 
+                endingShape: 'rounded' ,
+                borderRadius: [4, 4, 0, 0],
+                dataLabels: {
+                    position: 'top' // Ensuring data labels appear on top of the bars
+                }
+            }
+        },
+        tooltip: {
+            x: {
+                formatter: function(value, { series, seriesIndex, dataPointIndex, w }) {
+                    // Display the full channel name in the tooltip
+                    return channels[dataPointIndex]
+                }
+            }
+        },
+        theme: {
+            mode: 'dark',
+            palette: 'palette1'
+        },
+        dataLabels: {
+            enabled: false
+        },
+        series: [{
+            name: 'Views',
+            data: views
+        }],
+        xaxis: {
+            categories: trimmedChannels,
+            labels: {
+                rotate: 0, // Rotates labels to handle long text
+                offsetY: 0, // Adjust to position the labels higher above the bar
+                style: {
+                    cssClass: 'custom-xaxis-label',
+                },
+            }
+        },
+        grid: {
+            show: false
+        },
+        legend: {
+            show: false
+        },
+        fill: {
+            colors: ['#00E396', '#775DD0', '#775DD0', '#775DD0', '#775DD0'],
+            type: 'gradient',
+            gradient: {
+                shade: 'light',
+                type: "vertical",
+                shadeIntensity: 0.5,
+                gradientToColors: undefined, 
+                inverseColors: true,
+                opacityFrom: 0.85,
+                opacityTo: 0.85,
+                stops: [0, 100]
+            }
+        }
+    };
+    
+    var chart = new ApexCharts(document.querySelector("#channel-views-chart"), options);
+    chart.render();
+    setTimeout(() => {
+        chart.updateOptions({
+        });
+      
+      }, 1000);
+    var originalOptions = chart.w.config;
+
+    // Clone the options and change text color to black for exporting
+    var channel_views_options = JSON.parse(JSON.stringify(originalOptions));
+    channel_views_options.chart.foreColor = '#000'; // Set text color to black
+    channel_views_options.chart.background = '#FFF'; // Set background to white for contrast
+    channel_views_options.chart.height = 300; // Set text color to black
+    channel_views_options.chart.width = 300; // Set background to white for contrast
+    channel_views_options.title.text = "barchart for views";
+    channel_views_options.xaxis.categories = channels
+    channel_views_options.xaxis.labels = {show: false}
+    channel_views_options.legend.show = true
+    channel_views_options.fill = {}
+
+    var options_likes = options
+    options_likes['series'] = [{
+        name: 'Likes',
+        data: likes
+    }]
+
+    var chart = new ApexCharts(document.querySelector("#channel-likes-chart"), options_likes);
+    chart.render();
+    setTimeout(() => {
+        chart.updateOptions({
+        });
+      
+      }, 1000);
+    var originalOptionslikes = chart.w.config;
+
+    // Clone the options and change text color to black for exporting
+    var channel_likes_options = JSON.parse(JSON.stringify(originalOptionslikes));
+    channel_likes_options.chart.foreColor = '#000'; // Set text color to black
+    channel_likes_options.chart.background = '#FFF'; // Set background to white for contrast
+    channel_likes_options.chart.height = 300; // Set text color to black
+    channel_likes_options.chart.width = 300; // Set background to white for contrast
+    channel_likes_options.title.text = "barchart for likes";
+    channel_likes_options.xaxis.categories = channels
+    channel_likes_options.xaxis.labels = {show: false}
+    channel_likes_options.legend.show = true
+    channel_likes_options.fill = {}
+
+
+    var options_subscribers = options
+    options_subscribers.series = [{
+        name: 'Subscribtions',
+        data: subscribers
+    }]
+
+    var chart = new ApexCharts(document.querySelector("#channel-subs-chart"), options_subscribers);
+    chart.render();
+    setTimeout(() => {
+        chart.updateOptions({
+        });
+      
+      }, 1000);
+    var originalOptionssubs = chart.w.config;
+
+    // Clone the options and change text color to black for exporting
+    var channel_subs_options = JSON.parse(JSON.stringify(originalOptionssubs));
+    channel_subs_options.chart.foreColor = '#000'; // Set text color to black
+    channel_subs_options.chart.background = '#FFF'; // Set background to white for contrast
+    channel_subs_options.chart.height = 300; // Set text color to black
+    channel_subs_options.chart.width = 300; // Set background to white for contrast
+    channel_subs_options.title.text = "barchart for Subscribtions";
+    channel_subs_options.xaxis.categories = channels
+    channel_subs_options.xaxis.labels = {show: false}
+    channel_subs_options.legend.show = true
+    channel_subs_options.fill = {}
+</script>
+
+<script>
+    // Define a function to draw a word cloud
+    var myColors = ['#D5A9FF', '#7EF7D9', '#12CEE6', '#4686FF', '#FFFFFF', /* more colors */ ];
+
+    function drawWordCloud(selector, words) {
+        // Create a function to generate random sizes for the words
+        var getRandomSize = function() {
+            return 10 + Math.random() * 30; // Random size between 10 and 50
+        };
+    
+        // Set up the word cloud layout
+        var layout = d3.layout.cloud()
+            .size([400, 300]) // The size of the word cloud
+            .words(words.map(function(d) {
+                return {text: d, size: getRandomSize()}; // Assign random size to each word
+            }))
+            .padding(2) // Adjust padding between words
+            .rotate(0) // Set rotation, if desired
+            .font("Raleway")
+            .fontSize(function(d) { return d.size; }) // Use the assigned size
+            .on("end", draw);
+    
+        layout.start();
+    
+        // Draw the word cloud
+        function draw(words) {
+            var svg = d3.select(selector).append("svg")
+                .attr("width", layout.size()[0])
+                .attr("height", layout.size()[1])
+                .append("g")
+                .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")");
+    
+            svg.selectAll("text")
+                .data(words)
+                .enter().append("text")
+                .style("font-size", function(d) { return d.size + "px"; }) // Font size is set by the layout
+                .style("font-family", "Raleway")
+                .style("font-weight", "bold") // Set the font family
+                .style("fill", function(d, i) { return myColors[i % myColors.length]; }) // Set the color
+                .attr("text-anchor", "middle")
+                .attr("transform", function(d) {
+                    return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                })
+                .text(function(d) { return d.text; });
+        }
+    }
+    
+
+// Define your array of words for each channel
+var channelsTags = jsonData.topTags
+
+// Call the drawWordCloud function for each channel
+channelsTags.forEach(function(tags, i) {
+    drawWordCloud("#wordcloud" + (i + 1), tags);
+});
+
+</script>
+
+<script>
+        var mostUsedCategories = jsonData.mostUsedCategories
+        
+
+var colorPalette = ['#00E396', '#008FFB', '#FEB019', '#FF4560', '#775DD0', /* more colors */ ];
+
+var categoryColors = {};
+var colorIndex = 0;
+
+    mostUsedCategories.forEach((channelData, index) => {
+        channelData.forEach(([category, count]) => {
+            if (!(category in categoryColors)) {
+                categoryColors[category] = colorPalette[colorIndex % colorPalette.length];
+                colorIndex++;
+            }
+        });
+    });
+
+var seriesData = {};
+
+    mostUsedCategories.forEach((channelData, index) => {
+        channelData.forEach(([category, count]) => {
+            if (!seriesData[category]) {
+                seriesData[category] = Array(channels.length).fill(0);
+            }
+            seriesData[category][index] = count;
+        });
+    });
+
+    var series = Object.keys(seriesData).map(category => {
+        return {
+            name: category,
+            data: seriesData[category],
+            color: categoryColors[category]
+        };
+    });
+
+    console.log(categoryColors)
+
+    var options = {
+        chart: {
+            type: 'bar',
+            height: '100%',
+            width: '100%',
+            foreColor: '#fff',
+            background: 'transparent',
+            stacked: true
+        },
+        plotOptions: {
+            bar: {
+                columnWidth: '50%',
+                borderRadius: [4, 4, 0, 0],
+                // other bar options
+            }
+        },
+        tooltip: {
+            x: {
+                formatter: function(value, { series, seriesIndex, dataPointIndex, w }) {
+                    // Display the full channel name in the tooltip
+                    return channels[dataPointIndex]
+                }
+            }
+        },
+        theme: {
+            mode: 'dark',
+            palette: 'palette1'
+        },
+        // other options (theme, dataLabels, etc.) similar to your previous charts
+        series: series,
+        xaxis: {
+            categories: trimmedChannels
+        },
+        formatter: function(seriesName, opts) {
+            return seriesName; // Just return the category name
+        }
+        // other options (grid, legend, etc.)
+    };
+
+    
+    var chart = new ApexCharts(document.querySelector("#stacked-bar-chart"), options);
+    chart.render()
+    setTimeout(() => {
+        chart.updateOptions({
+        });
+      
+      }, 1000);
+    var originalOptions = chart.w.config;
+
+    // Clone the options and change text color to black for exporting
+    var exportOptions = JSON.parse(JSON.stringify(originalOptions));
+    exportOptions.chart.foreColor = '#000'; // Set text color to black
+    exportOptions.chart.background = '#FFF'; // Set background to white for contrast
+    exportOptions.chart.height = 250; // Set text color to black
+    exportOptions.chart.width = 250; // Set background to white for contrast
+
+</script>
+
+
+<script>
+    
+ var durations = jsonData.durations
+ console.log(durations)
+var boxPlotData = durations.map((channelDurations, index) => {
+    return {
+        x: trimmedChannels[index],
+        y: channelDurations
+    };
+});
+
+var optionsBoxPlot = {
+    chart: {
+        type: 'boxPlot',
+        height: 250,
+        width: '100%',
+        foreColor: '#fff',
+        background: 'transparent'
+    },
+    tooltip: {
+        x: {
+            formatter: function(value, { series, seriesIndex, dataPointIndex, w }) {
+                // Display the full channel name in the tooltip
+                return channels[dataPointIndex]
+            }
+        }
+    },
+    theme: {
+        mode: 'dark',
+        palette: 'palette1'
+    },
+    plotOptions: {
+        boxPlot: {
+            colors: {
+                upper: '#00E396',
+                lower: '#775DD0'
+            }
+        }
+    },
+    series: [{
+        name: 'Video Durations',
+        type: 'boxPlot',
+        data: boxPlotData
+    }],
+    xaxis: {
+        type: 'category',
+        categories: trimmedChannels
+    },
+    grid: {
+        show: true
+    },
+    legend: {
+        show: true,
+        formatter: function(seriesName, opts) {
+            // Assuming `channels` array contains the full channel names
+            return channels[opts.seriesIndex];
+        }
+    },
+    fill: {
+        type: 'solid'
+    }
+};
+
+var boxPlotChart = new ApexCharts(document.querySelector("#channel-duration-chart"), optionsBoxPlot);
+boxPlotChart.render()
+setTimeout(() => {
+    boxPlotChart.updateOptions({
+    });
+  
+  }, 1000);
+var originalOptionsdur = boxPlotChart.w.config;
+
+    // Clone the options and change text color to black for exporting
+    var channel_dur_options = JSON.parse(JSON.stringify(originalOptionsdur));
+    channel_dur_options.chart.foreColor = '#000'; // Set text color to black
+    channel_dur_options.chart.background = '#FFF'; // Set background to white for contrast
+    channel_dur_options.chart.height = 300; // Set text color to black
+    channel_dur_options.chart.width = 300; // Set background to white for contrast
+    channel_dur_options.title.text = "box plot for channels videos durations";
+    channel_dur_options.xaxis.categories = channels
+    channel_dur_options.xaxis.labels = {show: true}
+    channel_dur_options.fill = {}
+
+</script>
+
+<script>
+    function animateNumber(element, start, end, duration) {
+        let startTime = null;
+    
+        function animation(currentTime) {
+            if (startTime === null) startTime = currentTime;
+            const timeElapsed = currentTime - startTime;
+            const progress = Math.min((timeElapsed / duration), 1); // Ensure progress doesn't exceed 1
+    
+            element.textContent = Math.floor(progress * (end - start) + start);
+    
+            if (timeElapsed < duration) {
+                requestAnimationFrame(animation);
+            }
+        }
+    
+        requestAnimationFrame(animation);
+    }
+    
+    const numberElements = document.querySelectorAll('.number');
+    
+    numberElements.forEach(numberElement => {
+        const targetValue = parseInt(numberElement.getAttribute('data-target'), 10);
+        animateNumber(numberElement, 0, targetValue, 4000); // 2000ms = 2 seconds for animation
+    });
+    
+</script>
+
+<script>
+    jQuery(document).ready(function(){
+
+        $('#print').click(function(){
+    
+            window.print();
+    
+    
+        });
+    
+    
+    });
+</script>
+
+<script>$(document).ready(function(){
+    $(".owl-carousel").owlCarousel({
+        // Owl Carousel options
+        items: 1,
+        center: true,
+        loop: true,
+        autoplay: true,
+        autoplayTimeout: 3000,
+        autoplayHoverPause: true,
+        nav: true
+        // other options as needed
+    });
+});
+</script>
+
+    <script>
+        AOS.init({
+          duration: 1200, // You can adjust this value for animation duration
+        });
+      </script>
+  </body>
+</html>
+
+
+<script>
+    // Function to handle the rendering and conversion of a single chart to a data URI
+// Function to handle the rendering and conversion of a single chart to a data URI
+function convertChartToDataURI(chartOptions, callback) {
+    console.log('hi');
+    let exportContainer = document.createElement('div');
+    exportContainer.style.position = 'absolute';
+    exportContainer.style.left = '-9999px';
+    exportContainer.style.top = '-9999px';
+    document.body.appendChild(exportContainer);
+
+    let modifiedChartOptions = {
+        ...chartOptions,
+        chart: {
+            ...chartOptions.chart,
+            events: {
+                rendered: function(chartContext, config) {
+                    console.log('rendered');
+                }
+            }
+        }
+    };
+
+    let exportChart = new ApexCharts(exportContainer, modifiedChartOptions);
+    exportChart.render();
+
+    // Manually trigger the rendered event for testing
+    setTimeout(() => {
+        exportChart.dataURI().then(({ imgURI }) => {
+            console.log('Manual trigger:', imgURI);
+            exportChart.destroy();
+            document.body.removeChild(exportContainer);
+            callback(null, imgURI);
+        });
+    }, 1000); // Adjust this delay as needed
+}
+
+
+
+// Function to process all charts and send them to the server
+function processAndSendCharts(chartsOptions) {
+    let chartImagesPromises = chartsOptions.map((options) => {
+        return new Promise((resolve, reject) => {
+            convertChartToDataURI(options, (error, imgURI) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(imgURI);
+                }
+            });
+        });
+    });
+
+    Promise.all(chartImagesPromises).then((imagesURI) => {
+        console.log(imagesURI)
+        // Now you have all the images URI, send them to the server
+        fetch('/doc_competitive/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify({ imgData: imagesURI })
+        }).then(response => response.json())
+        .then(data => {
+            console.log(data); // Handle any response from the server
+        }).catch(error => {
+            console.error('Error sending charts to the server:', error);
+        });
+    }).catch(error => {
+        console.error('Error converting charts to images:', error);
+    });
+}
+
+// Assuming you have an array of chart options for each chart
+let chartsOptions = [channel_views_options, channel_likes_options, channel_subs_options, channel_dur_options];
+
+// Process and send all charts
+processAndSendCharts(chartsOptions);
+
+</script>

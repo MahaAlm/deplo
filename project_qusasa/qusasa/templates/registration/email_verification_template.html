@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Qusasa | Password Reset</title>
+    <style>
+        /* You can include some inline styles here */
+        html {
+            text-align: left;
+        }
+        p {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #333;
+            
+            
+            
+            
+        }
+
+        .hello {
+            font-size: 1rem;
+            color: #1C93B9;
+        }
+        .my-button {
+        padding: 15px 50px;
+        border-radius: 50px;
+        border: none;
+        outline: none;
+        background:  #4e0e6c;
+        color: white;
+        font-weight: 700;
+        font-size: 0.8rem;
+        cursor: pointer;
+        position: relative;
+        width: 20%;
+        text-align: center;
+        margin: 20px 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .code {
+            color: #8a2db5;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <p class="hello">Hello {{user.first_name}},</p>
+    <p>Thank you for registering with Qusasa. Please use the code below to confirm your email address.</p>
+    <br>
+    <p class="code">{{ confirmation_code }}</p>
+    
+</body>
+</html>

@@ -1,0 +1,52 @@
+{% load static %}
+<script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
+
+<div class="navigation">
+
+
+    <img class="static-img" src="{% static 'qusasa/images/qusasa.png' %}" alt="">
+
+    <div class="hamburger">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+
+    <div class="navs">
+        <img src="{% static 'qusasa/images/x.png' %}" alt="">
+        <a href="{% url 'home' %}"{% if request.resolver_match.url_name == 'home' %}id="current"{% endif %}><span>Home</span></a>
+        <a href="{% url 'signup' %}"  {% if request.resolver_match.url_name == 'signup' %} id="current" {% endif %} ><span>Sign up</span></a>
+        <a href="{% url 'login' %}" {% if request.resolver_match.url_name == 'login' %} id="current" {% endif %}>Log in</a>
+    </div>
+</div>
+
+<script>
+    document.querySelector('.hamburger').addEventListener('click', function() {
+        let navs = document.querySelector('.navigation .navs');
+        if(navs.style.display === 'none' || navs.style.display === '') {
+            navs.style.display = 'flex';
+        } else {
+            navs.style.display = 'none';
+        }
+    });
+
+    document.querySelector('.hamburger').addEventListener('click', function() {
+        let navs = document.querySelector('.navigation .navs');
+        navs.style.top = '0px';  // Moves the menu to its hidden position.
+        let i = document.querySelector('.navigation .navs img');
+        i.styles.display = 'block';
+
+    });
+
+    document.querySelector('.navigation .navs img').addEventListener('click', function() {
+        let navs = document.querySelector('.navigation .navs');
+        navs.style.top = '-300px';  // Moves the menu to its hidden position.
+        let x = document.querySelector('.navigation .navs img');
+        x.styles.display = 'none';
+
+    });
+
+    
+
+
+</script>

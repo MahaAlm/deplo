@@ -1,0 +1,59 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qusasa | Confirm Email</title>
+    <!-- Linking CSS -->
+    <link rel="stylesheet" href="{% static 'qusasa/css/simple_form.css' %}">
+    <link rel="stylesheet" href="{% static 'qusasa/css/nav.css' %}">
+    <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
+
+    <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
+</head>
+<body> 
+    <img class="polygon" src="{% static 'qusasa/images/Frame 2.png'%}" alt="Description of Image" class="full-size-absolute">
+    
+    {% include "nav.html" %}
+
+
+    <div class="content">
+        <h2>Confirm your Email</h2>
+
+        <div class="signup-container">
+            <form method="post">
+                {% csrf_token %}
+                {% if error %}
+                    <div class="error-msgs">
+                            <div class="error"><i class="fas fa-exclamation-circle"></i>
+                                {{ error }}</div>
+                    </div>
+                {% endif %}
+                <p>
+                    Check your email for the confirmation code to enabel us verify your email...
+                </p>
+                <div class="input-field">
+                    <label for="confirmation_code">Confirmation code:</label>
+                    <input type="number" name="confirmation_code" id="confirmation_code" required>
+                </div>
+
+                <div class="final-row">
+                    <button type="submit" ><span>Ok</span></button>
+                </div>
+                
+
+            </form>
+        </div>
+        
+    </div>
+
+    <footer>
+        Created in 2023, Qusasa team
+    </footer>
+
+    <!-- Linking JS at the bottom for better performance -->
+    <script src="{% static 'qusasa/js/script.js' %}"></script>
+</body>
+</html>

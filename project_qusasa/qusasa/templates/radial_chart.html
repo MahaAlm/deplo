@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    <title>chart</title>
+    <style>
+        .radial-chart {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+        }
+
+        #red-chart, #green-chart {
+            width: 50%;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="radial-chart">
+        <div id="red-chart"></div>
+    <P>Positive Comments</P>
+    </div>
+
+    <div class="radial-chart">
+        <div id="green-chart"></div>
+    <P>Negative Comments</P>
+    </div>
+    
+
+
+<script>// Red radial bar chart
+    var optionsRed = {
+        chart: {
+            type: 'radialBar',
+            foreColor: '#fff', // white text for the dark theme
+            toolbar: {
+                show: false
+            },
+        },
+        plotOptions: {
+            radialBar: {
+                hollow: {
+                    size: '40%',
+                },
+                track: {
+                    background: '#333'  // dark track background
+                },
+                dataLabels: {
+                    name: {
+                        show: false,
+                        
+                    },
+                    value: {
+                        color: '#fff',
+                        show: true,
+                        fontWeight: 700,
+                        fontSize: '1.5rem', // Adjust this to make the font size bigger or smaller
+                        color: '#fff',
+                    }
+                }
+            },
+        },
+        series: [75], // example value
+        colors: ['#3cd9d4'],
+        fill: {
+            type: 'gradient',
+            gradient: {
+                shade: 'dark',
+                type: 'horizontal',
+                shadeIntensity: 1,
+                gradientToColors: ['#0d6359'], 
+                inverseColors: false,
+                opacityFrom: 1,
+                opacityTo: 1,
+                stops: [0, 100]
+            }
+        },
+        stroke: {
+            lineCap: 'round'
+        },
+    };
+    
+    // Green radial bar chart
+    var optionsGreen = {
+        ...optionsRed, // copy all properties from optionsRed
+        colors: ['#9c057b'],
+        fill: {
+            type: 'gradient',
+            gradient: {
+                shade: 'dark',
+                type: 'horizontal',
+                shadeIntensity: 0.5,
+                gradientToColors: ['#d22354'],
+                inverseColors: false,
+                opacityFrom: 1,
+                opacityTo: 1,
+                stops: [0, 100]
+            }
+        },
+        series: [25], // another example value
+    };
+    
+    var chartRed = new ApexCharts(document.querySelector("#red-chart"), optionsRed);
+    var chartGreen = new ApexCharts(document.querySelector("#green-chart"), optionsGreen);
+    
+    chartRed.render();
+    chartGreen.render();
+    </script>
+</body>
+</html>
+

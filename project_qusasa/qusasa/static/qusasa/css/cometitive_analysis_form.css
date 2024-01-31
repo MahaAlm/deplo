@@ -1,0 +1,680 @@
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content {
+    margin: 0;
+    margin-bottom: 5rem;
+    text-align: center;
+    width: 80%;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+
+}
+
+form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content h1 {
+    font-size: 3rem;
+    margin: 0;
+    margin-top: 1rem;
+}
+
+.content .the_p {
+    font-weight: 600;
+    font-size: 2rem;
+    margin: 0;
+    margin-bottom: 2rem;
+    margin-top: 1rem;
+
+}
+
+.choices {
+    max-width: 50rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    margin-top: 5rem;
+    
+}
+
+.choice-box {
+    min-width: 15rem;
+    min-height:6rem;
+    margin: 0 5rem;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    background: linear-gradient(rgba(255, 255, 255, 0), rgba(184, 25, 144, 0.807));
+    border-radius: 30px;
+    color: white;
+    font-weight: 700;
+    font-size: 1.3rem;
+    transition: 0.3s ease-in-out;
+
+  }
+
+  .choice-box:hover {
+    transform: translate(0, -1rem);
+    transition: 0.3s ease-in-out;
+    cursor: pointer;
+
+  }
+  
+  .choice-box:hover, .choice-box.selected {
+    background: linear-gradient(rgba(255, 255, 255, 0.657), #ab10abfc);
+
+
+  }
+  
+  .choice-box img {
+    max-width: 80%;
+    height: auto;
+  }
+
+  .choice-box p {
+    font-size: 1.3rem;
+  }
+  
+  .choices {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  form button {
+    background: linear-gradient(#379eac, #06a4b9);
+    padding: 0.8rem 3rem;
+    transition: ease 0.2s;
+    margin-top: 1.5rem;
+    outline: none;
+    border: none;
+    border-radius: 30px;
+    font-family: 'Raleway';
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    margin: 0 auto;
+    font-size: 1rem;
+    transition: 0.3s ease-in-out;
+
+  }
+
+  form button:hover {
+    transform: translate(0, -1rem);
+    transition: 0.3s ease-in-out;
+  }
+
+  .btn-primary {
+    position: absolute;
+    bottom: 3rem;
+    right: 3rem;
+  }
+
+  .btn-secondary {
+    position: absolute;
+    bottom: 3rem;
+    left: 3rem;
+  }
+  
+  .btn-primary:disabled {
+    background: rgb(166, 166, 166) !important;
+    cursor: default !important;
+}
+
+.channel-playlist-con {
+    background: linear-gradient(#1ea0c7b8, #24509268);
+    border-radius: 30px;
+    padding: 3rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: start;
+    margin-top: 3rem;
+}
+
+.channel-playlist-con p {
+    text-align: left;
+    
+}
+
+.channel-playlist-input {
+    width: 100%;
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+}
+
+.channel-playlist-input input {
+    width: 100%;
+    padding: 1rem;
+    color: black;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+}
+
+.error {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    text-align: left;
+    width: auto;
+}
+.options {
+    flex-direction: column;
+    margin: 0;
+
+}
+
+.options-box {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-height: 5rem;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.options-box img {
+    max-height: 4rem;
+}
+
+.options-box i {
+    font-size: 3.5rem;
+    margin: 0 1rem;
+    
+}
+
+.options-box p{
+    font-size: 1rem;
+}
+
+.box-text {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    align-content: start;
+}
+
+.box-text .p-head {
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.box-text  p {
+    margin: 0;
+    font-weight: 500;
+}
+
+.options-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.options-text h2 {
+    margin: 0;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.options-text {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+/* Apply overall form styling */
+#analysis-type-form, #search-query-form {
+display: flex;
+flex-direction: column; /* Align form items in a column */
+align-items: center;
+justify-content: center;
+width: 80%; /* Adjust according to your layout needs */
+
+}
+
+.form-container {
+    padding: 4rem 0; /* Add some padding around the form */
+    background: linear-gradient(#1ea0c7b8, #24509268);
+    border-radius: 50px; /* Rounded corners for the form container */
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Style form paragraphs for spacing */
+#analysis-type-form p, #search-query-form p {
+margin-bottom: 0; /* Spacing between form elements */
+}
+
+/* Form labels */
+#analysis-type-form label, #search-query-form label {
+display: block; /* Make labels block to align with inputs */
+margin-bottom: 0.5rem; /* Space between label and input */
+font-weight: 600; /* Match the font weight from your CSS */
+font-size: 1rem;
+}
+
+/* Form selects */
+#analysis-type-form select, #search-query-form select {
+width: 100%; /* Make selects full width of the form container */
+padding: 0.5rem; /* Padding inside the selects */
+border-radius: 5px; /* Rounded corners for the selects */
+border: 1px solid #ccc; /* A subtle border for the selects */
+font-family: 'Raleway', sans-serif; /* Matching the font-family */
+}
+
+
+.category-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    align-content: center;
+    width: 80%;
+    margin-bottom: 2rem;
+
+
+}
+
+.category-container i {
+    font-size: 7rem;
+    margin-right: 3rem;
+
+}
+
+.category-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    text-align: left;
+    align-items: start;
+}
+.category-text h1 {
+    font-size: 2rem;
+}
+.category-text {
+    width: 70%;
+}
+
+.category-field {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    text-align: left;
+    width: 100%;
+    width: 80%;
+
+}
+
+.category-field h3 {
+    margin: 0;
+    margin-bottom: 1rem;
+}
+
+.category-field select {
+    font-weight: 700 !important;
+    padding: 10px !important;
+}
+
+
+
+.filter-fields {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    text-align: left;
+    width: 80%;
+
+}
+
+#filter-toggle {
+    font-size: 1.2rem;
+    margin: 0;
+    padding: 1rem 2rem;
+    background: linear-gradient(#498bac, #497baa);
+    width: 75%;
+    text-align: left;
+    cursor: pointer;
+    margin-top: 2rem;
+    border-radius: 30px;
+    margin-bottom: 1rem;
+}
+
+.filter-fields p {
+    text-align: left;
+    font-weight: 500;
+}
+
+.filter-fields select {
+    width: 50%;
+    margin: 0;
+    color: black !important;
+    padding: 2rem !important;
+}
+
+.select-fields {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.select-fields p {
+    width: 20%;
+    margin-right: 3rem;
+
+}
+
+/* Increase specificity by using an id or additional classes */
+#analysis-type-form .select2-container--default .select2-selection--single, #search-query-form .select2-container--default .select2-selection--single {
+    background-color: #fff; /* Your background */
+}
+
+/* Using !important to override styles */
+.select2-container .select2-selection--single .select2-selection__rendered {
+    color: #444 !important; /* Your color */
+    line-height: 28px !important; /* Your line-height */
+}
+
+/* More specific overrides */
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    border-color: #888 transparent transparent transparent !important;
+}
+
+/* Override the text color in the dropdown */
+.select2-container--default .select2-results__option {
+    color: black !important; /* Change text color */
+}
+
+/* Override the background color of the dropdown */
+.select2-container--default .select2-dropdown {
+    background-color: #f7f7f7 !important; /* Light grey background for contrast */
+}
+
+/* Override the background and text color for the selected item */
+.select2-container--default .select2-results__option[aria-selected="true"] {
+    background-color: #3f3562 !important; /* A different background color for selected item */
+    color: white !important; /* White text for selected item */
+}
+
+/* Override the hover state background and text color */
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: #895fbb !important; /* A different background color for hover state */
+    color: white !important; /* White text for hover state */
+}
+
+/* This style will hide your filter fields */
+.filter-fields {
+    display: none;
+    transition: all 0.3s ease;
+}
+
+/* This class will show your filter fields */
+.show-filters {
+    display: block;
+}
+
+
+
+.select-fields p .select2-container--default .select2-selection--single {
+    min-width: 10rem;
+    width: 10rem;
+    font-size: 1rem;
+}
+
+.select2-container--default .select2-selection--single {
+    padding: 8px; /* Adjust padding as needed */
+    height: auto;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    min-width: 100%;
+}
+
+
+/* Change padding for the search input within the dropdown */
+.select2-container--default .select2-search--dropdown .select2-search__field {
+    padding: 10px; /* Adjust padding as needed */
+}
+
+/* Change padding for each dropdown item */
+.select2-container--default .select2-results__option {
+    padding: 10px; /* Adjust padding as needed */
+}
+
+
+#add-channel-btn {
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+#add-channel-btn:disabled {
+    cursor: not-allowed;
+    background: linear-gradient(grey, rgb(165, 165, 165));
+}
+
+.channel-inputs-container {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+
+.channel-inputs-container p {
+    width: 100%;
+    text-align: left;
+    
+}
+
+.channel-inputs-container p input {
+    width: 80%;
+    border: none;
+    outline: none;
+    padding: 0.5rem;
+    border-radius: 20px;
+    margin-right: 1rem;
+}
+
+.input-row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+
+.channel-inputs-container p  button {
+    margin: 0 !important;
+    font-size: 1.5rem;
+    border-radius: 10px !important;
+    background: linear-gradient(#28b2c4c9, #2aaacda3);
+    padding: 0rem 1rem !important;
+}
+
+.channel-inputs-container p button:hover {
+    transform: none;
+    background: linear-gradient(#38d8edc9, #3a95efa3);
+}
+
+.content {
+    margin: 0;
+}
+
+.category-field input {
+    width: 100%;
+    padding: 1rem 0;
+    padding-left: 1rem;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+
+}
+
+.checkbox-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.custom-checkbox {
+    position: relative;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 18px;
+    user-select: none; /* Prevent text selection on double click */
+    height: 13rem;
+    width: 22rem;
+    margin: 2rem 0;
+    background: linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.984));
+    border-radius: 20px;
+    color: #1f2447;
+    transition: 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 2rem;
+    
+}
+
+.custom-checkbox i {
+    font-size: 3rem;
+    margin-top: 0rem;
+}
+
+.custom-checkbox:hover {
+    transform: translate(0, -1rem);
+    background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.9)) !important;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+    
+}
+
+/* Hide the default checkbox */
+.custom-checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom checkmark/indicator */
+.custom-checkbox .checkmark {
+    position: absolute;
+    top: -30px;
+    left: -30px; /* Center the left edge of the element at the middle of the parent */
+    height: 80px;
+    width: 80px;
+    background: linear-gradient(#9b1088, #cd479e);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+
+
+
+
+
+
+/* Assuming you want to use a check icon when the box is checked */
+.custom-checkbox .checkmark::after {
+    font-family: 'Font Awesome 5 Free'; /* Adjust based on the actual Font Awesome version you have */
+    content: '\f00c'; /* This is the unicode for the check icon in Font Awesome */
+    font-weight: 900; /* Necessary for some Font Awesome icons to appear */
+    color: white; /* Color for the icon */
+    /* Adjust position and size as needed */
+    position: absolute;
+    display: block;
+    visibility: hidden;
+    top: 20%;
+    left: 20%;
+    font-size: 3rem;
+    cursor: pointer;
+}
+
+
+input[type="checkbox"]:checked + label .checkmark::after {
+    display: block;
+    visibility: visible;
+  }
+
+
+
+
+.output-choice-container {
+    padding: 3rem 6rem; /* Add some padding around the form */
+    background: linear-gradient(#1ea0c7b8, #24509268);
+    border-radius: 50px; /* Rounded corners for the form container */
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.checkbox-text {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    align-items: start;
+    text-align: left;
+    margin-right: 4rem;
+    min-height: 100%;
+    height: 100%;
+    justify-content: flex-start;
+    align-content: start;
+    flex-wrap: wrap;
+
+}
+
+.checkbox-text h1 {
+    font-size: 4rem;
+}
+.checkbox-text p {
+    text-align: left;
+    justify-content: start;
+    align-items: start;
+    font-size: 1.5rem;
+}
+
+.content {
+    margin-bottom: 5rem;
+}
+
+img.floating {
+    animation: float 3s ease-in-out infinite;
+}
+
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px); /* Adjust the value for more or less movement */
+    }
+}
