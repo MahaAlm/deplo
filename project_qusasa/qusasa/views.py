@@ -960,6 +960,32 @@ def topic_analysis_details(request):
     # You can add code here to fetch and process inquiries
     return render(request, 'features_pages/topic_analysis/topic_analysis_details.html')
 
+
+def topictrend_analysis_details(request):
+    # You can add code here to fetch and process inquiries
+    return render(request, 'instafeatures_pages/topictrend_analysis/topictrend_analysis_details.html')
+
+def posts_analysis_details(request):
+    # You can add code here to fetch and process inquiries
+    return render(request, 'instafeatures_pages/posts_analysis/posts_analysis_details.html')
+
+def engagement_history_details(request):
+    # You can add code here to fetch and process inquiries
+    return render(request, 'instafeatures_pages/engagement_history/engagement_history_details.html')
+
+def people_analytics_details(request):
+    # You can add code here to fetch and process inquiries
+    return render(request, 'instafeatures_pages/people_analytics/people_analytics_details.html')
+
+def comparative_study_details(request):
+    # You can add code here to fetch and process inquiries
+    return render(request, 'instafeatures_pages/comparative_study/comparative_study_details.html')
+
+def instagram_reporting_details(request):
+    # You can add code here to fetch and process inquiries
+    return render(request, 'instafeatures_pages/instagram_reporting/instagram_reporting_details.html')
+
+
 from .forms import ChannelAnalysisInputForm
 
 class TopicAnalysisWizard(SessionWizardView):
