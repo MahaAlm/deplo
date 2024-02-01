@@ -116,10 +116,7 @@
                                     <div class="compare-stats">
                                         <p style="margin: 0; padding: 0;">Top {{type}} in <span>views</span>:</p>
                                         <p style="margin: 0; padding: 0;">{{top_views_channel}}</p>
-                                        <p style="margin: 0; padding: 0; margin-top: 0.5rem;">Top {{type}} in <span>likes</span>:</p>
-                                        <p style="margin: 0; padding: 0;">{{top_likes_channel}}</p>
-                                        <p style="margin: 0; padding: 0; margin-top: 0.5rem;">Top in <span>subscribtions</span>:</p>
-                                        <p style="margin: 0; padding: 0;">{{top_subs_channel}}</p>
+             
                                     </div>
                                     <div id="channel-views-chart"></div>
 
@@ -133,12 +130,10 @@
                             <div class="chart-compare ">
                                 <div class="compare-el">
                                     <div class="compare-stats">
-                                        <p style="margin: 0; padding: 0;">Top {{type}} in <span>views</span>:</p>
-                                        <p style="margin: 0; padding: 0;">{{top_views_channel}}</p>
+
                                         <p style="margin: 0; padding: 0; margin-top: 0.5rem;">Top {{type}} in <span>likes</span>:</p>
                                         <p style="margin: 0; padding: 0;">{{top_likes_channel}}</p>
-                                        <p style="margin: 0; padding: 0; margin-top: 0.5rem;">Top in <span>subscribtions</span>:</p>
-                                        <p style="margin: 0; padding: 0;">{{top_subs_channel}}</p>
+                                       
                                     </div>
                                     <div id="channel-likes-chart"></div>
 
@@ -152,10 +147,7 @@
                             <div class="chart-compare ">
                                 <div class="compare-el">
                                     <div class="compare-stats">
-                                        <p style="margin: 0; padding: 0;">Top {{type}} in <span>views</span>:</p>
-                                        <p style="margin: 0; padding: 0;">{{top_views_channel}}</p>
-                                        <p style="margin: 0; padding: 0; margin-top: 0.5rem;">Top {{type}} in <span>likes</span>:</p>
-                                        <p style="margin: 0; padding: 0;">{{top_likes_channel}}</p>
+
                                         <p style="margin: 0; padding: 0; margin-top: 0.5rem;">Top in <span>subscribtions</span>:</p>
                                         <p style="margin: 0; padding: 0;">{{top_subs_channel}}</p>
                         
@@ -641,8 +633,6 @@ var seriesData = {};
         };
     });
 
-    console.log(categoryColors)
-
     var options = {
         chart: {
             type: 'bar',
@@ -671,20 +661,20 @@ var seriesData = {};
             mode: 'dark',
             palette: 'palette1'
         },
-        // other options (theme, dataLabels, etc.) similar to your previous charts
         series: series,
         xaxis: {
             categories: trimmedChannels
         },
         formatter: function(seriesName, opts) {
-            return seriesName; // Just return the category name
+            return seriesName;
         }
-        // other options (grid, legend, etc.)
     };
 
     
     var chart = new ApexCharts(document.querySelector("#stacked-bar-chart"), options);
     chart.render()
+
+
     setTimeout(() => {
         chart.updateOptions({
         });

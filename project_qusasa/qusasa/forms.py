@@ -533,7 +533,7 @@ class VideoAnalysisInputForm(forms.Form):
     
     def clean_video_url(self):
         video_url = self.cleaned_data['video_url']
-        youtube_video_pattern = r'^(https?://)?(www\.)?(youtube\.com/watch\?v=|youtu\.be/)[a-zA-Z0-9_-]{11}(&.*)?$'
+        youtube_video_pattern = r'^(https?://)?(www\.)?(youtube\.com/watch\?v=|youtu\.be/|youtube\.com/shorts/)[a-zA-Z0-9_-]{11}(&.*)?$'
 
 
         if not re.match(youtube_video_pattern, video_url):
@@ -570,7 +570,7 @@ class VideoRetrivingInputForm(forms.Form):
 
     def clean_search_query(self):
         video_url = self.cleaned_data['search_query']
-        youtube_video_pattern = r'^(https?://)?(www\.)?(youtube\.com/watch\?v=|youtu\.be/)[a-zA-Z0-9_-]{11}(&.*)?$'
+        youtube_video_pattern = r'^(https?://)?(www\.)?(youtube\.com/watch\?v=|youtu\.be/|youtube\.com/shorts/)[a-zA-Z0-9_-]{11}(&.*)?$'
 
         
         if not re.match(youtube_video_pattern, video_url):

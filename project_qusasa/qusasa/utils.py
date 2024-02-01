@@ -29,10 +29,6 @@ def searchByQuery(youtube, keyword, Type, orderBy='relevance', regionCode='', la
     if(language != ''):
         request_parameters["relevanceLanguage"] = language
     
-    
-        
-    
-
     # Remove None values from request_parameters
     request_parameters = {k: v for k, v in request_parameters.items() if v is not None}
 
@@ -54,13 +50,10 @@ def searchByQuery(youtube, keyword, Type, orderBy='relevance', regionCode='', la
 
     return result_list
 
-# Example usage
-# r = searchByQuery('Minecraft', 'video', regionCode='US', language='en')
-
+import re
 import re
 
 def extractIdFromUrl(url):
-    # youtube = get_youtube_client()
 
     # Regular expressions for different YouTube URL formats
     channel_id_pattern = r'youtube\.com/channel/([a-zA-Z0-9_-]+)'
@@ -68,12 +61,14 @@ def extractIdFromUrl(url):
     playlist_pattern = r'youtube\.com/playlist\?list=([a-zA-Z0-9_-]+)'
     video_pattern = r'youtube\.com/watch\?v=([a-zA-Z0-9_-]+)'
     short_video_pattern = r'youtu\.be/([a-zA-Z0-9_-]+)'
+    youtube_shorts_pattern = r'youtube\.com/shorts/([a-zA-Z0-9_-]+)'
 
     channel_id_match = re.search(channel_id_pattern, url)
     channel_name_match = re.search(channel_name_pattern, url)
     playlist_match = re.search(playlist_pattern, url)
     video_match = re.search(video_pattern, url)
     short_video_match = re.search(short_video_pattern, url)
+    youtube_shorts_match = re.search(youtube_shorts_pattern, url)
 
     if channel_id_match:
         return channel_id_match.group(1)
@@ -85,8 +80,11 @@ def extractIdFromUrl(url):
         return video_match.group(1)
     elif short_video_match:
         return short_video_match.group(1)
+    elif youtube_shorts_match:
+        return youtube_shorts_match.group(1)
     else:
         return None
+
     
 import requests
 from bs4 import BeautifulSoup
@@ -170,7 +168,7 @@ def get_videos_info(entity_id, youtube, entity_type='channel'):
                     'videoId': video_details['id'],
                     'title': video_details['snippet']['title'],
                     'description': video_details['snippet']['description'],
-                    'thumbnail': video_details['snippet']['thumbnails']['high']['url'],
+                    'thumbnail': video_details['snippet']['thumbnails'].get('high', {}).get('url'),
                     'viewsCount': views,
                     'likesCount': likes,
                     'duration': duration
@@ -217,7 +215,7 @@ def get_videos_info(entity_id, youtube, entity_type='channel'):
 
             top_video_info['topComments'] = top_comments
             top_video_info['commentSentiments'] = sentiment_percentages
-        except HttpError as e:
+        except:
             print(f"Comments are disabled for video ID {top_video_info['videoId']}. Error: {e}")
             # Optional: set comments-related info to None or an empty structure
             top_video_info['topComments'] = []
@@ -283,7 +281,7 @@ def analyze_youtube_entity(entity_id, youtube, entity_type='channel'):
 
         entity_stat = response_entity['items'][0]['statistics']
         entity_snippet = response_entity['items'][0]['snippet']
-        channel_icon_url = entity_snippet['thumbnails']['high']['url']
+        channel_icon_url = entity_snippet['thumbnails'].get('high', {}).get('url')
         channel_url = f"https://www.youtube.com/channel/{entity_id}"
 
 
@@ -406,7 +404,7 @@ def video_analysis(youtube, video_id):
                 'videoId': video_details['id'],
                 'title': video_details['snippet']['title'],
                 'description': video_details['snippet']['description'],
-                'thumbnail': video_details['snippet']['thumbnails']['high']['url'],
+                'thumbnail': video_details['snippet']['thumbnails'].get('high', {}).get('url'),
                 'viewsCount': views,
                 'likesCount': likes,
                 'commentCount': comments,
@@ -427,12 +425,14 @@ def video_analysis(youtube, video_id):
     video_info['most_used_categories'] = most_used_categories
     
     if video_info:
-        # Fetch the top 3 comments for the most viewed video
-        comments_response = youtube.commentThreads().list(part='snippet', videoId=video_info['videoId']).execute()
-        comments = [clean_text(comment['snippet']['topLevelComment']['snippet']['textDisplay']) for comment in comments_response['items']]
-      
-        video_info['comments'] = comments
+        try:
+            # Fetch the top 3 comments for the most viewed video
+            comments_response = youtube.commentThreads().list(part='snippet', videoId=video_info['videoId']).execute()
+            comments = [clean_text(comment['snippet']['topLevelComment']['snippet']['textDisplay']) for comment in comments_response['items']]
         
+            video_info['comments'] = comments
+        except: 
+            video_info['comments'] = []
 
     return video_info
 
@@ -516,7 +516,7 @@ def video_analysis(youtube, video_id):
             'videoId': video_details['id'],
             'title': video_details['snippet']['title'],
             'description': video_details['snippet']['description'],
-            'thumbnail': video_details['snippet']['thumbnails']['high']['url'],
+            'thumbnail': video_details['snippet']['thumbnails'].get('high', {}).get('url'),
             'viewsCount': int(statistics.get('viewCount', 0)),
             'likesCount': int(statistics.get('likeCount', 0)),
             'commentCount': int(statistics.get('commentCount', 0)),
@@ -577,8 +577,9 @@ def video_analysis(youtube, video_id):
         print(comments_df.columns)
         emotion_counts, top_comments_by_emotion = analyze_comments_emotions(comments_df)
     else:
-        emotion_counts = []
-        top_comments_by_emotion = []
+        emotion_counts = pd.DataFrame()
+        top_comments_by_emotion = {}
+        comments_df = pd.DataFrame()
     return video_info_df, comments_df, emotion_counts, top_comments_by_emotion
 
 import googleapiclient.discovery
@@ -590,15 +591,15 @@ from collections import Counter
 from transformers import pipeline
 
 
-#Maha=   AIzaSyB5Mi7IXiOBEq5f7nk_kIiq-bVZ6m25rwE
-#Qusasa=   AIzaSyBTkp8Z7xgdHMF8y7BBlWqUabqbERDhyFM
-dev="AIzaSyB5Mi7IXiOBEq5f7nk_kIiq-bVZ6m25rwE"
-api_service_name = "youtube"
-api_version = "v3"
-DEVELOPER_KEY = dev
+# #Maha=   AIzaSyB5Mi7IXiOBEq5f7nk_kIiq-bVZ6m25rwE
+# #Qusasa=   AIzaSyBTkp8Z7xgdHMF8y7BBlWqUabqbERDhyFM
+# dev="AIzaSyB5Mi7IXiOBEq5f7nk_kIiq-bVZ6m25rwE"
+# api_service_name = "youtube"
+# api_version = "v3"
+# DEVELOPER_KEY = dev
 
-youtube = googleapiclient.discovery.build(
-    api_service_name, api_version, developerKey='AIzaSyB5Mi7IXiOBEq5f7nk_kIiq-bVZ6m25rwE')
+# youtube = googleapiclient.discovery.build(
+#     api_service_name, api_version, developerKey='AIzaSyB5Mi7IXiOBEq5f7nk_kIiq-bVZ6m25rwE')
 
 def parse_duration_to_minutes(duration):
     pattern = r'P(?:(\d+)D)?T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?'
@@ -633,7 +634,7 @@ def analyse_video(youtube, video_id):
         'title': video_details['snippet']['title'],
         'description': video_details['snippet']['description'],
         'publishedAt': video_details['snippet']['publishedAt'],
-        'thumbnail': video_details['snippet']['thumbnails']['high']['url'],
+        'thumbnail': video_details['snippet']['thumbnails'].get('high', {}).get('url'),
         'viewsCount': int(statistics.get('viewCount', 0)),
         'likesCount': int(statistics.get('likeCount', 0)),
         'commentCount': int(statistics.get('commentCount', 0)),
@@ -687,7 +688,14 @@ def analyse_comments_data(youtube, video_id):
         # Handle the case where comments are disabled or other HTTP errors
         print(f"Error fetching comments for video ID {video_id}: {e}")
         # You can return an empty list or a DataFrame, or handle this in another way
-        return []
+        return [{
+                'commentId': '',
+                'author': '',
+                'text': 'No comments',
+                'likeCount': 0,
+                'replyCount': 0,
+                'timestamp': ''
+            }]
 
     # Create a DataFrame from comments data if needed
     # comments_df = pd.DataFrame(comments_data)
@@ -703,6 +711,7 @@ def analyze_comments_emotions_for_playlist(comments_df):
 
     # Function to safely analyze emotion (with truncation)
     def get_emotion(texts):
+      
       # Ensure the input is a list of strings
       if isinstance(texts, str):
           texts = [texts]
@@ -721,7 +730,7 @@ def analyze_comments_emotions_for_playlist(comments_df):
       # Convert predictions to labels
       label = [model.config.id2label[prediction.item()] for prediction in predictions][0]
       return label
-
+    
     # Add a new column to the DataFrame for the predicted emotions
     comments_df['emotion'] = comments_df['text'].apply(get_emotion)
 
@@ -799,22 +808,30 @@ def analyze_playlist(youtube, playlist_id):
     top_3_comments = []
     for _, row in top_3_videos.iterrows():
         video_comments = analyse_comments_data(youtube, row['videoId'])
-        top_3_comments.extend(video_comments)
+        if video_comments != []:
+            top_3_comments.extend(video_comments)
 
     # Collect comments for worst 3 videos
     worst_3_comments = []
     for _, row in worst_3_videos.iterrows():
         video_comments = analyse_comments_data(youtube, row['videoId'])
-        worst_3_comments.extend(video_comments)
+        if video_comments != []:
+            worst_3_comments.extend(video_comments)
 
+    if top_3_comments != []:
     # Convert comments lists to DataFrames
-    top_3_comments_df = pd.DataFrame(top_3_comments)
-    worst_3_comments_df = pd.DataFrame(worst_3_comments)
-
-    # Analyze the merged comments
-    top_3_comments_analysis = analyze_comments_emotions_for_playlist(top_3_comments_df)
-    worst_3_comments_analysis = analyze_comments_emotions_for_playlist(worst_3_comments_df)
-
+        top_3_comments_df = pd.DataFrame(top_3_comments)
+        top_3_comments_analysis = analyze_comments_emotions_for_playlist(top_3_comments_df)
+    else:
+        top_3_comments_df = []
+        top_3_comments_analysis = []
+        
+    if worst_3_comments != []:
+        worst_3_comments_df = pd.DataFrame(worst_3_comments)
+        worst_3_comments_analysis = analyze_comments_emotions_for_playlist(worst_3_comments_df)
+    else:
+        worst_3_comments_df = []
+        worst_3_comments_analysis = []
     # Calculate aggregated data
     total_views = all_videos_info_df['viewsCount'].sum()
     total_likes = all_videos_info_df['likesCount'].sum()
@@ -831,7 +848,7 @@ def analyze_playlist(youtube, playlist_id):
         'playlistId': playlist_id,
         'title': playlist_details['snippet']['title'],
         'description': playlist_details['snippet']['description'],
-        'thumbnail': playlist_details['snippet']['thumbnails']['high']['url'],
+        'thumbnail': playlist_details['snippet']['thumbnails'].get('high', {}).get('url'),
         'channelName': playlist_details['snippet']['channelTitle'],
         'publishedAt': playlist_details['snippet']['publishedAt'],
         'videoCount': playlist_details['contentDetails']['itemCount'],
@@ -863,7 +880,7 @@ def analyze_channel(youtube, channel_id):
     channel_info = {
         'Channel Name': channel_details['snippet']['title'],
         'description': channel_details['snippet']['description'],
-        'thumbnail': channel_details['snippet']['thumbnails']['high']['url'],
+        'thumbnail': channel_details['snippet']['thumbnails'].get('high', {}).get('url'),
         'viewCount': channel_details['statistics']['viewCount'],
         'videoCount': channel_details['statistics']['videoCount'],
         'subscriberCount': channel_details['statistics']['subscriberCount'],
@@ -934,22 +951,31 @@ def analyze_channel(youtube, channel_id):
     top_3_comments = []
     for _, row in top_3_videos.iterrows():
         video_comments = analyse_comments_data(youtube, row['videoId'])
-        top_3_comments.extend(video_comments)
+        if video_comments != []:
+            top_3_comments.extend(video_comments)
 
     # Collect comments for worst 3 videos
     worst_3_comments = []
     for _, row in worst_3_videos.iterrows():
         video_comments = analyse_comments_data(youtube, row['videoId'])
-        worst_3_comments.extend(video_comments)
+        if video_comments != []:
+            worst_3_comments.extend(video_comments)
 
+    if top_3_comments != []:
     # Convert comments lists to DataFrames
-    top_3_comments_df = pd.DataFrame(top_3_comments)
-    worst_3_comments_df = pd.DataFrame(worst_3_comments)
-
-    # Analyze the merged comments
-    top_3_comments_analysis = analyze_comments_emotions_for_playlist(top_3_comments_df)
-    worst_3_comments_analysis = analyze_comments_emotions_for_playlist(worst_3_comments_df)
-
+        top_3_comments_df = pd.DataFrame(top_3_comments)
+        top_3_comments_analysis = analyze_comments_emotions_for_playlist(top_3_comments_df)
+    else:
+        top_3_comments_df = []
+        top_3_comments_analysis = []
+        
+    if worst_3_comments != []:
+        worst_3_comments_df = pd.DataFrame(worst_3_comments)
+        worst_3_comments_analysis = analyze_comments_emotions_for_playlist(worst_3_comments_df)
+    else:
+        worst_3_comments_df = []
+        worst_3_comments_analysis = []
+        
     # Aggregate unique tags
     unique_tags = set()
     for tags in all_videos_df['unique_tags']:
@@ -976,7 +1002,7 @@ def analyze_channel(youtube, channel_id):
                 'playlistId': playlist_id,
                 'title': playlist_details['title'],
                 'description': playlist_details['description'],
-                'thumbnail': playlist_details['thumbnails']['high']['url'],
+                'thumbnail': playlist_details['thumbnails'].get('high', {}).get('url'),
                 'publishedAt': playlist_details['publishedAt'],
                 'videoCount': content_details['itemCount'],
             }
@@ -1020,7 +1046,7 @@ def download_audio_from_youtube(url, output_dir):
 import whisper
 
 def transcribe_youtube_video(audio_file):
-    model = whisper.load_model("tiny")  # or another model size
+    model = whisper.load_model("tiny")
     result = model.transcribe(audio_file)
     return result["text"]
 
@@ -1118,7 +1144,7 @@ def topic_analysis(youtube, query, orderBy='relevance', regionCode='', language=
             'title': video_details['snippet']['title'],
             'description': video_details['snippet']['description'],
             'publishedAt': video_details['snippet']['publishedAt'],
-            'thumbnail': video_details['snippet']['thumbnails']['high']['url'],
+            'thumbnail': video_details['snippet']['thumbnails'].get('high', {}).get('url'),
             'viewsCount': int(statistics.get('viewCount', 0)),
             'likesCount': int(statistics.get('likeCount', 0)),
             'commentCount': int(statistics.get('commentCount', 0)),
@@ -1189,7 +1215,7 @@ def topic_analysis(youtube, query, orderBy='relevance', regionCode='', language=
 
 
 
-def get_realted_videos(video_id, order='relevance', region_code='', language='', number_of_videos=10):
+def get_realted_videos(youtube, video_id, order='relevance', region_code='', language='', number_of_videos=10):
     # Step 1: Fetch the video's details
     video_details_request = youtube.videos().list(
         part="snippet",
@@ -1299,7 +1325,7 @@ def get_videos(youtube, search_term, video_category_id='none', order='relevance'
                 "Id": video["id"],
                 "URL": f"https://www.youtube.com/watch?v={video['id']}",
                 "Channel": video["snippet"].get("channelTitle", "Unknown Channel"),
-                "Thumbnial": video["snippet"]['thumbnails']['high']['url'],
+                "Thumbnial": video["snippet"]['thumbnails'].get('high', {}).get('url'),
                 "Description": video["snippet"]["description"],
                 "Tags": video["snippet"].get("tags", []),
                 "Category": category_names.get(video["snippet"]["categoryId"], "Unknown"),

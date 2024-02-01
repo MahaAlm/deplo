@@ -279,13 +279,16 @@
                         </div>
                     {% endfor %}
                     
+                    {%if top_5_comments%}
                     <div class="emotions_radchart" style="margin-bottom: 5rem; margin-top: 5rem;">
                         <h1 data-aos="fade-up">Commetns emotions distribution</h1>
                     <p data-aos="fade-up">Get a deeper understanding of why the viewers likes this content through comments sentiment analysis</p>
                     <div id="emotions_radchart" data-aos="fade-up"></div>
                     </div>
+                    {%endif%}
                     
-                  
+                    {%if top_5_comments%}
+
                     <div class="emotions-examples">
                         <h1 data-aos="fade-up">Look into the top emotions</h1>
                         <p data-aos="fade-up">the top comments from the top emotions</p>
@@ -300,6 +303,8 @@
                             </div>
                             {%endfor%}
                         </div>
+                        
+                        {%endif%}
                     </div>
                     
                 </div>
@@ -332,14 +337,16 @@
                             </div>
                         </div>
                     {% endfor %}
-                    
+
+                    {% if worst_5_comments %}
                     <div class="emotions_radchart" style="margin-bottom: 5rem; margin-top: 5rem;">
                         <h1 data-aos="fade-up">Commetns emotions distribution</h1>
                     <p data-aos="fade-up">Get a deeper understanding of why the viewers likes this content through comments sentiment analysis</p>
                     <div id="emotions_radchart_worst" data-aos="fade-up"></div>
                     </div>
+                    {%endif%}
                     
-                  
+                    {% if worst_5_comments%}
                     <div class="emotions-examples">
                         <h1 data-aos="fade-up">Look into the top emotions</h1>
                         <p data-aos="fade-up">the top comments from the top emotions</p>
@@ -354,13 +361,15 @@
                             </div>
                             {%endfor%}
                         </div>
-                    </div>
+                        
+                        {%endif%}
                     
                 </div>
                 
                 
             </div>
             
+        </div>
         </div>
 
        
@@ -388,7 +397,6 @@
     </div>
 
    
-</div>
 
 
 <script type="text/javascript">
@@ -571,7 +579,7 @@
     var options1 = {
         chart: {
             id: "chart2",
-            type: "area",
+            type: "bar",
             height: 300,
             width: 500,
             foreColor: "#ccc",
@@ -835,6 +843,7 @@
 </script>
 
 <script>
+
     // Define a function to draw a word cloud
     var myColors = ['#D5A9FF', '#7EF7D9', '#12CEE6', '#4686FF', '#FFFFFF', /* more colors */ ];
 
@@ -891,22 +900,106 @@ drawWordCloud("#wordcloud0" , channelsTags);
 
 <script>
     // Assuming jsonData.top_5_comments_analysis_dist is already defined as shown above
-    var emotionData = jsonData.top_5_comments_analysis_dist;
+    var emotions_chart_worstOpt;
+    var emotions_chartOpt;
 
-   
-    const emotionDatasliced = Object.fromEntries(
-  Object.entries(emotionData).slice(0, 10)
-);
+    
+if ('top_5_comments_analysis_dist' in jsonData) {
+        var emotionData = jsonData.top_5_comments_analysis_dist;
+
+        const emotionDatasliced = Object.fromEntries(
+        Object.entries(emotionData).slice(0, 10)
+        );
+
 
     var emotions = Object.keys(emotionDatasliced);
     var emotionValues = Object.values(emotionDatasliced).map(value => Math.round(value * 100));  // Convert to percentages
+
+    var options = {
+        chart: {
+            type: 'bar',
+            height: 500,
+            width: '100%',
+            foreColor: '#fff',        
+            // white text for the dark theme,
+            background: 'transparent'
+
+        },
+        plotOptions: {
+            bar: {
+                horizontal: true,
+                distributed: true, 
+                columnWidth: '50%', 
+                endingShape: 'rounded' ,
+                dataLabels: {
+                    position: 'top' // Ensuring data labels appear on top of the bars
+                }
+            }
+        },
+        
+        theme: {
+            mode: 'dark',
+            palette: 'palette1'
+        },
+        dataLabels: {
+            enabled: false
+        },
+        series: [{
+            name: 'Emotion Percentage',
+            data: emotionValues
+        }],
+        xaxis: {
+            categories: emotions,
+            
+        },
+        grid: {
+            show: false
+        },
+        legend: {
+            show: false
+        },
+        fill: {
+            type: 'gradient',
+            gradient: {
+                shade: 'light',
+                type: "vertical",
+                shadeIntensity: 0.5,
+                gradientToColors: undefined, 
+                inverseColors: true,
+                opacityFrom: 0.85,
+                opacityTo: 0.85,
+                stops: [0, 100]
+            }
+        },
+        stroke: {
+        lineCap: 'round' // This gives a slight radius effect on the chart
+    }
+    };
+    
+
+    var emotions_chart = new ApexCharts(document.querySelector("#emotions_radchart"), options);
+    emotions_chart.render();
+
+    var chart9Options = emotions_chart.w.config;
+
+    var emotions_chartOpt = deepCopy(chart9Options);
+    emotions_chartOpt.chart.foreColor = '#000'; // Set text color to black
+    emotions_chartOpt.chart.background = '#FFF'; // Set background to white for contrast
+    emotions_chartOpt.chart.height = 300; // Set text color to black
+    emotions_chartOpt.chart.width = 300; // Set background to white for contrast
+    emotions_chartOpt.title.text = "Top videos Comments Sentiment";
+    emotions_chartOpt.legend.show = true
+    emotions_chartOpt.fill = {}
+}
+
+if ('worst_5_comments_analysis_dist' in jsonData) {
 
     var emotionDataWorst = jsonData.worst_5_comments_analysis_dist;
 
    
     const emotionDataslicedWorst = Object.fromEntries(
-  Object.entries(emotionData).slice(0, 10)
-);
+  Object.entries(emotionDataWorst).slice(0, 10)
+    );
 
     var emotionsWorst = Object.keys(emotionDataslicedWorst);
     var emotionValuesWorst = Object.values(emotionDataslicedWorst).map(value => Math.round(value * 100));  // Convert to percentages
@@ -972,20 +1065,6 @@ drawWordCloud("#wordcloud0" , channelsTags);
     }
     };
 
-    var emotions_chart = new ApexCharts(document.querySelector("#emotions_radchart"), options);
-    emotions_chart.render();
-
-    var chart9Options = emotions_chart.w.config;
-
-    var emotions_chartOpt = deepCopy(chart9Options);
-    emotions_chartOpt.chart.foreColor = '#000'; // Set text color to black
-    emotions_chartOpt.chart.background = '#FFF'; // Set background to white for contrast
-    emotions_chartOpt.chart.height = 300; // Set text color to black
-    emotions_chartOpt.chart.width = 300; // Set background to white for contrast
-    emotions_chartOpt.title.text = "Top videos Comments Sentiment";
-    emotions_chartOpt.legend.show = true
-    emotions_chartOpt.fill = {}
-
     var options_worst = options
     options_worst['series'] = [{
         name: 'Emotion Percentage',
@@ -1002,13 +1081,15 @@ drawWordCloud("#wordcloud0" , channelsTags);
     var chart10Options = emotions_chart_worst.w.config;
 
     var emotions_chart_worstOpt = deepCopy(chart10Options);
-    emotions_chart_worstOpt.chart.foreColor = '#000'; // Set text color to black
-    emotions_chart_worstOpt.chart.background = '#FFF'; // Set background to white for contrast
-    emotions_chart_worstOpt.chart.height = 300; // Set text color to black
-    emotions_chart_worstOpt.chart.width = 300; // Set background to white for contrast
+    emotions_chart_worstOpt.chart.foreColor = '#000'; 
+    emotions_chart_worstOpt.chart.background = '#FFF'; 
+    emotions_chart_worstOpt.chart.height = 300; 
+    emotions_chart_worstOpt.chart.width = 300; 
     emotions_chart_worstOpt.title.text = "Worst videos Comments Sentiment";
     emotions_chart_worstOpt.legend.show = true
     emotions_chart_worstOpt.fill = {}
+}
+
 
 </script>
 
@@ -1136,8 +1217,14 @@ drawWordCloud("#wordcloud0" , channelsTags);
     }
     
     // Assuming you have an array of chart options for each chart
-    let chartsOptions = [views_chart, likes_chart, comments_chart, views_chart_dur, likes_chart_dur, comments_chart_dur, emotions_chartOpt, emotions_chart_worstOpt];
-    
+    let chartsOptions = [views_chart, likes_chart, comments_chart, views_chart_dur, likes_chart_dur, comments_chart_dur];
+    if(emotions_chartOpt !== undefined) {
+        chartsOptions.push(emotions_chartOpt)
+    }
+
+    if(emotions_chart_worstOpt !== undefined) {
+        chartsOptions.push(emotions_chart_worstOpt)
+    }
     // Process and send all charts
     processAndSendCharts(chartsOptions);
     

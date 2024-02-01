@@ -15,19 +15,117 @@
     .cards {
         justify-content: start;
     }
+
+    .card {
+        position: relative;
+    }
+
+    .card:hover {
+        transform: translate(0, -5px);
+        transition: 0.2s;
+    }
+
+    .card:hover .feature-name {
+        background-color: white;
+        color: black;
+        transition-duration: 0.5s;
+        margin-top: 1rem;
+        opacity: 1;
+    
+    }
+    
+
+    
+.card:hover .card__thumb  {
+    height: 100%;
+    overflow: hidden;
+    -webkit-transition: height 0.5s;
+    transition: height 0.5s;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+}
+
+.card:hover .card__thumb img {
+    max-width: 80%;
+    max-height: 50%;
+    display: block;
+    margin: 0;
+    padding: 0;
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-transition: opacity 0.5s, -webkit-transform 0.5s;
+    transition: opacity 0.5s, -webkit-transform 0.5s;
+    transition: opacity 0.5s, transform 0.5s;
+    transition: opacity 0.5s, transform 0.5s, -webkit-transform 0.5s;
+}
+
+    .delete-checkbox {
+        visibility: hidden;
+        position: absolute;
+        
+    }
+
+    .delete-checkbox + label {
+        position: absolute;
+        top: 5%;
+        right: 5%;
+        padding: 20px;
+        border: none; /* Border color */
+        border-radius: 50%; /* Make it circular */
+        cursor: pointer;
+        background: rgb(117, 211, 210);
+        z-index: 200;
+    }
+    
+    .delete-checkbox:checked + label {
+        background-color: #108888; /* Background color when checked */
+    }
+    
+    .delete-checkbox + label:after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px; /* Size of the inner circle */
+        height: 20px;
+        border-radius: 50%;
+        background-color: white; /* Inner circle color */
+        transform: translate(-50%, -50%) scale(0);
+        transition: transform 0.3s ease;
+    }
+    
+    .delete-checkbox:checked + label:after {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    
+  
+    .buttons {
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+    margin: 1rem;
+    width: 220px;
+    height: 280px;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(95, 95, 95, 0.058);
+    overflow: hidden;
+    -webkit-transition: box-shadow 0.5s;
+    transition: box-shadow 0.5s;
+    font-family: 'Raleway';
+    
+    }
+    
+    
 </style>
 
 </head>
 <body> 
-    <!-- <img class="polygon" src="{% static 'qusasa/images/Frame 2.png'%}" alt="Description of Image" class="full-size-absolute"> -->
     
-    <!-- <div class="navigation">
-        <img class="static-img" src="{% static 'qusasa/images/qusasa.png' %}" alt="">
-
-        <div class="navs">
-            <a href="{% url 'logout' %}">Log out</a>
-        </div>
-    </div> -->
     <a class="log-out" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i>  Log out</a>
 
 
@@ -38,25 +136,33 @@
             Welcome, {{ user.first_name }}!
         </div>
         <div class="history">
+
             <div class="cards">
                 {% if video_histories.exists or topic_histories.exists or playlist_histories.exists or channel_histories.exists or video_retrieving_histories.exists or competitive_histories.exists %}
-                    <!-- Iterate over each type of history -->
+                        <div class="buttons">
+                            <button id="delete-selected">Delete Selected</button>
+                            <button id="select-all">Select All</button>
+                        </div>
+                        
+    
+                <!-- Iterate over each type of history -->
                     {% for history in video_histories %}
                     <article class="card">
+                        <input type="checkbox" id="video-history-{{ history.id }}" class="delete-checkbox" value="{{ history.id }}" data-type="video">
+                        <label for="video-history-{{ history.id }}"></label>
                         <a href="{% url 'video_analysis_detail' history.id %}">
         
                         <header class="card__thumb">
                             <img src="{% static 'qusasa/images/report.png' %}"/>
                             <div class="feature-name">
     
-                                    Video Analysis {{ forloop.counter }}
+                                    Video Analysis {{ history.id  }}
                             </div>
                         </header>
                         
                         <div class="card__body">
                             <div class="card__category youtube">{{ history.created_at|date:"M d, Y" }}</div>
-                            <h2 class="card__title">Your video was</h2>
-                            <p class="card__description" style="justify-content: center; text-align:center;">{{history.video_url}}</p>
+                            
                         </div>
                     </a>
                     </article>
@@ -64,20 +170,21 @@
     
                     {% for history in topic_histories %}
                     <article class="card">
+                        <input type="checkbox" id="topic-history-{{ history.id }}" class="delete-checkbox" value="{{ history.id }}" data-type="topic">
+                        <label for="topic-history-{{ history.id }}"></label>
                         <a href="{% url 'topic_analysis_detail' history.id %}">
         
                         <header class="card__thumb">
                             <img src="{% static 'qusasa/images/report.png' %}"/>
                             <div class="feature-name">
     
-                                    Topic Analysis {{ forloop.counter }}
+                                    Topic Analysis {{ history.id  }}
                             </div>
                         </header>
                         
                         <div class="card__body">
                             <div class="card__category youtube">{{ history.created_at|date:"M d, Y" }}</div>
-                            <h2 class="card__title">Your topic was</h2>
-                            <p class="card__description" style="justify-content: center; text-align:center;">{{history.search_query}}</p>
+                            
                         </div>
                     </a>
                     </article>
@@ -85,20 +192,22 @@
     
                     {% for history in playlist_histories %}
                     <article class="card">
+                        <input type="checkbox" id="playlist-history-{{ history.id }}" class="delete-checkbox" value="{{ history.id }}" data-type="playlist">
+                        <label for="playlist-history-{{ history.id }}"></label>
+
                         <a href="{% url 'playlist_analysis_detail' history.id %}">
         
                         <header class="card__thumb">
                             <img src="{% static 'qusasa/images/report.png' %}"/>
                             <div class="feature-name">
     
-                                    Playlist Analysis {{ forloop.counter }}
+                                    Playlist Analysis {{ history.id  }}
                             </div>
                         </header>
                         
                         <div class="card__body">
                             <div class="card__category youtube">{{ history.created_at|date:"M d, Y" }}</div>
-                            <h2 class="card__title">Your playlist was</h2>
-                            <p class="card__description" style="justify-content: center; text-align:center;">{{history.playlist_url}}</p>
+                            
                         </div>
                     </a>
                     </article>
@@ -106,20 +215,22 @@
     
                     {% for history in channel_histories %}
                     <article class="card">
+                        <input type="checkbox" id="channel-history-{{ history.id }}" class="delete-checkbox" value="{{ history.id }}" data-type="channel">
+                        <label for="channel-history-{{ history.id }}"></label>
+
                         <a href="{% url 'channel_analysis_detail' history.id %}">
         
                         <header class="card__thumb">
                             <img src="{% static 'qusasa/images/report.png' %}"/>
                             <div class="feature-name">
     
-                                    Channel Analysis {{ forloop.counter }}
+                                    Channel Analysis {{ history.id }}
                             </div>
                         </header>
                         
                         <div class="card__body">
                             <div class="card__category youtube">{{ history.created_at|date:"M d, Y" }}</div>
-                            <h2 class="card__title">Your channel was</h2>
-                            <p class="card__description" style="justify-content: center; text-align:center;">{{history.channel_url}}</p>
+                            
                         </div>
                     </a>
                     </article>
@@ -127,20 +238,22 @@
     
                     {% for history in video_retrieving_histories %}
                     <article class="card">
+                        <input type="checkbox" id="retrival-history-{{ history.id }}" class="delete-checkbox" value="{{ history.id }}" data-type="video_retrieving">
+                        <label for="retrival-history-{{ history.id }}"></label>
+
                         <a href="{% url 'video_retriving_detail' history.id %}">
         
                         <header class="card__thumb">
                             <img src="{% static 'qusasa/images/report.png' %}"/>
                             <div class="feature-name">
     
-                                    Video Retrival {{ forloop.counter }}
+                                    Video Retrival {{ history.id  }}
                             </div>
                         </header>
                         
                         <div class="card__body">
                             <div class="card__category youtube">{{ history.created_at|date:"M d, Y" }}</div>
-                            <h2 class="card__title">Your video was</h2>
-                            <p class="card__description" style="justify-content: center; text-align:center;">{{history.video_url}}</p>
+                           
                         </div>
                     </a>
                     </article>
@@ -148,20 +261,22 @@
     
                     {% for history in competitive_histories %}
                     <article class="card">
+                        <input type="checkbox" id="competitive-history-{{ history.id }}" class="delete-checkbox" value="{{ history.id }}" data-type="competitive">
+                        <label for="competitive-history-{{ history.id }}"></label>
+
                         <a href="{% url 'competitive_analysis_detail' history.id %}">
         
                         <header class="card__thumb">
                             <img src="{% static 'qusasa/images/report.png' %}"/>
                             <div class="feature-name">
     
-                                    Competitive Analysis {{ forloop.counter }}
+                                    Competitive Analysis {{ history.id  }}
                             </div>
                         </header>
                         
                         <div class="card__body">
                             <div class="card__category youtube">{{ history.created_at|date:"M d, Y" }}</div>
-                            <h2 class="card__title">Your channel was</h2>
-                            <p class="card__description" style="justify-content: center; text-align:center;">{{history.input_text}}</p>
+                           
                         </div>
                     </a>
                     </article>
@@ -178,8 +293,107 @@
         </div>
     </div>
     
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // Select the 'Select All' button and the 'Delete Selected' button
+            const selectAllButton = document.getElementById('select-all');
+            const deleteSelectedButton = document.getElementById('delete-selected');
+    
+            // Function to update the state of the 'Delete Selected' button
+            function updateDeleteButtonState() {
+                const checkboxes = document.querySelectorAll('.delete-checkbox');
+                const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+                deleteSelectedButton.disabled = !anyChecked;
+            }
+    
+            // Add click event listener to the 'Select All' button
+            selectAllButton.addEventListener('click', () => {
+                // Select all checkboxes with the class 'delete-checkbox'
+                const checkboxes = document.querySelectorAll('.delete-checkbox');
+                
+                // Set each checkbox's 'checked' property to true
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = true;
+                });
+    
+                // Update the state of the 'Delete Selected' button
+                updateDeleteButtonState();
+            });
+    
+            // Add change event listener to each checkbox
+            document.querySelectorAll('.delete-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', updateDeleteButtonState);
+            });
+    
+            // Initialize the state of the 'Delete Selected' button
+            updateDeleteButtonState();
+        });
+    </script>
+    
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById('delete-selected').addEventListener('click', function() {
+                var selectedItems = [];
+                document.querySelectorAll('.delete-checkbox:checked').forEach(function(checkbox) {
+                    selectedItems.push({id: checkbox.value, type: checkbox.getAttribute('data-type')});
+                });
+        
+                if (selectedItems.length > 0) {
+                    fetch('/delete_selected_templates/', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': getCookie('csrftoken'),
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ 'selectedItems': selectedItems })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        window.location.reload();
+                    });
+                } else {
+                    alert("Please select at least one template to delete.");
+                }
+            });
+        
+            function getCookie(name) {
+                // Function to get CSRF token
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+        });
+        </script>
 
+        <script>
+            document.addEventListener('DOMContentLoaded', (event) => {
+                // Select the 'Select All' button
+                const selectAllButton = document.getElementById('select-all');
+        
+                // Add click event listener to the 'Select All' button
+                selectAllButton.addEventListener('click', () => {
+                    // Select all checkboxes with the class 'delete-checkbox'
+                    const checkboxes = document.querySelectorAll('.delete-checkbox');
+                    
+                    // Set each checkbox's 'checked' property to true
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = true;
+                    });
+                });
+            });
+        </script>
+        
    
 
     <!-- Linking JS at the bottom for better performance -->

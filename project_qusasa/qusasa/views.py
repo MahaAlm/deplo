@@ -136,6 +136,8 @@ from django.http import HttpResponseRedirect
 from formtools.wizard.views import SessionWizardView
 from .forms import CompetitiveAnalysisTypeForm, myChannelPlaylistInputForm, YouTubeSearchForm, YouTubeCategorySearchForm, ChannelsListInput, FindInitialChoiceForm
 from .models import CompetitiveAnalysisHistory
+
+
 class CompetitiveAnalysisWizard(SessionWizardView):
     form_list = [CompetitiveAnalysisTypeForm, myChannelPlaylistInputForm, FindInitialChoiceForm, ChannelsListInput]
     template_name = 'features_pages/competitive_analysis/competitive_analysis.html'
@@ -208,9 +210,6 @@ class CompetitiveAnalysisWizard(SessionWizardView):
             self.request.session['analysis_type'] = analysis_type
         return super().post(*args, **kwargs)
 
-    
-
-
     def get_context_data(self, form, **kwargs):
         context = super().get_context_data(form=form, **kwargs)
         # Determine the current step. If it's the second form, change the label dynamically
@@ -250,7 +249,7 @@ class CompetitiveAnalysisWizard(SessionWizardView):
             
             
         elif(search_or_list == 'input_list'):
-            ids_list = [my_link]
+            ids_list = [extractIdFromUrl(my_link)]
         for i in range(1, 5):
             url_field = f'channel_url_{i}'
             if url_field in cleaned_data and cleaned_data[url_field]:
@@ -286,20 +285,17 @@ class CompetitiveAnalysisWizard(SessionWizardView):
                 channel_urls=channel_urls,
             )
             
-        print(ids_list)
         channel_data_df, top_videos_df, channel_icons, durations_list = analyse_channels(ids_list, entity_type, youtube)
         if 'engagementScore' in top_videos_df.columns:
             top_videos_df.drop('engagementScore', axis=1, inplace=True)
         channel_data_csv = channel_data_df.to_csv(index=False)
         top_videos_csv = top_videos_df.to_csv(index=False)
+        
         # Extract channel names
-        print(channel_data_df.columns)
         channel_names = channel_data_df['Name'].tolist()
         
         top_videos_dict = top_videos_df.to_dict(orient='records')
         self.request.session['top_videos'] = top_videos_dict
-
-        
 
         # Store in session
         self.request.session['channel_icons'] = channel_icons
@@ -330,8 +326,8 @@ class CompetitiveAnalysisWizard(SessionWizardView):
         self.request.session['top_subs_channel'] = top_subs_channel
         self.request.session['type'] = entity_type
         self.request.session['durations'] = durations_list
-        # Redirect to a new URL:
-        return HttpResponseRedirect(reverse('competitive_analysis_output'))  # Use the name of the URL pattern
+
+        return HttpResponseRedirect(reverse('competitive_analysis_output')) 
 
 
 # URL pattern would look something like this:
@@ -356,7 +352,6 @@ def competitive_analysis_output_view(request):
     json_data = json.dumps(output_data)
     
 
-    # Zip the lists together in the view
     channels = zip(channel_icons, channel_names)
     channels_tags = zip(request.session.get('topTags', []), channel_names)
     channel_names = channel_names
@@ -484,12 +479,21 @@ class VideoAnalysisWizard(SessionWizardView):
 def video_analysis_output_view(request):
     
     output_data = {
-        'emotion_counts': request.session['emotion_counts'],
-        'top_comments_by_emotion': request.session['top_comments_by_emotion'],
         "video_info_dict": request.session['video_info_dict'],
         'transcript': request.session['transcript'],
         'summary': request.session['summary']
     }
+    
+    if request.session['emotion_counts'] == {}:
+        del request.session['emotion_counts']
+    else:
+        output_data["emotion_counts"] = request.session['emotion_counts']
+    
+    if request.session['top_comments_by_emotion'] == []:
+        del request.session['top_comments_by_emotion']
+    else:
+        output_data["top_comments_by_emotion"] = request.session['top_comments_by_emotion']
+     
     
     json_data = json.dumps(output_data)
     
@@ -498,7 +502,7 @@ def video_analysis_output_view(request):
     transcript = request.session['transcript']
     doc_output_dir = os.path.join(settings.MEDIA_ROOT, 'documents')
     
-    docx_file_path = create_word_document(transcript, summary, "YouTube_Analysis", doc_output_dir)
+    docx_file_path = create_word_document(transcript, summary, "video_analysis", doc_output_dir)
     
     context= {'json_data': json_data, 
               'transcript': request.session['transcript'],
@@ -624,20 +628,26 @@ class PlaylistAnalysisWizard(SessionWizardView):
             
         self.request.session['top_5_videos'] = top_5_videos.to_dict(orient='records')
         self.request.session['worst_5_videos'] = worst_5_videos.to_dict(orient='records')
-        
-        top_5_comments_analysis_dist = top_5_comments_analysis[0].to_dict()
-        top_5_comments = top_5_comments_analysis[1]
-        
-        worst_5_comments_analysis_dist = worst_5_comments_analysis[0].to_dict()
-        worst_5_comments = worst_5_comments_analysis[1]
-        
-        
-        self.request.session['top_5_comments_analysis_dist'] = top_5_comments_analysis_dist
-        self.request.session['top_5_comments'] = top_5_comments
-        
-        self.request.session['worst_5_comments_analysis_dist'] = worst_5_comments_analysis_dist
-        self.request.session['worst_5_comments'] = worst_5_comments
-        
+        if top_5_comments_analysis != []:
+            top_5_comments_analysis_dist = top_5_comments_analysis[0].to_dict()
+            top_5_comments = top_5_comments_analysis[1]
+            self.request.session['top_5_comments_analysis_dist'] = top_5_comments_analysis_dist
+            self.request.session['top_5_comments'] = top_5_comments
+        else:
+            if 'top_5_comments_analysis_dist' in self.request.session:
+                del self.request.session['top_5_comments_analysis_dist']
+                del self.request.session['top_5_comments']
+                
+        if worst_5_comments_analysis != []:
+            worst_5_comments_analysis_dist = worst_5_comments_analysis[0].to_dict()
+            worst_5_comments = worst_5_comments_analysis[1]
+            self.request.session['worst_5_comments_analysis_dist'] = worst_5_comments_analysis_dist
+            self.request.session['worst_5_comments'] = worst_5_comments
+        else:
+            if 'worst_5_comments_analysis_dist' in self.request.session:
+                del self.request.session['worst_5_comments_analysis_dist']
+                del self.request.session['worst_5_comments']
+                
         return HttpResponseRedirect(reverse('playlist_analysis_output'))  # Use the name of the URL pattern
 
 import math
@@ -657,10 +667,6 @@ def playlist_analysis_output_view(request):
     output_data = {
         'top_5_videos': request.session['top_5_videos'],
         'worst_5_videos': request.session['worst_5_videos'],
-        'top_5_comments_analysis_dist': request.session['top_5_comments_analysis_dist'],
-        'top_5_comments': request.session['top_5_comments'],
-        'worst_5_comments_analysis_dist': request.session['worst_5_comments_analysis_dist'],
-        'worst_5_comments': request.session['worst_5_comments'],
         'uniqueTags': request.session['uniqueTags'],
         'videos_publishedAt': request.session['videos_publishedAt'],
         'videos_duration': request.session['videos_duration'],
@@ -668,6 +674,19 @@ def playlist_analysis_output_view(request):
         'videos_views': request.session['videos_views'],
         'videos_commentCount': request.session['videos_commentCount']
     }
+    
+    if('top_5_comments_analysis_dist' in request.session): 
+        top_5_comments_analysis_dist = request.session['top_5_comments_analysis_dist']
+        top_5_comments = request.session['top_5_comments']
+        output_data['top_5_comments_analysis_dist'] = top_5_comments_analysis_dist
+        output_data['top_5_comments'] = top_5_comments
+
+    if('worst_5_comments_analysis_dist' in request.session): 
+        worst_5_comments_analysis_dist = request.session['worst_5_comments_analysis_dist']
+        worst_5_comments = request.session['worst_5_comments']
+        output_data['worst_5_comments_analysis_dist'] = worst_5_comments_analysis_dist
+        output_data['worst_5_comments'] = worst_5_comments
+
     
     publishedAt = request.session['publishedAt']
     
@@ -698,11 +717,9 @@ def playlist_analysis_output_view(request):
         
     json_data = json.dumps(output_data)
     
-    context= {'json_data': json_data,
+    context = {'json_data': json_data,
               'top_5_videos': top_5_videos,
               'worst_5_videos': worst_5_videos,
-              'top_5_comments': request.session['top_5_comments'],
-              'worst_5_comments': request.session['worst_5_comments'],
               'title': request.session['title'],
               'description': request.session['description'],
               'thumbnail': request.session['thumbnail'],
@@ -719,8 +736,19 @@ def playlist_analysis_output_view(request):
               'videos_views': request.session['videos_views'],
               'videos_commentCount': request.session['videos_commentCount'],
               'docx_file': 'playlist_analysis.docx'
-              }
-    
+    }
+    if('top_5_comments_analysis_dist' in request.session): 
+        top_5_comments_analysis_dist = request.session['top_5_comments_analysis_dist']
+        top_5_comments = request.session['top_5_comments']
+        context['top_5_comments_analysis_dist'] = top_5_comments_analysis_dist
+        context['top_5_comments'] = top_5_comments
+
+    if('worst_5_comments_analysis_dist' in request.session): 
+        worst_5_comments_analysis_dist = request.session['worst_5_comments_analysis_dist']
+        worst_5_comments = request.session['worst_5_comments']
+        context['worst_5_comments_analysis_dist'] = worst_5_comments_analysis_dist
+        context['worst_5_comments'] = worst_5_comments
+
     return render(request, 'features_pages/playlist_analysis/playlist_analysis_output.html', context)
 
 def playlist_dataset_zipped_output(request):
@@ -828,21 +856,24 @@ class ChannelAnalysisWizard(SessionWizardView):
             
         self.request.session['top_5_videos'] = top_3_videos.to_dict(orient='records')
         self.request.session['worst_5_videos'] = worst_3_videos.to_dict(orient='records')
-        
-        top_5_comments_analysis_dist = top_3_comments_analysis[0].to_dict()
-        top_5_comments = top_3_comments_analysis[1]
-        
-        worst_5_comments_analysis_dist = worst_3_comments_analysis[0].to_dict()
-        worst_5_comments = worst_3_comments_analysis[1]
-        
-        
-        self.request.session['top_5_comments_analysis_dist'] = top_5_comments_analysis_dist
-        self.request.session['top_5_comments'] = top_5_comments
-        
-        self.request.session['worst_5_comments_analysis_dist'] = worst_5_comments_analysis_dist
-        self.request.session['worst_5_comments'] = worst_5_comments
-      
-        
+        if top_3_comments_analysis != []:
+            top_5_comments_analysis_dist = top_3_comments_analysis[0].to_dict()
+            top_5_comments = top_3_comments_analysis[1]
+            self.request.session['top_5_comments_analysis_dist'] = top_5_comments_analysis_dist
+            self.request.session['top_5_comments'] = top_5_comments
+        else:
+            if 'top_5_comments_analysis_dist' in self.request.session:
+                del self.request.session['top_5_comments_analysis_dist']
+                del self.request.session['top_5_comments']
+        if worst_3_comments_analysis != []:
+            worst_5_comments_analysis_dist = worst_3_comments_analysis[0].to_dict()
+            worst_5_comments = worst_3_comments_analysis[1]
+            self.request.session['worst_5_comments_analysis_dist'] = worst_5_comments_analysis_dist
+            self.request.session['worst_5_comments'] = worst_5_comments
+        else:
+            if 'worst_5_comments_analysis_dist' in self.request.session:
+                del self.request.session['worst_5_comments_analysis_dist']
+                del self.request.session['worst_5_comments']
         
         return HttpResponseRedirect(reverse('channel_analysis_output'))  # Use the name of the URL pattern
 
@@ -851,14 +882,9 @@ from datetime import datetime
 
 def channel_analysis_output_view(request):
     
-    
     output_data = {
         'top_5_videos': request.session['top_5_videos'],
         'worst_5_videos': request.session['worst_5_videos'],
-        'top_5_comments_analysis_dist': request.session['top_5_comments_analysis_dist'],
-        'top_5_comments': request.session['top_5_comments'],
-        'worst_5_comments_analysis_dist': request.session['worst_5_comments_analysis_dist'],
-        'worst_5_comments': request.session['worst_5_comments'],
         'uniqueTags': request.session['uniqueTags'],
         'videos_publishedAt': request.session['videos_publishedAt'],
         'videos_duration': request.session['videos_duration'],
@@ -874,6 +900,18 @@ def channel_analysis_output_view(request):
 
 
     }
+    
+    if('top_5_comments_analysis_dist' in request.session): 
+        top_5_comments_analysis_dist = request.session['top_5_comments_analysis_dist']
+        top_5_comments = request.session['top_5_comments']
+        output_data['top_5_comments_analysis_dist'] = top_5_comments_analysis_dist
+        output_data['top_5_comments'] = top_5_comments
+
+    if('worst_5_comments_analysis_dist' in request.session): 
+        worst_5_comments_analysis_dist = request.session['worst_5_comments_analysis_dist']
+        worst_5_comments = request.session['worst_5_comments']
+        output_data['worst_5_comments_analysis_dist'] = worst_5_comments_analysis_dist
+        output_data['worst_5_comments'] = worst_5_comments
     
     publishedAt = request.session['publishedAt']
     
@@ -907,8 +945,6 @@ def channel_analysis_output_view(request):
     context= {'json_data': json_data,
               'top_5_videos': top_5_videos,
               'worst_5_videos': worst_5_videos,
-              'top_5_comments': request.session['top_5_comments'],
-              'worst_5_comments': request.session['worst_5_comments'],
               'title': request.session['title'],
               'description': request.session['description'],
               'thumbnail': request.session['thumbnail'],
@@ -927,6 +963,17 @@ def channel_analysis_output_view(request):
               'docx_file': 'channel_analysis.docx',
               }
     
+    if('top_5_comments_analysis_dist' in request.session): 
+        top_5_comments_analysis_dist = request.session['top_5_comments_analysis_dist']
+        top_5_comments = request.session['top_5_comments']
+        context['top_5_comments_analysis_dist'] = top_5_comments_analysis_dist
+        context['top_5_comments'] = top_5_comments
+
+    if('worst_5_comments_analysis_dist' in request.session): 
+        worst_5_comments_analysis_dist = request.session['worst_5_comments_analysis_dist']
+        worst_5_comments = request.session['worst_5_comments']
+        context['worst_5_comments_analysis_dist'] = worst_5_comments_analysis_dist
+        context['worst_5_comments'] = worst_5_comments
     
     return render(request, 'features_pages/channel_analysis/channel_analysis_output.html', context)
 
@@ -950,9 +997,6 @@ def channel_dataset_zipped_output(request):
     response['Content-Disposition'] = 'attachment; filename="channel_analysis_datasets.zip"'
 
     return response
-
-
-
 
 
 @login_required
@@ -1192,10 +1236,6 @@ def doc_channel(request):
     
     'top_5_videos': request.session['top_5_videos'],
     'worst_5_videos': request.session['worst_5_videos'],
-    'top_5_comments_analysis_dist': request.session['top_5_comments_analysis_dist'],
-    'top_5_comments': request.session['top_5_comments'],
-    'worst_5_comments_analysis_dist': request.session['worst_5_comments_analysis_dist'],
-    'worst_5_comments': request.session['worst_5_comments'],
     'uniqueTags': request.session['uniqueTags'],
     'all_playlists_dict': request.session['all_playlists_dict'],         
     'title': request.session['title'],
@@ -1207,6 +1247,8 @@ def doc_channel(request):
     'totalComments': request.session['totalComments'],
     'average_duration': request.session['average_duration'],
     }
+    
+    
               
     
     if request.method == 'POST':
@@ -1256,12 +1298,17 @@ def doc_channel(request):
             stats_para = doc.add_paragraph()
             stats_para.add_run('Statistics: ').bold = True
             stats_para.add_run(f"{video['viewsCount']} views, {video['likesCount']} likes, {video['duration']} minutes")
+        
+        
+        if('top_5_comments_analysis_dist' in request.session): 
+            top_5_comments_analysis_dist = request.session['top_5_comments_analysis_dist']
+            top_5_comments = request.session['top_5_comments']
 
-        doc.add_heading('Top videos Comments and Sentiment', level=3)
-        for emotion, comment in channel_data['top_5_comments'].items():
-            stats_para = doc.add_paragraph(style='ListBullet')
-            stats_para.add_run(f"{emotion} :").bold = True
-            stats_para.add_run(comment)
+            doc.add_heading('Top videos Comments and Sentiment', level=3)
+            for emotion, comment in top_5_comments.items():
+                stats_para = doc.add_paragraph(style='ListBullet')
+                stats_para.add_run(f"{emotion} :").bold = True
+                stats_para.add_run(comment)
             
             
             
@@ -1281,11 +1328,15 @@ def doc_channel(request):
             stats_para.add_run('Statistics: ').bold = True
             stats_para.add_run(f"{video['viewsCount']} views, {video['likesCount']} likes, {video['duration']} minutes")
 
-        doc.add_heading('Worst videos Comments and Sentiment', level=3)
-        for emotion, comment in channel_data['worst_5_comments'].items():
-            stats_para = doc.add_paragraph(style='ListBullet')
-            stats_para.add_run(f"{emotion} :").bold = True
-            stats_para.add_run(comment)
+        if('worst_5_comments_analysis_dist' in request.session): 
+            worst_5_comments_analysis_dist = request.session['worst_5_comments_analysis_dist']
+            worst_5_comments = request.session['worst_5_comments']
+        
+            doc.add_heading('Worst videos Comments and Sentiment', level=3)
+            for emotion, comment in worst_5_comments.items():
+                stats_para = doc.add_paragraph(style='ListBullet')
+                stats_para.add_run(f"{emotion} :").bold = True
+                stats_para.add_run(comment)
 
         
         doc.add_heading('Get more insights with graphs:', level=1)
@@ -1321,10 +1372,6 @@ def doc_playlist(request):
     
     'top_5_videos': request.session['top_5_videos'],
     'worst_5_videos': request.session['worst_5_videos'],
-    'top_5_comments_analysis_dist': request.session['top_5_comments_analysis_dist'],
-    'top_5_comments': request.session['top_5_comments'],
-    'worst_5_comments_analysis_dist': request.session['worst_5_comments_analysis_dist'],
-    'worst_5_comments': request.session['worst_5_comments'],
     'uniqueTags': request.session['uniqueTags'],
     'all_playlists_dict': request.session['all_playlists_dict'],         
     'title': request.session['title'],
@@ -1386,11 +1433,16 @@ def doc_playlist(request):
             stats_para.add_run('Statistics: ').bold = True
             stats_para.add_run(f"{video['viewsCount']} views, {video['likesCount']} likes, {video['duration']} minutes")
 
-        doc.add_heading('Top videos Comments and Sentiment', level=3)
-        for emotion, comment in channel_data['top_5_comments'].items():
-            stats_para = doc.add_paragraph(style='ListBullet')
-            stats_para.add_run(f"{emotion} :").bold = True
-            stats_para.add_run(comment)
+        if('top_5_comments_analysis_dist' in request.session): 
+            top_5_comments_analysis_dist = request.session['top_5_comments_analysis_dist']
+            top_5_comments = request.session['top_5_comments']
+
+            doc.add_heading('Top videos Comments and Sentiment', level=3)
+            for emotion, comment in top_5_comments.items():
+                stats_para = doc.add_paragraph(style='ListBullet')
+                stats_para.add_run(f"{emotion} :").bold = True
+                stats_para.add_run(comment)
+
             
             
             
@@ -1410,12 +1462,15 @@ def doc_playlist(request):
             stats_para.add_run('Statistics: ').bold = True
             stats_para.add_run(f"{video['viewsCount']} views, {video['likesCount']} likes, {video['duration']} minutes")
 
-        doc.add_heading('Worst videos Comments and Sentiment', level=3)
-        for emotion, comment in channel_data['worst_5_comments'].items():
-            stats_para = doc.add_paragraph(style='ListBullet')
-            stats_para.add_run(f"{emotion} :").bold = True
-            stats_para.add_run(comment)
-
+        if('worst_5_comments_analysis_dist' in request.session): 
+            worst_5_comments_analysis_dist = request.session['worst_5_comments_analysis_dist']
+            worst_5_comments = request.session['worst_5_comments']
+        
+            doc.add_heading('Worst videos Comments and Sentiment', level=3)
+            for emotion, comment in worst_5_comments.items():
+                stats_para = doc.add_paragraph(style='ListBullet')
+                stats_para.add_run(f"{emotion} :").bold = True
+                stats_para.add_run(comment)
         
         doc.add_heading('Get more insights with graphs:', level=1)
         
@@ -1680,7 +1735,7 @@ class VideoRetrivingWizard(SessionWizardView):
         
         video_id = extractIdFromUrl(video_url)
         
-        related_videos_df = get_realted_videos(video_id, order, region_code, language, num_of_videos)
+        related_videos_df = get_realted_videos(youtube, video_id, order, region_code, language, num_of_videos)
         if 'engagementScore' in related_videos_df.columns:
             related_videos_df.drop('engagementScore', axis=1, inplace=True)
             
@@ -1899,3 +1954,20 @@ def chat_view(request):
     return render(request, 'chat_template.html')
 
 #edit the published at date to this format MM/YYYY
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+@csrf_exempt
+def delete_selected_templates(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        selected_items = data.get('selectedItems', [])
+
+        for item in selected_items:
+            model = get_model_by_type(item['type'])
+            model.objects.filter(id=item['id']).delete()
+
+        return JsonResponse({'status': 'success', 'message': 'Templates deleted successfully.'})
+    return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)

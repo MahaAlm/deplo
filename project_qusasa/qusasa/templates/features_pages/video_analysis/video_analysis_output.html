@@ -48,6 +48,10 @@
             text-wrap: wrap;
         }
 
+        .compare-stats p {
+            width: 100%;
+        }
+
 
     </style>
   </head>
@@ -174,7 +178,7 @@
                                             
                                         </div>
                                     </div>
-            
+                                    {% if top_comments_by_emotion%}
                                     <div class="item">
                                         <div class="chart-compare ">
                                             <div class="compare-el column-compare" >
@@ -191,6 +195,7 @@
                                             
                                         </div>
                                     </div>
+                                    {%endif%}
             
                                     <div class="item">
                                         <div class="chart-compare tags-chart">
@@ -211,7 +216,7 @@
                                 
                             </div>
                         </div>  
-
+                        {% if top_comments_by_emotion%}
                         <div class="emotions-examples">
                             <h1 data-aos="fade-up">Look into the top emotions</h1>
                             <p data-aos="fade-up">the top comments from the top emotions</p>
@@ -230,6 +235,7 @@
                                 {%endfor%}
                             </div>
                         </div>
+                        {%endif%}
                     
                 </div>
                 
@@ -284,7 +290,7 @@
     var jsonData = JSON.parse(document.getElementById('json-data').textContent);
     var likes = jsonData.video_info_dict.likesCount
     console.log(jsonData.top_comments_by_emotion)
-    var comments = 100
+    var comments = jsonData.video_info_dict.commentCount
     var views = jsonData.video_info_dict.viewsCount
 
       // Bar Chart: Compare likes, comments, and views for a single video

@@ -76,7 +76,7 @@ urlpatterns = [
       path('delete_history/<str:history_type>/<int:history_id>/', views.delete_history, name='delete_history'),
 
     path('chat/', views.chat_view, name='chat_view'),
-
+    path('delete_selected_templates/', views.delete_selected_templates, name='delete_selected_templates')
 
 
     # You can add more paths for other views in the qusasa app here
