@@ -82,8 +82,15 @@ urlpatterns = [
       path('delete_history/<str:history_type>/<int:history_id>/', views.delete_history, name='delete_history'),
 
     path('chat/', views.chat_view, name='chat_view'),
-    path('delete_selected_templates/', views.delete_selected_templates, name='delete_selected_templates')
+    path('delete_selected_templates/', views.delete_selected_templates, name='delete_selected_templates'),
 
+    path('posts_analysis_details', views.posts_analysis_details, name='posts_analysis_details'),
+    path('posts_analysis_detail/<int:history_id>/', views.posts_analysis_detail, name='posts_analysis_detail'),
+
+    path('post_analysis/', views.PostAnalysisWizard.as_view(), name='post_analysis'),
+    path('post_analysis_redo/<int:history_id>', views.PostAnalysisWizard.as_view(), name='post_analysis_redo'),
+    path('post_analysis/output/', views.posts_analysis_output_view, name='post_analysis_output'),
+    path('dataset_zipped_output_post/', views.posts_dataset_zipped_output, name='post_dataset_zipped_output'),
 
     # You can add more paths for other views in the qusasa app here
 ]

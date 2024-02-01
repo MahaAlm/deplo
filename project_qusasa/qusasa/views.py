@@ -1837,6 +1837,10 @@ def competitive_analysis_detail(request, history_id):
     history = get_object_or_404(CompetitiveAnalysisHistory, pk=history_id, user=request.user)
     return render(request, 'features_pages/competitive_analysis/competitive_analysis_detail.html', {'history': history})
 
+def posts_analysis_detail(request, history_id):
+    history = get_object_or_404(PostAnalysisHistory, pk=history_id, user=request.user)
+    return render(request, 'instafeatures_pages/playlist_analysis/posts_analysis_detail.html', {'history': history})
+
 from django.shortcuts import redirect, get_object_or_404
 
 def get_model_by_type(history_type):
@@ -1997,3 +2001,73 @@ def delete_selected_templates(request):
 
         return JsonResponse({'status': 'success', 'message': 'Templates deleted successfully.'})
     return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
+
+#-------------------------------------------------
+
+
+from .forms import PostAnalysisInputForm
+from .models import  PostAnalysisHistory
+class PostAnalysisWizard(SessionWizardView):
+    form_list = [PostAnalysisInputForm]
+    template_name = 'instafeatures_pages/posts_analysis/posts_analysis_forms.html'  
+    
+    # def get_form_initial(self, step):
+    #     initial = super().get_form_initial(step)
+    #     history_id = self.kwargs.get('history_id')
+
+    #     if history_id and step == '0':  # Assuming '0' is the step of PlaylistAnalysisInputForm
+    #         history = get_object_or_404(PostAnalysisHistory, id=history_id, user=self.request.user)
+    #         initial.update({
+    #             'post_url': history.playlist_url,
+    #             # Add other fields as necessary
+    #         })
+    #     return initial
+    
+    def done(self, form_list, **kwargs):
+        # Process the cleaned data
+        cleaned_data = self.get_all_cleaned_data()
+        post_url = cleaned_data.get('post_url')
+        
+        # history_id = self.kwargs.get('history_id')
+        # if history_id:
+        #     # Update the existing history record
+        #     history = get_object_or_404(PostAnalysisHistory, id=history_id, user=self.request.user)
+        #     history.post_url = cleaned_data.get('post_url')
+        #     # Update other fields as necessary
+        #     history.save()
+        # else:
+        #     PostAnalysisHistory.objects.create(
+        #     user=self.request.user,
+        #     post_url=cleaned_data.get('post_url'),
+        #     )
+        
+        
+        return HttpResponseRedirect(reverse('post_analysis_output'))  # Use the name of the URL pattern
+
+import math
+from datetime import datetime
+
+def posts_analysis_output_view(request):
+    
+   
+    return render(request, 'instafeatures_pages/posts_analysis/posts_analysis_output.html')
+
+def posts_dataset_zipped_output(request):
+    # Handle the output display here
+    # Retrieve the CSV data from the session
+    playlist_info_csv = request.session.get('playlist_info_csv', '')
+    all_videos_info_csv = request.session.get('all_videos_info_csv', '')
+    # Create a zip file in memory
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(zip_buffer, 'a', zipfile.ZIP_DEFLATED, False) as zip_file:
+        zip_file.writestr('playlist_info_csv.csv', playlist_info_csv)
+        zip_file.writestr('all_videos_info_csv.csv', all_videos_info_csv)
+
+    # Set up the HttpResponse
+    zip_buffer.seek(0)
+    response = HttpResponse(zip_buffer, content_type='application/zip')
+    response['Content-Disposition'] = 'attachment; filename="playlist_analysis_datasets.zip"'
+
+    return response
+
+

@@ -576,3 +576,19 @@ class VideoRetrivingInputForm(forms.Form):
         if not re.match(youtube_video_pattern, video_url):
             raise ValidationError("Please enter a valid YouTube video URL.")
         return video_url
+    
+    
+class PostAnalysisInputForm(forms.Form):
+    post_url = forms.URLField(label='Post URL', required=True)
+
+    def clean_post_url(self):
+        post_url = self.cleaned_data['post_url']
+        instagram_post_pattern = r'https?://www.instagram.com/p/([a-zA-Z0-9_-]+)/?'
+
+        match = re.match(instagram_post_pattern, post_url)
+        if not match:
+            raise ValidationError("Please enter a valid Instagram post URL.")
+        
+        post_url = match.group(1)
+        return post_url 
+   
