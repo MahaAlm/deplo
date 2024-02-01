@@ -34,7 +34,7 @@
 
         <div class="cards">
             <article class="card">
-              <a href="#">
+              <a href="{% url 'topictrend_analysis_details' %}">
 
                 <header class="card__thumb">
                     <img src="{% static 'qusasa/images/trends analysis.webp' %}"/>
@@ -46,14 +46,14 @@
                 <div class="card__body">
                     <div class="card__category Instagram">Instagram</div>
                     <h2 class="card__title">Topic Trends Analysis</h2>
-                    <p class="card__description">you to search for a specific topic or trending hashtag and gather information about the activities related to that hashtag.
+                    <p class="card__description">you can search for a specific topic or trending hashtag and gather information about the activities related to that hashtag.
                       .</p>
                 </div>
             </a>
             </article>
 
             <article class="card">
-                <a href="#">
+                <a href="{% url 'posts_analysis_details' %}">
                 <header class="card__thumb">
                     <img src="{% static 'qusasa/images/posts analysis.webp' %}"/>
                     <div class="feature-name">
@@ -72,7 +72,7 @@
             </article>
 
             <article class="card">
-                <a href="#">
+                <a href="{% url 'engagement_history_details' %}">
                 <header class="card__thumb">
                     <img src="{% static 'qusasa/images/engagment.webp' %}"/>
                     <div class="feature-name">
@@ -89,9 +89,9 @@
                 </div>
             </a>
             </article>
-
+           
             <article class="card">
-                <a href="#">
+                <a href="{% url 'people_analytics_details' %}">
                 <header class="card__thumb">
                     <img src="{% static 'qusasa/images/people analysis.webp' %}" />
                     <div class="feature-name">
@@ -108,7 +108,7 @@
             </article>
 
             <article class="card">
-                <a href="#">
+                <a href="{% url 'comparative_study_details' %}">
                 <header class="card__thumb">
                     <img src="{% static 'qusasa/images/comparative study.webp' %}"/>
                     <div class="feature-name">
@@ -125,10 +125,8 @@
             </a>
             </article>
 
-           
-
             <article class="card">
-                <a href="#">
+                <a href="{% url 'instagram_reporting_details' %}">
                     <header class="card__thumb">
                         <img src="{% static 'qusasa/images/reporting.webp' %}"/>
                         <div class="feature-name">
