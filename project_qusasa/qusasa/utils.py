@@ -1384,3 +1384,15 @@ def clean_text(input_text):
     cleaned_text = html.unescape(cleaned_text)
 
     return cleaned_text
+
+import math
+from datetime import datetime
+
+
+def parse_datetime(date_str):
+    for fmt in ('%Y-%m-%dT%H:%M:%S.%fZ', '%Y-%m-%dT%H:%M:%SZ'):
+        try:
+            return datetime.strptime(date_str, fmt)
+        except ValueError:
+            pass
+    raise ValueError(f"time data {date_str} does not match expected formats")
