@@ -1,12 +1,10 @@
 import pandas as pd
-from datetime import timedelta
+from dateutil import parser
 import re
 from collections import Counter
 from transformers import pipeline, BertTokenizer, AutoModelForSequenceClassification
 import torch
 from googleapiclient.errors import HttpError
-
-
 from instagrapi import Client
 import torch
 import pandas as pd
@@ -33,7 +31,11 @@ def connectToInstaAPI():
         return None
 
 cl=connectToInstaAPI()
+def parse_datetime(datetime_str):
+    parsed_datetime = parser.parse(datetime_str)
+    formatted_datetime = parsed_datetime.strftime("%Y-%m-%d")
 
+    return formatted_datetime
 
 def analyze_comments_emotions_for_playlist(comments_df):
 
@@ -79,6 +81,7 @@ def analyze_comments_emotions_for_playlist(comments_df):
 
 
     return emotion_counts, top_comments_by_emotion
+
 def map_media_type(media_type, product_type=None):
     """
     Map numerical media_type (and product_type for videos) to descriptive media type string.
@@ -137,7 +140,7 @@ def postAnalysis(postCode):
                 'postID': postCode,
                 'owner':post_info.user.username,
                 'caption':post_info.caption_text,
-                'publishedAt':post_info.taken_at,
+                'publishedAt':parse_datetime(str(post_info.taken_at)),
                 'LikeCount': post_info.like_count,
                 'CommentCount': post_info.comment_count,
                 'MediaType':map_media_type(post_info.media_type, getattr(post_info, 'product_type', None)),
@@ -146,7 +149,7 @@ def postAnalysis(postCode):
 
             commentDataset.append({
               'Comment': [comment[0] for comment in sortedListComm],
-              'CommentDate': [comment[1] for comment in sortedListComm],
+              'CommentDate': [parse_datetime(str(comment[1])) for comment in sortedListComm],
               'CommentLikes': [comment[2] for comment in sortedListComm]
           })
 
