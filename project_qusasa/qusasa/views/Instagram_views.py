@@ -17,7 +17,6 @@ from django.core.exceptions import ValidationError
 import re
 import os
 from django.conf import settings
-from decouple import config
 import openai
 import pandas as pd
 from .auth_views import *
