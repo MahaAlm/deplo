@@ -32,7 +32,7 @@ def connectToInstaAPI():
         print('Failed to connect:', str(e))
         return None
 
-connectToInstaAPI()
+cl=connectToInstaAPI()
 
 
 def analyze_comments_emotions_for_playlist(comments_df):
