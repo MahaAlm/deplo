@@ -113,7 +113,6 @@
                         <img src="{% static 'qusasa/images/thumb.jpg' %}" alt=""/>
 
                         <div class="header-info">
-                            <h1></h1>
                             {% if description != ''%}
                             <div class="desc" style="margin-top: 0;">
                             <h3 style="display:flex; flex-direction: row; align-content: center; align-items:center;"><img src="{% static 'qusasa/images/icon.jpeg' %}" style="height: 40px; width: 40px; border-radius:50%; margin: 0 0.5rem;" alt=""><p style="font-size:1.2rem; margin: 0" > by titsayy</p></h3>
@@ -140,7 +139,7 @@
                         <h1 class="playlist-stats-h1">Post statistics</h1>
                         <div class="video-stats">
                             <div class="video-stat">
-                                <h3 style="text-wrap: nowrap;">2023/01/05</h3>
+                                <h3 style="text-wrap: nowrap;">{{publishedAt}}</h3>
                                 <p>publishedAt</p>
                             </div>
                             

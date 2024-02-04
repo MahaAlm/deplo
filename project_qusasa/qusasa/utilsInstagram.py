@@ -4,9 +4,7 @@ import re
 from collections import Counter
 from transformers import pipeline, BertTokenizer, AutoModelForSequenceClassification
 import torch
-from googleapiclient.errors import HttpError
-
-
+from googleapiclient.errors import HttpErrors
 from instagrapi import Client
 import torch
 import pandas as pd
@@ -142,6 +140,8 @@ def postAnalysis(postCode):
                 'CommentCount': post_info.comment_count,
                 'MediaType':map_media_type(post_info.media_type, getattr(post_info, 'product_type', None)),
             })
+            
+            PostDf = pd.DataFrame(context)
 
 
             commentDataset.append({
@@ -150,7 +150,7 @@ def postAnalysis(postCode):
               'CommentLikes': [comment[2] for comment in sortedListComm]
           })
 
-            return context, commentDataset ,comment_sentiments, sentiments  # Print the post details
+            return PostDf, commentDataset ,comment_sentiments, sentiments  # Print the post details
 
 
 

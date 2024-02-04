@@ -29,7 +29,7 @@ from django.http import HttpResponseRedirect
 from formtools.wizard.views import SessionWizardView
 import zipfile
 import io
-
+from ..utilsInstagram import postAnalysis
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------
 #Post_Analysis
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -64,21 +64,31 @@ class PostAnalysisWizard(SessionWizardView):
     def done(self, form_list, **kwargs):
         # Process the cleaned data
         cleaned_data = self.get_all_cleaned_data()
-        post_url = cleaned_data.get('post_url')
+        post_id = cleaned_data.get('post_url')
         
-        # history_id = self.kwargs.get('history_id')
-        # if history_id:
-        #     # Update the existing history record
-        #     history = get_object_or_404(PostAnalysisHistory, id=history_id, user=self.request.user)
-        #     history.post_url = cleaned_data.get('post_url')
-        #     # Update other fields as necessary
-        #     history.save()
-        # else:
-        #     PostAnalysisHistory.objects.create(
-        #     user=self.request.user,
-        #     post_url=cleaned_data.get('post_url'),
-        #     )
+        PostDf, commentDataset ,comment_sentiments, sentiments = postAnalysis(post_id)
+        history_id = self.kwargs.get('history_id')
+        if history_id:
+            # Update the existing history record
+            history = get_object_or_404(PostAnalysisHistory, id=history_id, user=self.request.user)
+            history.post_url = cleaned_data.get('post_url')
+            # Update other fields as necessary
+            history.save()
+        else:
+            PostAnalysisHistory.objects.create(
+            user=self.request.user,
+            post_url=cleaned_data.get('post_url'),
+            )
         
+        commentDataset_csv = commentDataset.to_csv(index=False)
+        Post_csv = PostDf.to_csv(index=False)
+        
+        self.request.session['commentDataset_csv'] = commentDataset_csv
+        self.request.session['Post_csv'] = Post_csv
+        
+        self.request.session['publishedAt'] = PostDf['publishedAt'].iloc[0]
+        self.request.session['LikeCount'] = PostDf['LikeCount'].iloc[0]
+        self.request.session['CommentCount'] = PostDf['CommentCount'].iloc[0]
         
         return HttpResponseRedirect(reverse('post_analysis_output'))  # Use the name of the URL pattern
 
