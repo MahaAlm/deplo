@@ -4,9 +4,7 @@ import re
 from collections import Counter
 from transformers import pipeline, BertTokenizer, AutoModelForSequenceClassification
 import torch
-from googleapiclient.errors import HttpError
-
-
+from googleapiclient.errors import HttpErrors
 from instagrapi import Client
 import torch
 import pandas as pd
@@ -118,7 +116,6 @@ def postAnalysis(postCode):
     context = []
     listComm=[]
     commentDataset=[]
-    dictMed=dict(Photo=1,Video=2,IGTV=2,Reel=2,Album=8)
     if cl:
             # Get post information
             post_info = cl.media_info(postCode)
@@ -136,11 +133,16 @@ def postAnalysis(postCode):
 
             # Calculate sentiment percentages
 
+            dictMed=cl.user_info_by_username(post_info.user.username).model_dump()
+
 
 
             context.append({
                 'postID': postCode,
                 'owner':post_info.user.username,
+                'MediaCount':dictMed['media_count'],
+                'followerCount': dictMed['follower_count'],
+                'followingCount': dictMed['following_count'],
                 'caption':post_info.caption_text,
                 'publishedAt':parse_datetime(str(post_info.taken_at)),
                 'LikeCount': post_info.like_count,
