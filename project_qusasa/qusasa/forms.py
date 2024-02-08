@@ -589,6 +589,5 @@ class PostAnalysisInputForm(forms.Form):
         if not match:
             raise ValidationError("Please enter a valid Instagram post URL.")
         
-        post_url = match.group(1)
         return post_url 
    

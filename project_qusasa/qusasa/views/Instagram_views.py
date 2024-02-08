@@ -80,41 +80,100 @@ class PostAnalysisWizard(SessionWizardView):
             post_url=cleaned_data.get('post_url'),
             )
         
-        commentDataset_csv = commentDataset.to_csv(index=False)
+        commentDataset_csv = pd.DataFrame(commentDataset).to_csv(index=False)
         Post_csv = PostDf.to_csv(index=False)
         
         self.request.session['commentDataset_csv'] = commentDataset_csv
         self.request.session['Post_csv'] = Post_csv
-        
         self.request.session['publishedAt'] = PostDf['publishedAt'].iloc[0]
-        self.request.session['LikeCount'] = PostDf['LikeCount'].iloc[0]
-        self.request.session['CommentCount'] = PostDf['CommentCount'].iloc[0]
+        self.request.session['owner'] = PostDf['owner'].iloc[0]
+        self.request.session['thumbnial_url'] = PostDf['thumbnial_url'].iloc[0]
+        self.request.session['icon_url'] = PostDf['icon_url'].iloc[0]
+        self.request.session['top_keywords'] = PostDf['top_keywords'].iloc[0]
+        self.request.session['MediaCount'] = int(PostDf['MediaCount'].iloc[0])
+        self.request.session['followerCount'] = int(PostDf['followerCount'].iloc[0])
+        self.request.session['followingCount'] = int(PostDf['followingCount'].iloc[0])
+        self.request.session['LikeCount'] = int(PostDf['LikeCount'].iloc[0])
+        self.request.session['CommentCount'] = int(PostDf['CommentCount'].iloc[0])
+
+        
+        self.request.session['CommentDate'] = pd.DataFrame(commentDataset)['CommentDate'].tolist()
+        self.request.session['CommentLikes'] = pd.DataFrame(commentDataset)['CommentLikes'].tolist()
+        
+        self.request.session['sentiments'] = sentiments.to_dict()
+        self.request.session['comment_sentiments'] = comment_sentiments
         
         return HttpResponseRedirect(reverse('post_analysis_output'))  # Use the name of the URL pattern
 
 import math
 from datetime import datetime
 
+import os
+import requests
+from django.conf import settings
+
+
 def posts_analysis_output_view(request):
+        
+    owner = request.session['owner']
+    thumbnial_url = request.session['thumbnial_url']
+    icon_url = request.session['icon_url']
+    top_keywords = request.session['top_keywords'] 
+    MediaCount = request.session['MediaCount'] 
+    followerCount = request.session['followerCount']
+    followingCount = request.session['followingCount']
+    publishedAt = request.session['publishedAt']
+    LikeCount = request.session['LikeCount']
+    CommentCount = request.session['CommentCount'] 
+    
+    CommentDate = request.session['CommentDate']
+    CommentLikes = request.session['CommentLikes']
+    
+    sentiments = request.session['sentiments']
+    comment_sentiments = request.session['comment_sentiments']
+    
+    output_data = {
+        "CommentDate": CommentDate,
+        "CommentLikes": CommentLikes,
+        "sentiments": sentiments,
+        'top_keywords': top_keywords
+    }
+    
+    json_data = json.dumps(output_data)
+    context= {
+        'owner': owner,
+        'thumbnial_url': thumbnial_url,
+        'icon_url': icon_url,
+        'top_keywords': top_keywords,
+        "MediaCount": MediaCount,
+        "followerCount": followerCount,
+        "followingCount": followingCount,
+        "publishedAt": publishedAt,
+        "LikeCount": LikeCount,
+        "CommentCount": CommentCount,
+        "sentiments": sentiments,
+        "comment_sentiments": comment_sentiments,
+        "json_data": json_data
+    }
     
    
-    return render(request, 'instafeatures_pages/posts_analysis/posts_analysis_output.html')
+    return render(request, 'instafeatures_pages/posts_analysis/posts_analysis_output.html', context)
 
 def posts_dataset_zipped_output(request):
     # Handle the output display here
     # Retrieve the CSV data from the session
-    playlist_info_csv = request.session.get('playlist_info_csv', '')
-    all_videos_info_csv = request.session.get('all_videos_info_csv', '')
+    commentDataset_csv = request.session.get('commentDataset_csv', '')
+    Post_csv = request.session.get('Post_csv', '')
     # Create a zip file in memory
     zip_buffer = io.BytesIO()
     with zipfile.ZipFile(zip_buffer, 'a', zipfile.ZIP_DEFLATED, False) as zip_file:
-        zip_file.writestr('playlist_info_csv.csv', playlist_info_csv)
-        zip_file.writestr('all_videos_info_csv.csv', all_videos_info_csv)
+        zip_file.writestr('commentDataset_csv.csv', commentDataset_csv)
+        zip_file.writestr('Post_csv.csv', Post_csv)
 
     # Set up the HttpResponse
     zip_buffer.seek(0)
     response = HttpResponse(zip_buffer, content_type='application/zip')
-    response['Content-Disposition'] = 'attachment; filename="playlist_analysis_datasets.zip"'
+    response['Content-Disposition'] = 'attachment; filename="post_analysis_datasets.zip"'
 
     return response
 
