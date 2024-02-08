@@ -1,5 +1,5 @@
 import pandas as pd
-from datetime import timedelta
+from dateutil import parser
 import re
 from collections import Counter
 from transformers import pipeline, BertTokenizer, AutoModelForSequenceClassification
@@ -31,7 +31,11 @@ def connectToInstaAPI():
         return None
 
 cl=connectToInstaAPI()
+def parse_datetime(datetime_str):
+    parsed_datetime = parser.parse(datetime_str)
+    formatted_datetime = parsed_datetime.strftime("%Y-%m-%d")
 
+    return formatted_datetime
 
 def analyze_comments_emotions_for_playlist(comments_df):
 
@@ -77,6 +81,7 @@ def analyze_comments_emotions_for_playlist(comments_df):
 
 
     return emotion_counts, top_comments_by_emotion
+
 def map_media_type(media_type, product_type=None):
     """
     Map numerical media_type (and product_type for videos) to descriptive media type string.
@@ -111,7 +116,6 @@ def postAnalysis(postCode):
     context = []
     listComm=[]
     commentDataset=[]
-    dictMed=dict(Photo=1,Video=2,IGTV=2,Reel=2,Album=8)
     if cl:
             # Get post information
             post_info = cl.media_info(postCode)
@@ -129,13 +133,18 @@ def postAnalysis(postCode):
 
             # Calculate sentiment percentages
 
+            dictMed=cl.user_info_by_username(post_info.user.username).model_dump()
+
 
 
             context.append({
                 'postID': postCode,
                 'owner':post_info.user.username,
+                'MediaCount':dictMed['media_count'],
+                'followerCount': dictMed['follower_count'],
+                'followingCount': dictMed['following_count'],
                 'caption':post_info.caption_text,
-                'publishedAt':post_info.taken_at,
+                'publishedAt':parse_datetime(str(post_info.taken_at)),
                 'LikeCount': post_info.like_count,
                 'CommentCount': post_info.comment_count,
                 'MediaType':map_media_type(post_info.media_type, getattr(post_info, 'product_type', None)),
@@ -146,7 +155,7 @@ def postAnalysis(postCode):
 
             commentDataset.append({
               'Comment': [comment[0] for comment in sortedListComm],
-              'CommentDate': [comment[1] for comment in sortedListComm],
+              'CommentDate': [parse_datetime(str(comment[1])) for comment in sortedListComm],
               'CommentLikes': [comment[2] for comment in sortedListComm]
           })
 
