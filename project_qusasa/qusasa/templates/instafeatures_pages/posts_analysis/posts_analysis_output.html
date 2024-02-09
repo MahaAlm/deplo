@@ -110,23 +110,23 @@
                 <p>take a look over the post in general, what is it about and how is it performing</p>
                 <div class="overview">
                     <div class="header">
-                        <img src="{% static 'qusasa/images/thumb.jpg' %}" alt=""/>
+                        <img src="{% static 'qusasa/images/thumbnial_url.jpg'%}" alt=""/>
 
                         <div class="header-info">
                             {% if description != ''%}
                             <div class="desc" style="margin-top: 0;">
-                            <h3 style="display:flex; flex-direction: row; align-content: center; align-items:center;"><img src="{% static 'qusasa/images/icon.jpeg' %}" style="height: 40px; width: 40px; border-radius:50%; margin: 0 0.5rem;" alt=""><p style="font-size:1.2rem; margin: 0" > by titsayy</p></h3>
+                            <h3 style="display:flex; flex-direction: row; align-content: center; align-items:center;"><img src="{% static 'qusasa/images/icon_url.jpg'%}" style="height: 40px; width: 40px; border-radius:50%; margin: 0 0.5rem;" alt=""><p style="font-size:1.2rem; margin: 0" > by {{owner}}</p></h3>
                             <div class="acc-stat">
                                 <div class="one-stat">
-                                    <p>{{1000}}</p>
+                                    <p>{{followerCount}}</p>
                                     <p>Followers</p>
                                 </div>
                                 <div class="one-stat">
-                                    <p>1000</p>
+                                    <p>{{followingCount}}</p>
                                     <p>Following</p>
                                 </div>
                                 <div class="one-stat">
-                                    <p>1000</p>
+                                    <p>{{MediaCount}}</p>
                                     <p>Posts</p>
                                 </div>
                             </div>
@@ -145,11 +145,11 @@
                             
                      
                             <div class="video-stat">
-                                <h3 class="number" data-target="1000">1000</h3>
+                                <h3 class="number" data-target="{{LikeCount}}">0</h3>
                                 <p>total Likes</p>
                             </div>
                             <div class="video-stat">
-                                <h3 class="number" data-target="1000">0</h3>
+                                <h3 class="number" data-target="{{CommentCount}}">0</h3>
                                 <p>total Comments</p>
                             </div>
                          
@@ -188,41 +188,18 @@
                         <h1 data-aos="fade-up">Look into the top emotions</h1>
                         <p data-aos="fade-up">the top comments from the top emotions</p>
                         <div class="examples">
+                            {% for emotion, comment in comment_sentiments.items %}
                             <div class="example" data-aos="fade-up">
-                                <div class="emotion"><h3>emotion</h3></div>
+                                <div class="emotion"><h3>{{ emotion }}</h3></div>
                                 <div class="ex">
-                                    <p class="truncated">Comment</p>
+                                    <p class="truncated">{{ comment|truncatechars:150 }}</p>
                                     <p class="full-comment">{{ comment }}</p>
                                 </div>
                             </div>
-                            <div class="example" data-aos="fade-up">
-                                <div class="emotion"><h3>emotion</h3></div>
-                                <div class="ex">
-                                    <p class="truncated">Comment</p>
-                                    <p class="full-comment">{{ comment }}</p>
-                                </div>
-                            </div>
-                            <div class="example" data-aos="fade-up">
-                                <div class="emotion"><h3>emotion</h3></div>
-                                <div class="ex">
-                                    <p class="truncated">Comment</p>
-                                    <p class="full-comment">{{ comment }}</p>
-                                </div>
-                            </div>
-                            <div class="example" data-aos="fade-up">
-                                <div class="emotion"><h3>emotion</h3></div>
-                                <div class="ex">
-                                    <p class="truncated">Comment</p>
-                                    <p class="full-comment">{{ comment }}</p>
-                                </div>
-                            </div>
-                            <div class="example" data-aos="fade-up">
-                                <div class="emotion"><h3>emotion</h3></div>
-                                <div class="ex">
-                                    <p class="truncated">Comment</p>
-                                    <p class="full-comment">{{ comment }}</p>
-                                </div>
-                            </div>
+                            {%endfor%}
+                            
+                            
+                            
                         </div>
                         
                     </div>
@@ -266,14 +243,38 @@
     const csrftoken = '{{ csrf_token }}';
 </script>
 
+<script id="json-data" type="application/json">{{ json_data|safe }}</script>
+
 <script>
-    viewsCounts = [100, 600, 400, 100, 200]
-    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-  // Define the options for the line chart
-  var lineChartOptions = {
+    var jsonData = JSON.parse(document.getElementById('json-data').textContent);
+    console.log(jsonData)
+    commentDates = jsonData.CommentDate[0]
+
+    console.log(commentDates)
+    // Convert dates to month-year format and count occurrences
+    let commentCountsPerMonth = commentDates.reduce((acc, date) => {
+    // Extract the year and month part from the date
+    let monthYear = date.substring(0, 7); // "YYYY-MM"
+    // Increment the count for the monthYear
+    acc[monthYear] = (acc[monthYear] || 0) + 1;
+    return acc;
+    }, {});
+
+    // Sort the months
+    let sortedMonths = Object.keys(commentCountsPerMonth).sort();
+
+    // Extract counts for the sorted months
+    let commentCounts = sortedMonths.map(month => commentCountsPerMonth[month]);
+
+    // Convert sortedMonths into month names, assuming you need them for the chart
+    let monthNames = sortedMonths.map(month => {
+    let date = new Date(month + "-01"); // Temporary date to extract the month name
+    return date.toLocaleString('default', { month: 'long', timeZone: 'UTC' });
+    });
+var lineChartOptions = {
     series: [{
-      name: "Total Views",
-      data: viewsCounts
+      name: "Total Comments by month",
+      data: commentCounts
     }],
     chart: {
       type: 'line',
@@ -376,7 +377,7 @@
     }
     
 
-postTags = ["you're not alone, any of you", '😢💔', 'i hope so 😢', '❤️', '❤️', 'And better ones will come 😉', ' nothing change', "I know they'll, either my feelings or me...."]
+postTags = jsonData.top_keywords
 drawWordCloud("#wordcloud0" , postTags);
 
 </script>
@@ -416,14 +417,23 @@ drawWordCloud("#wordcloud0" , postTags);
 
 <script>
     document.getElementById('download-dataset-button').addEventListener('click', function() {
-        window.location.href = "{% url 'channel_dataset_zipped_output' %}";
+        window.location.href = "{% url 'post_dataset_zipped_output' %}";
     });
 </script>
 <script id="json-data" type="application/json">{{ json_data|safe }}</script>
 
 <script>
-    emotions = ['sad', 'happy', 'grateful', 'joy', 'angry', 'curios', 'confused']
-    emotionValues = [10, 5, 8 , 10, 6, 5, 5]
+
+    var emotionData = jsonData.sentiments;
+
+        const emotionDatasliced = Object.fromEntries(
+        Object.entries(emotionData).slice(0, 10)
+        );
+
+
+    var emotions = Object.keys(emotionDatasliced);
+    var emotionValues = Object.values(emotionDatasliced).map(value => Math.round(value * 100));  // Convert to percentages
+
 
 var options = {
     chart: {

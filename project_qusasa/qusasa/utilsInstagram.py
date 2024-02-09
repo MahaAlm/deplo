@@ -4,12 +4,12 @@ import re
 from collections import Counter
 from transformers import pipeline, BertTokenizer, AutoModelForSequenceClassification
 import torch
-from googleapiclient.errors import HttpErrors
 from instagrapi import Client
 import torch
 import pandas as pd
 from collections import Counter
 from transformers import pipeline, BertTokenizer, AutoModelForSequenceClassification
+from keybert import KeyBERT
 
 
 '''Photo - When media_type=1
@@ -30,7 +30,6 @@ def connectToInstaAPI():
         print('Failed to connect:', str(e))
         return None
 
-cl=connectToInstaAPI()
 def parse_datetime(datetime_str):
     parsed_datetime = parser.parse(datetime_str)
     formatted_datetime = parsed_datetime.strftime("%Y-%m-%d")
@@ -112,21 +111,36 @@ def map_media_type(media_type, product_type=None):
 ###########################################################################################################
 ###########################################################################################################
 
+cl=connectToInstaAPI()
 
-def postAnalysis(postCode):
+def postAnalysis(posturl):
     context = []
     listComm=[]
     commentDataset=[]
+
     if cl:
+            postCode = cl.media_pk_from_url(posturl)
             # Get post information
             post_info = cl.media_info(postCode)
-
+            print(post_info)
+            thumbnial_url = str(post_info.thumbnail_url)
+            icon_url = str(post_info.user.profile_pic_url)
+            
+            cl.photo_download_by_url(thumbnial_url, 'thumbnial_url', 'qusasa/static/qusasa/images')	
+            cl.photo_download_by_url(icon_url, 'icon_url', 'qusasa/static/qusasa/images')	
+            
             # Get comments for the post
             comments = cl.media_comments(postCode,amount=post_info.comment_count)# the adjustment of the amount will affect the sentiment analysis
             for comment in comments:
               listComm.append([comment.text, comment.created_at_utc, comment.like_count])
             sortedListComm = sorted(listComm, key=lambda x: x[2], reverse=True)
+            
+            comments_text = " ".join(comment[0] for comment in listComm)
 
+            kw_model = KeyBERT(model='all-MiniLM-L6-v2')
+
+            keywords = kw_model.extract_keywords(comments_text, keyphrase_ngram_range=(1, 2), use_maxsum=True, nr_candidates=100, top_n=100)
+            top_keywords = [keyword[0] for keyword in keywords]
 
             df = pd.DataFrame(listComm, columns=['text','pubDate','likeCount'])
             df.sort_values(by=['likeCount'])
@@ -135,11 +149,11 @@ def postAnalysis(postCode):
             # Calculate sentiment percentages
 
             dictMed=cl.user_info_by_username(post_info.user.username).model_dump()
-
-
-
+            
             context.append({
                 'postID': postCode,
+                'thumbnial_url': thumbnial_url,
+                'icon_url': icon_url,
                 'owner':post_info.user.username,
                 'MediaCount':dictMed['media_count'],
                 'followerCount': dictMed['follower_count'],
@@ -149,6 +163,7 @@ def postAnalysis(postCode):
                 'LikeCount': post_info.like_count,
                 'CommentCount': post_info.comment_count,
                 'MediaType':map_media_type(post_info.media_type, getattr(post_info, 'product_type', None)),
+                'top_keywords': top_keywords
             })
             
             PostDf = pd.DataFrame(context)
@@ -160,7 +175,7 @@ def postAnalysis(postCode):
               'CommentLikes': [comment[2] for comment in sortedListComm]
           })
 
-            return PostDf, commentDataset ,comment_sentiments, sentiments  # Print the post details
+    return PostDf, commentDataset ,comment_sentiments, sentiments  # Print the post details
 
 
 
