@@ -10,7 +10,14 @@ import pandas as pd
 from collections import Counter
 from transformers import pipeline, BertTokenizer, AutoModelForSequenceClassification
 from keybert import KeyBERT
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
+USER_IG = os.environ.get("USER_IG")
+PASS_IG = os.environ.get("PASS_IG")
+EMAIL = os.environ.get("EMAIL")
+PASS_EMAIL = os.environ.get("PASS_EMAIL")
 
 '''Photo - When media_type=1
 Video - When media_type=2 and product_type=feed
@@ -18,17 +25,89 @@ IGTV - When media_type=2 and product_type=igtv
 Reel - When media_type=2 and product_type=clips
 Album - When media_type=8'''
 
+import imaplib
+import email
+import re
+
+def decode_payload(payload_data):
+    """Attempt to decode payload with multiple encodings."""
+    for encoding in ['utf-8', 'iso-8859-1', 'latin1']:
+        try:
+            return payload_data.decode(encoding), encoding
+        except UnicodeDecodeError:
+            continue
+    return payload_data.decode('utf-8', 'ignore'), 'utf-8 (ignored errors)'
+
+def get_code_from_email(username):
+    mail = imaplib.IMAP4_SSL("imap.gmail.com")
+    mail.login(EMAIL, PASS_EMAIL)  # Replace with the actual password
+    mail.select("inbox")
+    result, data = mail.search(None, "(UNSEEN)")
+    if result != "OK":
+        print("Error during get_code_from_email: %s" % result)
+        return False
+    ids = data[0].split()
+    for num in reversed(ids):
+        mail.store(num, "+FLAGS", "\\Seen")  # Mark as read
+        result, data = mail.fetch(num, "(RFC822)")
+        if result != "OK":
+            print("Error fetching email: %s" % result)
+            continue
+        msg = email.message_from_bytes(data[0][1])
+
+        code = None
+        if msg.is_multipart():
+            for part in msg.walk():
+                code = process_part(part, username)
+                if code:
+                    break
+        else:
+            code = process_part(msg, username)  # Directly process if not multipart
+
+        # Mark the email as unread after processing
+        if code:
+            mail.store(num, '-FLAGS', '\\Seen')  # Mark as unread
+            print(f"Email marked as unread: {num}")
+            return code
+
+    return False
+
+def process_part(part, username):
+    content_type = part.get_content_type()
+    print(f"Processing part with content type: {content_type}")  # Logging content type
+    payload_data = part.get_payload(decode=True)
+    if payload_data and (content_type == 'text/plain' or content_type == 'text/html'):
+        body, used_encoding = decode_payload(payload_data)
+        print(f"Decoded with encoding: {used_encoding}")  # Log used encoding
+
+        # Existing matching logic
+        if "<div" not in body:
+            return
+        match = re.search(">([^>]*?({u})[^<]*?)<".format(u=username), body)
+        if match:
+            print("Match from email:", match.group(1))
+            match = re.search(r">(\d{6})<", body)
+            if match:
+                code = match.group(1)
+                print(f"Code found: {code}")
+                return code
+        else:
+            print('Skip this email, "code" not found')
+    else:
+        print("Payload data is None or content type is not text/plain or text/html.")
 
 def connectToInstaAPI():
 
     cl = Client()
     try:
-        cl.login('mahaalmua', 'Maha224')
+        cl.login(USER_IG, PASS_IG)
         print('Connected to Instagram API')
         return cl
     except Exception as e:
         print('Failed to connect:', str(e))
         return None
+    
+cl = connectToInstaAPI() 
 
 def parse_datetime(datetime_str):
     parsed_datetime = parser.parse(datetime_str)
@@ -108,11 +187,11 @@ def map_media_type(media_type, product_type=None):
     else:
         return 'Unknown'  # Fallback for unexpected media_type values
 
-
+###########################################################################################################
+###########################################################################################################
 
 
 def postAnalysis(posturl):
-    cl=connectToInstaAPI()
 
     context = []
     listComm=[]
@@ -126,7 +205,14 @@ def postAnalysis(posturl):
             thumbnial_url = str(post_info.thumbnail_url)
             icon_url = str(post_info.user.profile_pic_url)
             
-            cl.photo_download_by_url(thumbnial_url, 'thumbnial_url', 'qusasa/static/qusasa/images')	
+            if thumbnial_url:
+                cl.photo_download_by_url(thumbnial_url, 'thumbnial_url0', 'qusasa/static/qusasa/images')	
+            else:
+                resources = post_info.resources
+                i = 0
+                for post in resources:
+                     cl.photo_download_by_url(str(post.thumbnail_url), f'thumbnial_url{i}', 'qusasa/static/qusasa/images')	
+                     
             cl.photo_download_by_url(icon_url, 'icon_url', 'qusasa/static/qusasa/images')	
             
             # Get comments for the post
@@ -188,3 +274,65 @@ def commentDatasetToDF(commentDataset,context):
   dfConr=pd.DataFrame(context)
   dfcom=dfcom.drop_duplicates()
   return dfcom, dfConr
+
+###########################################################################################################
+###########################################################################################################
+
+
+def topicAnalysis(Hashtag, numMedia):
+    content = []
+    creators = []
+    hashAnalysis = []
+    
+    try:
+        hashtag = cl.hashtag_info(Hashtag)
+        medias = cl.hashtag_medias_top(Hashtag, amount=numMedia)
+    except Exception as e:
+        return f"Failed to fetch hashtag info or top medias: {e}", [], []
+    
+    for media in medias:
+        try:
+            post_info = {
+                'postCode': media.code,
+                'owner': media.user.username,
+                'caption': media.caption_text,
+                'publishedAt': parse_datetime(str(media.taken_at)),
+                'LikeCount': media.like_count,
+                'CommentCount': media.comment_count,
+                'saveCount': cl.insights_media(cl.media_pk_from_url('https://www.instagram.com/' + media.code + '/'))['save_count'],
+                'MediaType': map_media_type(media.media_type, getattr(media, 'product_type', None)),
+                'location': media.location,
+            }
+            content.append(post_info)
+        except Exception as e:
+            content.append(f"Failed to process media {media.code}: {e}")
+
+        try:
+            dictMed = cl.user_info_by_username(media.user.username).model_dump()
+            creator_info = {
+                'creator': media.user.username,
+                'bio': dictMed['biography'],
+                'MediaCount': dictMed['media_count'],
+                'followerCount': dictMed['follower_count'],
+                'followingCount': dictMed['following_count'],
+            }
+            creators.append(creator_info)
+        except Exception as e:
+            creators.append(f"Failed to fetch user info for {media.user.username}: {e}")
+
+    try:
+        Recently = cl.hashtag_medias_recent(Hashtag, amount=1)[0].taken_at
+        hashAnalysis.append({
+            'hashtagID': hashtag.id,
+            'hashtagName': hashtag.name,
+            'media_count': hashtag.media_count,
+            'lastPublishDate': parse_datetime(str(Recently))
+        })
+    except Exception as e:
+        hashAnalysis.append(f"Failed to fetch recent media info: {e}")
+
+    return hashAnalysis, creators, content
+
+###########################################################################################################
+###########################################################################################################
+
