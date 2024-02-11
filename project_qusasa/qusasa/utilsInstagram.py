@@ -187,7 +187,8 @@ def map_media_type(media_type, product_type=None):
     else:
         return 'Unknown'  # Fallback for unexpected media_type values
 
-
+###########################################################################################################
+###########################################################################################################
 
 cl=connectToInstaAPI()
 
@@ -274,3 +275,65 @@ def commentDatasetToDF(commentDataset,context):
   dfConr=pd.DataFrame(context)
   dfcom=dfcom.drop_duplicates()
   return dfcom, dfConr
+
+###########################################################################################################
+###########################################################################################################
+
+
+def topicAnalysis(Hashtag, numMedia):
+    content = []
+    creators = []
+    hashAnalysis = []
+    
+    try:
+        hashtag = cl.hashtag_info(Hashtag)
+        medias = cl.hashtag_medias_top(Hashtag, amount=numMedia)
+    except Exception as e:
+        return f"Failed to fetch hashtag info or top medias: {e}", [], []
+    
+    for media in medias:
+        try:
+            post_info = {
+                'postCode': media.code,
+                'owner': media.user.username,
+                'caption': media.caption_text,
+                'publishedAt': parse_datetime(str(media.taken_at)),
+                'LikeCount': media.like_count,
+                'CommentCount': media.comment_count,
+                'saveCount': cl.insights_media(cl.media_pk_from_url('https://www.instagram.com/' + media.code + '/'))['save_count'],
+                'MediaType': map_media_type(media.media_type, getattr(media, 'product_type', None)),
+                'location': media.location,
+            }
+            content.append(post_info)
+        except Exception as e:
+            content.append(f"Failed to process media {media.code}: {e}")
+
+        try:
+            dictMed = cl.user_info_by_username(media.user.username).model_dump()
+            creator_info = {
+                'creator': media.user.username,
+                'bio': dictMed['biography'],
+                'MediaCount': dictMed['media_count'],
+                'followerCount': dictMed['follower_count'],
+                'followingCount': dictMed['following_count'],
+            }
+            creators.append(creator_info)
+        except Exception as e:
+            creators.append(f"Failed to fetch user info for {media.user.username}: {e}")
+
+    try:
+        Recently = cl.hashtag_medias_recent(Hashtag, amount=1)[0].taken_at
+        hashAnalysis.append({
+            'hashtagID': hashtag.id,
+            'hashtagName': hashtag.name,
+            'media_count': hashtag.media_count,
+            'lastPublishDate': parse_datetime(str(Recently))
+        })
+    except Exception as e:
+        hashAnalysis.append(f"Failed to fetch recent media info: {e}")
+
+    return hashAnalysis, creators, content
+
+###########################################################################################################
+###########################################################################################################
+
