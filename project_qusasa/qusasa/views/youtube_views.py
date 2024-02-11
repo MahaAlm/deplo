@@ -17,9 +17,7 @@ from django.core.exceptions import ValidationError
 import re
 import os
 from django.conf import settings
-from decouple import config
 from ..models import TopicAnalysisHistory
-import openai
 import pandas as pd
 from .auth_views import *
 from django.http import FileResponse, Http404
@@ -32,6 +30,7 @@ from formtools.wizard.views import SessionWizardView
 import zipfile
 import io
 
+OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY', 'default_value')
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------
 #Competitive Analysis
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -110,9 +110,10 @@ def map_media_type(media_type, product_type=None):
 
 
 
-cl=connectToInstaAPI()
 
 def postAnalysis(posturl):
+    cl=connectToInstaAPI()
+
     context = []
     listComm=[]
     commentDataset=[]
