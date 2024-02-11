@@ -110,25 +110,19 @@
                 <p>take a look over the post in general, what is it about and how is it performing</p>
                 <div class="overview">
                     <div class="header">
-                        <img src="{% static 'qusasa/images/thumbnial_url.jpg'%}" alt=""/>
+                        <div class="owl-carousel" style="width: 50%">
+                            <div class="item" style="">
+                                <img style="width: 100%; margin: 0;" src="{% static 'qusasa/images/thumbnial_url.jpg'%}" alt=""/>
+                            </div>
+                        
+                        </div>
 
                         <div class="header-info">
                             {% if description != ''%}
                             <div class="desc" style="margin-top: 0;">
                             <h3 style="display:flex; flex-direction: row; align-content: center; align-items:center;"><img src="{% static 'qusasa/images/icon_url.jpg'%}" style="height: 40px; width: 40px; border-radius:50%; margin: 0 0.5rem;" alt=""><p style="font-size:1.2rem; margin: 0" > by {{owner}}</p></h3>
                             <div class="acc-stat">
-                                <div class="one-stat">
-                                    <p>{{followerCount}}</p>
-                                    <p>Followers</p>
-                                </div>
-                                <div class="one-stat">
-                                    <p>{{followingCount}}</p>
-                                    <p>Following</p>
-                                </div>
-                                <div class="one-stat">
-                                    <p>{{MediaCount}}</p>
-                                    <p>Posts</p>
-                                </div>
+                                {{caption}}
                             </div>
                             </div>
                             {%endif%}
@@ -413,7 +407,21 @@ drawWordCloud("#wordcloud0" , postTags);
         throw new Error('Unable to copy object!');
     }
 </script>
-
+<script>$(document).ready(function(){
+    $(".owl-carousel").owlCarousel({
+        // Owl Carousel options
+        items: 1,
+        center: true,
+        loop: true,
+        autoplay: true,
+        autoplayTimeout: 3000,
+        autoplayHoverPause: true,
+        nav: false,
+        
+        // other options as needed
+    });
+});
+</script>
 
 <script>
     document.getElementById('download-dataset-button').addEventListener('click', function() {
