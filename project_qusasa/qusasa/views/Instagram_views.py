@@ -96,7 +96,7 @@ class PostAnalysisWizard(SessionWizardView):
         self.request.session['LikeCount'] = int(PostDf['LikeCount'].iloc[0])
         self.request.session['CommentCount'] = int(PostDf['CommentCount'].iloc[0])
 
-        
+        self.request.session['caption'] = PostDf['caption']
         self.request.session['CommentDate'] = pd.DataFrame(commentDataset)['CommentDate'].tolist()
         self.request.session['CommentLikes'] = pd.DataFrame(commentDataset)['CommentLikes'].tolist()
         
@@ -117,6 +117,7 @@ def posts_analysis_output_view(request):
         
     owner = request.session['owner']
     thumbnial_url = request.session['thumbnial_url']
+    caption = request.session['caption']
     icon_url = request.session['icon_url']
     top_keywords = request.session['top_keywords'] 
     MediaCount = request.session['MediaCount'] 
@@ -141,6 +142,7 @@ def posts_analysis_output_view(request):
     
     json_data = json.dumps(output_data)
     context= {
+        'caption': caption,
         'owner': owner,
         'thumbnial_url': thumbnial_url,
         'icon_url': icon_url,
