@@ -94,8 +94,10 @@ urlpatterns = [
     path('topictrend_analysis_details', views.topictrend_analysis_details, name='topictrend_analysis_details'),  
     path('topictrend_analysis_output', views.topictrend_analysis_output, name='topictrend_analysis_output'),
 
-    path('engagement_history_details', views.engagement_history_details, name='engagement_history_details'), 
-    
+    path('profile_analysis_details', views.profile_analysis_details, name='profile_analysis_details'), 
+    path('profile_analysis_forms', views.ProfileAnalysisWizard.as_view(), name='profile_analysis_forms'), 
+    path('profile_analysis_output', views.profile_analysis_output, name='profile_analysis_output'),
+
     path('people_analytics_details', views.people_analytics_details, name='people_analytics_details'), 
     
     path('comparative_study_details', views.comparative_study_details, name='comparative_study_details'), 

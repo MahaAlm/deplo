@@ -204,9 +204,9 @@ def topictrend_analysis_output(request):
 #Profile Analysis
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-def engagement_history_details(request):
+def profile_analysis_details(request):
     # You can add code here to fetch and process inquiries
-    return render(request, 'instafeatures_pages/engagement_history/engagement_history_details.html')
+    return render(request, 'instafeatures_pages/engagement_history/profile_analysis_details.html')
 
 from ..forms import ProfileAnalysisInputForm
 from ..models import  ProfileAnalysisHistory
@@ -247,6 +247,10 @@ class ProfileAnalysisWizard(SessionWizardView):
         
         
         return HttpResponseRedirect(reverse('profile_analysis_output'))  # Use the name of the URL pattern
+
+def profile_analysis_output(request):
+    # You can add code here to fetch and process inquiries
+    return render(request, 'instafeatures_pages/topictrend_analysis/profile_analysis_output.html')
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------
 #People Analysis
