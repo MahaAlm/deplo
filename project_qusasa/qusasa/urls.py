@@ -56,20 +56,7 @@ urlpatterns = [
     path('channel_analysis/output/', views.channel_analysis_output_view, name='channel_analysis_output'),
     path('dataset_zipped_output_channel/', views.channel_dataset_zipped_output, name='channel_dataset_zipped_output'),  
     
-    path('topictrend_analysis_details', views.topictrend_analysis_details, name='topictrend_analysis_details'),  
-    
-    path('posts_analysis_details', views.posts_analysis_details, name='posts_analysis_details'),  
-    
-    path('engagement_history_details', views.engagement_history_details, name='engagement_history_details'), 
-    
-    path('people_analytics_details', views.people_analytics_details, name='people_analytics_details'), 
-    
-    path('comparative_study_details', views.comparative_study_details, name='comparative_study_details'), 
-    
-    path('instagram_reporting_details', views.instagram_reporting_details, name='instagram_reporting_details'),
-    
     path('topic_analysis_details', views.topic_analysis_details, name='topic_analysis_details'),
-     path('topictrend_analysis_output', views.topictrend_analysis_output, name='topictrend_analysis_output'),
     path('topic_analysis_detail/<int:history_id>/', views.topic_analysis_detail, name='topic_analysis_detail'),
     path('topic_analysis/', views.TopicAnalysisWizard.as_view(), name='topic_analysis'),
     path('topic_analysis_redo/<int:history_id>/', views.TopicAnalysisWizard.as_view(), name='topic_analysis_redo'),
@@ -80,28 +67,42 @@ urlpatterns = [
     path('doc_channel/', views.doc_channel, name='doc_channel'),   
     path('doc_playlist/', views.doc_playlist, name='doc_playlist'),   
     path('doc_topic/', views.doc_topic, name='doc_topic'),
-     path('video_retriving_details', views.video_retriving_details, name='video_retriving_details'),
-         path('video_retriving_detail/<int:history_id>/', views.video_retriving_detail, name='video_retriving_detail'),
-
+    
+    path('video_retriving_details', views.video_retriving_details, name='video_retriving_details'),
+    path('video_retriving_detail/<int:history_id>/', views.video_retriving_detail, name='video_retriving_detail'),
     path('video_retriving/', views.VideoRetrivingWizard.as_view(), name='video_retriving'),
-        path('video_retriving_redo/<int:history_id>', views.VideoRetrivingWizard.as_view(), name='video_retriving_redo'),
-
+    path('video_retriving_redo/<int:history_id>', views.VideoRetrivingWizard.as_view(), name='video_retriving_redo'),
     path('video_retriving/output/', views.video_retriving_output_view, name='video_retriving_output'),
     path('dataset_zipped_output_retriving/', views.dataset_zipped_output_retriving, name='dataset_zipped_output_retriving'), 
+    
     path('topic-analysis/<int:history_id>/', views.topic_analysis_detail, name='topic_analysis_detail'),
-      path('delete_history/<str:history_type>/<int:history_id>/', views.delete_history, name='delete_history'),
+      
+    path('delete_history/<str:history_type>/<int:history_id>/', views.delete_history, name='delete_history'),
 
     # path('chat/', views.chat_view, name='chat_view'),
     path('delete_selected_templates/', views.delete_selected_templates, name='delete_selected_templates'),
 
-    path('posts_analysis_details', views.posts_analysis_details, name='posts_analysis_details'),
+  
+    path('posts_analysis_details', views.posts_analysis_details, name='posts_analysis_details'),  
     path('posts_analysis_detail/<int:history_id>/', views.posts_analysis_detail, name='posts_analysis_detail'),
-
     path('post_analysis/', views.PostAnalysisWizard.as_view(), name='post_analysis'),
     path('post_analysis_redo/<int:history_id>', views.PostAnalysisWizard.as_view(), name='post_analysis_redo'),
     path('post_analysis/output/', views.posts_analysis_output_view, name='post_analysis_output'),
     path('dataset_zipped_output_post/', views.posts_dataset_zipped_output, name='post_dataset_zipped_output'),
     path('doc_post/', views.doc_post, name='doc_post'),
+    
+    path('topictrend_analysis_details', views.topictrend_analysis_details, name='topictrend_analysis_details'),  
+    path('topictrend_analysis_output', views.topictrend_analysis_output, name='topictrend_analysis_output'),
+
+    path('engagement_history_details', views.engagement_history_details, name='engagement_history_details'), 
+    
+    path('people_analytics_details', views.people_analytics_details, name='people_analytics_details'), 
+    
+    path('comparative_study_details', views.comparative_study_details, name='comparative_study_details'), 
+    
+    path('instagram_reporting_details', views.instagram_reporting_details, name='instagram_reporting_details'),
+    
+    
 
 
 ]

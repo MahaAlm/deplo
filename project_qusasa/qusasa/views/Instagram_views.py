@@ -49,17 +49,17 @@ class PostAnalysisWizard(SessionWizardView):
     form_list = [PostAnalysisInputForm]
     template_name = 'instafeatures_pages/posts_analysis/posts_analysis_forms.html'  
     
-    # def get_form_initial(self, step):
-    #     initial = super().get_form_initial(step)
-    #     history_id = self.kwargs.get('history_id')
+    def get_form_initial(self, step):
+        initial = super().get_form_initial(step)
+        history_id = self.kwargs.get('history_id')
 
-    #     if history_id and step == '0':  # Assuming '0' is the step of PlaylistAnalysisInputForm
-    #         history = get_object_or_404(PostAnalysisHistory, id=history_id, user=self.request.user)
-    #         initial.update({
-    #             'post_url': history.playlist_url,
-    #             # Add other fields as necessary
-    #         })
-    #     return initial
+        if history_id and step == '0':  # Assuming '0' is the step of PlaylistAnalysisInputForm
+            history = get_object_or_404(PostAnalysisHistory, id=history_id, user=self.request.user)
+            initial.update({
+                'post_url': history.post_url,
+                # Add other fields as necessary
+            })
+        return initial
     
     def done(self, form_list, **kwargs):
         # Process the cleaned data
@@ -201,12 +201,52 @@ def topictrend_analysis_output(request):
     return render(request, 'instafeatures_pages/topictrend_analysis/topictrend_analysis_output.html')
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------
-#Engagement History
+#Profile Analysis
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def engagement_history_details(request):
     # You can add code here to fetch and process inquiries
     return render(request, 'instafeatures_pages/engagement_history/engagement_history_details.html')
+
+from ..forms import ProfileAnalysisInputForm
+from ..models import  ProfileAnalysisHistory
+class ProfileAnalysisWizard(SessionWizardView):
+    form_list = [ProfileAnalysisInputForm]
+    template_name = 'instafeatures_pages/profile_analysis/profile_analysis_forms.html'  
+    
+    # def get_form_initial(self, step):
+    #     initial = super().get_form_initial(step)
+    #     history_id = self.kwargs.get('history_id')
+
+    #     if history_id and step == '0':  # Assuming '0' is the step of PlaylistAnalysisInputForm
+    #         history = get_object_or_404(ProfileAnalysisHistory, id=history_id, user=self.request.user)
+    #         initial.update({
+    #             'post_url': history.playlist_url,
+    #             # Add other fields as necessary
+    #         })
+    #     return initial
+    
+    def done(self, form_list, **kwargs):
+        # # Process the cleaned data
+        # cleaned_data = self.get_all_cleaned_data()
+        # profile_id = cleaned_data.get('profile_url')
+        
+        # # PostDf, commentDataset ,comment_sentiments, sentiments, num_pics = postAnalysis(post_id)
+        # history_id = self.kwargs.get('history_id')
+        # if history_id:
+        #     # Update the existing history record
+        #     history = get_object_or_404(PostAnalysisHistory, id=history_id, user=self.request.user)
+        #     history.profile_url = cleaned_data.get('profile_url')
+        #     # Update other fields as necessary
+        #     history.save()
+        # else:
+        #     PostAnalysisHistory.objects.create(
+        #     user=self.request.user,
+        #     profile_url=cleaned_data.get('profile_url'),
+        #     )
+        
+        
+        return HttpResponseRedirect(reverse('profile_analysis_output'))  # Use the name of the URL pattern
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------
 #People Analysis
