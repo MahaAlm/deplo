@@ -11,6 +11,7 @@ from collections import Counter
 from transformers import pipeline, BertTokenizer, AutoModelForSequenceClassification
 from keybert import KeyBERT
 import os
+import time
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -107,7 +108,6 @@ def connectToInstaAPI():
         print('Failed to connect:', str(e))
         return None
     
-cl = connectToInstaAPI() 
 
 def parse_datetime(datetime_str):
     parsed_datetime = parser.parse(datetime_str)
@@ -190,30 +190,30 @@ def map_media_type(media_type, product_type=None):
 ###########################################################################################################
 ###########################################################################################################
 
-cl=connectToInstaAPI()
 
 def postAnalysis(posturl):
 
     context = []
     listComm=[]
     commentDataset=[]
+    cl = connectToInstaAPI()
 
     if cl:
             postCode = cl.media_pk_from_url(posturl)
             # Get post information
             post_info = cl.media_info(postCode)
             print(post_info)
-            thumbnial_url = str(post_info.thumbnail_url)
+            thumbnial_url = post_info.thumbnail_url
             icon_url = str(post_info.user.profile_pic_url)
-            
-            if thumbnial_url:
-                cl.photo_download_by_url(thumbnial_url, 'thumbnial_url0', 'qusasa/static/qusasa/images')	
+            i = 0
+            if thumbnial_url != None:
+                print(thumbnial_url)
+                cl.photo_download_by_url(str(thumbnial_url), 'thumbnial_url0', 'qusasa/static/qusasa/images')	
             else:
                 resources = post_info.resources
-                i = 0
                 for post in resources:
                      cl.photo_download_by_url(str(post.thumbnail_url), f'thumbnial_url{i}', 'qusasa/static/qusasa/images')	
-                     
+                     i = i+1
             cl.photo_download_by_url(icon_url, 'icon_url', 'qusasa/static/qusasa/images')	
             
             # Get comments for the post
@@ -261,8 +261,14 @@ def postAnalysis(posturl):
               'CommentDate': [parse_datetime(str(comment[1])) for comment in sortedListComm],
               'CommentLikes': [comment[2] for comment in sortedListComm]
           })
+            
+            num_pics = i
+    else:
+        time.sleep(120)
+        cl = connectToInstaAPI()
+        postAnalysis(posturl)
 
-    return PostDf, commentDataset ,comment_sentiments, sentiments  # Print the post details
+    return PostDf, commentDataset ,comment_sentiments, sentiments, num_pics# Print the post details
 
 
 

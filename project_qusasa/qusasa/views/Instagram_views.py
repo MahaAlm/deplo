@@ -66,7 +66,7 @@ class PostAnalysisWizard(SessionWizardView):
         cleaned_data = self.get_all_cleaned_data()
         post_id = cleaned_data.get('post_url')
         
-        PostDf, commentDataset ,comment_sentiments, sentiments = postAnalysis(post_id)
+        PostDf, commentDataset ,comment_sentiments, sentiments, num_pics = postAnalysis(post_id)
         history_id = self.kwargs.get('history_id')
         if history_id:
             # Update the existing history record
@@ -83,6 +83,7 @@ class PostAnalysisWizard(SessionWizardView):
         commentDataset_csv = pd.DataFrame(commentDataset).to_csv(index=False)
         Post_csv = PostDf.to_csv(index=False)
         
+        self.request.session['num_pics'] = num_pics
         self.request.session['commentDataset_csv'] = commentDataset_csv
         self.request.session['Post_csv'] = Post_csv
         self.request.session['publishedAt'] = PostDf['publishedAt'].iloc[0]
@@ -96,7 +97,7 @@ class PostAnalysisWizard(SessionWizardView):
         self.request.session['LikeCount'] = int(PostDf['LikeCount'].iloc[0])
         self.request.session['CommentCount'] = int(PostDf['CommentCount'].iloc[0])
 
-        self.request.session['caption'] = PostDf['caption']
+        self.request.session['caption'] = str(PostDf['caption'].iloc[0])
         self.request.session['CommentDate'] = pd.DataFrame(commentDataset)['CommentDate'].tolist()
         self.request.session['CommentLikes'] = pd.DataFrame(commentDataset)['CommentLikes'].tolist()
         
@@ -114,7 +115,11 @@ from django.conf import settings
 
 
 def posts_analysis_output_view(request):
-        
+    num_pics_int = request.session['num_pics']
+    if num_pics_int == 0:    
+        num_pics =  range(request.session['num_pics']+1)
+    else:
+         num_pics =  range(request.session['num_pics'])
     owner = request.session['owner']
     thumbnial_url = request.session['thumbnial_url']
     caption = request.session['caption']
@@ -137,11 +142,13 @@ def posts_analysis_output_view(request):
         "CommentDate": CommentDate,
         "CommentLikes": CommentLikes,
         "sentiments": sentiments,
-        'top_keywords': top_keywords
+        'top_keywords': top_keywords,
+        'num_pics': num_pics_int
     }
     
     json_data = json.dumps(output_data)
     context= {
+        'num_pics': num_pics,
         'caption': caption,
         'owner': owner,
         'thumbnial_url': thumbnial_url,
@@ -155,7 +162,9 @@ def posts_analysis_output_view(request):
         "CommentCount": CommentCount,
         "sentiments": sentiments,
         "comment_sentiments": comment_sentiments,
-        "json_data": json_data
+        "json_data": json_data,
+        'docx_file': 'post_analysis.docx',
+
     }
     
    
