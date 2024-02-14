@@ -5,7 +5,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Qusasa | Instagram Engagement History</title>
+    <title>Qusasa | Instagram Profile Analysis</title>
     <!-- Linking CSS -->
     <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}" />
     <link rel="stylesheet" href="{% static 'qusasa/css/cards.css' %}" />
@@ -99,7 +99,7 @@
             <li><a href="{% url 'base' %}" {% if request.resolver_match.url_name == 'base' %}  {% endif %}> Home</a></li>
             <li><a href="{% url 'wFeature' %}" {% if request.resolver_match.url_name == 'base' %}  {% endif %}>Qusasa's Features</a></li>
             <li><a href="{% url 'YouTubeFeat' %}" {% if request.resolver_match.url_name == 'base' %}  {% endif %}>Instagram Features</a></li>
-            <li id="current">Engagement History</li>
+            <li id="current">Profile Analysis</li>
         </ul>
 
       <div class="history">
@@ -107,8 +107,8 @@
             <div class="feature-head">
                     <img src="{% static 'qusasa/images/engagment.webp' %}" alt="">
                 <div class="feature-text">
-                    <h1>Engagement History</h1>
-                    <p>This feature allows you to input a profile or hashtag to evaluate its engagement history, compiling insights and visualizing trends and interactions over time..</p>
+                    <h1>Profile Analysis</h1>
+                    <p>This feature enables you to input a profile to assess its engagement history, compiling insights and visualizing trends and interactions over time, facilitating a deep understanding of engagement evolution and effectiveness.</p>
                     <a href="{% url 'topic_analysis' %}"><button><i class="fa-solid fa-circle-play"></i>  Start now</button></a>
                 </div>
             </div>
@@ -116,12 +116,12 @@
             <div class="input-output">
                 <div class="input">
                     <h3><i class="fa-solid fa-circle-chevron-right"></i> Input:</h3>
-                    <p>Profile or hashtag
+                    <p>Profile URL
                         <br>
                         <br>
                         <span class="color">Example: </span>
                         <br>
-                        As a brand manager analyzing our company's Instagram hashtag, I input "#BrandXLaunch" with a focus on the past year's engagement metrics. The feature provides me a visual timeline of engagement peaks and troughs, highlighting key moments that drove interaction. This analysis allows me to pinpoint successful strategies and areas for improvement, informing future campaign planning.
+                        As a content manager, I input our brand's profile into the 'Profile Analysis' feature to review the past year's engagement metrics. The system provides a visual timeline of engagement trends, highlighting key moments of interaction. This analysis helps identify effective strategies and areas for improvement, guiding our future content planning.
                     </p>
         
                 </div>

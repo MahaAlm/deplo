@@ -5,7 +5,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Qusasa | Instagram Posts Analysis</title>
+    <title>Qusasa | Instagram Post Analysis</title>
     <!-- Linking CSS -->
     <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}" />
     <link rel="stylesheet" href="{% static 'qusasa/css/cards.css' %}" />
@@ -99,7 +99,7 @@
             <li><a href="{% url 'base' %}" {% if request.resolver_match.url_name == 'base' %}  {% endif %}> Home</a></li>
             <li><a href="{% url 'wFeature' %}" {% if request.resolver_match.url_name == 'base' %}  {% endif %}>Qusasa's Features</a></li>
             <li><a href="{% url 'YouTubeFeat' %}" {% if request.resolver_match.url_name == 'base' %}  {% endif %}>Instagram Features</a></li>
-            <li id="current">Posts Analysis</li>
+            <li id="current">Post Analysis</li>
         </ul>
 
       <div class="history">
@@ -108,7 +108,7 @@
                     <img src="{% static 'qusasa/images/posts analysis.webp' %}" alt="">
                 <div class="feature-text">
                     <h1>Post Analysis</h1>
-                    <p>This feature allows you to input a post URL to dissect post engagements, generating detailed insights and visualizing metrics for each post to understand the dynamics of audience interaction.</p>
+                    <p>This feature allows you to input a post URL to dissect post engagements, generating detailed insights and visualizing metrics to understand the dynamics of audience interaction.</p>
                     <a href="{% url 'post_analysis' %}"><button><i class="fa-solid fa-circle-play"></i>  Start now</button></a>
                 </div>
             </div>
