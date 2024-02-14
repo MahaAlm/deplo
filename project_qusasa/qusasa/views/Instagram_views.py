@@ -196,6 +196,10 @@ def topictrend_analysis_details(request):
     # You can add code here to fetch and process inquiries
     return render(request, 'instafeatures_pages/topictrend_analysis/topictrend_analysis_details.html')
 
+def topictrend_analysis_output(request):
+    # You can add code here to fetch and process inquiries
+    return render(request, 'instafeatures_pages/topictrend_analysis/topictrend_analysis_output.html')
+
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------
 #Engagement History
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------

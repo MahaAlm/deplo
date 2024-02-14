@@ -69,6 +69,7 @@ urlpatterns = [
     path('instagram_reporting_details', views.instagram_reporting_details, name='instagram_reporting_details'),
     
     path('topic_analysis_details', views.topic_analysis_details, name='topic_analysis_details'),
+     path('topictrend_analysis_output', views.topictrend_analysis_output, name='topictrend_analysis_output'),
     path('topic_analysis_detail/<int:history_id>/', views.topic_analysis_detail, name='topic_analysis_detail'),
     path('topic_analysis/', views.TopicAnalysisWizard.as_view(), name='topic_analysis'),
     path('topic_analysis_redo/<int:history_id>/', views.TopicAnalysisWizard.as_view(), name='topic_analysis_redo'),
