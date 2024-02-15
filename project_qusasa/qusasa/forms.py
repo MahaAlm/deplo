@@ -603,3 +603,10 @@ class ProfileAnalysisInputForm(forms.Form):
             raise ValidationError("Please enter a valid Instagram profile URL.")
 
         return profile_url
+    
+class TopicTrendAnalysisInputForm(forms.Form):
+    hashtag = forms.URLField(label='Hashtag', required=True)
+
+    def clean_profile_url(self):
+        hashtag = self.cleaned_data['hashtag']
+        return hashtag
