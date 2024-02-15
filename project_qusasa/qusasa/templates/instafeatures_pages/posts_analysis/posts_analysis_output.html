@@ -4,14 +4,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Qusasa | Youtube Channel Analysis</title>
+    <title>Qusasa | Instagram Post Analysis</title>
     <!-- Linking CSS -->
     <link rel="stylesheet" href="{% static 'qusasa/css/signup.css' %}" />
     <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}" />
     <link rel="stylesheet" href="{% static 'qusasa/css/cards.css' %}" />
     <link rel="stylesheet" href="{% static 'qusasa/css/feature_details.css' %}" />
     <link rel="stylesheet" href="{% static 'qusasa/css/output.css' %}" />
-    <link rel="stylesheet" href="{% static 'qusasa/css/channel_analysis_output.css' %}" />
+    <link rel="stylesheet" href="{% static 'qusasa/css/post_analysis_output.css' %}" />
 
     <link href="https://cdn.rawgit.com/michalsnik/aos/2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://cdn.rawgit.com/michalsnik/aos/2.3.1/dist/aos.js"></script>
@@ -36,24 +36,9 @@
     <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
 
-    <style>
-        .acc-stat {
-            display: flex;
-            flex-direction: row;
-        }
+ 
 
-        .acc-stat .one-stat {
-            margin-right: 3rem;
-            margin-bottom: 1rem;
-
-        }
-
-        .acc-stat .one-stat p {
-            margin-top: 0;
-            margin-bottom: 0rem;
-
-        }
-    </style>
+     
   </head>
   <body>
     
@@ -96,7 +81,9 @@
                     </div>
                     
                     <div class="button">
-                      </div>
+                        <a href="{% url 'download_docx' filename=docx_file %}"><button>Download the report</button></a>
+
+                    </div>
                     
                 </div>
             </div>
@@ -109,26 +96,27 @@
                 <h1>Get An Overview</h1>
                 <p>take a look over the post in general, what is it about and how is it performing</p>
                 <div class="overview">
-                    <div class="header">
-                        <img src="{% static 'qusasa/images/thumbnial_url.jpg'%}" alt=""/>
+                    <div class="header"style=" margin-top:1rem; padding: 0;">
+                        <div class="owl-carousel" style="width:50%; margin: 1rem; margin:0; padding: 0;" >
+                            {% for i in num_pics %}
+                            
+                            <div class="item" style="min-width: 100%; width: 100%; min-height: auto;">
+                                <img style="margin: 0;" src="{% static 'qusasa/images/thumbnial_url' %}{{i}}.jpg" alt=""/>
+                            </div>
+                            {% endfor %}
+                        
+                        </div>
 
                         <div class="header-info">
                             {% if description != ''%}
                             <div class="desc" style="margin-top: 0;">
                             <h3 style="display:flex; flex-direction: row; align-content: center; align-items:center;"><img src="{% static 'qusasa/images/icon_url.jpg'%}" style="height: 40px; width: 40px; border-radius:50%; margin: 0 0.5rem;" alt=""><p style="font-size:1.2rem; margin: 0" > by {{owner}}</p></h3>
                             <div class="acc-stat">
-                                <div class="one-stat">
-                                    <p>{{followerCount}}</p>
-                                    <p>Followers</p>
-                                </div>
-                                <div class="one-stat">
-                                    <p>{{followingCount}}</p>
-                                    <p>Following</p>
-                                </div>
-                                <div class="one-stat">
-                                    <p>{{MediaCount}}</p>
-                                    <p>Posts</p>
-                                </div>
+                                {% if caption == '' %}
+                                No Caption
+                                {%else%}
+                                {{caption}}
+                                {%endif%}
                             </div>
                             </div>
                             {%endif%}
@@ -243,7 +231,123 @@
     const csrftoken = '{{ csrf_token }}';
 </script>
 
+<script>$(document).ready(function(){
+    $(".owl-carousel").owlCarousel({
+        // Owl Carousel options
+        items: 1,
+        center: true,
+        loop: true,
+        autoplay: true,
+        autoplayTimeout: 3000,
+        autoplayHoverPause: true,
+        nav: false,
+        });
+});
+</script>
+
+<script>
+    // Set timeout to refresh the page after 1000 seconds
+    setTimeout(function() {
+        // Reload the current page
+        $(".owl-carousel").owlCarousel({
+            // Owl Carousel options
+            items: 1,
+            center: true,
+            loop: true,
+            autoplay: true,
+            autoplayTimeout: 3000,
+            autoplayHoverPause: true,
+            nav: false,
+            });
+    }, 3000); // 1000 seconds
+</script>
+
 <script id="json-data" type="application/json">{{ json_data|safe }}</script>
+
+
+<script>
+    var myColors = ['#D5A9FF', '#7EF7D9', '#12CEE6', '#4686FF', '#FFFFFF'];
+
+    function drawWordCloud(selector, words) {
+        var getRandomSize = function() {
+            return 10 + Math.random() * 30; // Random size between 10 and 50
+        };
+    
+        // Set up the word cloud layout
+        var layout = d3.layout.cloud()
+            .size([800, 300]) // The size of the word cloud
+            .words(words.map(function(d) {
+                return {text: d, size: getRandomSize()}; // random size to each word
+            }))
+            .padding(2) 
+            .rotate(0) 
+            .font("Raleway")
+            .fontSize(function(d) { return d.size; })
+            .on("end", draw);
+    
+        layout.start();
+    
+        // Draw the word cloud
+        function draw(words) {
+            var svg = d3.select(selector).append("svg")
+                .attr("width", layout.size()[0])
+                .attr("height", layout.size()[1])
+                .append("g")
+                .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")");
+    
+            svg.selectAll("text")
+                .data(words)
+                .enter().append("text")
+                .style("font-size", function(d) { return d.size + "px"; }) 
+                .style("font-family", "Raleway")
+                .style("font-weight", "bold") // Set the font family
+                .style("fill", function(d, i) { return myColors[i % myColors.length]; }) 
+                .attr("text-anchor", "middle")
+                .attr("transform", function(d) {
+                    return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                })
+                .text(function(d) { return d.text; });
+        }
+    }
+    
+
+postTags = jsonData.top_keywords
+drawWordCloud("#wordcloud0" , postTags);
+
+</script>
+
+<script>
+    function deepCopy(obj, visited = new WeakMap()) {
+        if (obj === null || typeof obj !== 'object') {
+            return obj;
+        }
+        if (visited.has(obj)) {
+            return visited.get(obj);
+        }
+        let copy;
+        if (Array.isArray(obj)) {
+            copy = [];
+            visited.set(obj, copy);
+            obj.forEach((item, index) => {
+                copy[index] = deepCopy(item, visited);
+            });
+            return copy;
+        }
+        if (obj instanceof Object) {
+            copy = {};
+            visited.set(obj, copy);
+            Object.keys(obj).forEach(key => {
+                // Skip properties that cause circular references
+                if (key !== 'ctx') {
+                    copy[key] = deepCopy(obj[key], visited);
+                }
+            });
+            return copy;
+        }
+        throw new Error('Unable to copy object!');
+    }
+</script>
+
 
 <script>
     var jsonData = JSON.parse(document.getElementById('json-data').textContent);
@@ -330,90 +434,16 @@ var lineChartOptions = {
     });
   
   }, 1000);
+
+  var trend_chart = deepCopy(lineChart.w.config);
+  trend_chart.chart.foreColor = '#000'; // Set text color to black
+  trend_chart.chart.background = '#FFF'; // Set background to white for contrast
+  trend_chart.chart.height = 300; // Set text color to black
+  trend_chart.chart.width = 500; // Set background to white for contrast
+  trend_chart.title.text = "Comments Counts per Month";
+  trend_chart.legend.show = true
+  trend_chart.fill = {}
 </script>
-<script>
-    var myColors = ['#D5A9FF', '#7EF7D9', '#12CEE6', '#4686FF', '#FFFFFF'];
-
-    function drawWordCloud(selector, words) {
-        var getRandomSize = function() {
-            return 10 + Math.random() * 30; // Random size between 10 and 50
-        };
-    
-        // Set up the word cloud layout
-        var layout = d3.layout.cloud()
-            .size([800, 300]) // The size of the word cloud
-            .words(words.map(function(d) {
-                return {text: d, size: getRandomSize()}; // random size to each word
-            }))
-            .padding(2) 
-            .rotate(0) 
-            .font("Raleway")
-            .fontSize(function(d) { return d.size; })
-            .on("end", draw);
-    
-        layout.start();
-    
-        // Draw the word cloud
-        function draw(words) {
-            var svg = d3.select(selector).append("svg")
-                .attr("width", layout.size()[0])
-                .attr("height", layout.size()[1])
-                .append("g")
-                .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")");
-    
-            svg.selectAll("text")
-                .data(words)
-                .enter().append("text")
-                .style("font-size", function(d) { return d.size + "px"; }) 
-                .style("font-family", "Raleway")
-                .style("font-weight", "bold") // Set the font family
-                .style("fill", function(d, i) { return myColors[i % myColors.length]; }) 
-                .attr("text-anchor", "middle")
-                .attr("transform", function(d) {
-                    return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-                })
-                .text(function(d) { return d.text; });
-        }
-    }
-    
-
-postTags = jsonData.top_keywords
-drawWordCloud("#wordcloud0" , postTags);
-
-</script>
-
-<script>
-    function deepCopy(obj, visited = new WeakMap()) {
-        if (obj === null || typeof obj !== 'object') {
-            return obj;
-        }
-        if (visited.has(obj)) {
-            return visited.get(obj);
-        }
-        let copy;
-        if (Array.isArray(obj)) {
-            copy = [];
-            visited.set(obj, copy);
-            obj.forEach((item, index) => {
-                copy[index] = deepCopy(item, visited);
-            });
-            return copy;
-        }
-        if (obj instanceof Object) {
-            copy = {};
-            visited.set(obj, copy);
-            Object.keys(obj).forEach(key => {
-                // Skip properties that cause circular references
-                if (key !== 'ctx') {
-                    copy[key] = deepCopy(obj[key], visited);
-                }
-            });
-            return copy;
-        }
-        throw new Error('Unable to copy object!');
-    }
-</script>
-
 
 <script>
     document.getElementById('download-dataset-button').addEventListener('click', function() {
@@ -506,925 +536,19 @@ var options = {
       
       }, 1000);
 
-</script>
-<script>
-
-    var jsonData = JSON.parse(document.getElementById('json-data').textContent);
-
-    var videos_publishedAt = jsonData.videos_publishedAt
-    var videos_duration = jsonData.videos_duration
-
-
-    var videos_likes = jsonData.videos_likes.reverse()
-    var videos_views = jsonData.videos_views.reverse()
-    var videos_commentCount = jsonData.videos_commentCount.reverse()
-    
-    var totalViews = jsonData.totalViews
-    var totalLikes = jsonData.totalLikes
-    var totalComments = jsonData.totalComments
-
-    var Mainplaylist = jsonData.all_playlists_dict[0]
-    var allPlaylists = jsonData.all_playlists_dict
-    allPlaylists.shift()
-    console.log(allPlaylists)
-    
-    var totalVideoCount = Mainplaylist.videoCount
-    // Calculate the sum of videos in all playlists
-    let playlistVideoSum = 0;
-    let playlistViews = []
-    allPlaylists.forEach(playlist => {
-        playlistVideoSum += playlist.videoCount;
-    });
-
-    var videos_duration = jsonData.videos_duration
-
-    // Calculate number of videos not in any playlist
-    const videosNotInPlaylist = totalVideoCount - playlistVideoSum;
-
-    // Prepare data for the pie chart
-    let chartData = allPlaylists.map(playlist => {
-        return {
-            name: playlist.title,
-            data: playlist.videoCount
-        };
-    });
-
-    // Add the count of videos not in any playlist
-    chartData.push({
-        name: 'Not in Playlist',
-        data: videosNotInPlaylist
-    });
-    var customColors = [
-    '#f0f8ff', '#f0ffff', '#ffebcd', '#deb887', '#ff7f50',
-    '#00ffff', '#a9a9a9', '#8b008b', '#8b0000', '#2f4f4f',
-    '#ff1493', '#1e90ff', '#ff00ff', '#daa520', '#808080',
-    '#4b0082', '#fff0f5', '#f08080', '#90ee90', '#20b2aa',
-    '#b0c4de', '#faf0e6', '#0000cd', '#7b68ee', '#191970',
-    '#ffdead', '#6b8e23', '#eee8aa', '#ffefd5', '#dda0dd'
-];
-
-    // Set up the ApexCharts pie chart
-    var options = {
-        chart: {
-            type: 'pie',
-            height: 500,
-            background: 'transparent'
-        },
-        toolbar: {
-            show: true, // Show the toolbar
-            tools: {
-                download: true, // Enable the download tool
-                selection: false,
-            
-            }        },
-        series: chartData.map(item => item.data),
-        labels: chartData.map(item => item.name),
-        theme: {
-            mode: 'dark'
-        },
-        title: {
-            text: 'Playlist Videos Count Distribution',
-            align: 'center',
-            floating: false,
-            offsetY: -5,
-            style: {
-                color: '#fff',
-                fontSize: '15px',
-                fontFamily: 'Raleway',
-                fontWeight: 700,
-                
-            }
-        },
-        legend: {
-            position: 'bottom'
-        },
-        stroke: {
-            show: false, // No border
-        },
-        fill: {
-            type: 'gradient',
-            gradient: {
-                shade: 'light',
-                shadeIntensity: 0.05,
-                inverseColors: true,
-                opacityFrom: 0.85,
-                opacityTo: 0.85,
-                stops: [0, 100]
-            }},
-            dataLabels: {
-                enabled: false,
-                formatter: function (val) {
-                    return val; // Round to nearest integer
-                },
-                style: {
-                    fontSize: '14px',
-                    fontFamily: 'Raleway',
-                    fontWeight: 'bold',
-                    
-                },
-                dropShadow: {
-                    enabled: false  // Disable drop shadow on data labels
-                }
-            }
-    };
-
-    var Piechart = new ApexCharts(document.querySelector("#playlistPieChart"), options);
-    Piechart.render();
-
-    setTimeout(() => {
-        Piechart.updateOptions({
-        });
-      
-      }, 1000);
-
-    var originalOptions = Piechart.w.config;
-
-    // Clone the options and change text color to black for exporting
-    var playlist_piechart = deepCopy(originalOptions);
-    playlist_piechart.chart.foreColor = '#000'; // Set text color to black
-    playlist_piechart.chart.background = '#FFF'; // Set background to white for contrast
-    playlist_piechart.chart.height = 300; // Set text color to black
-    playlist_piechart.chart.width = 300; // Set background to white for contrast
-    playlist_piechart.title.text = "Channel playlist pie chart";
-    playlist_piechart.legend.show = true
-    playlist_piechart.fill = {}
-
-
-
-    var seriesData = videos_publishedAt.map(function(date, index) {
-        return {
-            x: new Date(date).getTime(), // Convert to timestamp
-            y: videos_views[index]
-        };
-    });
-
-    var seriesDataLikes = videos_publishedAt.map(function(date, index) {
-        return {
-            x: new Date(date).getTime(), // Convert to timestamp
-            y: videos_likes[index]
-        };
-    });
-
-
-    var seriesDataComments = videos_publishedAt.map(function(date, index) {
-        return {
-            x: new Date(date).getTime(), // Convert to timestamp
-            y: videos_commentCount[index]
-        };
-    });
-
-    var seriesDataDur = videos_duration.map(function(time, index) {
-        return {
-            x: time, // Convert to timestamp
-            y: videos_views[index]
-        };
-    });
-
-    var seriesDataLikesDur = videos_duration.map(function(time, index) {
-        return {
-            x: time, // Convert to timestamp
-            y: videos_likes[index]
-        };
-    });
-
-
-    var seriesDataCommentsDur = videos_duration.map(function(time, index) {
-        return {
-            x: time, // Convert to timestamp
-            y: videos_commentCount[index]
-        };
-    });
-
-    
-
-
-    console.log(videos_publishedAt)
-    console.log(videos_views)
-    var options1 = {
-        chart: {
-            id: "chart2",
-            type: "bar",
-            height: 300,
-            width: 500,
-            foreColor: "#ccc",
-            toolbar: {
-                show: true, // Show the toolbar
-                tools: {
-                    download: true, // Enable the download tool
-                    selection: false,
-                zoom: false,
-                zoomin: false,
-                zoomout: false,
-                pan: false,
-                reset: false
-                }        },
-        },
-       
-        colors: ["#00BAEC"],
-        stroke: {
-            width: 3,
-            curve: 'smooth'
-        },
-        grid: {
-            borderColor: "#555",
-            clipMarkers: false,
-            yaxis: {
-            lines: {
-                show: false
-            }
-            }
-        },
-        dataLabels: {
-            enabled: false
-        },
-        fill: {
-            gradient: {
-            enabled: true,
-            opacityFrom: 0.9,
-            opacityTo: 0.3
-            }
-        },
-        
-        series: [
-            {
-                name: "views",
-            data: seriesData
-            }
-        ],
-        tooltip: {
-            theme: "dark",
-            x: {
-                format: "dd MMM yyyy" // Format: 01 Jan 2023
-            }
-        },
-        xaxis: {
-            type: "datetime",
-            
-        },
-        
-        yaxis: {
-            min: 0,
-            tickAmount: 4
-        },
-        grid: {
-            show: true
-        }
-        };
-
-        var chart1 = new ApexCharts(document.querySelector("#views-chart"), options1);
-
-        const options2 = options1
-        options2.series = [{name: "likes", data: seriesDataLikes}]
-        var chart2 = new ApexCharts(document.querySelector("#likes-chart"), options2);
-
-        const options3 = options1
-        options3.series = [{name: "comment count", data: seriesDataComments}]
-        var chart3 = new ApexCharts(document.querySelector("#comment-chart"), options3);
-
-        chart1.render();
-
-        setTimeout(() => {
-            chart1.updateOptions({
-            });
-          
-          }, 1000);
-    
-
-        var chart1Options = chart1.w.config;
-
-        var views_chart = deepCopy(chart1Options);
-        views_chart.chart.foreColor = '#000'; // Set text color to black
-        views_chart.chart.background = '#FFF'; // Set background to white for contrast
-        views_chart.chart.height = 300; // Set text color to black
-        views_chart.chart.width = 300; // Set background to white for contrast
-        views_chart.title.text = "Published At against views";
-        views_chart.legend.show = true
-        views_chart.fill = {}
-
-        chart2.render();
-
-        setTimeout(() => {
-            chart2.updateOptions({
-            });
-          
-          }, 1000);
-    
-
-        var chart2Options = chart2.w.config;
-
-        var likes_chart = deepCopy(chart2Options);
-        likes_chart.chart.foreColor = '#000'; // Set text color to black
-        likes_chart.chart.background = '#FFF'; // Set background to white for contrast
-        likes_chart.chart.height = 300; // Set text color to black
-        likes_chart.chart.width = 300; // Set background to white for contrast
-        likes_chart.title.text = "Published At against likes";
-        likes_chart.legend.show = true
-        likes_chart.fill = {}
-
-        chart3.render();
-
-        setTimeout(() => {
-            chart3.updateOptions({
-            });
-          
-          }, 1000);
-    
-
-        var chart3Options = chart3.w.config;
-
-        var comments_chart = deepCopy(chart3Options);
-        comments_chart.chart.foreColor = '#000'; // Set text color to black
-        comments_chart.chart.background = '#FFF'; // Set background to white for contrast
-        comments_chart.chart.height = 300; // Set text color to black
-        comments_chart.chart.width = 300; // Set background to white for contrast
-        comments_chart.title.text = "Published At against comments count";
-        comments_chart.legend.show = true
-        comments_chart.fill = {}
-
-        var options4 = {
-            chart: {
-                id: "chart2",
-                type: "bar",
-                height: 300,
-                width: 500,
-                foreColor: "#ccc",
-                toolbar: {
-                    show: true, // Show the toolbar
-                    tools: {
-                        download: true, // Enable the download tool
-                        selection: false,
-                    zoom: false,
-                    zoomin: false,
-                    zoomout: false,
-                    pan: false,
-                    reset: false
-                    }        },
-            },
-
-            plotOptions: {
-                bar: {
-                    columnWidth: '50%',
-                    borderRadius: [4, 4, 0, 0],
-                    // other bar options
-                }
-            },
-           
-            colors: ["#00BAEC"],
-            stroke: {
-                curve: 'smooth'
-            },
-            grid: {
-                borderColor: "#555",
-                clipMarkers: false,
-                yaxis: {
-                lines: {
-                    show: false
-                }
-                }
-            },
-            dataLabels: {
-                enabled: false
-            },
-            fill: {
-                gradient: {
-                enabled: true,
-                opacityFrom: 0.9,
-                opacityTo: 0.3
-                }
-            },
-            
-            series: [
-                {
-                    name: "views",
-                data: seriesDataDur
-                }
-            ],
-            tooltip: {
-                theme: "dark",
-            
-            },
-            xaxis: {            
-            },
-            
-            yaxis: {
-                min: 0,
-                tickAmount: 4
-            },
-            grid: {
-                show: true
-            }
-            };
-
-        options4.series = [{name: "views", data: seriesDataDur}]
-        var chart4 = new ApexCharts(document.querySelector("#views-chart-dur"), options4);
-
-        const options5 = options4
-        options5.series = [{name: "likes", data: seriesDataLikesDur}]
-        var chart5 = new ApexCharts(document.querySelector("#likes-chart-dur"), options5);
-
-        const options6 = options4
-        options6.series = [{name: "comment count", data: seriesDataCommentsDur}]
-        var chart6 = new ApexCharts(document.querySelector("#comment-chart-dur"), options6);
-
-        chart4.render();
-
-        setTimeout(() => {
-            chart4.updateOptions({
-            });
-          
-          }, 1000);
-    
-
-        var chart4Options = chart4.w.config;
-
-        var views_chart_dur = deepCopy(chart4Options);
-        views_chart_dur.chart.foreColor = '#000'; // Set text color to black
-        views_chart_dur.chart.background = '#FFF'; // Set background to white for contrast
-        views_chart_dur.chart.height = 300; // Set text color to black
-        views_chart_dur.chart.width = 300; // Set background to white for contrast
-        views_chart_dur.title.text = "Duration against views count";
-        views_chart_dur.legend.show = true
-        views_chart_dur.fill = {}
-
-        chart5.render();
-
-        setTimeout(() => {
-            chart5.updateOptions({
-            });
-          
-          }, 1000);
-    
-
-        var chart5Options = chart5.w.config;
-
-        var likes_chart_dur = deepCopy(chart5Options);
-        likes_chart_dur.chart.foreColor = '#000'; // Set text color to black
-        likes_chart_dur.chart.background = '#FFF'; // Set background to white for contrast
-        likes_chart_dur.chart.height = 300; // Set text color to black
-        likes_chart_dur.chart.width = 300; // Set background to white for contrast
-        likes_chart_dur.title.text = "Duration against likes count";
-        likes_chart_dur.legend.show = true
-        likes_chart_dur.fill = {}
-
-        chart6.render();
-
-        setTimeout(() => {
-            chart6.updateOptions({
-            });
-          
-          }, 1000);
-    
-
-        var chart6Options = chart6.w.config;
-
-        var comments_chart_dur = deepCopy(chart6Options);
-        comments_chart_dur.chart.foreColor = '#000'; // Set text color to black
-        comments_chart_dur.chart.background = '#FFF'; // Set background to white for contrast
-        comments_chart_dur.chart.height = 300; // Set text color to black
-        comments_chart_dur.chart.width = 300; // Set background to white for contrast
-        comments_chart_dur.title.text = "Duration against comments count";
-        comments_chart_dur.legend.show = true
-        comments_chart_dur.fill = {}
-    
-        setTimeout(() => {
-            chart1.updateOptions({
-            });
-            chart2.updateOptions({
-            });
-            chart3.updateOptions({
-            });
-            chart4.updateOptions({
-            });
-            chart5.updateOptions({
-            });
-            chart6.updateOptions({
-            });
-        }, 1000);
-    
-</script>
-
-
-<script>
-    var mostUsedCategories = jsonData.mostUsedCategories
-
-    var categoryNames = mostUsedCategories.map(item => item[0]);
-var categoryCounts = mostUsedCategories.map(item => item[1]);
-
-    var options = {
-        chart: {
-            type: 'bar',
-            width: '100%',
-            foreColor: '#fff',  
-            height: 300,      
-            // white text for the dark theme,
-            background: 'transparent'
-
-        },
-        title: {
-            text: 'Categories Distribution in the channel',
-            align: 'left',
-            floating: false,
-            offsetY: -5,
-            style: {
-                color: '#fff',
-                fontSize: '20px',
-                fontFamily: 'Raleway',
-                fontWeight: 700,
-                
-            }
-        },
-        plotOptions: {
-            bar: {
-                horizontal: true,
-                distributed: true, 
-                columnWidth: '50%', 
-                endingShape: 'rounded' ,
-                dataLabels: {
-                    position: 'top' // Ensuring data labels appear on top of the bars
-                }
-            }
-        },
-        
-        theme: {
-            mode: 'dark',
-            palette: 'palette1'
-        },
-        dataLabels: {
-            enabled: false
-        },
-        series: [{
-            name: 'Videos In Category',
-            data: categoryCounts
-        }],
-        xaxis: {
-            categories: categoryNames
-        },
-        yaxis: {
-            
-        },
-        grid: {
-            show: false
-        },
-        legend: {
-            show: false
-        },
-        fill: {
-            type: 'gradient',
-            gradient: {
-                shade: 'light',
-                type: "vertical",
-                shadeIntensity: 0.5,
-                gradientToColors: undefined, 
-                inverseColors: true,
-                opacityFrom: 0.85,
-                opacityTo: 0.85,
-                stops: [0, 100]
-            }
-        },
-        stroke: {
-        lineCap: 'round' // This gives a slight radius effect on the chart
-    }
-    };
-
-    var categoryChart = new ApexCharts(document.querySelector("#category-chart"), options);
-    categoryChart.render();
-
-    setTimeout(() => {
-        categoryChart.updateOptions({
-        });
-      
-      }, 1000);
-
-
-    var chart7Options = categoryChart.w.config;
-
-    var categoryChartOpt = deepCopy(chart7Options);
-    categoryChartOpt.chart.foreColor = '#000'; // Set text color to black
-    categoryChartOpt.chart.background = '#FFF'; // Set background to white for contrast
-    categoryChartOpt.chart.height = 300; // Set text color to black
-    categoryChartOpt.chart.width = 300; // Set background to white for contrast
-    categoryChartOpt.title.text = "Categories in channel barchart";
-    categoryChartOpt.legend.show = true
-    categoryChartOpt.fill = {}
+      var chart9Options = emotions_chart.w.config;
+
+        var emotions_chartOpt = deepCopy(chart9Options);
+        emotions_chartOpt.chart.foreColor = '#000'; // Set text color to black
+        emotions_chartOpt.chart.background = '#FFF'; // Set background to white for contrast
+        emotions_chartOpt.chart.height = 300; // Set text color to black
+        emotions_chartOpt.chart.width = 300; // Set background to white for contrast
+        emotions_chartOpt.title.text = "Comments Sentiment";
+        emotions_chartOpt.legend.show = true
+        emotions_chartOpt.fill = {}
 
 </script>
 
-<script>
-      
- var durations = videos_duration
- console.log(durations)
-
- function calculateBoxPlotValues(dataArray) {
-    dataArray.sort((a, b) => a - b);
-
-    const min = dataArray[0];
-    const max = dataArray[dataArray.length - 1];
-
-    const q1 = dataArray[Math.floor(dataArray.length / 4)];
-    const median = dataArray[Math.floor(dataArray.length / 2)];
-    const q3 = dataArray[Math.floor(dataArray.length * (3 / 4))];
-
-    return [min, q1, median, q3, max];
-}
-
-var boxPlotValues = calculateBoxPlotValues(durations);
- 
- 
-var optionsBoxPlot = {
-    chart: {
-        type: 'boxPlot',
-        width: '100%',
-        foreColor: '#fff',
-        background: 'transparent'
-    },
-    toolbar: {
-        show: true, // Show the toolbar
-        tools: {
-            download: true, // Enable the download tool
-            selection: false,
-        zoom: false,
-        zoomin: false,
-        zoomout: false,
-        pan: false,
-        reset: false
-        }        },
-    theme: {
-        mode: 'dark',
-        palette: 'palette1'
-    },
-    title: {
-        text: 'Videos Duration boxplot (In Minutes)',
-        align: 'center',
-        floating: false,
-        offsetY: -5,
-        style: {
-            color: '#fff',
-            fontSize: '15px',
-            fontFamily: 'Raleway',
-            fontWeight: 700,
-            
-        }
-    },
-    plotOptions: {
-        boxPlot: {
-            colors: {
-                upper: '#00E396',
-                lower: '#775DD0'
-            }
-        }
-    },
-    series: [{
-        name: 'Video Durations',
-        data: [
-            {
-                x: 'Durations',
-                y: boxPlotValues
-
-            }
-        ]
-    }],
-    xaxis: {
-        type: 'category'
-    },
-    grid: {
-        show: true
-    },
-    legend: {
-        show: true
-    },
-    fill: {
-        type: 'solid'
-    }
-};
- 
- var boxPlotChart = new ApexCharts(document.querySelector("#channel-duration-chart"), optionsBoxPlot);
- boxPlotChart.render();
-
- setTimeout(() => {
-    boxPlotChart.updateOptions({
-    });
-  
-  }, 1000);
-
- var chart8Options = boxPlotChart.w.config;
-
-var boxPlotChartOpt = deepCopy(chart8Options);
-boxPlotChartOpt.chart.foreColor = '#000'; // Set text color to black
-boxPlotChartOpt.chart.background = '#FFF'; // Set background to white for contrast
-boxPlotChartOpt.chart.height = 300; // Set text color to black
-boxPlotChartOpt.chart.width = 300; // Set background to white for contrast
-boxPlotChartOpt.title.text = "Channel Videos Durations Box plot";
-boxPlotChartOpt.legend.show = true
-boxPlotChartOpt.fill = {}
-</script>
-
-
-
-<script>
-    // Assuming jsonData.top_5_comments_analysis_dist is already defined as shown above
-   
-    
-    var emotions_chart_worstOpt;
-    var emotions_chartOpt;
-if ('top_5_comments_analysis_dist' in jsonData) {
-    var emotionData = jsonData.top_5_comments_analysis_dist;
-    const emotionDatasliced = Object.fromEntries(
-    Object.entries(emotionData).slice(0, 10)
-    );
-
-    var emotions = Object.keys(emotionDatasliced);
-    var emotionValues = Object.values(emotionDatasliced).map(value => Math.round(value * 100));  // Convert to percentages
-
-    emotions = ['sad', 'happy', 'grateful', 'joy', 'angry', 'curios', 'confused']
-    emotionValues = [10, 5, 8 , 10, 6, 5, 5]
-
-var options = {
-    chart: {
-        type: 'bar',
-        height: 500,
-        width: '100%',
-        foreColor: '#fff',        
-        // white text for the dark theme,
-        background: 'transparent'
-
-    },
-    plotOptions: {
-        bar: {
-            horizontal: true,
-            distributed: true, 
-            columnWidth: '50%', 
-            endingShape: 'rounded' ,
-            dataLabels: {
-                position: 'top' // Ensuring data labels appear on top of the bars
-            }
-        }
-    },
-    
-    theme: {
-        mode: 'dark',
-        palette: 'palette1'
-    },
-    dataLabels: {
-        enabled: false
-    },
-    series: [{
-        name: 'Emotion Percentage',
-        data: emotionValues
-    }],
-    xaxis: {
-        categories: emotions,
-        
-    },
-    grid: {
-        show: false
-    },
-    legend: {
-        show: false
-    },
-    fill: {
-        type: 'gradient',
-        gradient: {
-            shade: 'light',
-            type: "vertical",
-            shadeIntensity: 0.5,
-            gradientToColors: undefined, 
-            inverseColors: true,
-            opacityFrom: 0.85,
-            opacityTo: 0.85,
-            stops: [0, 100]
-        }
-    },
-    stroke: {
-    lineCap: 'round' // This gives a slight radius effect on the chart
-}
-};
-    
-
-    var emotions_chart = new ApexCharts(document.querySelector("#emotions_radchart"), options);
-    emotions_chart.render();
-
-    setTimeout(() => {
-        emotions_chart.updateOptions({
-        });
-      
-      }, 1000);
-
-
-    var chart9Options = emotions_chart.w.config;
-
-    var emotions_chartOpt = deepCopy(chart9Options);
-    emotions_chartOpt.chart.foreColor = '#000'; // Set text color to black
-    emotions_chartOpt.chart.background = '#FFF'; // Set background to white for contrast
-    emotions_chartOpt.chart.height = 300; // Set text color to black
-    emotions_chartOpt.chart.width = 300; // Set background to white for contrast
-    emotions_chartOpt.title.text = "Top videos Comments Sentiment";
-    emotions_chartOpt.legend.show = true
-    emotions_chartOpt.fill = {}
-    }
-
-if ('worst_5_comments_analysis_dist' in jsonData){
-   
-    var emotionDataWorst = jsonData.worst_5_comments_analysis_dist;
-
-    const emotionDataslicedWorst = Object.fromEntries(
-  Object.entries(emotionDataWorst).slice(0, 10)
-);
-
-var emotionValuesWorst = Object.values(emotionDataslicedWorst).map(value => Math.round(value * 100));  // Convert to percentages
-var emotionsWorst = Object.keys(emotionDataslicedWorst);
-
-    var options = {
-        chart: {
-            type: 'bar',
-            height: 500,
-            width: '100%',
-            foreColor: '#fff',        
-            // white text for the dark theme,
-            background: 'transparent'
-
-        },
-        plotOptions: {
-            bar: {
-                horizontal: true,
-                distributed: true, 
-                columnWidth: '50%', 
-                endingShape: 'rounded' ,
-                dataLabels: {
-                    position: 'top' // Ensuring data labels appear on top of the bars
-                }
-            }
-        },
-        
-        theme: {
-            mode: 'dark',
-            palette: 'palette1'
-        },
-        dataLabels: {
-            enabled: false
-        },
-        series: [{
-            name: 'Emotion Percentage',
-            data: emotionValues
-        }],
-        xaxis: {
-            categories: emotions,
-            
-        },
-        grid: {
-            show: false
-        },
-        legend: {
-            show: false
-        },
-        fill: {
-            type: 'gradient',
-            gradient: {
-                shade: 'light',
-                type: "vertical",
-                shadeIntensity: 0.5,
-                gradientToColors: undefined, 
-                inverseColors: true,
-                opacityFrom: 0.85,
-                opacityTo: 0.85,
-                stops: [0, 100]
-            }
-        },
-        stroke: {
-        lineCap: 'round' // This gives a slight radius effect on the chart
-    }
-    };
-    var options_worst = options
-    options_worst['series'] = [{
-        name: 'Emotion Percentage',
-        data: emotionValuesWorst
-    }],
-
-    options_worst['xaxis'] = {
-        categories: emotionsWorst
-    }
-
-    var emotions_chart_worst = new ApexCharts(document.querySelector("#emotions_radchart_worst"), options_worst);
-    emotions_chart_worst.render();
-
-    setTimeout(() => {
-        emotions_chart_worst.updateOptions({
-        });
-      
-      }, 1000);
-
-    var chart10Options = emotions_chart_worst.w.config;
-
-    var emotions_chart_worstOpt = deepCopy(chart10Options);
-    emotions_chart_worstOpt.chart.foreColor = '#000'; // Set text color to black
-    emotions_chart_worstOpt.chart.background = '#FFF'; // Set background to white for contrast
-    emotions_chart_worstOpt.chart.height = 300; // Set text color to black
-    emotions_chart_worstOpt.chart.width = 300; // Set background to white for contrast
-    emotions_chart_worstOpt.title.text = "Worst videos Comments Sentiment";
-    emotions_chart_worstOpt.legend.show = true
-    emotions_chart_worstOpt.fill = {}
-}
-    
-</script>
 
 <script>
     function animateNumber(element, start, end, duration) {
@@ -1512,14 +636,37 @@ var emotionsWorst = Object.keys(emotionDataslicedWorst);
             });
         }, 1000); // Adjust this delay as needed
     }
+
+    function convertImageToDataURI(url, callback) {
+        fetch(url)
+            .then(response => response.blob())
+            .then(blob => {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    callback(null, reader.result); // reader.result contains the Data URI
+                };
+                reader.onerror = (error) => {
+                    callback(error, null);
+                };
+                reader.readAsDataURL(blob);
+            })
+            .catch(error => callback(error, null));
+    }
     
     
     
-    // Function to process all charts and send them to the server
-    function processAndSendCharts(chartsOptions) {
-        let chartImagesPromises = chartsOptions.map((options) => {
+    function processAndSendChartsAndThumbnails(baseImageUrl, chartsOptions, numberOfThumbnails) {
+        // Generate array of image URLs for thumbnails
+        let thumbnailUrls = [];
+        console.log(numberOfThumbnails)
+        for (let i = 0; i < numberOfThumbnails; i++) {
+            thumbnailUrls.push(`${baseImageUrl}${i}.jpg`); // Adjust URL pattern as needed
+        }
+    
+        // Convert thumbnail URLs to Data URIs
+        let thumbnailPromises = thumbnailUrls.map(url => {
             return new Promise((resolve, reject) => {
-                convertChartToDataURI(options, (error, imgURI) => {
+                convertImageToDataURI(url, (error, imgURI) => {
                     if (error) {
                         reject(error);
                     } else {
@@ -1529,37 +676,50 @@ var emotionsWorst = Object.keys(emotionDataslicedWorst);
             });
         });
     
-        Promise.all(chartImagesPromises).then((imagesURI) => {
-            // Now you have all the images URI, send them to the server
-            fetch('/doc_channel/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrftoken
-                },
-                body: JSON.stringify({ imgData: imagesURI })
-            }).then(response => response.json())
-            .then(data => {
-                console.log(data); // Handle any response from the server
+        // Convert chart options to Data URIs
+        let chartImagesPromises = chartsOptions.map(options => {
+            return new Promise((resolve, reject) => {
+                convertChartToDataURI(options, (error, chartImgURI) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(chartImgURI);
+                    }
+                });
+            });
+        });
+    
+        // Wait for thumbnail conversion to complete
+        Promise.all(thumbnailPromises).then(thumbnailData => {
+            // Thumbnails are ready, now process charts
+            Promise.all(chartImagesPromises).then(chartData => {
+                // Both thumbnails and charts are ready, send to server
+                fetch('/doc_post/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({ chartData:chartData, thumbnailData:thumbnailData })
+                }).then(response => response.json())
+                .then(data => {
+                    console.log(data); // Handle any response from the server
+                }).catch(error => {
+                    console.error('Error sending images to the server:', error);
+                });
             }).catch(error => {
-                console.error('Error sending charts to the server:', error);
+                console.error('Error converting charts to Data URIs:', error);
             });
         }).catch(error => {
-            console.error('Error converting charts to images:', error);
+            console.error('Error converting thumbnails to Data URIs:', error);
         });
     }
     
-    // Assuming you have an array of chart options for each chart
-    let chartsOptions = [playlist_piechart, views_chart, likes_chart, comments_chart, views_chart_dur, likes_chart_dur, comments_chart_dur, categoryChartOpt, boxPlotChartOpt];
-    if(emotions_chartOpt !== undefined) {
-        chartsOptions.push(emotions_chartOpt)
-    }
-
-    if(emotions_chart_worstOpt !== undefined) {
-        chartsOptions.push(emotions_chart_worstOpt)
-    }
-    // Process and send all charts
-    processAndSendCharts(chartsOptions);
+    // Example usage
+    let baseImageUrl = "{% static 'qusasa/images/thumbnial_url' %}"; // Adjust the path as needed
+    let numberOfThumbnails = jsonData.num_pics; // Assuming you have 6 thumbnails
+    let chartsOptions = [trend_chart, emotions_chartOpt];
+    processAndSendChartsAndThumbnails(baseImageUrl, chartsOptions, numberOfThumbnails);
     
     </script>
   </body>

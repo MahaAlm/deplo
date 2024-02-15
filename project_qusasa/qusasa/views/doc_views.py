@@ -10,6 +10,7 @@ from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 import json
 from django.conf import settings
 from ..utils import parse_datetime
+from docx.shared import Inches
 
 @csrf_exempt
 def doc_competitive(request):
@@ -544,3 +545,100 @@ def def_retrive(request):
         file_path = os.path.join(output_dir, "video_retriving.docx")
         doc.save(file_path)
 
+
+
+@csrf_exempt
+def doc_post(request):
+    
+    post_data= {
+        
+    
+    'publishedAt': request.session['publishedAt'],
+    'owner': request.session['owner'],
+    'top_keywords': request.session['top_keywords'],
+    'MediaCount': request.session['MediaCount'],         
+    'LikeCount': request.session['LikeCount'],
+    'CommentCount': request.session['CommentCount'],
+    'comment_sentiments': request.session['comment_sentiments'],
+    'caption': request.session['caption'],
+
+}
+
+    
+    
+              
+    
+    if request.method == 'POST':
+        doc = Document()
+        doc.add_heading('Post Analysis', 0)
+        doc.add_paragraph('Our post analysis will give you an overview over the post, what does influence its performance, and a closer look on its top comments...')
+        
+        doc.add_heading('Get An Overview to the post information', level=1)
+
+        data = json.loads(request.body)
+        
+        imgs_data = data['chartData'] #key of the dictonary of the post pic 
+        thumbnialData = data['thumbnailData']
+        
+        for thumbnial in thumbnialData:
+            # Decode the base64 image
+            thumbnial = base64.b64decode(thumbnial.split(',')[1])
+            image_stream = BytesIO(thumbnial)
+            # Add the image to the Word document
+            doc.add_picture(image_stream, width=Inches(4), height=Inches(4))
+            
+        
+        
+        doc.add_heading('post caption', level=3)
+        doc.add_paragraph(post_data['caption'])
+
+
+        doc.add_heading('owner', level=3)
+        doc.add_paragraph(post_data['owner'])
+        
+        doc.add_heading('published At', level=3)
+        doc.add_paragraph(post_data['publishedAt'])
+
+        
+        doc.add_heading('top keywords', level=3)
+        keyWords_str = ', '.join(post_data['top_keywords'])
+        doc.add_paragraph(keyWords_str)
+
+
+
+
+        doc.add_heading('Top post Comments for each Sentiment', level=3)
+        for emotion, comment in post_data['comment_sentiments'].items():
+                stats_para = doc.add_paragraph(style='ListBullet')
+                stats_para.add_run(f"{emotion} :").bold = True
+                stats_para.add_run(comment)
+
+
+        doc.add_heading('Statistics', level=3)
+        stats_para = doc.add_paragraph(style='ListBullet')
+        stats_para.add_run('Like Count: ').bold = True
+        stats_para.add_run(str(post_data['LikeCount']))  
+
+        stats_para = doc.add_paragraph(style='ListBullet')
+        stats_para.add_run('Comment Count: ').bold = True
+        stats_para.add_run(str(post_data['CommentCount']))  
+
+        doc.add_heading('Get more insights with graphs:', level=1)
+
+        for img_data in imgs_data:
+            # Decode the base64 image
+            img_data = base64.b64decode(img_data.split(',')[1])
+            image_stream = BytesIO(img_data)
+            # Add the image to the Word document
+            doc.add_picture(image_stream)
+
+# Save the document
+        output_dir = os.path.join(settings.MEDIA_ROOT, 'documents')
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+        file_path = os.path.join(output_dir, "post_analysis.docx")
+        doc.save(file_path)
+
+        return JsonResponse({'message': 'Document created successfully'})
+
+    return JsonResponse({'error': 'Invalid request'}, status=400)

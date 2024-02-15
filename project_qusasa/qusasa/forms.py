@@ -591,3 +591,15 @@ class PostAnalysisInputForm(forms.Form):
         
         return post_url 
    
+class ProfileAnalysisInputForm(forms.Form):
+    profile_url = forms.URLField(label='Profile URL', required=True)
+
+    def clean_profile_url(self):
+        profile_url = self.cleaned_data['profile_url']
+        instagram_profile_pattern = r'^(https?:\/\/)?(www\.)?instagram\.com\/[a-zA-Z0-9_.]+\/?$'
+
+        match = re.match(instagram_profile_pattern, profile_url)
+        if not match:
+            raise ValidationError("Please enter a valid Instagram profile URL.")
+
+        return profile_url
