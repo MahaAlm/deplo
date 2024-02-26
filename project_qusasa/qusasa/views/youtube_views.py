@@ -17,10 +17,7 @@ from django.core.exceptions import ValidationError
 import re
 import os
 from django.conf import settings
-<<<<<<< HEAD
 #from decouple import config
-=======
->>>>>>> 5afb0ed65107b0194dcaf23eb69edb8f54bfd13a
 from ..models import TopicAnalysisHistory
 import pandas as pd
 from .auth_views import *
