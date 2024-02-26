@@ -29,7 +29,7 @@ from django.http import HttpResponseRedirect
 from formtools.wizard.views import SessionWizardView
 import zipfile
 import io
-from ..utilsInstagram import postAnalysis
+from ..utilsInstagram import postAnalysis, topicAnalysis
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------
 #Post_Analysis
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -192,6 +192,11 @@ def posts_dataset_zipped_output(request):
 #Topic Trend Analysis
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
+
+def topictrend_analysis_detail(request, history_id):
+    history = get_object_or_404(TopicAnalysisHistory, pk=history_id, user=request.user)
+    return render(request, 'instafeatures_pages/playlist_analysis/topictrend_analysis_detail.html', {'history': history})
+
 def topictrend_analysis_details(request):
     # You can add code here to fetch and process inquiries
     return render(request, 'instafeatures_pages/topictrend_analysis/topictrend_analysis_details.html')
@@ -199,7 +204,7 @@ def topictrend_analysis_details(request):
 
 from ..forms import TopicTrendAnalysisInputForm
 from ..models import  TopicAnalysisHistory
-class PostAnalysisWizard(SessionWizardView):
+class TopicTrendAnalysisWizard(SessionWizardView):
     form_list = [TopicTrendAnalysisInputForm]
     template_name = 'instafeatures_pages/topictrend_analysis/topictrend_analysis_forms.html'  
     
@@ -207,11 +212,10 @@ class PostAnalysisWizard(SessionWizardView):
         initial = super().get_form_initial(step)
         history_id = self.kwargs.get('history_id')
 
-        if history_id and step == '0':  # Assuming '0' is the step of PlaylistAnalysisInputForm
+        if history_id and step == '0': 
             history = get_object_or_404(TopicAnalysisHistory, id=history_id, user=self.request.user)
             initial.update({
                 'hashtag': history.hashtag,
-                # Add other fields as necessary
             })
         return initial
     
@@ -220,7 +224,7 @@ class PostAnalysisWizard(SessionWizardView):
         cleaned_data = self.get_all_cleaned_data()
         hashtag = cleaned_data.get('hashtag')
         
-        PostDf, commentDataset ,comment_sentiments, sentiments, num_pics = topicAnalysis(hashtag, 50)
+        hashAnalysis, creators, content, comments_df, top_keywords, emotion_counts, top_comments_by_emotion, top_6_posts, top_5_accs = topicAnalysis(hashtag, 10)
         
         history_id = self.kwargs.get('history_id')
         if history_id:
@@ -235,11 +239,24 @@ class PostAnalysisWizard(SessionWizardView):
             hashtag=cleaned_data.get('hashtag'),
             )
         
-        commentDataset_csv = pd.DataFrame(commentDataset).to_csv(index=False)
-        Post_csv = PostDf.to_csv(index=False)
+        hashAnalysis_csv = pd.DataFrame(hashAnalysis).to_csv(index=False)
+        creators_csv = creators.to_csv(index=False)
+        content_csv = content.to_csv(index=False)
+        comments_csv = comments_df.to_csv(index=False)
         
+        self.request.session['hashAnalysis_csv'] = hashAnalysis_csv
+        self.request.session['creators_csv'] = creators_csv
+        self.request.session['content_csv'] = content_csv
+        self.request.session['comments_csv'] = comments_csv
         
-        return HttpResponseRedirect(reverse('post_analysis_output'))  # Use the name of the URL pattern
+        self.request.session['top_keywords'] = top_keywords
+        self.request.session['top_6_posts'] = top_6_posts
+        self.request.session['top_5_accs'] = top_5_accs
+        self.request.session['top_comments_by_emotion'] = top_comments_by_emotion
+        self.request.session['emotion_counts'] = emotion_counts
+
+        self.request.session['posts_dates']  = content['publishedAt'].tolist()
+        return HttpResponseRedirect(reverse('topictrend_analysis_output'))  # Use the name of the URL pattern
 
 import math
 from datetime import datetime
@@ -250,8 +267,31 @@ from django.conf import settings
 
 
 def topictrend_analysis_output(request):
-    # You can add code here to fetch and process inquiries
-    return render(request, 'instafeatures_pages/topictrend_analysis/topictrend_analysis_output.html')
+
+    
+    top_keywords = request.session['top_keywords']
+    top_6_posts = request.session['top_6_posts']
+    top_5_accs = request.session['top_5_accs']
+    top_comments_by_emotion = request.session['top_comments_by_emotion']
+    emotion_counts = request.session['emotion_counts']
+    posts_dates = request.session['posts_dates']
+    
+    output_data = {
+        posts_dates
+    }
+    
+    json_data = json.dumps(output_data)
+    
+    context= {
+        top_keywords,
+        top_6_posts,
+        top_5_accs,
+        top_comments_by_emotion,
+        emotion_counts,
+        json_data
+    }
+
+    return render(request, 'instafeatures_pages/topictrend_analysis/topictrend_analysis_output.html', context)
 
 def topictrend_dataset_zipped_output(request):
     # Handle the output display here

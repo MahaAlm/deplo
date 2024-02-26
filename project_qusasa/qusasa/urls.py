@@ -91,8 +91,11 @@ urlpatterns = [
     path('dataset_zipped_output_post/', views.posts_dataset_zipped_output, name='post_dataset_zipped_output'),
     path('doc_post/', views.doc_post, name='doc_post'),
     
-    path('topictrend_analysis_details', views.topictrend_analysis_details, name='topictrend_analysis_details'),  
-    path('topictrend_analysis_output', views.topictrend_analysis_output, name='topictrend_analysis_output'),
+    path('topictrend_analysis_details/', views.topictrend_analysis_details, name='topictrend_analysis_details'),  
+    path('topictrend_analysis_detail/<int:history_id>/', views.topictrend_analysis_detail, name='posts_analysis_detail'),
+    path('topictrend_analysis/', views.TopicTrendAnalysisWizard.as_view(), name='topictrend_analysis'),
+    path('topictrend_analysis_redo/<int:history_id>', views.TopicTrendAnalysisWizard.as_view(), name='post_analysis_redo'),
+    path('topictrend_analysis_output/', views.topictrend_analysis_output, name='topictrend_analysis_output'),
 
     path('profile_analysis_details', views.profile_analysis_details, name='profile_analysis_details'), 
     path('profile_analysis_forms', views.ProfileAnalysisWizard.as_view(), name='profile_analysis_forms'), 

@@ -12,19 +12,15 @@ from transformers import pipeline, BertTokenizer, AutoModelForSequenceClassifica
 from keybert import KeyBERT
 import os
 import time
+from instagrapi.mixins.challenge import ChallengeChoice
 from dotenv import load_dotenv
 load_dotenv()
 
 USER_IG = os.environ.get("USER_IG")
 PASS_IG = os.environ.get("PASS_IG")
-EMAIL = os.environ.get("EMAIL")
+EMAIL_ADD = os.environ.get("EMAIL_ADD")
 PASS_EMAIL = os.environ.get("PASS_EMAIL")
 
-'''Photo - When media_type=1
-Video - When media_type=2 and product_type=feed
-IGTV - When media_type=2 and product_type=igtv
-Reel - When media_type=2 and product_type=clips
-Album - When media_type=8'''
 def get_thumbnail_url(post_info):
     """
     Retrieves the thumbnail URL from a post_info dictionary.
@@ -67,7 +63,7 @@ def decode_payload(payload_data):
 
 def get_code_from_email(username):
     mail = imaplib.IMAP4_SSL("imap.gmail.com")
-    mail.login(EMAIL, PASS_EMAIL)  # Replace with the actual password
+    mail.login(EMAIL_ADD, PASS_EMAIL)  # Replace '****' with the actual password
     mail.select("inbox")
     result, data = mail.search(None, "(UNSEEN)")
     if result != "OK":
@@ -82,57 +78,51 @@ def get_code_from_email(username):
             continue
         msg = email.message_from_bytes(data[0][1])
 
-        code = None
         if msg.is_multipart():
-            for part in msg.walk():
-                code = process_part(part, username)
-                if code:
-                    break
+            parts = msg.walk()
         else:
-            code = process_part(msg, username)  # Directly process if not multipart
+            parts = [msg]  # Treat as a single part for uniform handling
+        for part in parts:
+          content_type = part.get_content_type()
+          print(f"Processing part with content type: {content_type}")  # Logging content type
+          payload_data = part.get_payload(decode=True)
 
-        # Mark the email as unread after processing
-        if code:
-            mail.store(num, '-FLAGS', '\\Seen')  # Mark as unread
-            print(f"Email marked as unread: {num}")
-            return code
+          if payload_data and (content_type == 'text/plain' or content_type == 'text/html'):
+              body, used_encoding = decode_payload(payload_data)
+              print(f"Decoded with encoding: {used_encoding}")  # Log used encoding
+
+              # Your existing matching logic here
+              if "<div" not in body:
+                  continue
+              match = re.search(">([^>]*?({u})[^<]*?)<".format(u=username), body)
+              if match:
+                  print("Match from email:", match.group(1))
+                  match = re.search(r">(\d{6})<", body)
+                  if match:
+                      code = match.group(1)
+                      return code
+              else:
+                  print('Skip this email, "code" not found')
+
+          else:
+              print("Payload data is None or content type is not text/plain or text/html.")
 
     return False
 
-def process_part(part, username):
-    content_type = part.get_content_type()
-    print(f"Processing part with content type: {content_type}")  # Logging content type
-    payload_data = part.get_payload(decode=True)
-    if payload_data and (content_type == 'text/plain' or content_type == 'text/html'):
-        body, used_encoding = decode_payload(payload_data)
-        print(f"Decoded with encoding: {used_encoding}")  # Log used encoding
-
-        # Existing matching logic
-        if "<div" not in body:
-            return
-        match = re.search(">([^>]*?({u})[^<]*?)<".format(u=username), body)
-        if match:
-            print("Match from email:", match.group(1))
-            match = re.search(r">(\d{6})<", body)
-            if match:
-                code = match.group(1)
-                print(f"Code found: {code}")
-                return code
-        else:
-            print('Skip this email, "code" not found')
-    else:
-        print("Payload data is None or content type is not text/plain or text/html.")
+def challenge_code_handler(username, choice):
+    if choice == ChallengeChoice.SMS:
+        print('sms')
+    elif choice == ChallengeChoice.EMAIL:
+        return get_code_from_email(username)
+    return False
 
 def connectToInstaAPI():
-
     cl = Client()
-    try:
-        cl.login(USER_IG, PASS_IG)
-        print('Connected to Instagram API')
-        return cl
-    except Exception as e:
-        print('Failed to connect:', str(e))
-        return None
+    cl.challenge_code_handler = challenge_code_handler
+    cl.login(USER_IG, PASS_IG)
+    print('Connected to Instagram API')
+    return cl
+    
     
 
 def parse_datetime(datetime_str):
@@ -321,69 +311,56 @@ def topicAnalysis(Hashtag, numMedia):
     hashAnalysis = []
     df = pd.DataFrame(columns=['text', 'pubDate', 'likeCount'])
 
-    try:
-        cl = Client()
-        cl.login('qusasateam', '123Qusasa123')
+        
+    cl = connectToInstaAPI()
 
-        hashtag = cl.hashtag_info(Hashtag)
-        medias = cl.hashtag_medias_top(Hashtag, amount=numMedia)
-
-
-    except Exception as e:
-        print(f"Failed to fetch hashtag info or top medias: {e}")
-        return f"Failed to fetch hashtag info or top medias: {e}", [], [], []
+    hashtag = cl.hashtag_info(Hashtag)
+    medias = cl.hashtag_medias_top(Hashtag, amount=numMedia)
 
     for media in medias:
-        try:
-            comments = cl.media_comments(media.pk, amount=media.comment_count)
-            comments_data = [{'text': comment.text, 'pubDate': comment.created_at_utc, 'likeCount': int(comment.like_count)} for comment in comments]
-            temp_df = pd.DataFrame(comments_data)
-            df = pd.concat([df, temp_df], ignore_index=True)
-            thumbnailURL=get_thumbnail_url(media)
-            df.sort_values(by='likeCount', inplace=True, ascending=False)
+        comments = cl.media_comments(media.pk, amount=1)
+        comments_data = [{'text': comment.text, 'pubDate': comment.created_at_utc, 'likeCount': int(comment.like_count)} for comment in comments]
+        temp_df = pd.DataFrame(comments_data)
+        df = pd.concat([df, temp_df], ignore_index=True)
+        thumbnailURL=get_thumbnail_url(media)
 
-            post_info = {
-                'postCode': media.code,
-                'icon_url':str(media.user.profile_pic_url),
-                'owner': media.user.username,
-                'thumbnailURL':thumbnailURL,
-                'caption': media.caption_text,
-                'publishedAt': media.taken_at,  
-                'likeCount': media.like_count,
-                'CommentCount': media.comment_count,
-                'saveCount': cl.insights_media(cl.media_pk_from_url('https://www.instagram.com/' + media.code + '/'))['save_count'],  
-                'MediaType': map_media_type(media.media_type, getattr(media, 'product_type', None)),  
-                'location': media.location,
-            }
-            content.append(post_info)
-            
+        post_info = {
+            'postCode': media.code,
+            'icon_url':str(media.user.profile_pic_url),
+            'owner': media.user.username,
+            'thumbnailURL':thumbnailURL,
+            'caption': media.caption_text,
+            'publishedAt': media.taken_at,  
+            'likeCount': media.like_count,
+            'CommentCount': media.comment_count,
+            'saveCount': cl.insights_media(cl.media_pk_from_url('https://www.instagram.com/' + media.code + '/'))['save_count'],  
+            'MediaType': map_media_type(media.media_type, getattr(media, 'product_type', None)),  
+            'location': media.location,
+        }
+        content.append(post_info)
         
 
-        except Exception as e:
-            print(f"Failed to process media {media.code}: {e}")
-        try:
-            dictMed = cl.user_info_by_username(media.user.username).model_dump()
-            creator_info = {
-                'creator': media.user.username,
-                'icon_url':str(media.user.profile_pic_url),
-                'bio': dictMed['biography'],
-                'MediaCount': dictMed['media_count'],
-                'followerCount': dictMed['follower_count'],
-                'followingCount': dictMed['following_count'],
-            }
-            creators.append(creator_info)
-        except Exception as e:
-            creators.append(f"Failed to fetch user info for {media.user.username}: {e}")
-    try:
-        Recently = cl.hashtag_medias_recent(Hashtag, amount=1)[0].taken_at
-        hashAnalysis.append({
-            'hashtagID': hashtag.id,
-            'hashtagName': hashtag.name,
-            'media_count': hashtag.media_count,
-            'lastPublishDate': parse_datetime(str(Recently)),
-        })
-    except Exception as e:
-        hashAnalysis.append(f"Failed to fetch recent media info: {e}")
+
+
+        dictMed = cl.user_info_by_username(media.user.username).model_dump()
+        creator_info = {
+            'creator': media.user.username,
+            'icon_url':str(media.user.profile_pic_url),
+            'bio': dictMed['biography'],
+            'MediaCount': dictMed['media_count'],
+            'followerCount': dictMed['follower_count'],
+            'followingCount': dictMed['following_count'],
+        }
+        creators.append(creator_info)
+
+    Recently = cl.hashtag_medias_recent(Hashtag, amount=1)[0].taken_at
+    hashAnalysis.append({
+        'hashtagID': hashtag.id,
+        'hashtagName': hashtag.name,
+        'media_count': hashtag.media_count,
+        'lastPublishDate': parse_datetime(str(Recently)),
+    })
+
     comments_text = " ".join(df['text'].tolist())
     kw_model = KeyBERT(model='all-MiniLM-L6-v2')
     keywords = kw_model.extract_keywords(comments_text, keyphrase_ngram_range=(1, 2), use_maxsum=True, nr_candidates=100, top_n=100)
@@ -393,9 +370,20 @@ def topicAnalysis(Hashtag, numMedia):
     creators=pd.DataFrame(creators)
     content=pd.DataFrame(content)
     content.sort_values(by='likeCount', inplace=True, ascending=False)
+    creators.sort_values(by='followerCount', inplace=True, ascending=False)
+
     hashAnalysis=pd.DataFrame(hashAnalysis)
     emotion_counts, top_comments_by_emotion=analyze_comments_emotions_for_playlist(df)
+    top_6_posts = content.head(6).to_dict('records')
+    top_5_accs = content.head(5).to_dict('records')
 
-    return hashAnalysis, creators, content, df, top_keywords, emotion_counts, top_comments_by_emotion
+    i = 0
+    for post in  top_6_posts:
+        cl.photo_download_by_url(str(post['thumbnailURL']), f'thumbnial_url{i}', 'qusasa/static/qusasa/images/top_posts_insta')
+        i = i + 1
+    i = 0
+    for acc in  top_5_accs:
+        cl.photo_download_by_url(str(acc['icon_url']), f'icon_url{i}', 'qusasa/static/qusasa/images/top_posts_insta')
+    return hashAnalysis, creators, content, df, top_keywords, emotion_counts, top_comments_by_emotion, top_6_posts, top_5_accs
 
 
