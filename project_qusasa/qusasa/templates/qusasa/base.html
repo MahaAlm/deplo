@@ -136,10 +136,7 @@
             Welcome , {{ user.first_name }}!
         </div>
 
-        <ul class="breadcrumbs">
-            <li><a id="current" href="{% url 'base' %}" {% if request.resolver_match.url_name == 'base' %} id="current" {% endif %}> Home</a></li>
-           
-        </ul>
+        
         <div class="history">
 
             <div class="cards">
