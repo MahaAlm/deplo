@@ -17,6 +17,7 @@ from django.core.exceptions import ValidationError
 import re
 import os
 from django.conf import settings
+from ..models import Inquiry
 from ..models import TopicAnalysisHistory
 import openai
 import pandas as pd
@@ -104,5 +105,7 @@ def confirm_email(request):
  
 @staff_member_required
 def inquiries_view(request):
-    # You can add code here to fetch and process inquiries
-    return render(request, 'qusasa/inquiries.html')
+    context={
+        'posts':Inquiry.objects.all()
+    }
+    return render(request, 'admin/inquiries.html', context)

@@ -44,7 +44,18 @@
             Welecome,  admin {{ user.first_name }}
         </div>
         <div class="history">
-            <p>The Inquiries functionality is yet to be implemented.</p>
+    {% for post in posts %}
+        <article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="#">{{ post.author }}</a>
+              <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
+            </div>
+            <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
+            <p class="article-content">{{ post.InqContent }}</p>
+          </div>
+        </article>
+    {% endfor %}
         </div>
     </div>
 
