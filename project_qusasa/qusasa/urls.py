@@ -108,6 +108,7 @@ urlpatterns = [
     path('instagram_reporting_details', views.instagram_reporting_details, name='instagram_reporting_details'),
     
     
+    path('display_inquiry/<int:history_id>/', views.display_inquiry, name='display_inquiry'),
 
 
 ]

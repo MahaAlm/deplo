@@ -21,7 +21,8 @@ from ..models import Inquiry
 from ..models import TopicAnalysisHistory
 import openai
 import pandas as pd
-
+from ..models import Inquiry
+from django.shortcuts import render, get_object_or_404
 
 def custom_admin(request):
     users = User.objects.all()
@@ -109,3 +110,23 @@ def inquiries_view(request):
         'posts':Inquiry.objects.all()
     }
     return render(request, 'admin/inquiries.html', context)
+
+from django.shortcuts import render, redirect, get_object_or_404
+from ..forms import InquiryForm
+from ..models import Inquiry
+from django.utils import timezone
+
+def display_inquiry(request, history_id):
+    inquiry = get_object_or_404(Inquiry, pk=history_id)
+    if request.method == 'POST':
+        form = InquiryForm(request.POST, instance=inquiry)
+        if form.is_valid():
+            updated_inquiry = form.save(commit=False)
+            updated_inquiry.status = 'RESOLVED'  # Set status to 'RESOLVED'
+            updated_inquiry.date_resolved = timezone.now()  # Update the resolved date to now
+            updated_inquiry.save()  # Save the changes to the database
+            # Redirect to a new URL or render a template with a success message
+    else:
+        form = InquiryForm(instance=inquiry)
+    
+    return render(request, 'admin/display_inquiry.html', {'form': form, 'history': inquiry})
