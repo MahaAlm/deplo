@@ -128,3 +128,13 @@ class PostAnalysisHistory(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     post_url = models.URLField(max_length=2048)
     created_at = models.DateTimeField(auto_now_add=True)
+
+class ProfileAnalysisHistory(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    profile_url = models.URLField(max_length=2048)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class TopicTrendAnalysisHistory(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    hashtag = models.CharField(max_length=2048)
+    created_at = models.DateTimeField(auto_now_add=True)

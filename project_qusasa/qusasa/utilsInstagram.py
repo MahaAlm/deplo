@@ -11,6 +11,7 @@ from collections import Counter
 from transformers import pipeline, BertTokenizer, AutoModelForSequenceClassification
 from keybert import KeyBERT
 import os
+import time
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -24,6 +25,32 @@ Video - When media_type=2 and product_type=feed
 IGTV - When media_type=2 and product_type=igtv
 Reel - When media_type=2 and product_type=clips
 Album - When media_type=8'''
+def get_thumbnail_url(post_info):
+    """
+    Retrieves the thumbnail URL from a post_info dictionary.
+    If the thumbnail URL is not available or None, it falls back to the first resource link.
+
+    :param post_info: A dictionary containing post details, including 'thumbnail_url' and 'resources'.
+    :return: A string containing the URL of the thumbnail or the first resource.
+    """
+    # Attempt to retrieve the thumbnail URL
+    thumbnail_url = post_info.thumbnail_url
+    
+    # Check if the thumbnail URL is not None and not an empty string
+    if thumbnail_url:
+        return thumbnail_url
+    
+    # Fallback to the first resource link if the thumbnail URL is not available
+    resources = post_info.resources
+    if resources:
+        # Assuming resources is a list of dictionaries and each has a 'url' key
+        first_resource_url = resources[0].thumbnail_url
+        if first_resource_url:
+            return first_resource_url
+    
+    # Return None or a default value if neither thumbnail nor resources are available
+    return None
+
 
 import imaplib
 import email
@@ -107,7 +134,6 @@ def connectToInstaAPI():
         print('Failed to connect:', str(e))
         return None
     
-cl = connectToInstaAPI() 
 
 def parse_datetime(datetime_str):
     parsed_datetime = parser.parse(datetime_str)
@@ -196,23 +222,24 @@ def postAnalysis(posturl):
     context = []
     listComm=[]
     commentDataset=[]
+    cl = connectToInstaAPI()
 
     if cl:
             postCode = cl.media_pk_from_url(posturl)
             # Get post information
             post_info = cl.media_info(postCode)
             print(post_info)
-            thumbnial_url = str(post_info.thumbnail_url)
+            thumbnial_url = post_info.thumbnail_url
             icon_url = str(post_info.user.profile_pic_url)
-            
-            if thumbnial_url:
-                cl.photo_download_by_url(thumbnial_url, 'thumbnial_url0', 'qusasa/static/qusasa/images')	
+            i = 0
+            if thumbnial_url != None:
+                print(thumbnial_url)
+                cl.photo_download_by_url(str(thumbnial_url), 'thumbnial_url0', 'qusasa/static/qusasa/images')	
             else:
                 resources = post_info.resources
-                i = 0
                 for post in resources:
                      cl.photo_download_by_url(str(post.thumbnail_url), f'thumbnial_url{i}', 'qusasa/static/qusasa/images')	
-                     
+                     i = i+1
             cl.photo_download_by_url(icon_url, 'icon_url', 'qusasa/static/qusasa/images')	
             
             # Get comments for the post
@@ -220,7 +247,6 @@ def postAnalysis(posturl):
             for comment in comments:
               listComm.append([comment.text, comment.created_at_utc, comment.like_count])
             sortedListComm = sorted(listComm, key=lambda x: x[2], reverse=True)
-            
             comments_text = " ".join(comment[0] for comment in listComm)
 
             kw_model = KeyBERT(model='all-MiniLM-L6-v2')
@@ -260,8 +286,14 @@ def postAnalysis(posturl):
               'CommentDate': [parse_datetime(str(comment[1])) for comment in sortedListComm],
               'CommentLikes': [comment[2] for comment in sortedListComm]
           })
+            
+            num_pics = i
+    else:
+        time.sleep(120)
+        cl = connectToInstaAPI()
+        postAnalysis(posturl)
 
-    return PostDf, commentDataset ,comment_sentiments, sentiments  # Print the post details
+    return PostDf, commentDataset ,comment_sentiments, sentiments, num_pics# Print the post details
 
 
 
@@ -280,37 +312,60 @@ def commentDatasetToDF(commentDataset,context):
 
 
 def topicAnalysis(Hashtag, numMedia):
+    import pandas as pd
+    from keybert import KeyBERT
+    # Assuming cl is already initialized and other necessary imports are done
+
     content = []
     creators = []
     hashAnalysis = []
-    
+    df = pd.DataFrame(columns=['text', 'pubDate', 'likeCount'])
+
     try:
+        cl = Client()
+        cl.login('qusasateam', '123Qusasa123')
+
         hashtag = cl.hashtag_info(Hashtag)
         medias = cl.hashtag_medias_top(Hashtag, amount=numMedia)
+
+
     except Exception as e:
-        return f"Failed to fetch hashtag info or top medias: {e}", [], []
-    
+        print(f"Failed to fetch hashtag info or top medias: {e}")
+        return f"Failed to fetch hashtag info or top medias: {e}", [], [], []
+
     for media in medias:
         try:
+            comments = cl.media_comments(media.pk, amount=media.comment_count)
+            comments_data = [{'text': comment.text, 'pubDate': comment.created_at_utc, 'likeCount': int(comment.like_count)} for comment in comments]
+            temp_df = pd.DataFrame(comments_data)
+            df = pd.concat([df, temp_df], ignore_index=True)
+            thumbnailURL=get_thumbnail_url(media)
+            df.sort_values(by='likeCount', inplace=True, ascending=False)
+
             post_info = {
                 'postCode': media.code,
+                'icon_url':str(media.user.profile_pic_url),
                 'owner': media.user.username,
+                'thumbnailURL':thumbnailURL,
                 'caption': media.caption_text,
-                'publishedAt': parse_datetime(str(media.taken_at)),
-                'LikeCount': media.like_count,
+                'publishedAt': media.taken_at,  
+                'likeCount': media.like_count,
                 'CommentCount': media.comment_count,
-                'saveCount': cl.insights_media(cl.media_pk_from_url('https://www.instagram.com/' + media.code + '/'))['save_count'],
-                'MediaType': map_media_type(media.media_type, getattr(media, 'product_type', None)),
+                'saveCount': cl.insights_media(cl.media_pk_from_url('https://www.instagram.com/' + media.code + '/'))['save_count'],  
+                'MediaType': map_media_type(media.media_type, getattr(media, 'product_type', None)),  
                 'location': media.location,
             }
             content.append(post_info)
-        except Exception as e:
-            content.append(f"Failed to process media {media.code}: {e}")
+            
+        
 
+        except Exception as e:
+            print(f"Failed to process media {media.code}: {e}")
         try:
             dictMed = cl.user_info_by_username(media.user.username).model_dump()
             creator_info = {
                 'creator': media.user.username,
+                'icon_url':str(media.user.profile_pic_url),
                 'bio': dictMed['biography'],
                 'MediaCount': dictMed['media_count'],
                 'followerCount': dictMed['follower_count'],
@@ -319,20 +374,28 @@ def topicAnalysis(Hashtag, numMedia):
             creators.append(creator_info)
         except Exception as e:
             creators.append(f"Failed to fetch user info for {media.user.username}: {e}")
-
     try:
         Recently = cl.hashtag_medias_recent(Hashtag, amount=1)[0].taken_at
         hashAnalysis.append({
             'hashtagID': hashtag.id,
             'hashtagName': hashtag.name,
             'media_count': hashtag.media_count,
-            'lastPublishDate': parse_datetime(str(Recently))
+            'lastPublishDate': parse_datetime(str(Recently)),
         })
     except Exception as e:
         hashAnalysis.append(f"Failed to fetch recent media info: {e}")
+    comments_text = " ".join(df['text'].tolist())
+    kw_model = KeyBERT(model='all-MiniLM-L6-v2')
+    keywords = kw_model.extract_keywords(comments_text, keyphrase_ngram_range=(1, 2), use_maxsum=True, nr_candidates=100, top_n=100)
+    top_keywords = [keyword[0] for keyword in keywords]
+    df['likeCount'] = pd.to_numeric(df['likeCount'], errors='coerce').astype('int')
 
-    return hashAnalysis, creators, content
+    creators=pd.DataFrame(creators)
+    content=pd.DataFrame(content)
+    content.sort_values(by='likeCount', inplace=True, ascending=False)
+    hashAnalysis=pd.DataFrame(hashAnalysis)
+    emotion_counts, top_comments_by_emotion=analyze_comments_emotions_for_playlist(df)
 
-###########################################################################################################
-###########################################################################################################
+    return hashAnalysis, creators, content, df, top_keywords, emotion_counts, top_comments_by_emotion
+
 

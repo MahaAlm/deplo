@@ -49,24 +49,24 @@ class PostAnalysisWizard(SessionWizardView):
     form_list = [PostAnalysisInputForm]
     template_name = 'instafeatures_pages/posts_analysis/posts_analysis_forms.html'  
     
-    # def get_form_initial(self, step):
-    #     initial = super().get_form_initial(step)
-    #     history_id = self.kwargs.get('history_id')
+    def get_form_initial(self, step):
+        initial = super().get_form_initial(step)
+        history_id = self.kwargs.get('history_id')
 
-    #     if history_id and step == '0':  # Assuming '0' is the step of PlaylistAnalysisInputForm
-    #         history = get_object_or_404(PostAnalysisHistory, id=history_id, user=self.request.user)
-    #         initial.update({
-    #             'post_url': history.playlist_url,
-    #             # Add other fields as necessary
-    #         })
-    #     return initial
+        if history_id and step == '0':  # Assuming '0' is the step of PlaylistAnalysisInputForm
+            history = get_object_or_404(PostAnalysisHistory, id=history_id, user=self.request.user)
+            initial.update({
+                'post_url': history.post_url,
+                # Add other fields as necessary
+            })
+        return initial
     
     def done(self, form_list, **kwargs):
         # Process the cleaned data
         cleaned_data = self.get_all_cleaned_data()
         post_id = cleaned_data.get('post_url')
         
-        PostDf, commentDataset ,comment_sentiments, sentiments = postAnalysis(post_id)
+        PostDf, commentDataset ,comment_sentiments, sentiments, num_pics = postAnalysis(post_id)
         history_id = self.kwargs.get('history_id')
         if history_id:
             # Update the existing history record
@@ -83,6 +83,7 @@ class PostAnalysisWizard(SessionWizardView):
         commentDataset_csv = pd.DataFrame(commentDataset).to_csv(index=False)
         Post_csv = PostDf.to_csv(index=False)
         
+        self.request.session['num_pics'] = num_pics
         self.request.session['commentDataset_csv'] = commentDataset_csv
         self.request.session['Post_csv'] = Post_csv
         self.request.session['publishedAt'] = PostDf['publishedAt'].iloc[0]
@@ -96,7 +97,7 @@ class PostAnalysisWizard(SessionWizardView):
         self.request.session['LikeCount'] = int(PostDf['LikeCount'].iloc[0])
         self.request.session['CommentCount'] = int(PostDf['CommentCount'].iloc[0])
 
-        self.request.session['caption'] = PostDf['caption']
+        self.request.session['caption'] = str(PostDf['caption'].iloc[0])
         self.request.session['CommentDate'] = pd.DataFrame(commentDataset)['CommentDate'].tolist()
         self.request.session['CommentLikes'] = pd.DataFrame(commentDataset)['CommentLikes'].tolist()
         
@@ -114,7 +115,11 @@ from django.conf import settings
 
 
 def posts_analysis_output_view(request):
-        
+    num_pics_int = request.session['num_pics']
+    if num_pics_int == 0:    
+        num_pics =  range(request.session['num_pics']+1)
+    else:
+         num_pics =  range(request.session['num_pics'])
     owner = request.session['owner']
     thumbnial_url = request.session['thumbnial_url']
     caption = request.session['caption']
@@ -137,11 +142,13 @@ def posts_analysis_output_view(request):
         "CommentDate": CommentDate,
         "CommentLikes": CommentLikes,
         "sentiments": sentiments,
-        'top_keywords': top_keywords
+        'top_keywords': top_keywords,
+        'num_pics': num_pics_int
     }
     
     json_data = json.dumps(output_data)
     context= {
+        'num_pics': num_pics,
         'caption': caption,
         'owner': owner,
         'thumbnial_url': thumbnial_url,
@@ -155,7 +162,9 @@ def posts_analysis_output_view(request):
         "CommentCount": CommentCount,
         "sentiments": sentiments,
         "comment_sentiments": comment_sentiments,
-        "json_data": json_data
+        "json_data": json_data,
+        'docx_file': 'post_analysis.docx',
+
     }
     
    
@@ -187,13 +196,133 @@ def topictrend_analysis_details(request):
     # You can add code here to fetch and process inquiries
     return render(request, 'instafeatures_pages/topictrend_analysis/topictrend_analysis_details.html')
 
+
+from ..forms import TopicTrendAnalysisInputForm
+from ..models import  TopicAnalysisHistory
+class PostAnalysisWizard(SessionWizardView):
+    form_list = [TopicTrendAnalysisInputForm]
+    template_name = 'instafeatures_pages/topictrend_analysis/topictrend_analysis_forms.html'  
+    
+    def get_form_initial(self, step):
+        initial = super().get_form_initial(step)
+        history_id = self.kwargs.get('history_id')
+
+        if history_id and step == '0':  # Assuming '0' is the step of PlaylistAnalysisInputForm
+            history = get_object_or_404(TopicAnalysisHistory, id=history_id, user=self.request.user)
+            initial.update({
+                'hashtag': history.hashtag,
+                # Add other fields as necessary
+            })
+        return initial
+    
+    def done(self, form_list, **kwargs):
+        # Process the cleaned data
+        cleaned_data = self.get_all_cleaned_data()
+        hashtag = cleaned_data.get('hashtag')
+        
+        PostDf, commentDataset ,comment_sentiments, sentiments, num_pics = topicAnalysis(hashtag, 50)
+        
+        history_id = self.kwargs.get('history_id')
+        if history_id:
+            # Update the existing history record
+            history = get_object_or_404(TopicAnalysisHistory, id=history_id, user=self.request.user)
+            history.hashtag = cleaned_data.get('hashtag')
+            # Update other fields as necessary
+            history.save()
+        else:
+            TopicAnalysisHistory.objects.create(
+            user=self.request.user,
+            hashtag=cleaned_data.get('hashtag'),
+            )
+        
+        commentDataset_csv = pd.DataFrame(commentDataset).to_csv(index=False)
+        Post_csv = PostDf.to_csv(index=False)
+        
+        
+        return HttpResponseRedirect(reverse('post_analysis_output'))  # Use the name of the URL pattern
+
+import math
+from datetime import datetime
+
+import os
+import requests
+from django.conf import settings
+
+
+def topictrend_analysis_output(request):
+    # You can add code here to fetch and process inquiries
+    return render(request, 'instafeatures_pages/topictrend_analysis/topictrend_analysis_output.html')
+
+def topictrend_dataset_zipped_output(request):
+    # Handle the output display here
+    # Retrieve the CSV data from the session
+    commentDataset_csv = request.session.get('commentDataset_csv', '')
+    Post_csv = request.session.get('Post_csv', '')
+    # Create a zip file in memory
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(zip_buffer, 'a', zipfile.ZIP_DEFLATED, False) as zip_file:
+        zip_file.writestr('commentDataset_csv.csv', commentDataset_csv)
+        zip_file.writestr('Post_csv.csv', Post_csv)
+
+    # Set up the HttpResponse
+    zip_buffer.seek(0)
+    response = HttpResponse(zip_buffer, content_type='application/zip')
+    response['Content-Disposition'] = 'attachment; filename="post_analysis_datasets.zip"'
+
+    return response
+
+
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------
-#Engagement History
+#Profile Analysis
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-def engagement_history_details(request):
+def profile_analysis_details(request):
     # You can add code here to fetch and process inquiries
-    return render(request, 'instafeatures_pages/engagement_history/engagement_history_details.html')
+    return render(request, 'instafeatures_pages/profile_analysis/profile_analysis_details.html')
+
+from ..forms import ProfileAnalysisInputForm
+from ..models import  ProfileAnalysisHistory
+class ProfileAnalysisWizard(SessionWizardView):
+    form_list = [ProfileAnalysisInputForm]
+    template_name = 'instafeatures_pages/profile_analysis/profile_analysis_forms.html'  
+    
+    # def get_form_initial(self, step):
+    #     initial = super().get_form_initial(step)
+    #     history_id = self.kwargs.get('history_id')
+
+    #     if history_id and step == '0':  # Assuming '0' is the step of PlaylistAnalysisInputForm
+    #         history = get_object_or_404(ProfileAnalysisHistory, id=history_id, user=self.request.user)
+    #         initial.update({
+    #             'post_url': history.playlist_url,
+    #             # Add other fields as necessary
+    #         })
+    #     return initial
+    
+    def done(self, form_list, **kwargs):
+        # # Process the cleaned data
+        # cleaned_data = self.get_all_cleaned_data()
+        # profile_id = cleaned_data.get('profile_url')
+        
+        # # PostDf, commentDataset ,comment_sentiments, sentiments, num_pics = postAnalysis(post_id)
+        # history_id = self.kwargs.get('history_id')
+        # if history_id:
+        #     # Update the existing history record
+        #     history = get_object_or_404(PostAnalysisHistory, id=history_id, user=self.request.user)
+        #     history.profile_url = cleaned_data.get('profile_url')
+        #     # Update other fields as necessary
+        #     history.save()
+        # else:
+        #     PostAnalysisHistory.objects.create(
+        #     user=self.request.user,
+        #     profile_url=cleaned_data.get('profile_url'),
+        #     )
+        
+        
+        return HttpResponseRedirect(reverse('profile_analysis_output'))  # Use the name of the URL pattern
+
+def profile_analysis_output(request):
+    # You can add code here to fetch and process inquiries
+    return render(request, 'instafeatures_pages/profile_analysis/profile_analysis_output.html')
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------
 #People Analysis
