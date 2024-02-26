@@ -32,7 +32,7 @@
 
         <ul class="breadcrumbs">
             <li><a href="{% url 'base' %}" {% if request.resolver_match.url_name == 'base' %} id="current" {% endif %}> Home</a></li>
-            <li><a id="current" href="{% url 'base' %}" {% if request.resolver_match.url_name == 'base' %} id="current" {% endif %}>Qusasa's Features</a></li>
+            <li><a href="{% url 'wFeature' %}" {% if request.resolver_match.url_name == 'wFeature' %} id="current" {% endif %}>Qusasa's Features</a></li>
         </ul>
 
       <div class="history">

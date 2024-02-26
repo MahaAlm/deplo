@@ -7,12 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Qusasa | user inquiries </title>
     <!-- Linking CSS -->
-    <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}">
     <link rel="stylesheet" href="{% static 'qusasa/css/admin.css' %}">
+
+    <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}">
     <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
 
     <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
     <style>
+      .content {
+        margin-top: 0;
+      }
+
+      .content .welcome {
+        margin-top:0;
+      }
       .cards {
           justify-content: start;
       }
@@ -144,8 +152,14 @@
 
     <div class="content">
         <div class="welcome">
-          Here's your inquiry history, {{ user.first_name }}
+          Here's Your Inquiry History, {{ user.first_name }}
         </div>
+
+        <ul class="breadcrumbs">
+          <li><a href="{% url 'base' %}" {% if request.resolver_match.url_name == 'base' %} id="current" {% endif %}> Home</a></li>
+          <li><a href="{% url 'user_inquiries' %}" {% if request.resolver_match.url_name == 'user_inquiries' %} id="current" {% endif %}> inquiries</a></li>
+      </ul>
+
         <div class="history">
     {% for post in posts %}
         <article class="media content-section">
