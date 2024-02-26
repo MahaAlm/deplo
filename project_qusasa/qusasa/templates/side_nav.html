@@ -13,7 +13,7 @@
       <img src="{% static 'qusasa/images/Qusasa end.png' %}" alt="" />
       <a class="el" href="{% url 'base'%}" {% if current_url == 'base' %}id="el-current"{% endif %} ><i class="fa-solid fa-clock"></i> My History</a>
       <a class="el" href="{%url 'wFeature'%}" {% if current_url == 'wFeature' or current_url == 'InstagramFeat' or current_url == 'YouTubeFeat'%} id="el-current" {% endif %} ><i class="fa-solid fa-scissors"></i> Qusasa's Features</a>
-      <a class="el" ><i class="fa-solid fa-circle-question"></i> Inquiries</a>
+      <a class="el" href="{% url 'user_inquiries'%}" {% if current_url == 'user_inquiries' %}id="el-current"{% endif %} ><i class="fa-solid fa-circle-question"></i> Inquiries</a>
     </div>
   </div>
 

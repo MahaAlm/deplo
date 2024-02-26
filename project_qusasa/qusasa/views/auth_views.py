@@ -109,3 +109,10 @@ def inquiries_view(request):
         'posts':Inquiry.objects.all()
     }
     return render(request, 'admin/inquiries.html', context)
+
+@staff_member_required
+def user_inquiries_view(request):
+    context={
+        'posts':Inquiry.objects.all()
+    }
+    return render(request, 'qusasa/user_inquiries.html', context)
