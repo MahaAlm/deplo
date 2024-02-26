@@ -605,7 +605,7 @@ class ProfileAnalysisInputForm(forms.Form):
         return profile_url
     
 class TopicTrendAnalysisInputForm(forms.Form):
-    hashtag = forms.URLField(label='Hashtag', required=True)
+    hashtag = forms.CharField(label='Hashtag', required=True)
 
     def clean_profile_url(self):
         hashtag = self.cleaned_data['hashtag']
