@@ -12,8 +12,8 @@ from transformers import pipeline, BertTokenizer, AutoModelForSequenceClassifica
 from keybert import KeyBERT
 import os
 import time
-from dotenv import load_dotenv
-load_dotenv()
+#from dotenv import load_dotenv
+#load_dotenv()
 
 USER_IG = os.environ.get("USER_IG")
 PASS_IG = os.environ.get("PASS_IG")

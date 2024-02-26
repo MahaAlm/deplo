@@ -17,7 +17,7 @@ from django.core.exceptions import ValidationError
 import re
 import os
 from django.conf import settings
-from ..models import TopicAnalysisHistory, VideoAnalysisHistory, PlaylistAnalysisHistory, ChannelAnalysisHistory, VideoRetrievingHistory, CompetitiveAnalysisHistory
+from ..models import TopicAnalysisHistory, VideoAnalysisHistory, PlaylistAnalysisHistory, ChannelAnalysisHistory, VideoRetrievingHistory, CompetitiveAnalysisHistory, Inquiry
 import openai
 import pandas as pd
 from .auth_views import *
@@ -27,6 +27,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 
+##Maha's inquiry imports
+from django.views.generic import ListView
 def home(request):
     return render(request, 'qusasa/home.html')
 
@@ -48,7 +50,16 @@ def base(request):
         'video_retrieving_histories': video_retrieving_histories,
         'competitive_histories': competitive_histories,
     })
+
+
+def Inq(request):
+    context={
+        'posts':Inquiry.objects.all()
+    }
+    return render(request, 'admin/inquiries.html', context)
     
+
+
 
 def download_docx(request, filename):
     file_path = os.path.join(settings.MEDIA_ROOT, 'documents', filename)
