@@ -135,6 +135,11 @@ class ProfileAnalysisHistory(models.Model):
     profile_url = models.URLField(max_length=2048)
     created_at = models.DateTimeField(auto_now_add=True)
 
+class TopicTrendAnalysisHistory(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    hashtag = models.CharField(max_length=2048)
+    created_at = models.DateTimeField(auto_now_add=True)
+
 
 class Inquiry(models.Model):
     title= models.CharField(max_length=1000)

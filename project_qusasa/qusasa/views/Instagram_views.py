@@ -196,9 +196,81 @@ def topictrend_analysis_details(request):
     # You can add code here to fetch and process inquiries
     return render(request, 'instafeatures_pages/topictrend_analysis/topictrend_analysis_details.html')
 
+
+from ..forms import TopicTrendAnalysisInputForm
+from ..models import  TopicAnalysisHistory
+class PostAnalysisWizard(SessionWizardView):
+    form_list = [TopicTrendAnalysisInputForm]
+    template_name = 'instafeatures_pages/topictrend_analysis/topictrend_analysis_forms.html'  
+    
+    def get_form_initial(self, step):
+        initial = super().get_form_initial(step)
+        history_id = self.kwargs.get('history_id')
+
+        if history_id and step == '0':  # Assuming '0' is the step of PlaylistAnalysisInputForm
+            history = get_object_or_404(TopicAnalysisHistory, id=history_id, user=self.request.user)
+            initial.update({
+                'hashtag': history.hashtag,
+                # Add other fields as necessary
+            })
+        return initial
+    
+    def done(self, form_list, **kwargs):
+        # Process the cleaned data
+        cleaned_data = self.get_all_cleaned_data()
+        hashtag = cleaned_data.get('hashtag')
+        
+        PostDf, commentDataset ,comment_sentiments, sentiments, num_pics = topicAnalysis(hashtag, 50)
+        
+        history_id = self.kwargs.get('history_id')
+        if history_id:
+            # Update the existing history record
+            history = get_object_or_404(TopicAnalysisHistory, id=history_id, user=self.request.user)
+            history.hashtag = cleaned_data.get('hashtag')
+            # Update other fields as necessary
+            history.save()
+        else:
+            TopicAnalysisHistory.objects.create(
+            user=self.request.user,
+            hashtag=cleaned_data.get('hashtag'),
+            )
+        
+        commentDataset_csv = pd.DataFrame(commentDataset).to_csv(index=False)
+        Post_csv = PostDf.to_csv(index=False)
+        
+        
+        return HttpResponseRedirect(reverse('post_analysis_output'))  # Use the name of the URL pattern
+
+import math
+from datetime import datetime
+
+import os
+import requests
+from django.conf import settings
+
+
 def topictrend_analysis_output(request):
     # You can add code here to fetch and process inquiries
     return render(request, 'instafeatures_pages/topictrend_analysis/topictrend_analysis_output.html')
+
+def topictrend_dataset_zipped_output(request):
+    # Handle the output display here
+    # Retrieve the CSV data from the session
+    commentDataset_csv = request.session.get('commentDataset_csv', '')
+    Post_csv = request.session.get('Post_csv', '')
+    # Create a zip file in memory
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(zip_buffer, 'a', zipfile.ZIP_DEFLATED, False) as zip_file:
+        zip_file.writestr('commentDataset_csv.csv', commentDataset_csv)
+        zip_file.writestr('Post_csv.csv', Post_csv)
+
+    # Set up the HttpResponse
+    zip_buffer.seek(0)
+    response = HttpResponse(zip_buffer, content_type='application/zip')
+    response['Content-Disposition'] = 'attachment; filename="post_analysis_datasets.zip"'
+
+    return response
+
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------
 #Profile Analysis

@@ -212,7 +212,11 @@
     box-shadow: 0 0 30px 10px #6b4e8f76;
     padding: 0px;
 }
-
+.parent-container {
+  display: flex;
+  justify-content: center; /* Horizontal centering */
+  align-items: center; /* Vertical centering */
+}
 
   </style>
   <body>
@@ -363,8 +367,13 @@
                             
                             
     
-                            
-        
+                               <div class="parent-container">
+                                <div class="emotions_radchart" style="margin-bottom: 5rem; margin-top: 5rem;">
+                                    <h1 data-aos="fade-up">Commetns emotions distribution</h1>
+                                <p data-aos="fade-up">Get a deeper understanding of why the viewers likes this content through comments sentiment analysis</p>
+                                <div id="emotions_chart_best"  data-aos="fade-up"></div>
+                                </div>
+                               </div>
                             <div class="emotions-examples">
                                 <h1 data-aos="fade-up">Take a deeper look</h1>
                                 <p data-aos="fade-up">The top comments from the top emotions</p>
@@ -824,5 +833,86 @@ channelsTags.forEach(function(tags, i) {
     processAndSendCharts(chartsOptions);
     
     </script>
+    
+    <script>
+        // Fake data for demonstration
+        var emotionData = {
+            'Anger': 0.05, // 5%
+        'Disapproval': 0.10, // 10%
+        'Approval': 0.15, // 15%
+        'Surprise': 0.20, // 20%
+        'Annoyance': 0.25, // 25%
+        'Love': 0.30, // 30%
+        'Amusement': 0.35, // 35%
+        'Curiosity': 0.40, // 40%
+        'Admiration': 0.45, // 45%
+        'Neutral': 0.50 // 50%
+        };
+    
+        // Processing the data for the chart
+        var emotions = Object.keys(emotionData);
+        var emotionValues = Object.values(emotionData).map(value => Math.round(value * 100)); // Convert to percentages
+    
+        // Chart options
+        var options = {
+            chart: {
+                type: 'bar',
+                height: 500,
+                width: '100%', // Adjusted for full container width. For fixed width, replace '100%' with '800px' or any other value.
+                foreColor: '#fff', // White text for the dark theme
+                background: 'transparent' // Transparent background
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: true,
+                    distributed: true,
+                    columnWidth: '55%', // Slightly increase column width for better visibility
+                    endingShape: 'rounded',
+                    dataLabels: {
+                        position: 'top' // Data labels on top of the bars
+                    }
+                }
+            },
+            theme: {
+                mode: 'dark',
+                palette: 'palette1'
+            },
+            dataLabels: {
+                enabled: false
+            },
+            series: [{
+                name: 'Emotion Percentage',
+                data: emotionValues
+            }],
+            xaxis: {
+                categories: emotions
+            },
+            grid: {
+                show: false
+            },
+            legend: {
+                show: false
+            },
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shade: 'light',
+                    type: "vertical",
+                    shadeIntensity: 0.5,
+                    opacityFrom: 0.85,
+                    opacityTo: 0.85,
+                    stops: [0, 100]
+                }
+            },
+            stroke: {
+                lineCap: 'round' // Rounded edges for the chart
+            }
+        };
+    
+        // Initializing the chart
+        var emotions_chart_best = new ApexCharts(document.querySelector("#emotions_chart_best"), options);
+        emotions_chart_best.render();
+    </script>
+    
   </body>
 </html>
