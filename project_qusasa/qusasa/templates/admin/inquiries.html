@@ -41,7 +41,7 @@
 
     <div class="content">
         <div class="welcome">
-            Welecome,  admin {{ user.first_name }}
+            View User's Inquiries
         </div>
         <div class="history">
     {% for post in posts %}
@@ -49,23 +49,15 @@
 
 
 
-         <!-- <div class="media-body">
-            <div class="article-metadata">
-              <a class="mr-2" href="#">{{ post.author }}</a>
-              <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
-            </div>
-            <h2><a class="article-title" href="{% url 'display_inquery' post.id%}">{{ post.title }}</a></h2>
-            <p class="article-content">{{ post.InqContent }}</p>
-          </div>
-          -->
+    
          
           <div class="results">
             <table id="result_list">
               <thead>
                 <tr>
-                  <th scope="col">Author</th>
-                  <th scope="col">Date Posted</th>
                   <th scope="col">Title</th>
+                  <th scope="col">Date Posted</th>
+                  <th scope="col">Author</th>
                   <th scope="col">Inquiry Content</th>
                 </tr>
               </thead>
@@ -73,9 +65,9 @@
                 {% for post in posts %}
                 <tr>
 
-                  <td><a href="{{ request.path }}" style="color: blue; text-decoration: underline;">{{ post.author }}</a></td>
+                  <td><a href="{% url 'display_inquiry' post.id %}" style="color: blue; text-decoration: underline;">{{ post.title }}</a></td>
                   <td>{{ post.date_posted|date:"F d, Y" }}</td>
-                  <td>{{ post.title }}</td>
+                  <td>{{ post.author }}</td>
                   <td>{{ post.InqContent }}</td>
 
                 </tr>
