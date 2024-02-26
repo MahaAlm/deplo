@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -95,3 +96,20 @@ function hideSideNav(navs) {
 
 
 </script>
+=======
+{% extends "admin/inquiries.html" %}<!--extend to the page of inquiries in admin-->
+{% block content %}
+    {% for post in model %}
+        <article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="#">{{ post.author }}</a>
+              <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
+            </div>
+            <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
+            <p class="article-content">{{ post.InqContent }}</p>
+          </div>
+        </article>
+    {% endfor %}
+{% endblock content %}
+>>>>>>> 3e2c1fadff21d412999cd0eea1c0dc1f0b5c4619

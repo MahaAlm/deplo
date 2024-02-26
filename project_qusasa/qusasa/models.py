@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.contrib.auth.models import BaseUserManager
+from django.utils import timezone
 
 
 class CustomUserManager(BaseUserManager):
@@ -138,3 +139,17 @@ class TopicTrendAnalysisHistory(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     hashtag = models.CharField(max_length=2048)
     created_at = models.DateTimeField(auto_now_add=True)
+
+STATUS_CHOICES = (
+        ('WAITING', 'Waiting'),
+        ('RESOLVED', 'Resolved'),
+        # Add more choices as needed
+    )
+class Inquiry(models.Model):
+    title= models.CharField(max_length=1000)
+    InqContent=models.TextField()
+    RepContent=models.TextField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES)
+    date_posted=models.DateTimeField(auto_now_add=True)
+    date_resolved=models.DateTimeField(default=timezone.now)
+    author= models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
