@@ -51,6 +51,9 @@ def base(request):
         'competitive_histories': competitive_histories,
     })
 
+class InqListView(ListView):
+    model=Inquiry
+    template_name='qusasa'
 
 def Inq(request):
     context={

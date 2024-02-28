@@ -610,3 +610,5 @@ class TopicTrendAnalysisInputForm(forms.Form):
     def clean_profile_url(self):
         hashtag = self.cleaned_data['hashtag']
         return hashtag
+#HI
+
