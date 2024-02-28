@@ -56,8 +56,10 @@ class InqListView(ListView):
     template_name='qusasa'
 
 def Inq(request):
+
     context={
         'posts':Inquiry.objects.all()
+
     }
     return render(request, 'admin/inquiries.html', context)
     

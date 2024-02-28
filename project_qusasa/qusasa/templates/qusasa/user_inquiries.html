@@ -1,4 +1,5 @@
 {% load static %}
+{% load custom_filters %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -161,7 +162,6 @@
       </ul>
 
         <div class="history">
-    {% for post in posts %}
         <article class="media content-section">
 
 
@@ -188,23 +188,20 @@
               </thead>
               <tbody>
                 {% for post in posts %}
-                <tr>
-
-                  <td><a href="{{ request.path }}" style="color: blue; text-decoration: underline;">{{ post.author }}</a></td>
-                  <td>{{ post.date_posted|date:"F d, Y" }}</td>
-                  <td>{{ post.title }}</td>
-                  <td>{{ post.InqContent }}</td>
-
-                </tr>
+                  {% if post.author.email|matches_email:request.user.email %}
+                  <tr>
+                    <td><a href="{{ request.path }}" style="color: blue; text-decoration: underline;">{{ post.author }}</a></td>
+                    <td>{{ post.date_posted|date:"F d, Y" }}</td>
+                    <td>{{ post.title }}</td>
+                    <td>{{ post.InqContent }}</td>
+                  </tr>
+                  {% endif %}
                 {% endfor %}
               </tbody>
             </table>
           </div>
 
-
-
         </article>
-    {% endfor %}
         </div>
     </div>
 
