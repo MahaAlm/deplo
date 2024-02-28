@@ -415,24 +415,10 @@ flex-wrap: wrap;
 .part6Content h3 {
   width: 80%;
     font-size: 1.8rem;
-    position: relative;
 
 }
 
 
-.part6Content h3::after {
-
-    content: "";
-    position: absolute;
-    top: 10px;  /* Start right after the bottom edge of the link */
-    height: 40px; /* Control the extent of the bottom glow */
-    width: 80%;
-    left: 30%;  /* Position the left edge at the center */
-    transform: translateX(-50%); /* Pull it back to truly center it */
-    background: radial-gradient(ellipse at center, #38d7ff, #17a4a2a7 30%, transparent 60%);
-    opacity: 1; /* Hide it initially */
-    z-index: -1;
-}
 
 
 .part6Content button {
@@ -701,11 +687,6 @@ flex-wrap: wrap;
     margin: 15vh 0;
 }
 
-.part6Content h3::after {
-  opacity: 0;
-  width: 100%;
-}
-
 
 .part6Content h3 {
   width: 100%;
@@ -714,6 +695,8 @@ flex-wrap: wrap;
   color: #0A2240;
   padding: 2rem;
 }
+
+
 .part6Content button {
   font-size: 1rem;
   padding: 1rem;

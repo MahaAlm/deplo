@@ -54,7 +54,7 @@
 
 
     <div class="content">
-        <form id="playlist-url-form" action="{% url 'post_analysis' %}" method="post">
+        <form id="playlist-url-form" action="{% url 'topictrend_analysis' %}" method="post">
             {% csrf_token %}
             {{ wizard.management_form }}
             {{ form.media }}

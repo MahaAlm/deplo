@@ -1,0 +1,258 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qusasa | user inquiries </title>
+    <!-- Linking CSS -->
+    <link rel="stylesheet" href="{% static 'qusasa/css/admin.css' %}">
+
+    <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}">
+    <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
+
+    <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
+    <style>
+      .content {
+        margin-top: 0;
+      }
+
+      .content .welcome {
+        margin-top:0;
+      }
+      .cards {
+          justify-content: start;
+      }
+  
+      .card {
+          position: relative;
+      }
+  
+      .card:hover {
+          transform: translate(0, -5px);
+          transition: 0.2s;
+      }
+  
+      .card:hover .feature-name {
+          background-color: white;
+          color: black;
+          transition-duration: 0.5s;
+          margin-top: 1rem;
+          opacity: 1;
+      
+      }
+      
+  
+      
+  .card:hover .card__thumb  {
+      height: 100%;
+      overflow: hidden;
+      -webkit-transition: height 0.5s;
+      transition: height 0.5s;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+  
+  }
+  
+  .card:hover .card__thumb img {
+      max-width: 80%;
+      max-height: 50%;
+      display: block;
+      margin: 0;
+      padding: 0;
+      opacity: 1;
+      -webkit-transform: scale(1);
+      transform: scale(1);
+      -webkit-transition: opacity 0.5s, -webkit-transform 0.5s;
+      transition: opacity 0.5s, -webkit-transform 0.5s;
+      transition: opacity 0.5s, transform 0.5s;
+      transition: opacity 0.5s, transform 0.5s, -webkit-transform 0.5s;
+  }
+  
+      .delete-checkbox {
+          visibility: hidden;
+          position: absolute;
+          
+      }
+  
+      .delete-checkbox + label {
+          position: absolute;
+          top: 5%;
+          right: 5%;
+          padding: 20px;
+          border: none; /* Border color */
+          border-radius: 50%; /* Make it circular */
+          cursor: pointer;
+          background: rgb(117, 211, 210);
+          z-index: 200;
+      }
+      
+      .delete-checkbox:checked + label {
+          background-color: #108888; /* Background color when checked */
+      }
+      
+      .delete-checkbox + label:after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 20px; /* Size of the inner circle */
+          height: 20px;
+          border-radius: 50%;
+          background-color: white; /* Inner circle color */
+          transform: translate(-50%, -50%) scale(0);
+          transition: transform 0.3s ease;
+      }
+      
+      .delete-checkbox:checked + label:after {
+          transform: translate(-50%, -50%) scale(1);
+      }
+      
+    
+      .buttons {
+          display: flex;
+          flex-direction: column;
+          cursor: pointer;
+      margin: 1rem;
+      width: 220px;
+      height: 280px;
+      background-color: #fff;
+      box-shadow: 0 0 5px rgba(95, 95, 95, 0.058);
+      overflow: hidden;
+      -webkit-transition: box-shadow 0.5s;
+      transition: box-shadow 0.5s;
+      font-family: 'Raleway';
+      
+      }
+    </style>
+</head>
+<body> 
+    <!-- <img class="polygon" src="{% static 'qusasa/images/Frame 2.png'%}" alt="Description of Image" class="full-size-absolute"> -->
+    
+    <!-- <div class="navigation">
+        <img class="static-img" src="{% static 'qusasa/images/qusasa.png' %}" alt="">
+
+        <div class="navs">
+            <a href="{% url 'logout' %}">Log out</a>
+        </div>
+    </div> -->
+    <a class="log-out" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i>  Log out</a>
+
+    <div class="hamburger">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+
+      {% include 'side_nav.html' %}
+
+    <div class="content">
+        <div class="welcome">
+          Here's Your Inquiry History, {{ user.first_name }}
+        </div>
+
+        <ul class="breadcrumbs">
+          <li><a href="{% url 'base' %}" {% if request.resolver_match.url_name == 'base' %} id="current" {% endif %}> Home</a></li>
+          <li><a href="{% url 'user_inquiries' %}" {% if request.resolver_match.url_name == 'user_inquiries' %} id="current" {% endif %}> inquiries</a></li>
+      </ul>
+
+        <div class="history">
+    {% for post in posts %}
+        <article class="media content-section">
+
+
+
+         <!-- <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="#">{{ post.author }}</a>
+              <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
+            </div>
+            <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
+            <p class="article-content">{{ post.InqContent }}</p>
+          </div>
+          -->
+         
+          <div class="results">
+            <table id="result_list">
+              <thead>
+                <tr>
+                  <th scope="col">Author</th>
+                  <th scope="col">Date Posted</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Inquiry Content</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for post in posts %}
+                <tr>
+
+                  <td><a href="{{ request.path }}" style="color: blue; text-decoration: underline;">{{ post.author }}</a></td>
+                  <td>{{ post.date_posted|date:"F d, Y" }}</td>
+                  <td>{{ post.title }}</td>
+                  <td>{{ post.InqContent }}</td>
+
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+
+
+        </article>
+    {% endfor %}
+        </div>
+    </div>
+
+
+   
+
+    <!-- Linking JS at the bottom for better performance -->
+    <script src="{% static 'qusasa/js/script.js' %}"></script>
+
+
+<script>
+  document.querySelector('.hamburger').addEventListener('click', function(e) {
+    let navs = document.querySelector('.side-nav');
+
+    if (navs.style.visibility === 'hidden' || navs.style.visibility === '') {
+        navs.style.visibility = 'visible';
+        navs.style.opacity = '1';
+        navs.style.transform = 'scale(1)';
+    } else {
+        hideSideNav(navs);
+    }
+
+    e.stopPropagation(); // Prevent the click from reaching the document
+});
+
+document.addEventListener('click', function(e) {
+  // Check if the screen width is less than 1000px
+  if (window.innerWidth < 1000) {
+      let navs = document.querySelector('.side-nav');
+      let navContainer = document.querySelector('.side-nav-container');
+
+      // If the click target is not within the navContainer and not on the hamburger, hide the side-nav
+      if (!navContainer.contains(e.target) && !document.querySelector('.hamburger').contains(e.target)) {
+          hideSideNav(navs);
+      }
+  }
+});
+
+
+function hideSideNav(navs) {
+    navs.style.opacity = '0';
+    navs.style.transform = 'scale(0.5)';
+    setTimeout(() => { navs.style.visibility = 'hidden'; }, 1000;
+}
+
+
+</script>
+
+</body>
+</html>
+

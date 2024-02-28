@@ -41,19 +41,43 @@
 
     <div class="content">
         <div class="welcome">
-            Welecome,  admin {{ user.first_name }}
+            View User's Inquiries
         </div>
         <div class="history">
     {% for post in posts %}
         <article class="media content-section">
-          <div class="media-body">
-            <div class="article-metadata">
-              <a class="mr-2" href="#">{{ post.author }}</a>
-              <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
-            </div>
-            <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
-            <p class="article-content">{{ post.InqContent }}</p>
+
+
+
+    
+         
+          <div class="results">
+            <table id="result_list">
+              <thead>
+                <tr>
+                  <th scope="col">Title</th>
+                  <th scope="col">Date Posted</th>
+                  <th scope="col">Author</th>
+                  <th scope="col">Inquiry Content</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for post in posts %}
+                <tr>
+
+                  <td><a href="{% url 'display_inquiry' post.id %}" style="color: blue; text-decoration: underline;">{{ post.title }}</a></td>
+                  <td>{{ post.date_posted|date:"F d, Y" }}</td>
+                  <td>{{ post.author }}</td>
+                  <td>{{ post.InqContent }}</td>
+
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
           </div>
+
+
+
         </article>
     {% endfor %}
         </div>
@@ -67,38 +91,43 @@
 
 
 <script>
-    document.querySelector('.hamburger').addEventListener('click', function(e) {
-      let navs = document.querySelector('.side-nav');
-  
-      if (navs.style.visibility === 'hidden' || navs.style.visibility === '') {
-          navs.style.visibility = 'visible';
-          navs.style.opacity = '1';
-          navs.style.transform = 'scale(1)';
-      } else {
-          hideSideNav(navs);
-      }
-  
-      e.stopPropagation(); // Prevent the click from reaching the document
-  });
-  
-  document.addEventListener('click', function(e) {
+  document.querySelector('.hamburger').addEventListener('click', function(e) {
+    let navs = document.querySelector('.side-nav');
+
+    if (navs.style.visibility === 'hidden' || navs.style.visibility === '') {
+        navs.style.visibility = 'visible';
+        navs.style.opacity = '1';
+        navs.style.transform = 'scale(1)';
+    } else {
+        hideSideNav(navs);
+    }
+
+    e.stopPropagation(); // Prevent the click from reaching the document
+});
+
+document.addEventListener('click', function(e) {
+  // Check if the screen width is less than 1000px
+  if (window.innerWidth < 1000) {
       let navs = document.querySelector('.side-nav');
       let navContainer = document.querySelector('.side-nav-container');
-  
+
       // If the click target is not within the navContainer and not on the hamburger, hide the side-nav
       if (!navContainer.contains(e.target) && !document.querySelector('.hamburger').contains(e.target)) {
           hideSideNav(navs);
       }
-  });
-  
-  function hideSideNav(navs) {
-      navs.style.opacity = '0';
-      navs.style.transform = 'scale(0.5)';
-      setTimeout(() => { navs.style.visibility = 'hidden'; }, 1000);
   }
-  
-  
-  </script>
+});
+
+
+function hideSideNav(navs) {
+    navs.style.opacity = '0';
+    navs.style.transform = 'scale(0.5)';
+    setTimeout(() => { navs.style.visibility = 'hidden'; }, 1000;
+}
+
+
+</script>
+
 </body>
 </html>
 

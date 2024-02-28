@@ -605,10 +605,14 @@ class ProfileAnalysisInputForm(forms.Form):
         return profile_url
     
 class TopicTrendAnalysisInputForm(forms.Form):
-    hashtag = forms.URLField(label='Hashtag', required=True)
+    hashtag = forms.CharField(label='Hashtag', required=True)
 
     def clean_profile_url(self):
         hashtag = self.cleaned_data['hashtag']
-        return hashtag
-#HI
+        return hashtag    
 
+from .models import Inquiry
+class InquiryForm(forms.ModelForm):
+    class Meta:
+        model = Inquiry
+        fields = ['RepContent']
