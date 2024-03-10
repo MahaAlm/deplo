@@ -609,8 +609,7 @@ class TopicTrendAnalysisInputForm(forms.Form):
 
     def clean_profile_url(self):
         hashtag = self.cleaned_data['hashtag']
-        return hashtag
-    
+        return hashtag    
 
 from .models import Inquiry
 class InquiryForm(forms.ModelForm):

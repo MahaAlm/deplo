@@ -5,6 +5,7 @@ from django.contrib import admin
 from .admin import admin_site
 from django.conf import settings
 from django.urls import include, path
+from .views import InqListView
 
 urlpatterns = [
     path('', views.home, name='home'),
