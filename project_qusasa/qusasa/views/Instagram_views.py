@@ -44,7 +44,7 @@ def posts_analysis_details(request):
 
 
 from ..forms import PostAnalysisInputForm
-from ..models import  PostAnalysisHistory
+# from ..models import  PostAnalysisHistory
 class PostAnalysisWizard(SessionWizardView):
     form_list = [PostAnalysisInputForm]
     template_name = 'instafeatures_pages/posts_analysis/posts_analysis_forms.html'  
@@ -53,13 +53,13 @@ class PostAnalysisWizard(SessionWizardView):
         initial = super().get_form_initial(step)
         history_id = self.kwargs.get('history_id')
 
-        if history_id and step == '0':  # Assuming '0' is the step of PlaylistAnalysisInputForm
-            history = get_object_or_404(PostAnalysisHistory, id=history_id, user=self.request.user)
-            initial.update({
-                'post_url': history.post_url,
-                # Add other fields as necessary
-            })
-        return initial
+        # if history_id and step == '0':  # Assuming '0' is the step of PlaylistAnalysisInputForm
+        #     history = get_object_or_404(PostAnalysisHistory, id=history_id, user=self.request.user)
+        #     initial.update({
+        #         'post_url': history.post_url,
+        #         # Add other fields as necessary
+        #     })
+        # return initial
     
     def done(self, form_list, **kwargs):
         # Process the cleaned data
@@ -67,18 +67,18 @@ class PostAnalysisWizard(SessionWizardView):
         post_id = cleaned_data.get('post_url')
         
         PostDf, commentDataset ,comment_sentiments, sentiments, num_pics = postAnalysis(post_id)
-        history_id = self.kwargs.get('history_id')
-        if history_id:
-            # Update the existing history record
-            history = get_object_or_404(PostAnalysisHistory, id=history_id, user=self.request.user)
-            history.post_url = cleaned_data.get('post_url')
-            # Update other fields as necessary
-            history.save()
-        else:
-            PostAnalysisHistory.objects.create(
-            user=self.request.user,
-            post_url=cleaned_data.get('post_url'),
-            )
+        # history_id = self.kwargs.get('history_id')
+        # if history_id:
+        #     # Update the existing history record
+        #     history = get_object_or_404(PostAnalysisHistory, id=history_id, user=self.request.user)
+        #     history.post_url = cleaned_data.get('post_url')
+        #     # Update other fields as necessary
+        #     history.save()
+        # else:
+        #     PostAnalysisHistory.objects.create(
+        #     user=self.request.user,
+        #     post_url=cleaned_data.get('post_url'),
+        #     )
         
         commentDataset_csv = pd.DataFrame(commentDataset).to_csv(index=False)
         Post_csv = PostDf.to_csv(index=False)
@@ -203,7 +203,7 @@ def topictrend_analysis_details(request):
 
 
 from ..forms import TopicTrendAnalysisInputForm
-from ..models import  TopicAnalysisHistory
+# from ..models import  TopicAnalysisHistory
 class TopicTrendAnalysisWizard(SessionWizardView):
     form_list = [TopicTrendAnalysisInputForm]
     template_name = 'instafeatures_pages/topictrend_analysis/topictrend_analysis_forms.html'  
@@ -212,12 +212,12 @@ class TopicTrendAnalysisWizard(SessionWizardView):
         initial = super().get_form_initial(step)
         history_id = self.kwargs.get('history_id')
 
-        if history_id and step == '0': 
-            history = get_object_or_404(TopicAnalysisHistory, id=history_id, user=self.request.user)
-            initial.update({
-                'hashtag': history.hashtag,
-            })
-        return initial
+        # if history_id and step == '0': 
+        #     history = get_object_or_404(TopicAnalysisHistory, id=history_id, user=self.request.user)
+        #     initial.update({
+        #         'hashtag': history.hashtag,
+        #     })
+        # return initial
     
     def done(self, form_list, **kwargs):
         # Process the cleaned data
@@ -226,18 +226,18 @@ class TopicTrendAnalysisWizard(SessionWizardView):
         
         hashAnalysis, creators, content, comments_df, top_keywords, emotion_counts, top_comments_by_emotion, top_6_posts, top_5_accs = topicAnalysis(hashtag, 10)
         
-        history_id = self.kwargs.get('history_id')
-        if history_id:
-            # Update the existing history record
-            history = get_object_or_404(TopicAnalysisHistory, id=history_id, user=self.request.user)
-            history.hashtag = cleaned_data.get('hashtag')
-            # Update other fields as necessary
-            history.save()
-        else:
-            TopicAnalysisHistory.objects.create(
-            user=self.request.user,
-            hashtag=cleaned_data.get('hashtag'),
-            )
+        # history_id = self.kwargs.get('history_id')
+        # if history_id:
+        #     # Update the existing history record
+        #     history = get_object_or_404(TopicAnalysisHistory, id=history_id, user=self.request.user)
+        #     history.hashtag = cleaned_data.get('hashtag')
+        #     # Update other fields as necessary
+        #     history.save()
+        # else:
+        #     TopicAnalysisHistory.objects.create(
+        #     user=self.request.user,
+        #     hashtag=cleaned_data.get('hashtag'),
+        #     )
         
         hashAnalysis_csv = pd.DataFrame(hashAnalysis).to_csv(index=False)
         creators_csv = creators.to_csv(index=False)
@@ -321,7 +321,7 @@ def profile_analysis_details(request):
     return render(request, 'instafeatures_pages/profile_analysis/profile_analysis_details.html')
 
 from ..forms import ProfileAnalysisInputForm
-from ..models import  ProfileAnalysisHistory
+# from ..models import  ProfileAnalysisHistory
 class ProfileAnalysisWizard(SessionWizardView):
     form_list = [ProfileAnalysisInputForm]
     template_name = 'instafeatures_pages/profile_analysis/profile_analysis_forms.html'  
