@@ -7,8 +7,7 @@ from pandasai import SmartDataframe
 from pandasai.llm.openai import OpenAI
 import openai
 import io
-import time
-from lida import Manager, TextGenerationConfig , llm  
+import time 
 import os
 import openai
 import streamlit as st 
@@ -17,7 +16,7 @@ from pandasai import SmartDataframe
 from pandasai.llm.openai import OpenAI
 import os
 openai_api_key = os.environ.get("OPENAI_API_KEY")
-
+openai_api_key ='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'
 
 
 def chat_with_csv(df,prompt):

@@ -128,6 +128,45 @@
     .respons1  {
         visibility: hidden;
     }
+    nav {
+        background-color: #5f4e9c; /* Light purple background color */
+        padding: 10px;
+        border-radius: 10px; /* Rounded edges */
+    }
+
+    nav ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    nav ul li {
+        display: inline;
+        margin-right: 10px; /* Adjust spacing between links */
+    }
+
+    nav ul li a {
+        text-decoration: none;
+        color: white; /* Default color */
+    }
+
+    nav ul li a:hover {
+        color: purple; /* Color change on hover */
+    }
+
+    /* Style for the separator "|" */
+    nav ul li:not(:last-child)::after {
+        content: "|";
+        margin-left: 5px;
+        margin-right: 2px;
+    }
+
+    /*
+    html {
+        scroll-behavior: smooth;
+    }
+    */
+    
     </style>
   </head>
   <body>
@@ -141,10 +180,25 @@
             <div class="output-header " data-aos="fade-up">
                 <h1>Your Channel Analysis is ready!</h1>
                 <p>Our channel analysis will give you an overview over the channel, what does influence its performance, and a closer look on its top and worst performing videos...</p>
+                
+                   
+                <nav>
+                    <ul>
+                        <li><a href="#section1"> Download results </a></li>
+                        <li><a href="#section2">Overview </a></li>
+                        <li><a href="#section3">Deeper understanding </a></li>
+                        <li><a href="#section4">Top videos </a></li>
+                        <li><a href="#section5">Worst videos </a></li>
+                        <li><a href="#section6">Ask AI </a></li>
+                        <li><a href="#section7">Generate Graphs </a></li>
+            
+                    </ul>
+                </nav>
+                
             </div>
         </div>
         
-        <div class="mini-container">
+        <div class="mini-container" id="section1">
             <h2 data-aos="fade-up">Download your results:</h2>
             <div class="downlaodables" data-aos="fade-up">
             <div class="download-dataset download-el">
@@ -208,7 +262,7 @@
 
         </div>
 
-        <div class="mini-container">
+        <div class="mini-container" id="section6">
             <div class="ask-Ai">
                 <div class="col">
                     <h2 data-aos="fade-up">Ask AI about your datasets</h2>
@@ -242,7 +296,7 @@
 
         </div>
 
-        <div class="mini-container">
+        <div class="mini-container" id="section7">
             <div class="ask-Ai">
                 <div class="col">
                     <h2 data-aos="fade-up">Generate Graphs with AI</h2>
@@ -279,7 +333,7 @@
 
         </div>
 
-        <div class="mini-container stats-graphs-container">
+        <div class="mini-container stats-graphs-container" id="section2">
             <div class="stats-graphs" data-aos="fade-up">
                 <h1>Get An Overview</h1>
                 <p>take a look over channel in general, what is it about and how is it performing</p>
@@ -339,7 +393,7 @@
         </div>
         
         
-        <div class="mini-container stats-graphs-container">
+        <div class="mini-container stats-graphs-container" id="section3">
             <div class="stats-graphs" data-aos="fade-up">
                 <h1>Get a deeper understanding</h1>
                 <div class="overview">
@@ -445,7 +499,7 @@
             </div>
         </div>
 
-        <div class="top-videos" data-aos="fade-up">
+        <div class="top-videos" data-aos="fade-up" id="section4">
             <h1 data-aos="fade-up">Look closer</h1>
             <p data-aos="fade-up">observe the top and worst performing videos on the channel to have a closer look on the people opinions and engagement with the content</p>
             <div class="videos" >
@@ -507,7 +561,7 @@
                 
             </div>
 
-            <div class="videos" >
+            <div class="videos"  id="section5">
                 <div class="mini-container"  data-aos="fade-up">
                     <h1 data-aos="fade-up" style="margin-bottom: 4rem;">Worst performing videos</h1>
                     {% for video in worst_5_videos%}
