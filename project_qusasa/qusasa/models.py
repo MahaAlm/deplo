@@ -130,7 +130,7 @@ STATUS_CHOICES = (
         ('WAITING', 'Waiting'),
         ('RESOLVED', 'Resolved'),
     )
-
+#hi
 class Inquiry(models.Model):
     title= models.CharField(max_length=1000)
     InqContent=models.TextField()

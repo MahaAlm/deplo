@@ -1857,7 +1857,7 @@ var emotionsWorst = Object.keys(emotionDataslicedWorst);
             document.getElementById('response1').style.visibility = 'hidden';
 
             // Here you package both the message and the CSV data into one WebSocket message
-            ws1.send(JSON.stringify({'message': message, 'csvData': [csvData, csvData2, csvData3]}));
+            ws1.send(JSON.stringify({'message': message, 'csvData': csvData}));
     
             messageInput.value = ''; // Clear the input after sending
         }

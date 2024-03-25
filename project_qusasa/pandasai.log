@@ -16177,3 +16177,536 @@ result = {'type': 'string', 'value': plot_base64}
 2024-03-18 18:35:30 [WARNING] Not Found: /static/qusasa/css/static/images/Frame 2.png
 2024-03-25 12:15:25 [WARNING] Not Found: /static/qusasa/js/script.js
 2024-03-25 12:15:26 [WARNING] Not Found: /static/qusasa/css/static/images/Frame 2.png
+2024-03-25 13:58:13 [INFO] Question: Plot views against duration, first clear the previous plt, convert the graph image to base64 value such as (data:image/png;base64,iVBORw0KGgo...) and print only the Base64 value, do not save the photo
+2024-03-25 13:58:13 [INFO] Running PandasAI with openai LLM...
+2024-03-25 13:58:13 [INFO] Prompt ID: 6cdfadb2-6fd1-4cbc-ad65-94644ed0a95a
+2024-03-25 13:58:13 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-03-25 13:58:13 [INFO] Executing Step 0: ValidatePipelineInput
+2024-03-25 13:58:13 [INFO] Executing Step 1: CacheLookup
+2024-03-25 13:58:13 [INFO] Executing Step 2: PromptGeneration
+2024-03-25 13:58:13 [INFO] Using prompt: dfs[0]:
+  name: null
+  description: null
+  type: pd.DataFrame
+  rows: 0
+  columns: 1
+  schema:
+    fields:
+    - name: v
+      type: object
+      samples: []
+
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ Plot views against duration, first clear the previous plt, convert the graph image to base64 value such as (data:image/png;base64,iVBORw0KGgo...) and print only the Base64 value, do not save the photo
+
+Variable `dfs: list[pd.DataFrame]` is already declared.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+If you are asked to plot a chart, use "matplotlib" for charts, save as png.
+
+
+Generate python code and return full updated code:
+2024-03-25 13:58:13 [INFO] Executing Step 3: CodeGenerator
+2024-03-25 13:58:14 [INFO] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-03-25 13:58:14 [INFO] Retrying request to /chat/completions in 0.936536 seconds
+2024-03-25 13:58:15 [INFO] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-03-25 13:58:15 [INFO] Retrying request to /chat/completions in 1.619239 seconds
+2024-03-25 13:58:17 [INFO] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-03-25 13:58:17 [ERROR] Pipeline failed on step 3: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2024-03-25 14:02:06 [INFO] Question: Plot views against duration, first clear the previous plt, convert the graph image to base64 value such as (data:image/png;base64,iVBORw0KGgo...) and print only the Base64 value, do not save the photo
+2024-03-25 14:02:06 [INFO] Running PandasAI with openai LLM...
+2024-03-25 14:02:06 [INFO] Prompt ID: f86bea20-3402-4f27-881f-35f4559150e8
+2024-03-25 14:02:06 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-03-25 14:02:06 [INFO] Executing Step 0: ValidatePipelineInput
+2024-03-25 14:02:06 [INFO] Executing Step 1: CacheLookup
+2024-03-25 14:02:06 [INFO] Executing Step 2: PromptGeneration
+2024-03-25 14:02:06 [INFO] Using prompt: dfs[0]:
+  name: null
+  description: null
+  type: pd.DataFrame
+  rows: 0
+  columns: 1
+  schema:
+    fields:
+    - name: v
+      type: object
+      samples: []
+
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ Plot views against duration, first clear the previous plt, convert the graph image to base64 value such as (data:image/png;base64,iVBORw0KGgo...) and print only the Base64 value, do not save the photo
+
+Variable `dfs: list[pd.DataFrame]` is already declared.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+If you are asked to plot a chart, use "matplotlib" for charts, save as png.
+
+
+Generate python code and return full updated code:
+2024-03-25 14:02:06 [INFO] Executing Step 3: CodeGenerator
+2024-03-25 14:02:07 [INFO] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-03-25 14:02:07 [INFO] Retrying request to /chat/completions in 0.750845 seconds
+2024-03-25 14:02:08 [INFO] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-03-25 14:02:08 [INFO] Retrying request to /chat/completions in 1.789293 seconds
+2024-03-25 14:02:10 [INFO] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-03-25 14:02:10 [ERROR] Pipeline failed on step 3: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2024-03-25 14:03:29 [INFO] Question: Plot views against duration, first clear the previous plt, convert the graph image to base64 value such as (data:image/png;base64,iVBORw0KGgo...) and print only the Base64 value, do not save the photo
+2024-03-25 14:03:29 [INFO] Running PandasAI with openai LLM...
+2024-03-25 14:03:29 [INFO] Prompt ID: 0b43721c-8229-44d1-b24b-e1e2aa3aa2c6
+2024-03-25 14:03:29 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-03-25 14:03:29 [INFO] Executing Step 0: ValidatePipelineInput
+2024-03-25 14:03:29 [INFO] Executing Step 1: CacheLookup
+2024-03-25 14:03:29 [INFO] Executing Step 2: PromptGeneration
+2024-03-25 14:03:29 [INFO] Using prompt: dfs[0]:
+  name: null
+  description: null
+  type: pd.DataFrame
+  rows: 0
+  columns: 1
+  schema:
+    fields:
+    - name: v
+      type: object
+      samples: []
+
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ Plot views against duration, first clear the previous plt, convert the graph image to base64 value such as (data:image/png;base64,iVBORw0KGgo...) and print only the Base64 value, do not save the photo
+
+Variable `dfs: list[pd.DataFrame]` is already declared.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+If you are asked to plot a chart, use "matplotlib" for charts, save as png.
+
+
+Generate python code and return full updated code:
+2024-03-25 14:03:29 [INFO] Executing Step 3: CodeGenerator
+2024-03-25 14:03:29 [INFO] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-03-25 14:03:29 [INFO] Retrying request to /chat/completions in 0.844050 seconds
+2024-03-25 14:03:30 [INFO] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-03-25 14:03:30 [INFO] Retrying request to /chat/completions in 1.778459 seconds
+2024-03-25 14:03:32 [INFO] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-03-25 14:03:32 [ERROR] Pipeline failed on step 3: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2024-03-25 14:04:35 [INFO] Question: Plot views against duration
+, first clear the previous plt, convert the graph image to base64 value such as (data:image/png;base64,iVBORw0KGgo...) and print only the Base64 value, do not save the photo
+2024-03-25 14:04:35 [INFO] Running PandasAI with openai LLM...
+2024-03-25 14:04:35 [INFO] Prompt ID: e90bd19f-40be-4c58-b5d0-d444ff4049f9
+2024-03-25 14:04:35 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-03-25 14:04:35 [INFO] Executing Step 0: ValidatePipelineInput
+2024-03-25 14:04:35 [INFO] Executing Step 1: CacheLookup
+2024-03-25 14:04:35 [INFO] Executing Step 2: PromptGeneration
+2024-03-25 14:04:35 [INFO] Using prompt: dfs[0]:
+  name: null
+  description: null
+  type: pd.DataFrame
+  rows: 0
+  columns: 1
+  schema:
+    fields:
+    - name: v
+      type: object
+      samples: []
+
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ Plot views against duration
+, first clear the previous plt, convert the graph image to base64 value such as (data:image/png;base64,iVBORw0KGgo...) and print only the Base64 value, do not save the photo
+
+Variable `dfs: list[pd.DataFrame]` is already declared.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+If you are asked to plot a chart, use "matplotlib" for charts, save as png.
+
+
+Generate python code and return full updated code:
+2024-03-25 14:04:35 [INFO] Executing Step 3: CodeGenerator
+2024-03-25 14:04:35 [INFO] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-03-25 14:04:35 [INFO] Retrying request to /chat/completions in 0.977034 seconds
+2024-03-25 14:04:37 [INFO] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-03-25 14:04:37 [INFO] Retrying request to /chat/completions in 1.783016 seconds
+2024-03-25 14:04:39 [INFO] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2024-03-25 14:04:39 [ERROR] Pipeline failed on step 3: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2024-03-25 14:09:48 [INFO] Question: Plot views against duration, first clear the previous plt, convert the graph image to base64 value such as (data:image/png;base64,iVBORw0KGgo...) and print only the Base64 value, do not save the photo
+2024-03-25 14:09:48 [INFO] Running PandasAI with openai LLM...
+2024-03-25 14:09:48 [INFO] Prompt ID: 774d4b70-0c2a-4677-a69f-e80cc1452587
+2024-03-25 14:09:48 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-03-25 14:09:48 [INFO] Executing Step 0: ValidatePipelineInput
+2024-03-25 14:09:48 [INFO] Executing Step 1: CacheLookup
+2024-03-25 14:09:48 [INFO] Executing Step 2: PromptGeneration
+2024-03-25 14:09:48 [INFO] Using prompt: dfs[0]:
+  name: null
+  description: null
+  type: pd.DataFrame
+  rows: 0
+  columns: 1
+  schema:
+    fields:
+    - name: v
+      type: object
+      samples: []
+
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ Plot views against duration, first clear the previous plt, convert the graph image to base64 value such as (data:image/png;base64,iVBORw0KGgo...) and print only the Base64 value, do not save the photo
+
+Variable `dfs: list[pd.DataFrame]` is already declared.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+If you are asked to plot a chart, use "matplotlib" for charts, save as png.
+
+
+Generate python code and return full updated code:
+2024-03-25 14:09:48 [INFO] Executing Step 3: CodeGenerator
+2024-03-25 14:09:53 [INFO] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-03-25 14:09:53 [INFO] Prompt used:
+            dfs[0]:
+  name: null
+  description: null
+  type: pd.DataFrame
+  rows: 0
+  columns: 1
+  schema:
+    fields:
+    - name: v
+      type: object
+      samples: []
+
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ Plot views against duration, first clear the previous plt, convert the graph image to base64 value such as (data:image/png;base64,iVBORw0KGgo...) and print only the Base64 value, do not save the photo
+
+Variable `dfs: list[pd.DataFrame]` is already declared.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+If you are asked to plot a chart, use "matplotlib" for charts, save as png.
+
+
+Generate python code and return full updated code:
+            
+2024-03-25 14:09:53 [INFO] Code generated:
+            ```
+            # TODO: import the required dependencies
+import pandas as pd
+import matplotlib.pyplot as plt
+import io
+import base64
+
+# Write code here
+plt.figure()
+plt.plot(dfs[0]['duration'], dfs[0]['views'])
+plt.xlabel('Duration')
+plt.ylabel('Views')
+plt.title('Views vs Duration')
+
+# Convert plot to base64
+buffer = io.BytesIO()
+plt.savefig(buffer, format='png')
+plot_base64 = base64.b64encode(buffer.getvalue()).decode()
+
+# Clear the plot
+plt.clf()
+
+# Declare result var
+result = {
+    "type": "string",
+    "value": plot_base64
+}
+            ```
+            
+2024-03-25 14:09:53 [INFO] Executing Step 4: CachePopulation
+2024-03-25 14:09:53 [INFO] Executing Step 5: CodeExecution
+2024-03-25 14:09:53 [INFO] 
+Code running:
+```
+plt.figure()
+plt.plot(dfs[0]['duration'], dfs[0]['views'])
+plt.xlabel('Duration')
+plt.ylabel('Views')
+plt.title('Views vs Duration')
+buffer = io.BytesIO()
+plt.savefig(buffer, format='png')
+plot_base64 = base64.b64encode(buffer.getvalue()).decode()
+plt.clf()
+result = {'type': 'string', 'value': plot_base64}
+        ```
+2024-03-25 14:09:54 [ERROR] Failed with error: Traceback (most recent call last):
+  File "/Users/emtenan/anaconda3/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 3805, in get_loc
+    return self._engine.get_loc(casted_key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7081, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7089, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'duration'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/emtenan/anaconda3/lib/python3.11/site-packages/pandasai/pipelines/chat/code_execution.py", line 64, in execute
+    result = code_manager.execute_code(code_to_run, code_context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/emtenan/anaconda3/lib/python3.11/site-packages/pandasai/helpers/code_manager.py", line 207, in execute_code
+    exec(code_to_run, environment)
+  File "<string>", line 2, in <module>
+  File "/Users/emtenan/anaconda3/lib/python3.11/site-packages/pandas/core/frame.py", line 4090, in __getitem__
+    indexer = self.columns.get_loc(key)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/emtenan/anaconda3/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 3812, in get_loc
+    raise KeyError(key) from err
+KeyError: 'duration'
+
+2024-03-25 14:09:54 [WARNING] Failed to execute code retrying with a correction framework [retry number: 1]
+2024-03-25 14:09:54 [INFO] Executing Pipeline: ErrorCorrectionPipeline
+2024-03-25 14:09:54 [INFO] Executing Step 0: ErrorPromptGeneration
+2024-03-25 14:09:54 [INFO] Using prompt: dfs[0]:
+  name: null
+  description: null
+  type: pd.DataFrame
+  rows: 0
+  columns: 1
+  schema:
+    fields:
+    - name: v
+      type: object
+      samples: []
+
+
+The user asked the following question:
+### QUERY
+ Plot views against duration, first clear the previous plt, convert the graph image to base64 value such as (data:image/png;base64,iVBORw0KGgo...) and print only the Base64 value, do not save the photo
+
+You generated this python code:
+# TODO: import the required dependencies
+import pandas as pd
+import matplotlib.pyplot as plt
+import io
+import base64
+
+# Write code here
+plt.figure()
+plt.plot(dfs[0]['duration'], dfs[0]['views'])
+plt.xlabel('Duration')
+plt.ylabel('Views')
+plt.title('Views vs Duration')
+
+# Convert plot to base64
+buffer = io.BytesIO()
+plt.savefig(buffer, format='png')
+plot_base64 = base64.b64encode(buffer.getvalue()).decode()
+
+# Clear the plot
+plt.clf()
+
+# Declare result var
+result = {
+    "type": "string",
+    "value": plot_base64
+}
+
+It fails with the following error:
+'duration'
+
+Fix the python code above and return the new python code:
+2024-03-25 14:09:54 [INFO] Executing Step 1: CodeGenerator
+2024-03-25 14:09:59 [INFO] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-03-25 14:09:59 [INFO] Prompt used:
+            dfs[0]:
+  name: null
+  description: null
+  type: pd.DataFrame
+  rows: 0
+  columns: 1
+  schema:
+    fields:
+    - name: v
+      type: object
+      samples: []
+
+
+The user asked the following question:
+### QUERY
+ Plot views against duration, first clear the previous plt, convert the graph image to base64 value such as (data:image/png;base64,iVBORw0KGgo...) and print only the Base64 value, do not save the photo
+
+You generated this python code:
+# TODO: import the required dependencies
+import pandas as pd
+import matplotlib.pyplot as plt
+import io
+import base64
+
+# Write code here
+plt.figure()
+plt.plot(dfs[0]['duration'], dfs[0]['views'])
+plt.xlabel('Duration')
+plt.ylabel('Views')
+plt.title('Views vs Duration')
+
+# Convert plot to base64
+buffer = io.BytesIO()
+plt.savefig(buffer, format='png')
+plot_base64 = base64.b64encode(buffer.getvalue()).decode()
+
+# Clear the plot
+plt.clf()
+
+# Declare result var
+result = {
+    "type": "string",
+    "value": plot_base64
+}
+
+It fails with the following error:
+'duration'
+
+Fix the python code above and return the new python code:
+            
+2024-03-25 14:09:59 [INFO] Code generated:
+            ```
+            # TODO: import the required dependencies
+import pandas as pd
+import matplotlib.pyplot as plt
+import io
+import base64
+
+# Write code here
+plt.figure()
+plt.plot(dfs[0]['v'].apply(lambda x: x.get('duration', 0)), dfs[0]['v'].apply(lambda x: x.get('views', 0)))
+plt.xlabel('Duration')
+plt.ylabel('Views')
+plt.title('Views vs Duration')
+
+# Convert plot to base64
+buffer = io.BytesIO()
+plt.savefig(buffer, format='png')
+plot_base64 = base64.b64encode(buffer.getvalue()).decode()
+
+# Clear the plot
+plt.clf()
+
+# Declare result var
+result = {
+    "type": "string",
+    "value": plot_base64
+}
+            ```
+            
+2024-03-25 14:09:59 [INFO] 
+Code running:
+```
+plt.figure()
+plt.plot(dfs[0]['v'].apply(lambda x: x.get('duration', 0)), dfs[0]['v'].apply(lambda x: x.get('views', 0)))
+plt.xlabel('Duration')
+plt.ylabel('Views')
+plt.title('Views vs Duration')
+buffer = io.BytesIO()
+plt.savefig(buffer, format='png')
+plot_base64 = base64.b64encode(buffer.getvalue()).decode()
+plt.clf()
+result = {'type': 'string', 'value': plot_base64}
+        ```
+2024-03-25 14:09:59 [INFO] Executing Step 6: ResultValidation
+2024-03-25 14:09:59 [INFO] Answer: {'type': 'string', 'value': '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p0+f1tixY1VYWOh+XLp0SX369NEnn3yi8+fPS5J69Oih//znP8rIyNDFixf10UcfqU+fPrrzzjuVlJQk6YddQafTqdtvv12S9D//8z/y9fXVb3/7W7388svl3mHy9vbWmDFjtH79euXk5EiSioqK9Oqrr2rw4MFq0qSJJOmXv/ylJGn48OF688039fXXX1/H6pXOGPOTjzF06NASbSdPntSkSZPUokULeXt7y8fHR61atZIkpaenX9f7bNu2TfXr19ewYcM82seNGydJHqfzJenOO++Uv7+/+3lwcLCCgoJ09OjR63p/ANWLAAhYatiwYXK5XFq9erUkadOmTTpx4oT74o8rOXHihHu8j4+Px2PBggUyxuj06dOS5D6tu3XrVn300UcqKCjQr371K/Xs2dMdMLZu3apu3bqpbt26kqQ2bdpo69atCgoK0u9+9zu1adNGbdq00XPPPXfVOd1///26ePGi1q5dK0n64IMPlJmZ6T79K0l33HGH3nnnHRUWFuree+9V8+bN1aFDB73++uvXsnylKg5DoaGh1zW+Xr16CggI8Gi7dOmS4uPjtX79es2YMUMffvihdu/erZ07d0qSvv/+++t6r1OnTikkJEQOh8OjPSgoSN7e3jp16pRHe3GAvpzT6bzu9wdQvQiAgKXq1q2rUaNGafPmzcrMzNSqVavk7++vX//612WOCwwMlCS98MIL+uSTT0p9BAcHS5KaN2+uX/ziF9q6dauSkpIUFRWlhg0bqkePHsrMzNSuXbu0c+dOd1AsFhsbq/fee085OTnauXOnYmJiNHXqVHewu5KIiAjddttt7lC7evVqhYaGKj4+3qPf4MGD9eGHHyonJ0fJyclq3ry5Ro8erbS0tGtaw8sZY/Tee++pfv36ioqKkiT5+flJUomLKi6/eONyPw5jkvT555/rwIEDeuaZZ/TQQw+pe/fu+uUvf1lqILsWTZo00YkTJ0rsWp48eVKFhYXuP2cAP08EQMBi48ePV1FRkZ555hlt2rRJI0eOVL169coc061bNzVs2FCHDx9WVFRUqQ9fX193/549e2rbtm1KSkpSr169JEm/+MUv1LJlSz3xxBMqKCgoEQCLeXl5KTo6WkuWLJEkffrpp1ed03333addu3bpo48+0nvvvVfmBS1Op1NxcXFasGCBJGnfvn1XPf6VPPnkkzp8+LCmTJni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nPqdOnWq5s2bpw0bNujzzz/XuHHjVK9ePY0ePVrSDzt/8fHxOn/+vFauXKnc3FxlZWUpKytLRUVF1TJXAACAqlKjLwKRpNdee02TJ092X9U7aNAgLV682KPPl19+6XET5xkzZuj777/XAw88oDNnzig6OlpbtmyRv7+/JGnv3r3atWuXJOnGG2/0OFZGRobCwsIqcUYAAADVq0bfB7Cm4z5CAADUPnx+1/BTwAAAAKh4BEAAAADLEAABAAAsQwAEAACwDAEQAADAMgRAAAAAyxAAAQAALEMABAAAsAwBEAAAwDIEQAAAAMsQAAEAACxDAAQAALAMARAAAMAyBEAAAADLEAABAAAsQwAEAACwDAEQAADAMgRAAAAAyxAAAQAALEMABAAAsAwBEAAAwDIEQAAAAMsQAAEAACxDAAQAALAMARAAAMAyBEAAAADLEAABAAAsQwAEAACwDAEQAADAMgRAAAAAyxAAAQAALEMABAAAsAwBEAAAwDIEQAAAAMsQAAEAACxDAAQAALAMARAAAMAyBEAAAADLEAABAAAsQwAEAACwDAEQAADAMgRAAAAAyxAAAQAALEMABAAAsAwBEAAAwDIEQAAAAMsQAAEAACxDAAQAALAMARAAAMAyBEAAAADLEAABAAAsQwAEAACwDAEQAADAMgRAAAAAyxAAAQAALEMABAAAsEyND4BnzpxRQkKCXC6XXC6XEhISdPbs2TLHGGM0Z84chYaGqm7duurevbsOHTp0xb59+/aVw+HQO++8U/ETAAAAqGFqfAAcPXq09u/fr82bN2vz5s3av3+/EhISyhzz9NNP69lnn9XixYv1ySefKCQkRL169dK5c+dK9F20aJEcDkdllQ8AAFDjeFd3AWVJT0/X5s2btXPnTkVHR0uSVqxYoZiYGH355Zdq27ZtiTHGGC1atEiPPvqo7r77bknSyy+/rODgYP3973/XxIkT3X0PHDigZ599Vp988omaNm1aNZMCAACoZjV6BzAtLU0ul8sd/iSpS5cucrlcSk1NLXVMRkaGsrKyFB8f725zOp2Ki4vzGHPhwgWNGjVKixcvVkhISOVNAgAAoIap0TuAWVlZCgoKKtEeFBSkrKysK46RpODgYI/24OBgHT161P182rRp6tq1qwYPHlzuevLy8pSXl+d+npubW+6xAAAANUW17ADOmTNHDoejzMee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w4YpPz//muv5cRgtLaD6+PiUGFNVVzMDADuAAGq1bdu26eDBgxo6dKhuuOEGSfL4ft7lF4SUZceOHRo3bpzuuusudezYUSEhISVOK/v6+qqoqKjM47Rv314fffSRR1tqaqrat29frjoAoCqwAwig1sjLy1NWVpaKiop04sQJbd68WYmJiRowYIDuvfdeeXl5qUuXLpo/f77CwsKUnZ2txx57rFzHvvHGG7V+/XoNHDhQDodDjz/+eIkdubCwMP3f//2fRo4cKafTqcDAwBLH+eMf/6jhw4erc+fO6tGjh9577z2tX7/e44piAKhu7AACqDU2b96spk2bKiwsTH369NH27dv1/PPP691335WXl5ckadWqVSooKFBUVJSmTJmiP/3pT+U69l/+8hc1atRIXbt21cCBA9W7d2917tzZo8/cuXN15MgRtWnTxr3b+GNDhgzRc889p2eeeUY333yzXnzxRa1evVrdu3f/SXMHgIrkMJd/WQYAAAA/e+wAAgAAWIYACAAAYBkCIAAAgGUIgAAAAJYhAAIAAFiGAAgAAGAZAiAAAIBlCIAAAACWIQACAABYhgAIAABgGQIgAACAZQiAAAAAlvn/AGDwF12Rup1/AAAAAElFTkSuQmCC'}
+2024-03-25 14:09:59 [INFO] Executing Step 7: ResultParsing

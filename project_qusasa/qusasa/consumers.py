@@ -7,19 +7,18 @@ from pandasai import SmartDataframe
 from pandasai.llm.openai import OpenAI
 import openai
 import io
-import time 
+import time
 import os
 import openai
-import streamlit as st 
 import pandas as pd
 from pandasai import SmartDataframe
 from pandasai.llm.openai import OpenAI
 import os
 openai_api_key = os.environ.get("OPENAI_API_KEY")
-openai_api_key ='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'
 
 
 def chat_with_csv(df,prompt):
+    print(openai_api_key)
     llm = OpenAI(api_token=openai_api_key)
     df = SmartDataframe(df, config={"llm": llm})
     result = df.chat(prompt)
@@ -49,6 +48,8 @@ class EchoConsumer(AsyncWebsocketConsumer):
             client = openai.OpenAI(api_key=openai_api_key)
 
             ids = []
+            print('openai_api_key: ', openai_api_key)
+
             for csv in csv_data:
                 csv_binary = io.BytesIO((csv).encode('utf-8'))
                 file = client.files.create(
@@ -134,6 +135,8 @@ class EchoGraphsConsumer(AsyncWebsocketConsumer):
         # Convert CSV data from string back into DataFrame
         if csv_data:
             print('in channel')
+            print('openai_api_key: ', openai_api_key)
+
             df = pd.read_csv(StringIO(csv_data[0]))
             
             response = chat_with_csv(df, msg)
