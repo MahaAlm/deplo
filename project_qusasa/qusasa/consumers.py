@@ -16,9 +16,8 @@ import pandas as pd
 from pandasai import SmartDataframe
 from pandasai.llm.openai import OpenAI
 import os
+openai_api_key = os.environ.get("OPENAI_API_KEY")
 
-
-openai_api_key = "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"
 
 
 def chat_with_csv(df,prompt):
@@ -48,7 +47,7 @@ class EchoConsumer(AsyncWebsocketConsumer):
         
         # Convert CSV data from string back into DataFrame
         if csv_data:
-            client = openai.OpenAI(api_key="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")
+            client = openai.OpenAI(api_key=openai_api_key)
 
             ids = []
             for csv in csv_data:
@@ -138,14 +137,6 @@ class EchoGraphsConsumer(AsyncWebsocketConsumer):
             print('in channel')
             df = pd.read_csv(StringIO(csv_data[0]))
             
-            # openai.api_key = "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"
-            # lida = Manager(text_gen = llm("openai")) 
-            # textgen_config = TextGenerationConfig(n=1, temperature=0.2, use_cache=True)
-            # summary = lida.summarize(df, summary_method="default", textgen_config=textgen_config)
-
-            # user_query = msg
-            # charts = lida.visualize(summary=summary, goal=user_query, textgen_config=textgen_config)  
-            # print(charts)
             response = chat_with_csv(df, msg)
         await self.send(text_data=json.dumps({'message': response}))
         
