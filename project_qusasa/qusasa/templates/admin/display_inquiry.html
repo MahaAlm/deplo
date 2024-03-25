@@ -163,7 +163,11 @@
                                 <div class="inquery-el">
                                   <p><strong>Resolved At:</strong></p>
                                   <div class="inquery-box">
+                                    {% if history.date_resolved %}
                                     {{ history.date_resolved|date:"M d, Y" }}
+                                    {%else%}
+                                    Not resolved yet
+                                    {%endif%}
                                   </div>
                                 </div>
                               </div>

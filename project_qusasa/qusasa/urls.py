@@ -111,6 +111,9 @@ urlpatterns = [
     
     
     path('display_inquiry/<int:history_id>/', views.display_inquiry, name='display_inquiry'),
+    path('user_display_inquiry/<int:history_id>/', views.user_display_inquiry, name='user_display_inquiry'),
+
+    path('add_inquiry', views.add_inquiry, name='add_inquiry'),
 
 
 ]

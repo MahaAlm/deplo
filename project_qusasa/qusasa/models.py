@@ -137,5 +137,5 @@ class Inquiry(models.Model):
     RepContent=models.TextField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
     date_posted=models.DateTimeField(auto_now_add=True)
-    date_resolved=models.DateTimeField()
+    date_resolved=models.DateTimeField(null=True, blank=True)
     author= models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
