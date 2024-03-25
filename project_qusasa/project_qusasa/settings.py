@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     "qusasa",
     "django.contrib.admin",
     "django.contrib.auth",   
@@ -42,6 +43,17 @@ INSTALLED_APPS = [
     'debug_toolbar',
 ]
 
+ASGI_APPLICATION = 'project_qusasa.asgi.application' 
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379)],  # This is the default Redis configuration
+        },
+    },
+}
+
 
 
 MIDDLEWARE = [
@@ -52,7 +64,9 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'debug_toolbar.middleware.DebugToolbarMiddleware'
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+      'whitenoise.middleware.WhiteNoiseMiddleware',
+
 ]
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
@@ -123,7 +137,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

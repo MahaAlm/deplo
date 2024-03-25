@@ -36,6 +36,99 @@
     <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
 
+    <style>
+        /* Style the table itself */
+    table {
+        position: relative;
+
+        border-collapse: collapse;
+        width: 90%;
+        max-width: 90%;
+        border-radius: 8px; /* Rounded corners for the table */
+        overflow: hidden; /* Ensures the rounded corners include the border and contents */
+        font-size: 0.7rem;
+        transition: 0.3s ease; /* Smooth transition for background color */
+
+    }
+
+    /* Style the table headers and cells */
+    th, td {
+        text-align: left;
+        padding: 8px; /* Adjust padding as needed */
+        color: white; /* White text */
+        border-bottom: 1px solid rgba(48, 38, 114, 0.617); /* White borders between rows */
+        transition: background-color 0.3s; /* Transition for background color change */
+
+    }
+
+    /* Style for the table headers */
+    th {
+        background-color: #4f508a; /* Darker shade of purple for headers */
+    }
+
+    /* Style for the table cells */
+    td {
+        background-color: #777ca9; /* Muted purple background for cells */
+    }
+
+        /* When hovering over the table, darken the shade of headers and cells */
+    table:hover th {
+        background-color: #454597; /* Darker shade for headers on table hover */
+    }
+
+    table:hover td {
+        background-color: #6e75b0; /* Darker shade for cells on table hover */
+    }
+
+    table:hover {
+        transform: translateY(-10px);
+        transition: transform 0.3s ease;
+    }
+    
+    .dataset-preview h3 {
+        margin-top: 2rem;
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+        width: 90%;
+        text-align: left;
+
+
+    }
+
+    .dataset-preview p {
+        text-align: left;
+        font-size: 1rem;
+        margin: 0;
+        width: 90%;
+    }
+
+    .loading-spinner {
+        visibility: hidden;
+        margin: 1rem;
+    }
+
+    .loading-spinner img {
+        max-height: 10rem;
+    }
+
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-20px);
+        }
+    }
+
+    .floating {
+        animation: float 3s ease-in-out infinite;
+        width: 300px;
+    }
+
+    .respons1  {
+        visibility: hidden;
+    }
+    </style>
   </head>
   <body>
     
@@ -84,6 +177,105 @@
                 </div>
             </div>
             </div>
+
+        </div>
+
+        <div class="mini-container dataset-preview">
+            <h2 data-aos="fade-up">Datasets Preview</h2>
+            {% for dataset_name, dataset_info in datasets.items %}
+                <h3 data-aos="fade-up">{{ dataset_name }} Preview (First 3 Rows)</h3>
+                <table data-aos="fade-up">
+                    <thead>
+                        <tr>
+                            {% for header in dataset_info.preview.0.keys %}
+                                <th>{{ header|truncatechars:8 }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in dataset_info.preview %}
+                            <tr>
+                                {% for cell in row.values %}
+                                    <td>{{ cell|truncatechars:20 }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <p data-aos="fade-up">{{ dataset_info.dimensions }}</p>
+            {% endfor %}
+
+
+        </div>
+
+        <div class="mini-container">
+            <div class="ask-Ai">
+                <div class="col">
+                    <h2 data-aos="fade-up">Ask AI about your datasets</h2>
+                    <div class="suggestions">
+                        <h3 data-aos="fade-up">What are the common topics in the channel?</h3>
+                        <h3 data-aos="fade-up">What are the most viewed videos and their characteristics?</h3>
+                        <h3 data-aos="fade-up">What are the common categories in the channel?</h3>
+                    </div>
+                    <div class="chat" data-aos="fade-up">
+                    <textarea id="messageInput" type="text" placeholder="Enter your question here"></textarea>
+                    <br>
+                    <button onclick="sendMessage()">Send</button>
+                    
+                    </div>
+                </div>
+                <div class="col">
+                    <h3 data-aos="fade-up">Answer</h3>
+                    
+                    <div class="answer" data-aos="fade-up">
+                        <div id="loading-spinner" class="loading-spinner floating">
+                            <!-- Your spinner or loading message here -->
+                            <img src="{% static 'qusasa/images/Qusasa end.png' %}"  alt="Floating Image">
+                            <h2>Waiting for the Assistant to process...</h2>
+                        </div>
+                        <div id="response"></div>
+                    </div>
+                </div>
+                
+            </div>
+            
+
+        </div>
+
+        <div class="mini-container">
+            <div class="ask-Ai">
+                <div class="col">
+                    <h2 data-aos="fade-up">Generate Graphs with AI</h2>
+                    <div class="suggestions">
+                        <h3 data-aos="fade-up">Plot views against duration</h3>
+                        <h3 data-aos="fade-up">Plot videos count in 2023 by month</h3>
+                        <h3 data-aos="fade-up">Plot channel likes to views ratio</h3>
+                    </div>
+                    <div class="chat" data-aos="fade-up">
+                    <textarea id="messageInput1" type="text" placeholder="Enter your question here"></textarea>
+                    <br>
+                    <button onclick="sendMessageGraphs()">Create Graph</button>
+                    
+                    </div>
+                </div>
+                <div class="col" style="width: 70%">
+                    <h3 data-aos="fade-up">Answer</h3>
+                    
+                    <div class="answer" data-aos="fade-up">
+                        <div id="loading-spinner1" class="loading-spinner floating">
+                            <!-- Your spinner or loading message here -->
+                            <img src="{% static 'qusasa/images/Qusasa end.png' %}"  alt="Floating Image">
+                            <h2>Waiting for the Assistant to process...</h2>
+                        </div>
+                        <div id="response1">
+                            <img id="base64Image" src="" alt="Image from Base64" style="max-width: 90%;" />
+
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
 
         </div>
 
@@ -145,6 +337,7 @@
                 </div>
             </div>
         </div>
+        
         
         <div class="mini-container stats-graphs-container">
             <div class="stats-graphs" data-aos="fade-up">
@@ -1548,6 +1741,73 @@ var emotionsWorst = Object.keys(emotionDataslicedWorst);
     processAndSendCharts(chartsOptions);
     
     </script>
-  </body>
+
+    <script>
+        const ws = new WebSocket('ws://' + window.location.host + '/ws/echo/');
+        
+        ws.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            document.getElementById('response').innerText = data.message;
+            document.getElementById('loading-spinner').style.visibility = 'hidden';
+            document.getElementById('loading-spinner').style.display = 'none';
+            document.getElementById('response').style.visibility = 'visible';
+
+        };
+    
+        // Parse the JSON data provided by Django's context
+        const csvData = jsonData.all_videos_csv; // This is your CSV data as a string
+        const csvData2 = jsonData.channel_df_csv;
+        const csvData3 = jsonData.all_playlists_csv;
+        function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const message = `Given the dataset on the channel content, ${messageInput.value}. Please answer only in natural language and do not return dataframes, arrays, or tables. Provide a summarized answer that's easy to understand for someone not familiar with data analysis.`;
+            document.getElementById('loading-spinner').style.visibility = 'visible';
+            document.getElementById('loading-spinner').style.display = 'block';
+
+            document.getElementById('response').style.visibility = 'hidden';
+
+            // Here you package both the message and the CSV data into one WebSocket message
+            ws.send(JSON.stringify({'message': message, 'csvData': [csvData, csvData2, csvData3]}));
+    
+            messageInput.value = ''; // Clear the input after sending
+        }
+    </script>
+
+    <script>
+        const ws1 = new WebSocket('ws://' + window.location.host + '/ws/echo1/');
+        
+        ws1.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            let imageElement = document.getElementById('base64Image');
+            
+            let base64String = data.message
+            if (!base64String.startsWith('data:image/png;base64,')) {
+                base64String = 'data:image/png;base64,' + base64String;
+            }
+            imageElement.src = base64String;
+
+            document.getElementById('loading-spinner1').style.visibility = 'hidden';
+            document.getElementById('loading-spinner1').style.display = 'none';
+            document.getElementById('response1').style.visibility = 'visible';
+
+        };
+    
+        // Parse the JSON data provided by Django's context
+        
+        function sendMessageGraphs() {
+            const messageInput = document.getElementById('messageInput1');
+            const message = messageInput.value + ', first clear the previous plt, convert the graph image to base64 value such as (data:image/png;base64,iVBORw0KGgo...) and print only the Base64 value, do not save the photo'
+            document.getElementById('loading-spinner1').style.visibility = 'visible';
+            document.getElementById('loading-spinner1').style.display = 'block';
+
+            document.getElementById('response1').style.visibility = 'hidden';
+
+            // Here you package both the message and the CSV data into one WebSocket message
+            ws1.send(JSON.stringify({'message': message, 'csvData': csvData}));
+    
+            messageInput.value = ''; // Clear the input after sending
+        }
+    </script>
+      </body>
 </html>
 

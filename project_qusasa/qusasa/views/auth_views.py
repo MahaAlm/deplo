@@ -131,9 +131,43 @@ def display_inquiry(request, history_id):
     
     return render(request, 'admin/display_inquiry.html', {'form': form, 'history': inquiry})
 
-@staff_member_required
 def user_inquiries_view(request):
-    context={
-        'posts':Inquiry.objects.all()
+    user_inquiries = Inquiry.objects.filter(author=request.user)
+    
+    context = {
+        'posts': user_inquiries
     }
     return render(request, 'qusasa/user_inquiries.html', context)
+
+def add_inquiry(request):
+    
+    if request.method == "POST":
+        title = request.POST.get('title', '') 
+        inq_content = request.POST.get('inq_content', '')
+        
+        status = 'WAITING'
+        
+        # Create the new Inquiry instance
+        new_inquiry = Inquiry(
+            title=title,
+            InqContent=inq_content,
+            RepContent='', 
+            status=status,
+            date_posted=timezone.now(),
+            author=request.user
+        )
+        
+        # Save the new inquiry
+        new_inquiry.save()
+        
+        # Redirect to a new URL after saving:
+        return redirect('user_inquiries')  # Redirect to an appropriate view after saving
+
+    return render(request, 'qusasa/add_inquiry.html')
+
+def user_display_inquiry(request, history_id):
+    inquiry = get_object_or_404(Inquiry, pk=history_id)
+    
+    form = InquiryForm(instance=inquiry)
+    
+    return render(request, 'qusasa/user_display_inquiry.html', {'form': form, 'history': inquiry})

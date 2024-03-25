@@ -129,6 +129,94 @@
       font-family: 'Raleway';
       
       }
+
+      .content {
+        text-align: left;
+        
+      
+    }
+  
+    .content .history {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: start;
+      align-items: center;
+  }
+  
+  .content .history .header{
+    width: 100%;
+    justify-content: stretch;
+  }
+  
+  .content .history .header .feature-head{
+    width: 100%;
+    justify-content: stretch;
+  }
+  
+  .content .history .header .feature-text{
+    width: 90%;
+    justify-content: stretch;
+  }
+  
+  .content .history .header .feature-text h1{
+    margin-top: 0;
+    color: rgb(98, 26, 165);
+  }
+  
+  
+  .history form textarea{
+    border: 1px solid rgb(199, 199, 199);
+    outline: none;
+    background-color: rgb(243, 243, 243);
+    padding: 30px;
+    width: 100%;
+    border-radius: 10px;
+    height: 10rem;
+    font-family: 'Raleway';
+    margin-bottom: 1rem;
+  
+  }
+  
+  
+  .history form button{
+  
+    width: 15rem;
+  
+  
+  }
+  
+  .history .row{
+  
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: stretch;
+  
+  
+  }
+  
+  
+  .history .inquery-box{
+  
+    background-color: rgb(243, 243, 243);
+    padding: 10px 1rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    margin-top:0.5rem;
+    width: 20rem;
+  
+    font-size: 1rem;
+    color: rgb(96, 96, 96);
+  
+  
+  
+  }
+  
+  .history .inquery-el {
+    width: 100%;
+    margin-right: 3rem;
+  }
     </style>
 </head>
 <body> 
@@ -153,66 +241,96 @@
       {% include 'side_nav.html' %}
 
     <div class="content">
-        <div class="welcome">
-          Here's Your Inquiry History, {{ user.first_name }}
-        </div>
+       
 
         <ul class="breadcrumbs">
           <li><a href="{% url 'base' %}" {% if request.resolver_match.url_name == 'base' %} id="current" {% endif %}> Home</a></li>
           <li><a href="{% url 'user_inquiries' %}" {% if request.resolver_match.url_name == 'user_inquiries' %} id="current" {% endif %} > inquiries</a></li>
-      </ul>
+          <li><a href="{% url 'user_display_inquiry' history.id %}" id="current"> {{history.title}}</a></li>
 
-        <div class="history">
-        <article class="media content-section">
+        </ul>
 
+      <div class="history">
+        <div class="header">
+            <div class="feature-head">
+                <div class="feature-text">
 
+                  <h1>{{history.title}}</h1>
+                  <div class="inquery-el" style="margin-top: 3rem;">
+                    <p><strong>Inquery Text:</strong> </p >
+                    <div class="inquery-box" style="width: 100%">
+                      {{history.InqContent}}
+                    </div>
+                  </div>
+                    <div class="input-output">
+                        <div class="input">
+                            <p><div class="details">
+                              <div class="row">
+                                <div class="inquery-el">
+                                  <p><strong>Status:</strong> </p>
+                                  <div class="inquery-box">
+                                    {{ history.status }}
+                                  </div>
+                                </div>
+                                <div class="inquery-el">
+                                  <p><strong>Posted At:</strong></p>
+                                  <div class="inquery-box">
+                                    {{ history.date_posted|date:"M d, Y" }}
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="inquery-el">
+                                  <p><strong>Author:</strong> </p>
+                                  <div class="inquery-box">
+                                    {{ history.author }}
+                                  </div>
+                                </div>
+                                <div class="inquery-el">
+                                  <p><strong>Resolved At:</strong></p>
+                                  <div class="inquery-box">
+                                    {% if history.date_resolved %}
+                                    {{ history.date_resolved|date:"M d, Y" }}
+                                    {%else%}
+                                    Not resolved yet
+                                    {%endif%}
+                                </div>
+                                </div>
+                              </div>
+                              
+                              
 
-         <!-- <div class="media-body">
-            <div class="article-metadata">
-              <a class="mr-2" href="#">{{ post.author }}</a>
-              <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
+                                <!-- Add more fields as necessary -->
+                            </div>
+                            </p>
+                
+                        </div>
+                        <br>
+                        {%if history.status == 'WAITING'%}
+                        <div class="inquery-el" style="margin-top: 0rem;">
+                            <p><strong>Response text:</strong> </p >
+                            <div class="inquery-box" style="width: 100%">
+                              No respone yet
+                            </div>
+                          </div>
+                        {% else%}
+                        <div class="inquery-el" style="margin-top: 0rem;">
+                          <p><strong>Response text:</strong> </p >
+                          <div class="inquery-box" style="width: 100%">
+                            {{history.RepContent}}
+                          </div>
+                        </div>
+                       
+                        {% endif%}
+                    </div>                </div>
             </div>
-            <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
-            <p class="article-content">{{ post.InqContent }}</p>
-          </div>
-          -->
-         
-          <div class="results">
-            <div class="object-tools">
-              <li>
-                <a href="{% url 'add_inquiry'%}" class="addlink">
-                  Add Inquery
-                </a>
-              </li>
-            </div>
-            <br>
             
-            <table id="result_list">
-              <thead>
-                <tr>
-                  <th scope="col">Title</th>
-                  <th scope="col">Date Posted</th>
-                  <th scope="col">Author</th>
-                  <th scope="col">Inquiry Content</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for post in posts %}
-                <tr>
+            
 
-                  <td><a href="{% url 'user_display_inquiry' post.id %}" style="color: blue; text-decoration: underline;">{{ post.title }}</a></td>
-                  <td>{{ post.date_posted|date:"F d, Y" }}</td>
-                  <td>{{ post.author }}</td>
-                  <td>{{ post.InqContent }}</td>
-
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-
-        </article>
         </div>
+            
+        
+      </div>
     </div>
 
 

@@ -30,7 +30,9 @@ from django.http import HttpResponseRedirect
 from formtools.wizard.views import SessionWizardView
 import zipfile
 import io
-
+from io import StringIO
+from django.contrib import messages
+from .analysis_views import chat_with_csv
 OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY', 'default_value')
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------
 #Competitive Analysis
@@ -840,10 +842,33 @@ def channel_analysis_output_view(request):
         # Reformat the date to 'YYYY MMM DD' and update the video dictionary
         video['publishedAt'] = date_obj.strftime('%Y %b %d')
 
-        
+    output_data['all_videos_csv'] = request.session['all_videos_info_csv']
+    output_data['channel_df_csv'] = request.session['channel_df_csv']
+    output_data['all_playlists_csv'] = request.session['all_playlists_csv']
+
     json_data = json.dumps(output_data)
     
-    context= {'json_data': json_data,
+    channel_df = pd.read_csv(StringIO(request.session['channel_df_csv']))
+    all_videos_df = pd.read_csv(StringIO(request.session['all_videos_info_csv']))
+    all_playlists_df = pd.DataFrame(request.session['all_playlists_dict'])
+
+    datasets = {
+        'Channel': {
+            'preview': channel_df.head(3).to_dict(orient='records'),
+            'dimensions': f"{channel_df.shape[0]} row x {channel_df.shape[1]} column"
+        },
+        'All Videos': {
+            'preview': all_videos_df.head(3).to_dict(orient='records'),
+            'dimensions': f"{all_videos_df.shape[0]} row x {all_videos_df.shape[1]} column"
+        },
+        'All Playlists': {
+            'preview': all_playlists_df.head(3).to_dict(orient='records'),
+            'dimensions': f"{all_playlists_df.shape[0]} row x {all_playlists_df.shape[1] } column"
+        }
+    }
+
+    context= { 'datasets': datasets,
+        'json_data': json_data,
               'top_5_videos': top_5_videos,
               'worst_5_videos': worst_5_videos,
               'title': request.session['title'],
@@ -875,6 +900,8 @@ def channel_analysis_output_view(request):
         worst_5_comments = request.session['worst_5_comments']
         context['worst_5_comments_analysis_dist'] = worst_5_comments_analysis_dist
         context['worst_5_comments'] = worst_5_comments
+    
+        
     
     return render(request, 'features_pages/channel_analysis/channel_analysis_output.html', context)
 

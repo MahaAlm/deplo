@@ -248,3 +248,117 @@ border-radius: 30px;
     width: 100%;
     margin-top: 5rem;
 }
+
+.ask-Ai {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    width: 90%;
+    height: fit-content;
+
+}
+
+.ask-Ai .col h2 {
+    margin-top: 0;
+    font-size: 3rem;
+}
+
+.ask-Ai .col {
+    width: 50%;
+    font-size: 1rem;
+    margin: 0 2rem;
+    height: fit-content;
+}
+
+.ask-Ai .col .suggestions h3 {
+    font-size: 0.9rem;
+    padding: 1rem 2rem;
+    border-radius: 20px;
+    background: linear-gradient(-45deg, #1831af, #362680); 
+}
+
+.ask-Ai .col #messageInput {
+    padding: 1.5rem 2rem;
+    height: 5rem; /* Adjust height automatically */
+    width: 85%;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    background: #5f4e9c;
+    color: white;
+    font-size: 1rem;
+    font-family: 'Raleway';
+    margin-top: 2rem;
+    overflow-y: auto; /* Show scrollbar when needed */
+    resize: none; /* Prevent manual resizing */
+    max-height: 800px; /* Maximum height before showing a scrollbar */
+}
+
+.ask-Ai .col #messageInput1 {
+    padding: 1.5rem 2rem;
+    height: 5rem; /* Adjust height automatically */
+    width: 85%;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    background: #5f4e9c;
+    color: white;
+    font-size: 1rem;
+    font-family: 'Raleway';
+    margin-top: 2rem;
+    overflow-y: auto; /* Show scrollbar when needed */
+    resize: none; /* Prevent manual resizing */
+    max-height: 800px; /* Maximum height before showing a scrollbar */
+}
+
+#messageInput::placeholder {
+    color: white;
+    opacity: 0.6; /* Firefox */
+    font-family: 'Raleway';
+
+  }
+
+
+#messageInput1::placeholder {
+    color: white;
+    opacity: 0.6; /* Firefox */
+    font-family: 'Raleway';
+
+  }
+
+.ask-Ai .col .chat button {
+    padding: 0.8rem 2.5rem;
+    font-family: 'Raleway';
+    font-weight: 600;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    background: #4e1fa4;
+    margin-top: 1rem;
+    cursor: pointer;
+    position: relative;
+    transition: 0.3s ease-in-out;
+}
+
+
+.ask-Ai .col .chat button:hover {
+    background: #2b44bf;
+    transition: 0.3s ease-in-out;
+transform: translate(2px,0);
+
+}
+
+.col .answer {
+    height: 30rem;
+    max-height: 30rem; /* Maximum height before showing a scrollbar */
+    border-radius: 20px;
+    width: 90%;
+    background: linear-gradient(180deg,rgb(23, 37, 111)0, #231e91); 
+    padding: 2rem;
+    font-weight: 600;
+    overflow-y: auto; /* Show scrollbar when needed */
+    resize: none; /* Prevent manual resizing */
+
+
+}
