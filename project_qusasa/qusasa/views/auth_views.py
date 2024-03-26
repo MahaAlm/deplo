@@ -114,7 +114,7 @@ def inquiries_view(request):
 from django.shortcuts import render, redirect, get_object_or_404
 from ..forms import InquiryForm
 from ..models import Inquiry
-from django.utils import timezone
+from django.utils import timezone,dateformat
 
 def display_inquiry(request, history_id):
     inquiry = get_object_or_404(Inquiry, pk=history_id)
@@ -146,7 +146,6 @@ def add_inquiry(request):
         inq_content = request.POST.get('inq_content', '')
         
         status = 'WAITING'
-        
         # Create the new Inquiry instance
         new_inquiry = Inquiry(
             title=title,
@@ -156,7 +155,6 @@ def add_inquiry(request):
             date_posted=timezone.now(),
             author=request.user
         )
-        
         # Save the new inquiry
         new_inquiry.save()
         
@@ -165,9 +163,36 @@ def add_inquiry(request):
 
     return render(request, 'qusasa/add_inquiry.html')
 
+def update_inquiry(request, inquiry_id):
+    # Get the Inquiry instance you want to update
+    inquiry = get_object_or_404(Inquiry, pk=inquiry_id)
+    updates = inquiry.InqContent.split('\n\n\s\n\n')
+
+
+    if request.method == "POST":
+        new_content = request.POST.get('inq_content', '')
+        if new_content!='':
+            inquiry.InqContent += "\n\n\s\n\n"+new_content+"\n"+str(dateformat.format(timezone.localtime(timezone.now()),'Y-m-d ',))
+            inquiry.status='WAITING'
+        # You can update other fields as needed, for example, if you want to reset the status or update it.
+        # inquiry.status = 'WAITING' or another status as per your logic
+
+        # Save the updated inquiry
+        inquiry.save()
+        
+        # Redirect to a new URL after saving:
+        
+        return redirect('user_inquiries')  # Adjust the redirect as needed to go back to the listing or detail view
+
+    # If not a POST request, load the existing inquiry into the form
+    else:
+        # Assuming you are passing the inquiry instance to the template to pre-fill the form fields with existing data
+        return render(request, 'qusasa/update_inquiry.html', {'updates': updates,'inquiry': inquiry})
+    
+
 def user_display_inquiry(request, history_id):
     inquiry = get_object_or_404(Inquiry, pk=history_id)
-    
+    updates = inquiry.InqContent.split('\n\n\s\n\n')
     form = InquiryForm(instance=inquiry)
     
-    return render(request, 'qusasa/user_display_inquiry.html', {'form': form, 'history': inquiry})
+    return render(request, 'qusasa/user_display_inquiry.html', {'updates': updates,'form': form, 'history': inquiry})
