@@ -37,19 +37,38 @@
     <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
 
     <style>
-        /* Style the table itself */
-    table {
-        position: relative;
-
-        border-collapse: collapse;
-        width: 90%;
-        max-width: 90%;
-        border-radius: 8px; /* Rounded corners for the table */
-        overflow: hidden; /* Ensures the rounded corners include the border and contents */
-        font-size: 0.7rem;
-        transition: 0.3s ease; /* Smooth transition for background color */
-
-    }
+        .table-container {
+            width: 90%;
+            max-width: 90%;
+            overflow-x: scroll; /* Always show horizontal scrollbar */
+            border-radius: 8px;
+            -webkit-overflow-scrolling: touch; /* Improves scrolling on touch devices */
+            scrollbar-width: thin; /* For Firefox */
+            scrollbar-color: #888 #f1f1f1; /* For Firefox: scrollbar thumb and track colors */
+        }
+        
+        /* For Webkit (Chrome, Safari, etc.) */
+        .table-container::-webkit-scrollbar {
+            height: 8px; /* Height of the scrollbar */
+        }
+        
+        .table-container::-webkit-scrollbar-thumb {
+            background: #888; /* Color of the scrollbar thumb */
+            border-radius: 4px;
+        }
+        
+        .table-container::-webkit-scrollbar-track {
+            background: #f1f1f1; /* Color of the scrollbar track */
+            border-radius: 4px;
+        }
+        table {
+            position: relative;
+            border-collapse: collapse;
+            width: 100%; /* Adjusted to fill the container */
+            font-size: 0.7rem;
+            transition: 0.3s ease; /* Smooth transition for background color */
+        }
+        
 
     /* Style the table headers and cells */
     th, td {
@@ -120,14 +139,310 @@
         }
     }
 
+    @keyframes float1 {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
     .floating {
         animation: float 3s ease-in-out infinite;
         width: 300px;
     }
 
-    .respons1  {
+    #response1  {
         visibility: hidden;
+        display: none;
     }
+
+    .ask-ai-intro {
+        height: 38rem;
+        background-image: url("{% static 'qusasa/images/ai_background.png'%}");
+        width: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 80%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .graphs_background {
+        background-image: url("{% static 'qusasa/images/graphs_background.png'%}");
+        justify-content: start;
+        align-items: start;
+        text-align: left;
+        padding-left: 5rem;
+
+    }
+
+    .graphs_background h2 {
+        width: 50%;
+    }
+
+    .ask-ai-intro h2 {
+        font-size: 3.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .ask-ai-intro button {
+        border: none;
+        border-radius: 50%;
+        padding: 0;
+        margin: 0;
+        font-size: 3.5rem;
+        color: white;
+        background: #454597;
+        height: 8rem;
+        width: 8rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        animation: float 3s ease-in-out infinite;
+        transition: .2s ease-in-out;
+    }
+
+    .ask-ai-intro button:hover {
+        font-size: 3.8rem;
+        transition: .2s ease-in-out;
+
+            
+        
+
+    }
+    .ask-ai-intro button i {
+
+        padding: 0;
+        margin: 0;
+        margin-left: 0.3rem;
+
+    }
+
+    .explanation-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 38rem;
+    }
+
+    .explanation{
+        background: linear-gradient(180deg,rgb(23, 37, 111)0, #231e91); 
+        padding: 2rem;
+        font-weight: 600;
+        font-size: 1rem;
+        border-radius: 30px;
+        margin-bottom: 3rem;
+    }
+
+    .explanation{
+        background: linear-gradient(180deg,rgb(23, 37, 111)0, #231e91); 
+        padding: 2rem;
+        font-weight: 600;
+        font-size: 1rem;
+        border-radius: 30px;
+        margin-bottom: 3rem;
+    }
+
+
+    .explanation span {
+        font-size: 1.5rem;
+    }
+    .explanation img{
+        max-height: 3rem;
+    }
+
+    .datasets p{
+        margin-top: 0;
+        font-size: 1.2rem;
+        width: 70%;
+    }
+
+    .dataset {
+        margin-bottom: 2rem;
+    }
+
+    .datasets-info {
+        display: flex;
+        flex-direction: row;
+    }
+    
+    .dataset {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(180deg,rgb(23, 37, 111)0, #231e91); 
+        border: 1px solid #6e75b0;
+        height: 10rem;
+        width: 12rem;
+        border-radius: 30px;
+        margin-right: 2rem;
+        text-align: center;
+        padding: 0;
+        box-shadow: 0 0 5px 5px #32219e76;
+        cursor: pointer;
+
+    }
+
+    .dataset:hover {
+        background: linear-gradient(180deg,rgb(37, 58, 164)0, #2f28ae); 
+
+    }
+
+    .dataset p {
+        font-size: 1rem;
+        margin: 0;
+
+    }
+
+    .dataset i {
+        font-size: 2rem;
+        margin: 0.5rem 0;
+    }
+
+    .explanation-container button {
+        padding: 0.8rem 2.5rem;
+        font-family: 'Raleway';
+        font-weight: 600;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        background: #4e1fa4;
+        margin-top: 1rem;
+        cursor: pointer;
+        position: relative;
+        transition: 0.3s ease-in-out;
+        margin-bottom: 0;
+        font-weight: 700;
+        font-size: 1rem;
+    }
+
+    .explanation-container button i {
+        margin-left: 0.3rem;
+    }
+
+
+    .explanation-container button:hover {
+        background: #2b44bf;
+        transition: 0.3s ease-in-out;
+    transform: translate(2px,0);
+    
+    }
+
+    .popup-dataset {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.718);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .popup-content {
+        background: linear-gradient(180deg,rgb(37, 58, 164)0, #2f28ae); 
+        margin: 20% auto;
+        padding: 4rem 3rem;
+        border: 1px solid #88888867;
+        width: 60%;
+        border-radius: 10px;
+        position: relative;
+
+
+    }
+
+    .popup-dataset.active {
+        display: block;
+        opacity: 1;
+    }
+
+    .popup-content span {
+        font-weight: 700;
+    }
+    
+    .close {
+        color: #ffffff;
+        float: right;
+        font-size: 4rem;
+        font-weight: bold;
+        position: absolute;
+        top: -10px;
+        right: 10px;
+    }
+    
+    .close:hover,
+    .close:focus {
+        color: #8086ff;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+/* Style for unselected labels */
+.suggestions label {
+    display: inline-block;
+    font-size: 0.9rem;
+    padding: 1rem 2rem;
+    border-radius: 20px;
+    background: linear-gradient(-45deg, #554b8f, #362680); /* Dull purple gradient for unselected */
+    color: white;
+    cursor: pointer;
+    margin: 5px;
+    transition: background 0.3s; /* Smooth transition for background color change */
+    font-weight: 700;
+    display: flex;
+    justify-content: start;
+    width: 80%;
+    margin: 0;
+    align-items: center;
+}
+
+/* Hides the default radio button */
+.suggestions input[type="radio"] {
+    display: none;
+}
+
+/* Style for selected label */
+.suggestions input[type="radio"]:checked + label {
+    background: linear-gradient(-45deg, #8e3eb1, #6630b6); /* Vibrant purple gradient for selected */
+}
+
+.suggestions i {
+    margin-right: 0.5rem;
+}
+
+#download_link, #download_link_dataset {
+    padding: 0.8rem 2.5rem;
+        font-family: 'Raleway';
+        font-weight: 600;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        background: linear-gradient(-45deg, #702994, #b65ee5);
+        margin-top: 1rem;
+        cursor: pointer;
+        position: relative;
+        transition: 0.3s ease-in-out;
+        font-weight: 700;
+        font-size: 1rem;
+}
+
+#download_link:hover, #download_link_dataset:hover {
+    background: linear-gradient(-45deg, #9a45c5, #c473f0);
+
+}
+
+
+    
     </style>
   </head>
   <body>
@@ -184,11 +499,12 @@
             <h2 data-aos="fade-up">Datasets Preview</h2>
             {% for dataset_name, dataset_info in datasets.items %}
                 <h3 data-aos="fade-up">{{ dataset_name }} Preview (First 3 Rows)</h3>
+                <div class="table-container">
                 <table data-aos="fade-up">
                     <thead>
                         <tr>
                             {% for header in dataset_info.preview.0.keys %}
-                                <th>{{ header|truncatechars:8 }}</th>
+                                <th>{{ header }}</th>
                             {% endfor %}
                         </tr>
                     </thead>
@@ -202,40 +518,135 @@
                         {% endfor %}
                     </tbody>
                 </table>
+            </div>
                 <p data-aos="fade-up">{{ dataset_info.dimensions }}</p>
             {% endfor %}
+
+            <div class="manipulate" style="width: 90%; margin-top:3rem;">
+                <h1>Modify Your Datasets</h1>
+                <h3>Need to tweak your datasets? Whether it's removing a column, combining two columns, making formatting adjustments, creating new columns with feature engineering, or anything else you can dream up, we're here to help! Let us know how you'd like to modify your data, and we'll make it happen.</h3>
+                <div class="ask-Ai" style="margin-top: 3rem; display:flex; flex-direction:column;">
+                    <div class="col" style="display:flex; flex-direction: row; width: 100%; margin:0; justify-content:center; align-items:start;">
+                        <div class="suggestions" style="margin-right: 3rem;">
+                            <input type="radio" id="channelVideosDataset" name="dataset" value="all_videos_csv" data-aos="fade-up" checked>
+                            <label for="channelVideosDataset" data-aos="fade-up"><i class="fa-solid fa-table"></i> Modify Channel Videos Dataset</label><br>
+                            <input type="radio" id="channelPlaylistsDataset" name="dataset" value="all_playlists_csv" data-aos="fade-up">
+                            <label for="channelPlaylistsDataset" data-aos="fade-up"><i class="fa-solid fa-table"></i> Modify Channel Playlists Dataset</label><br>
+                            <input type="radio" id="channelInfoDataset" name="dataset" value="channel_df_csv" data-aos="fade-up">
+                            <label for="channelInfoDataset" data-aos="fade-up"><i class="fa-solid fa-table"></i> Modify Channel Info Dataset</label>
+                        </div>
+                        <div class="chat" data-aos="fade-up" style="margin-top: 0; ">
+                        <textarea id="messageInput2" type="text" placeholder="Enter all your modifications here..." style="margin-top: 0; width:30rem; margin-left: 0; height:5rem"></textarea>
+                        <br>
+                        <button onclick="sendMessageModify()">Apply Changes</button>
+                        
+                        </div>
+                    </div>
+                    <div class="col" style="width: 100%; ">
+                        <h3 data-aos="fade-up">Result</h3>
+                        
+                        <div class="answer answer_output" data-aos="fade-up" style="height:15rem; width:100%;">
+                            <div id="loading-spinner2" class="loading-spinner floating" style="display: flex; flex-direction:row;">
+                                <!-- Your spinner or loading message here -->
+                                <img src="{% static 'qusasa/images/Qusasa end.png' %}"  alt="Floating Image" style="margin-right: 2rem;">
+                                <h2>Waiting for the Assistant to process...</h2>
+                            </div>
+                            <div id="response2" style="display: block; visibility :visible;">
+                                <a id="download_link_dataset" ><i class="fa-solid fa-download"></i> Download Dataset</a>
+                                <div class="table-container" id='table_place'style="margin-top: 2rem; width:100%; max-width:100%;">
+                                    
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </div>
 
 
         </div>
 
         <div class="mini-container">
             <div class="ask-Ai">
-                <div class="col">
-                    <h2 data-aos="fade-up">Ask AI about your datasets</h2>
-                    <div class="suggestions">
-                        <h3 data-aos="fade-up">What are the common topics in the channel?</h3>
-                        <h3 data-aos="fade-up">What are the most viewed videos and their characteristics?</h3>
-                        <h3 data-aos="fade-up">What are the common categories in the channel?</h3>
-                    </div>
-                    <div class="chat" data-aos="fade-up">
-                    <textarea id="messageInput" type="text" placeholder="Enter your question here"></textarea>
-                    <br>
-                    <button onclick="sendMessage()">Send</button>
-                    
-                    </div>
+                <div id="step1" class="ask-ai-intro">
+                    <h2>Ask datasets with AI</h2>
+                    <button onclick="nextStep()"><i class="fa-solid fa-play"></i></button>
                 </div>
-                <div class="col">
-                    <h3 data-aos="fade-up">Answer</h3>
-                    
-                    <div class="answer" data-aos="fade-up">
-                        <div id="loading-spinner" class="loading-spinner floating">
-                            <!-- Your spinner or loading message here -->
-                            <img src="{% static 'qusasa/images/Qusasa end.png' %}"  alt="Floating Image">
-                            <h2>Waiting for the Assistant to process...</h2>
+                
+                <div id="step2" style="display: none;" class="explanation-container">
+                    <div class="explanation">
+                        <img src="{% static 'qusasa/images/Qusasa end.png' %}"  alt="Floating Image">
+                        <span>Ask Datasets with AI</span> is like having a super-smart buddy who helps you unravel the mysteries hidden in your data! Want to know how many videos popped up in February? Or maybe you're just curious about what a channel or playlist is all about? No worries! Our chatbot is here to make diving into your data a breeze. So go ahead, ask away, and let's uncover some awesome insights together!
+                    </div>
+                    <div class="datasets">
+                        <h2>Learn more about your Datasets!</h2>
+                        <p>click on the datasets provided to gain more information about their fields and suggestions for questions you have for them...</p>
+                        <div class="datasets-info">
+                            <div class="dataset" onclick="showDatasetInfo('ChannelVideos')">
+                                <i class="fa-solid fa-table"></i>
+                                <p>Channel Videos Dataset</p>
+                            </div>
+                            <div class="dataset" onclick="showDatasetInfo('ChannelPlaylists')">
+                                <i class="fa-solid fa-table"></i>
+                                <p>Channel Playlists Dataset</p>
+                            </div>
+                            <div class="dataset" onclick="showDatasetInfo('ChannelInfo')">
+                                <i class="fa-solid fa-table"></i>
+                                <p>Channel Info Dataset</p>
+                            </div>
+                            
+                            <div id="popup" class="popup-dataset">
+                                <div class="popup-content">
+                                    <span class="close" onclick="closePopup()">&times;</span>
+                                    <div id="datasetInfo"></div>
+                                </div>
+                            </div>
+                            
                         </div>
-                        <div id="response"></div>
                     </div>
+                    <button onclick="nextStep()">Got it? Start Now!   <i class="fa-solid fa-forward"></i></button>
                 </div>
+                
+                
+                
+                <div id="step3" style="display: none;">
+                    
+                    <div class="ask-Ai">
+                        <div class="col">
+                            <h2 data-aos="fade-up">Ask AI about your datasets</h2>
+                            <div class="suggestions">
+                                <h3 data-aos="fade-up">What are the common topics in the channel?</h3>
+                                <h3 data-aos="fade-up">What are the most viewed videos and their characteristics?</h3>
+                                <h3 data-aos="fade-up">What are the common categories in the channel?</h3>
+                            </div>
+                            <div class="chat" data-aos="fade-up">
+                            <textarea id="messageInput" type="text" placeholder="Enter your question here"></textarea>
+                            <br>
+                            <button onclick="sendMessage()">Send</button>
+                            
+                            </div>
+                        </div>
+                        <div class="col">
+                            <h3 data-aos="fade-up">Answer</h3>
+                            
+                            <div class="answer" data-aos="fade-up">
+                                <div id="loading-spinner" class="loading-spinner floating">
+                                    <!-- Your spinner or loading message here -->
+                                    <img src="{% static 'qusasa/images/Qusasa end.png' %}"  alt="Floating Image">
+                                    <h2>Waiting for the Assistant to process...</h2>
+                                </div>
+                                <div id="response"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+               
+                
+                
                 
             </div>
             
@@ -243,38 +654,97 @@
         </div>
 
         <div class="mini-container">
-            <div class="ask-Ai">
-                <div class="col">
-                    <h2 data-aos="fade-up">Generate Graphs with AI</h2>
-                    <div class="suggestions">
-                        <h3 data-aos="fade-up">Plot views against duration</h3>
-                        <h3 data-aos="fade-up">Plot videos count in 2023 by month</h3>
-                        <h3 data-aos="fade-up">Plot channel likes to views ratio</h3>
-                    </div>
-                    <div class="chat" data-aos="fade-up">
-                    <textarea id="messageInput1" type="text" placeholder="Enter your question here"></textarea>
-                    <br>
-                    <button onclick="sendMessageGraphs()">Create Graph</button>
-                    
-                    </div>
-                </div>
-                <div class="col" style="width: 70%">
-                    <h3 data-aos="fade-up">Answer</h3>
-                    
-                    <div class="answer" data-aos="fade-up">
-                        <div id="loading-spinner1" class="loading-spinner floating">
-                            <!-- Your spinner or loading message here -->
-                            <img src="{% static 'qusasa/images/Qusasa end.png' %}"  alt="Floating Image">
-                            <h2>Waiting for the Assistant to process...</h2>
-                        </div>
-                        <div id="response1">
-                            <img id="base64Image" src="" alt="Image from Base64" style="max-width: 90%;" />
 
-                        </div>
-                    </div>
+            <div class="ask-Ai">
+                <div id="step_graphs1" class="ask-ai-intro graphs_background">
+                    <h2>Generate Graphs With AI</h2>
+                    <button onclick="nextStepGraphs()"><i class="fa-solid fa-play"></i></button>
                 </div>
                 
+                <div id="step_graphs2" style="display: none;" class="explanation-container">
+                    <div class="explanation">
+                        <img src="{% static 'qusasa/images/Qusasa end.png' %}"  alt="Floating Image">
+                        <span>Generate Graphs With AI</span> allows you to step into the fun world of data visualization with us. Pick a dataset you like and imagine any chart you want to bring to life. Want to add a personal touch? Feel free to play with font sizes, pick your favorite colors for the graph, and choose a font style that really represents your vibe. We're here to make exploring data easy and enjoyable for everyone. So, let's start crafting your perfect chart together!
+                    </div>
+                    <div class="datasets">
+                        <h2>Learn more about your Datasets!</h2>
+                        <p>click on the datasets provided to gain more information about their fields and suggestions for questions you have for them...</p>
+                        <div class="datasets-info">
+                            <div class="dataset" onclick="showDatasetInfo1('ChannelVideos')">
+                                <i class="fa-solid fa-table"></i>
+                                <p>Channel Videos Dataset</p>
+                            </div>
+                            <div class="dataset" onclick="showDatasetInfo1('ChannelPlaylists')">
+                                <i class="fa-solid fa-table"></i>
+                                <p>Channel Playlists Dataset</p>
+                            </div>
+                            <div class="dataset" onclick="showDatasetInfo1('ChannelInfo')">
+                                <i class="fa-solid fa-table"></i>
+                                <p>Channel Info Dataset</p>
+                            </div>
+                            
+                            <div id="popup1" class="popup-dataset">
+                                <div class="popup-content">
+                                    <span class="close" onclick="closePopup1()">&times;</span>
+                                    <div id="datasetInfo1"></div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <button onclick="nextStepGraphs()">Got it? Start Now!   <i class="fa-solid fa-forward"></i></button>
+                </div>
+                
+                
+                
+                <div id="step_graphs3" style="display: none; ">
+                    
+                    <div class="ask-Ai" style="display:flex; flex-direction: column; justify-content:center; align-items:center; width:100%; height:100%;">
+                        <div class="col" style="display:flex; flex-direction: row; width: 100%; margin:0; justify-content:center; align-items:start;">
+                            <h2 data-aos="fade-up" style="width: 25%; margin-right:0rem;">Generate Graphs with AI</h2>
+                            <div class="suggestions" style="margin-right: 3rem;">
+                                <input type="radio" id="channelVideosDataset" name="dataset" value="all_videos_csv" data-aos="fade-up" checked>
+                                <label for="channelVideosDataset" data-aos="fade-up"><i class="fa-solid fa-table"></i> With Channel Videos Dataset</label><br>
+                                <input type="radio" id="channelPlaylistsDataset" name="dataset" value="all_playlists_csv" data-aos="fade-up">
+                                <label for="channelPlaylistsDataset" data-aos="fade-up"><i class="fa-solid fa-table"></i> With Channel Playlists Dataset</label><br>
+                                <input type="radio" id="channelInfoDataset" name="dataset" value="channel_df_csv" data-aos="fade-up">
+                                <label for="channelInfoDataset" data-aos="fade-up"><i class="fa-solid fa-table"></i> With Channel Info Dataset</label>
+                            </div>
+                            <div class="chat" data-aos="fade-up" style="margin-top: 0; ">
+                            <textarea id="messageInput1" type="text" placeholder="Enter your question here" style="margin-top: 0; width:20rem; margin-left: 0; height:5rem"></textarea>
+                            <br>
+                            <button onclick="sendMessageGraphs()">Create Graph</button>
+                            
+                            </div>
+                        </div>
+                        <div class="col" style="width: 100%">
+                            <h3 data-aos="fade-up">Output</h3>
+                            
+                            <div class="answer answer_output" data-aos="fade-up">
+                                <div id="loading-spinner1" class="loading-spinner floating">
+                                    <!-- Your spinner or loading message here -->
+                                    <img src="{% static 'qusasa/images/Qusasa end.png' %}"  alt="Floating Image">
+                                    <h2>Waiting for the Assistant to process...</h2>
+                                </div>
+                                <div id="response1">
+                                    <a id="download_link" ><i class="fa-solid fa-download"></i> Download Image</a>
+
+                                    <img id="base64Image" src="" alt="Image from Base64" style="max-width: 100%; margin-top:2rem;" />
+                                </div>
+
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                
+               
+                
+                
+                
             </div>
+            
             
 
         </div>
@@ -597,6 +1067,29 @@
     const csrftoken = '{{ csrf_token }}';
 </script>
 
+<script>
+    function nextStep() {
+        console.log('next')
+        var currentStep = document.querySelector('[id^="step"]:not([style*="none"])');
+        var nextStep = currentStep.nextElementSibling;
+        currentStep.style.display = 'none';
+        if (nextStep) {
+            nextStep.style.display = 'block';
+        }
+    }
+
+    function nextStepGraphs() {
+        console.log('next')
+        var currentStep = document.querySelector('[id^="step_graphs"]:not([style*="none"])');
+        var nextStep = currentStep.nextElementSibling;
+        currentStep.style.display = 'none';
+        if (nextStep) {
+            nextStep.style.display = 'block';
+        }
+    }
+</script>
+
+
 
 <script>
     function deepCopy(obj, visited = new WeakMap()) {
@@ -638,6 +1131,61 @@
 </script>
 <script id="json-data" type="application/json">{{ json_data|safe }}</script>
 
+<script>
+    function showDatasetInfo(datasetName) {
+        var datasetInfo = getDatasetInfo(datasetName);
+        document.getElementById("datasetInfo").innerHTML = datasetInfo;
+        document.getElementById("popup").classList.add("active");
+    }
+    
+    function closePopup() {
+        document.getElementById("popup").classList.remove("active");
+    }
+    
+    
+    function showDatasetInfo1(datasetName) {
+        var datasetInfo = getDatasetInfo(datasetName);
+        document.getElementById("datasetInfo1").innerHTML = datasetInfo;
+        document.getElementById("popup1").classList.add("active");
+    }
+    
+    function closePopup1() {
+        document.getElementById("popup1").classList.remove("active");
+    }
+    
+    
+    function getDatasetInfo(datasetName) {
+        var info = "";
+        switch (datasetName) {
+            case "ChannelVideos":
+                info = "This dataset contains information about channel videos, including unique identifiers (videoId), <span/>titles, descriptions, publication dates (publishedAt), thumbnail URLs, view counts (viewsCount), like counts (likesCount), comment counts (commentCount), duration, unique tags (unique_tags), category IDs (categoryId), and the most used categories (most_used_categories)</span>.<br><br>" +
+                "<span>Questions you might ask include:</span><br>" +
+                "- What are the top 5 most viewed videos on the channel?<br>" +
+                "- Which video has the highest number of likes?<br>" +
+                "- How many videos were published in the last month?<br>" +
+                "- What are the common tags used in the channel's videos?";
+                break;
+            case "ChannelPlaylists":
+                info = "This dataset contains information about <span>channel playlists, including unique identifiers (playlistId), titles, descriptions, thumbnail URLs, publication dates (publishedAt), and the number of videos in each playlist (videoCount)</span>.<br><br>" +
+                "<span>Questions you might ask include:</span><br>" +
+                "- Which playlist has the most videos?<br>" +
+                "- How many playlists were created in the last year?<br>" +
+                "- What are the titles of all playlists containing more than 10 videos?";
+                break;
+            case "ChannelInfo":
+                info = "This dataset contains general information about the channel, such as <span>the channel name, description, thumbnail URL, total view count (viewCount), total number of videos (videoCount), subscriber count, creation date (publishedAt), most used video categories (mostUsedCategories), total likes count (likesCount), total comments count (commentCount), average video duration (average_duration), unique tags (uniqueTags), and the number of playlists created (PlaylistCount)</span>.<br><br>" +
+                "<span>Questions you might ask include:</span><br>" +
+                "- How has the average video duration changed over time?<br>" +
+                "- What is the growth rate of subscribers in the last year?<br>" +
+                "- Which categories does the channel focus on the most?<br>" +
+                "- What are the common themes or tags in the channel's content?";
+                break;
+        }
+        return info;
+    }
+    
+    
+</script>
 <script>
 
     var jsonData = JSON.parse(document.getElementById('json-data').textContent);
@@ -1743,6 +2291,28 @@ var emotionsWorst = Object.keys(emotionDataslicedWorst);
     </script>
 
     <script>
+        function base64ToBlob(base64, mime) {
+            const byteCharacters = atob(base64.replace(/^data:image\/(png|jpeg|jpg);base64,/, ''));
+            const byteArrays = [];
+        
+            for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
+                const slice = byteCharacters.slice(offset, offset + 1024);
+                const byteNumbers = new Array(slice.length);
+        
+                for (let i = 0; i < slice.length; i++) {
+                    byteNumbers[i] = slice.charCodeAt(i);
+                }
+        
+                const byteArray = new Uint8Array(byteNumbers);
+                byteArrays.push(byteArray);
+            }
+        
+            return new Blob(byteArrays, {type: mime});
+        }
+        
+    </script>
+
+    <script>
         const ws = new WebSocket('ws://' + window.location.host + '/ws/echo/');
         
         ws.onmessage = function(e) {
@@ -1774,6 +2344,11 @@ var emotionsWorst = Object.keys(emotionDataslicedWorst);
     </script>
 
     <script>
+
+        
+        const downloadButton = document.getElementById('download_graph');
+        const downloadLink = document.getElementById('download_link');
+
         const ws1 = new WebSocket('ws://' + window.location.host + '/ws/echo1/');
         
         ws1.onmessage = function(e) {
@@ -1785,10 +2360,24 @@ var emotionsWorst = Object.keys(emotionDataslicedWorst);
                 base64String = 'data:image/png;base64,' + base64String;
             }
             imageElement.src = base64String;
+            
+            const blob = base64ToBlob(base64String, 'image/png');
+    
+            // Create a URL for the Blob
+            const blobUrl = URL.createObjectURL(blob);
+        
+            // Assuming you have an anchor tag with id 'downloadLink'
+            downloadLink.href = blobUrl;
+            downloadLink.setAttribute('download', 'graph_image.png');
+            
+            // Optionally, enable the download link if it was previously disabled
+            downloadLink.disabled = false;
 
             document.getElementById('loading-spinner1').style.visibility = 'hidden';
             document.getElementById('loading-spinner1').style.display = 'none';
             document.getElementById('response1').style.visibility = 'visible';
+            document.getElementById('response1').style.display = 'block';
+
 
         };
     
@@ -1796,17 +2385,88 @@ var emotionsWorst = Object.keys(emotionDataslicedWorst);
         
         function sendMessageGraphs() {
             const messageInput = document.getElementById('messageInput1');
-            const message = messageInput.value + ', first clear the previous plt, convert the graph image to base64 value such as (data:image/png;base64,iVBORw0KGgo...) and print only the Base64 value, do not save the photo'
+            const message = messageInput.value + ', first clear the previous plt, convert the graph image to base64 value such as (data:image/png;base64,iVBORw0KGgo...) and print only the Base64 value, do not save the photo';
+            const datasetSelection = document.querySelector('input[name="dataset"]:checked');
+            let selectedDataset = '';
+        
+            if (datasetSelection) {
+                selectedDataset = datasetSelection.value;
+            } else {
+                alert('Please select a dataset.');
+                return; // Exit the function if no dataset is selected
+            }
+        
+            const csvData = jsonData[selectedDataset]; // This selects the dataset based on the user's choice
+        
             document.getElementById('loading-spinner1').style.visibility = 'visible';
             document.getElementById('loading-spinner1').style.display = 'block';
-
+        
             document.getElementById('response1').style.visibility = 'hidden';
-
-            // Here you package both the message and the CSV data into one WebSocket message
+            document.getElementById('response1').style.display = 'none';
+        
+            // Here you package both the message and the selected CSV data into one WebSocket message
             ws1.send(JSON.stringify({'message': message, 'csvData': csvData}));
-    
+        
             messageInput.value = ''; // Clear the input after sending
         }
+        
+    </script>
+
+
+    <script>
+
+        
+        const downloadLinkModify = document.getElementById('download_link_dataset');
+
+        const ws3 = new WebSocket('ws://' + window.location.host + '/ws/echo3/');
+        
+        ws3.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            
+            // Assuming 'data.preview' contains HTML for the first 3 rows
+            document.getElementById('table_place').innerHTML = data.preview; // ID '2' seems to be the container for the table preview, adjust as necessary
+            
+            // Assuming 'data.csv' contains the full CSV as a string
+            const csvContent = "data:text/csv;charset=utf-8," + encodeURIComponent(data.csv);
+            downloadLinkModify.setAttribute("href", csvContent);
+            downloadLinkModify.setAttribute("download", "modified_dataset.csv");
+            
+            document.getElementById('loading-spinner2').style.visibility = 'hidden';
+            document.getElementById('loading-spinner2').style.display = 'none';
+            document.getElementById('response2').style.visibility = 'visible';
+            document.getElementById('response2').style.display = 'block';
+        };
+        
+    
+        // Parse the JSON data provided by Django's context
+        
+        function sendMessageModify() {
+            const messageInput = document.getElementById('messageInput2');
+            const message = messageInput.value + ', return a dataframe';
+            const datasetSelection = document.querySelector('input[name="dataset"]:checked');
+            let selectedDataset = '';
+        
+            if (datasetSelection) {
+                selectedDataset = datasetSelection.value;
+            } else {
+                alert('Please select a dataset.');
+                return; // Exit the function if no dataset is selected
+            }
+        
+            const csvData = jsonData[selectedDataset]; // This selects the dataset based on the user's choice
+        
+            document.getElementById('loading-spinner2').style.visibility = 'visible';
+            document.getElementById('loading-spinner2').style.display = 'block';
+        
+            document.getElementById('response2').style.visibility = 'hidden';
+            document.getElementById('response2').style.display = 'none';
+        
+            // Here you package both the message and the selected CSV data into one WebSocket message
+            ws3.send(JSON.stringify({'message': message, 'csvData': csvData}));
+        
+            messageInput.value = ''; // Clear the input after sending
+        }
+        
     </script>
       </body>
 </html>

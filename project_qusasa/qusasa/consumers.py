@@ -14,7 +14,9 @@ import pandas as pd
 from pandasai import SmartDataframe
 from pandasai.llm.openai import OpenAI
 import os
+
 openai_api_key = os.environ.get("OPENAI_API_KEY")
+openai_api_key = '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'
 
 
 def chat_with_csv(df,prompt):
@@ -137,9 +139,61 @@ class EchoGraphsConsumer(AsyncWebsocketConsumer):
             print('in channel')
             print('openai_api_key: ', openai_api_key)
 
-            df = pd.read_csv(StringIO(csv_data[0]))
+            df = pd.read_csv(StringIO(csv_data))
             
             response = chat_with_csv(df, msg)
         await self.send(text_data=json.dumps({'message': response}))
+        
+def truncate_strings(df, max_length=20):
+    """
+    Truncate strings in a DataFrame if they are longer than max_length.
+    """
+    for col in df:
+        df[col] = df[col].apply(lambda x: x if not isinstance(x, str) else (x[:max_length] + '...') if len(x) > max_length else x)
+    return df
+
+class EchoModifyConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        # Automatically accept incoming connection
+        
+        await self.accept()
+        # Get session key from the scope's cookies (Assuming sessionid is the key)
+        self.session_key = self.scope['cookies'].get('sessionid')
+
+    async def disconnect(self, close_code):
+        pass
+
+    async def receive(self, text_data):
+        
+        text_data_json = json.loads(text_data)
+        msg = text_data_json['message']
+        csv_data = text_data_json.get('csvData', '')
+        
+
+
+        
+        # Convert CSV data from string back into DataFrame
+        if csv_data:
+            print('in channel')
+            print('openai_api_key: ', openai_api_key)
+
+            df = pd.read_csv(StringIO(csv_data))
+            
+            response = chat_with_csv(df, msg)
+            
+            response_df = response.head(3) # Placeholder for actual DataFrame processing
+            response_df_truncated = truncate_strings(response_df.copy())
+
+            # Convert truncated first 3 rows to HTML
+            preview_html = response_df_truncated.to_html(index=False, border=0, classes='preview_table')
+
+            # Convert entire DataFrame to CSV
+            response_csv = response.to_csv(index=False)
+            
+            # Send back the HTML and CSV as JSON
+            await self.send(text_data=json.dumps({
+                'preview': preview_html,
+                'csv': response_csv
+            }))
         
 
