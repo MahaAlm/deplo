@@ -295,7 +295,7 @@ border-radius: 30px;
     max-height: 800px; /* Maximum height before showing a scrollbar */
 }
 
-.ask-Ai .col #messageInput1 {
+.ask-Ai .col #messageInput1, .col #messageInput2 {
     padding: 1.5rem 2rem;
     height: 5rem; /* Adjust height automatically */
     width: 85%;
@@ -312,7 +312,7 @@ border-radius: 30px;
     max-height: 800px; /* Maximum height before showing a scrollbar */
 }
 
-#messageInput::placeholder {
+#messageInput::placeholder, #messageInput2::placeholder{
     color: white;
     opacity: 0.6; /* Firefox */
     font-family: 'Raleway';
@@ -342,7 +342,7 @@ border-radius: 30px;
 }
 
 
-.ask-Ai .col .chat button:hover {
+ .col .chat button:hover {
     background: #2b44bf;
     transition: 0.3s ease-in-out;
 transform: translate(2px,0);
@@ -353,7 +353,6 @@ transform: translate(2px,0);
     height: 30rem;
     max-height: 30rem; /* Maximum height before showing a scrollbar */
     border-radius: 20px;
-    width: 90%;
     background: linear-gradient(180deg,rgb(23, 37, 111)0, #231e91); 
     padding: 2rem;
     font-weight: 600;
