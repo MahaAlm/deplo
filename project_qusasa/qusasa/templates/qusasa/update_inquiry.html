@@ -1,0 +1,325 @@
+{% load static %}
+{% load custom_filters %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qusasa | user inquiries </title>
+    <!-- Linking CSS -->
+    <link rel="stylesheet" href="{% static 'qusasa/css/admin.css' %}">
+
+    <link rel="stylesheet" href="{% static 'qusasa/css/base.css' %}">
+    <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
+
+    <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
+    <style>
+      .content {
+        margin-top: 0;
+      }
+
+      .content .welcome {
+        margin-top:0;
+      }
+      .cards {
+          justify-content: start;
+      }
+  
+      .card {
+          position: relative;
+      }
+  
+      .card:hover {
+          transform: translate(0, -5px);
+          transition: 0.2s;
+      }
+  
+      .card:hover .feature-name {
+          background-color: white;
+          color: black;
+          transition-duration: 0.5s;
+          margin-top: 1rem;
+          opacity: 1;
+      
+      }
+      
+  
+      
+  .card:hover .card__thumb  {
+      height: 100%;
+      overflow: hidden;
+      -webkit-transition: height 0.5s;
+      transition: height 0.5s;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+  
+  }
+  
+  .card:hover .card__thumb img {
+      max-width: 80%;
+      max-height: 50%;
+      display: block;
+      margin: 0;
+      padding: 0;
+      opacity: 1;
+      -webkit-transform: scale(1);
+      transform: scale(1);
+      -webkit-transition: opacity 0.5s, -webkit-transform 0.5s;
+      transition: opacity 0.5s, -webkit-transform 0.5s;
+      transition: opacity 0.5s, transform 0.5s;
+      transition: opacity 0.5s, transform 0.5s, -webkit-transform 0.5s;
+  }
+  
+      .delete-checkbox {
+          visibility: hidden;
+          position: absolute;
+          
+      }
+  
+      .delete-checkbox + label {
+          position: absolute;
+          top: 5%;
+          right: 5%;
+          padding: 20px;
+          border: none; /* Border color */
+          border-radius: 50%; /* Make it circular */
+          cursor: pointer;
+          background: rgb(117, 211, 210);
+          z-index: 200;
+      }
+      
+      .delete-checkbox:checked + label {
+          background-color: #108888; /* Background color when checked */
+      }
+      
+      .delete-checkbox + label:after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 20px; /* Size of the inner circle */
+          height: 20px;
+          border-radius: 50%;
+          background-color: white; /* Inner circle color */
+          transform: translate(-50%, -50%) scale(0);
+          transition: transform 0.3s ease;
+      }
+      
+      .delete-checkbox:checked + label:after {
+          transform: translate(-50%, -50%) scale(1);
+      }
+      
+    
+      .buttons {
+          display: flex;
+          flex-direction: column;
+          cursor: pointer;
+      margin: 1rem;
+      width: 220px;
+      height: 280px;
+      background-color: #fff;
+      box-shadow: 0 0 5px rgba(95, 95, 95, 0.058);
+      overflow: hidden;
+      -webkit-transition: box-shadow 0.5s;
+      transition: box-shadow 0.5s;
+      font-family: 'Raleway';
+      
+      }
+
+      .content {
+        text-align: left;
+        
+      
+    }
+  
+    .content .history {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: start;
+      align-items: center;
+  }
+  
+  .content .history .header{
+    width: 100%;
+    justify-content: stretch;
+  }
+  
+  .content .history .header .feature-head{
+    width: 100%;
+    justify-content: stretch;
+  }
+  
+  .content .history .header .feature-text{
+    width: 90%;
+    justify-content: stretch;
+  }
+  
+  .content .history .header .feature-text h1{
+    margin-top: 0;
+    color: rgb(98, 26, 165);
+  }
+  
+  
+  .history form textarea{
+    border: 1px solid rgb(199, 199, 199);
+    outline: none;
+    background-color: rgb(243, 243, 243);
+    padding: 30px;
+    width: 100%;
+    border-radius: 10px;
+    height: 10rem;
+    font-family: 'Raleway';
+    margin-bottom: 1rem;
+  
+  }
+  
+  
+  .history form button{
+  
+    width: 15rem;
+  
+  
+  }
+  
+  .history .row{
+  
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: stretch;
+  
+  
+  }
+  
+  
+  .history .inquery-box{
+  
+    background-color: rgb(243, 243, 243);
+    padding: 10px 1rem;
+    border-radius: 10px;
+    margin-top:0.8rem;
+    width: 20rem;
+  
+    font-size: 1rem;
+    color: rgb(96, 96, 96);
+    outline: none;
+    border: none;
+  
+  
+  
+  }
+  
+  .history .inquery-el {
+    width: 100%;
+    margin-right: 3rem;
+  }
+    </style>
+</head>
+<body>
+  <!-- Logout Link -->
+  <a class="log-out" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i> Log out</a>
+
+  <!-- Hamburger Menu -->
+  <div class="hamburger">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+  </div>
+
+  <!-- Side Navigation Inclusion -->
+  {% include 'side_nav.html' %}
+
+  <!-- Main Content -->
+  <div class="content">
+      <!-- Breadcrumbs -->
+      <ul class="breadcrumbs">
+          <li><a href="{% url 'base' %}" {% if request.resolver_match.url_name == 'base' %} id="current" {% endif %}>Home</a></li>
+          <li><a href="{% url 'user_inquiries' %}" {% if request.resolver_match.url_name == 'user_inquiries' %} id="current" {% endif %}>Inquiries</a></li>
+      </ul>
+
+      <!-- Update Inquiry Form -->
+      <div class="history">
+          <div class="header">
+              <div class="feature-head">
+                  <div class="feature-text">
+                      <!-- Adjust the form action to point to your update view URL, including the inquiry's ID -->
+                      <form action="{% url 'update_inquiry' inquiry.id %}" method="post">
+                          {% csrf_token %}
+                          <div class="feature-text">
+                              <h1>Update Inquiry</h1>
+                              <div class="inquiry-el" style="margin-top: 2rem;">
+                                  <p><strong>Title:</strong></p>
+                                  <!-- Pre-populate the input with the current title -->
+                                  <div class="inquery-box" style="width: 100%">
+                                    {{ inquiry.title }}
+                                  </div>
+                              </div>
+                              <div class="inquiry-el" style="margin-top: 2rem;">
+                              <p><strong>Inquery Text:</strong> </p >
+                                {% for update in updates %}
+                                
+                                <div class="inquery-box" style="width: 100%">
+                                  {{update}}
+                                </div>
+
+                                {% endfor %}
+                              </div>
+
+                              <div class="inquiry-el" style="margin-top: 2rem;">
+                                  <p><strong>Explain your issue:</strong></p>
+                                  
+                                  <textarea class="inquiry-box" style="width: 100%" name="inq_content"></textarea>       
+                              </div>
+                              <button type="submit">Update Inquiry</button>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- JavaScript for Interactive Elements -->
+  <script src="{% static 'qusasa/js/script.js' %}"></script>
+  <script>
+      document.querySelector('.hamburger').addEventListener('click', function(e) {
+          let navs = document.querySelector('.side-nav');
+
+          if (navs.style.visibility === 'hidden' || navs.style.visibility === '') {
+              navs.style.visibility = 'visible';
+              navs.style.opacity = '1';
+              navs.style.transform = 'scale(1)';
+          } else {
+              hideSideNav(navs);
+          }
+
+          e.stopPropagation(); // Prevent the click from reaching the document
+      });
+
+      document.addEventListener('click', function(e) {
+          if (window.innerWidth < 1000) {
+              let navs = document.querySelector('.side-nav');
+              let navContainer = document.querySelector('.side-nav-container');
+
+              if (!navContainer.contains(e.target) && !document.querySelector('.hamburger').contains(e.target)) {
+                  hideSideNav(navs);
+              }
+          }
+      });
+
+      function hideSideNav(navs) {
+          navs.style.opacity = '0';
+          navs.style.transform = 'scale(0.5)';
+          setTimeout(() => { navs.style.visibility = 'hidden'; }, 500); // Adjusted timeout for quicker hide
+      }
+  </script>
+</body>
+
+
+</html>
+
