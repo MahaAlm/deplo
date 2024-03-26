@@ -5,13 +5,14 @@ from django.contrib import admin
 from .admin import admin_site
 from django.conf import settings
 from django.urls import include, path
-from .views import InqListView
+from .views import InqListView,update_inquiry
 
 urlpatterns = [
     path('', views.home, name='home'),
     path('admin/', admin_site.urls),
     path('inquiries/', views.inquiries_view, name='inquiries'),
     path('user_inquiries/', views.user_inquiries_view, name='user_inquiries'),
+    path('update_inquiry/<int:inquiry_id>/', update_inquiry, name='update_inquiry'),
     path('base/', views.base, name='base'),
     path('login/', views.login_view, name='login'),
     path('wFeature/', views.wFeature, name='wFeature'),
