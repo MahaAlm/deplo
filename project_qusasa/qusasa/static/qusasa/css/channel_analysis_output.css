@@ -350,8 +350,7 @@ transform: translate(2px,0);
 }
 
 .col .answer {
-    height: 30rem;
-    max-height: 30rem; /* Maximum height before showing a scrollbar */
+    height: 32rem;
     border-radius: 20px;
     background: linear-gradient(180deg,rgb(23, 37, 111)0, #231e91); 
     padding: 2rem;

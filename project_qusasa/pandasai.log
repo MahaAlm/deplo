@@ -20303,3 +20303,2705 @@ result = {'type': 'dataframe', 'value': dfs[0]}
 
 [44 rows x 11 columns]}
 2024-03-26 04:45:08 [INFO] Executing Step 7: ResultParsing
+2024-03-26 09:01:24 [INFO] Question: delete thumbnial url, return a dataframe
+2024-03-26 09:01:24 [INFO] Running PandasAI with openai LLM...
+2024-03-26 09:01:24 [INFO] Prompt ID: e36ccd45-7dfd-4505-9197-dd61f8e38a5c
+2024-03-26 09:01:24 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-03-26 09:01:25 [INFO] Executing Step 0: ValidatePipelineInput
+2024-03-26 09:01:25 [INFO] Executing Step 1: CacheLookup
+2024-03-26 09:01:25 [INFO] Executing Step 2: PromptGeneration
+2024-03-26 09:01:25 [INFO] Using prompt: dfs[0]:
+  name: null
+  description: null
+  type: pd.DataFrame
+  rows: 44
+  columns: 12
+  schema:
+    fields:
+    - name: videoId
+      type: object
+      samples:
+      - LqGfq3uNw3g
+      - DUz9ZM-j8iw
+      - i7A3CEUuHzM
+    - name: title
+      type: object
+      samples:
+      - "Overcome Fear of the Blank Page \U0001F90D Hometown visit + Draw & Paint\
+        \ with me \U0001F98B Art Vlog"
+      - "Magic Art Studio Makeover \U0001F98B Art Museum visit + Week in my Life \U0001F338\
+        \ Cozy Art Vlog"
+      - "How Fascination leads to your Authentic Self \U0001F56F\uFE0FPortrait Drawing,\
+        \ Gem & Book Store\U0001F52E Cozy Art Vlog"
+    - name: description
+      type: object
+      samples:
+      - "\U0001F4AB Fine Art Prints: https://valerielin.com , we create for eternity\
+        \ \U0001F4AB\n\nWhy do we suffer? What is this up and down all the time? \
+        \ :(\n\n\u2B50 Painting Tutorials: https://valerielin.gumroad.com/l/cp2woe\n\
+        \n\U0001F9F8 Amazon Storefront with my art supplies: \nhttps://www.amazon.com/shop/valerielin\
+        \ \nhttps://www.amazon.de/shop/valerielin\n\n\U0001F3BB Music I use for my\
+        \ Videos: \nhttps://www.epidemicsound.com/referral/depurf\nget a free trial\
+        \ with my link for your own content, videos won \xB4t get demonetized \U0001F60E\
+        \n\n\U0001F338 Stay in touch with me!!! :] \nPatreon: https://www.patreon.com/valerielin\n\
+        Insta:  https://www.instagram.com/itsvalerielin/\nTik Tok: https://www.tiktok.com/@itsvalerielin?\n\
+        \n(Some links to products are affiliate links)"
+      - "In this Art Vlog you will see the whole screen print process of these cute\
+        \ multiple color screen prints. Follow me along being at art school and visting\
+        \ other art students during my break. Hope you will enjoy this art school\
+        \ Vlog! \n\n\n\u2728Follow me on Instagram for more content\u2728\nIntsa:\
+        \    https://www.instagram.com/itsvalerielin/\nTik Tok: https://www.tiktok.com/@itsvalerielin?\n\
+        \n\n\U0001F338Antonias Instagram: \n https://www.instagram.com/_mxrxxe\n\n\
+        \U0001F3B5Music:\nDontcry - Redbone\nIG: https://www.instagram.com/dontcry.beats/\n\
+        Spotify: https://open.spotify.com/artist/3vzJueN7TkCtYpz1myVmDU\n\nLukrembo\
+        \ - Rudolph\nInstagram : https://www.instagram.com/lukrembo\nSpotify:https://open.spotify.com/artist/2mvFGnu3tPO49WSrFZ4zVR\n\
+        \n\n\U0001F9C3My vlogging equipment:\n\U0001F3AC Video equipment:\n-Camera:\
+        \ https://amzn.to/2S7OTKk  (Body only)\n-Lens: https://amzn.to/3uZlCjd\n-Smartphone\
+        \ Holder: https://amzn.to/3tXwRHF \n-Portable External Harddrive\n-Editing\
+        \ program: Adobe Premiere Pro \n-Thumbnails in Photoshop\n-Animations After\
+        \ Effects\n-I film, edit etc everything on my own\n\nThis Video was recorded\
+        \ last year \n(Links to products are affiliate Links)\n______________________________________________________________________________________________\n\
+        \nHey everyone, I\xB4m Valerie and moved almost two years ago to Berlin to\
+        \ study Fine arts. I love creating and I want to share my progress of becoming\
+        \ an artist with you guys. Also I like to give you good and cozy vibes :)\
+        \ Much love, Valerie \U0001F338"
+      - .nan
+    - name: publishedAt
+      type: object
+      samples:
+      - '2021-07-08T16:00:12Z'
+      - '2023-12-10T13:59:50Z'
+      - '2022-04-23T13:34:40Z'
+    - name: thumbnail
+      type: object
+      samples:
+      - https://i.ytimg.com/vi/VhBiSC2WP4g/hqdefault.jpg
+      - https://i.ytimg.com/vi/iaKEN-srGbw/hqdefault.jpg
+      - https://i.ytimg.com/vi/AAXJXReDGa4/hqdefault.jpg
+    - name: viewsCount
+      type: int64
+      samples:
+      - 596495
+      - 77978
+      - 275024
+    - name: likesCount
+      type: int64
+      samples:
+      - 43600
+      - 20070
+      - 9251
+    - name: commentCount
+      type: int64
+      samples:
+      - 3959
+      - 136
+      - 1219
+    - name: duration
+      type: int64
+      samples:
+      - 16
+      - 61
+      - 19
+    - name: unique_tags
+      type: object
+      samples:
+      - '[''art vlog painting'', ''paint with me'', ''art vlog aesthetic'', ''oil
+        painting techniques'', ''paintwithme'', ''cozy art vlog'', ''art studio'',
+        ''motivation'', ''how to draw'', ''artschool'', ''oil painting'', ''artvlog'',
+        ''art student'', ''painting'', ''inspiring vlog'', ''oil painting portrait'',
+        ''how to paint'', ''Art'', ''oilpainting'', ''art school'', ''motivational
+        video'', ''self improvement'', ''art vlog'', ''berlin art'', ''fineartschool'',
+        ''motivation vlog'', ''selfimprovement'', ''paint'']'
+      - '[''paint with me'', ''aesthetic vlog'', ''art blog'', ''gouache painting'',
+        ''paintwithme'', ''watercolor'', ''cozy art vlog'', ''photography'', ''artschool'',
+        ''art therapy'', ''oil painting'', ''artvlog'', ''art student'', ''painting'',
+        ''oil painting portrait'', ''portrait painting'', ''watercolor painting'',
+        ''gouache'', ''philosophy'', ''oilpainting'', ''painting vlog'', ''polychromos'',
+        ''art vlog'', ''portrait'', ''berlin art'', ''studio vlog'', ''motivation
+        vlog'', ''valerie lin'', ''artstudent vlog'', ''draw'', ''drawing'', ''portraiture'',
+        ''self taught'', ''fineartstudent'']'
+      - '[''paint with me'', ''aesthetic vlog'', ''magic of oil painting'', ''oil
+        painting techniques'', ''art studio'', ''oil painting tips'', ''bob ross'',
+        ''painting with oils'', ''art therapy'', ''oil painting'', ''painting'', ''oil
+        painting portrait'', ''portrait painting'', ''how to paint'', ''art process'',
+        ''painting process'', ''art vlog'', ''portrait painting oil'', ''painting
+        tips'', ''studio vlog'', ''valerie lin'', ''oil paint'', ''oil paint with
+        me'']'
+    - name: categoryId
+      type: int64
+      samples:
+      - 22
+      - 27
+      - 24
+    - name: most_used_categories
+      type: object
+      samples:
+      - '[(''Entertainment'', 1)]'
+      - '[(''Education'', 1)]'
+      - '[(''People & Blogs'', 1)]'
+
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ delete thumbnial url, return a dataframe
+
+Variable `dfs: list[pd.DataFrame]` is already declared.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+If you are asked to plot a chart, use "matplotlib" for charts, save as png.
+
+
+Generate python code and return full updated code:
+2024-03-26 09:01:25 [INFO] Executing Step 3: CodeGenerator
+2024-03-26 09:01:27 [INFO] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-03-26 09:01:27 [INFO] Prompt used:
+            dfs[0]:
+  name: null
+  description: null
+  type: pd.DataFrame
+  rows: 44
+  columns: 12
+  schema:
+    fields:
+    - name: videoId
+      type: object
+      samples:
+      - LqGfq3uNw3g
+      - DUz9ZM-j8iw
+      - i7A3CEUuHzM
+    - name: title
+      type: object
+      samples:
+      - "Overcome Fear of the Blank Page \U0001F90D Hometown visit + Draw & Paint\
+        \ with me \U0001F98B Art Vlog"
+      - "Magic Art Studio Makeover \U0001F98B Art Museum visit + Week in my Life \U0001F338\
+        \ Cozy Art Vlog"
+      - "How Fascination leads to your Authentic Self \U0001F56F\uFE0FPortrait Drawing,\
+        \ Gem & Book Store\U0001F52E Cozy Art Vlog"
+    - name: description
+      type: object
+      samples:
+      - "\U0001F4AB Fine Art Prints: https://valerielin.com , we create for eternity\
+        \ \U0001F4AB\n\nWhy do we suffer? What is this up and down all the time? \
+        \ :(\n\n\u2B50 Painting Tutorials: https://valerielin.gumroad.com/l/cp2woe\n\
+        \n\U0001F9F8 Amazon Storefront with my art supplies: \nhttps://www.amazon.com/shop/valerielin\
+        \ \nhttps://www.amazon.de/shop/valerielin\n\n\U0001F3BB Music I use for my\
+        \ Videos: \nhttps://www.epidemicsound.com/referral/depurf\nget a free trial\
+        \ with my link for your own content, videos won \xB4t get demonetized \U0001F60E\
+        \n\n\U0001F338 Stay in touch with me!!! :] \nPatreon: https://www.patreon.com/valerielin\n\
+        Insta:  https://www.instagram.com/itsvalerielin/\nTik Tok: https://www.tiktok.com/@itsvalerielin?\n\
+        \n(Some links to products are affiliate links)"
+      - "In this Art Vlog you will see the whole screen print process of these cute\
+        \ multiple color screen prints. Follow me along being at art school and visting\
+        \ other art students during my break. Hope you will enjoy this art school\
+        \ Vlog! \n\n\n\u2728Follow me on Instagram for more content\u2728\nIntsa:\
+        \    https://www.instagram.com/itsvalerielin/\nTik Tok: https://www.tiktok.com/@itsvalerielin?\n\
+        \n\n\U0001F338Antonias Instagram: \n https://www.instagram.com/_mxrxxe\n\n\
+        \U0001F3B5Music:\nDontcry - Redbone\nIG: https://www.instagram.com/dontcry.beats/\n\
+        Spotify: https://open.spotify.com/artist/3vzJueN7TkCtYpz1myVmDU\n\nLukrembo\
+        \ - Rudolph\nInstagram : https://www.instagram.com/lukrembo\nSpotify:https://open.spotify.com/artist/2mvFGnu3tPO49WSrFZ4zVR\n\
+        \n\n\U0001F9C3My vlogging equipment:\n\U0001F3AC Video equipment:\n-Camera:\
+        \ https://amzn.to/2S7OTKk  (Body only)\n-Lens: https://amzn.to/3uZlCjd\n-Smartphone\
+        \ Holder: https://amzn.to/3tXwRHF \n-Portable External Harddrive\n-Editing\
+        \ program: Adobe Premiere Pro \n-Thumbnails in Photoshop\n-Animations After\
+        \ Effects\n-I film, edit etc everything on my own\n\nThis Video was recorded\
+        \ last year \n(Links to products are affiliate Links)\n______________________________________________________________________________________________\n\
+        \nHey everyone, I\xB4m Valerie and moved almost two years ago to Berlin to\
+        \ study Fine arts. I love creating and I want to share my progress of becoming\
+        \ an artist with you guys. Also I like to give you good and cozy vibes :)\
+        \ Much love, Valerie \U0001F338"
+      - .nan
+    - name: publishedAt
+      type: object
+      samples:
+      - '2021-07-08T16:00:12Z'
+      - '2023-12-10T13:59:50Z'
+      - '2022-04-23T13:34:40Z'
+    - name: thumbnail
+      type: object
+      samples:
+      - https://i.ytimg.com/vi/VhBiSC2WP4g/hqdefault.jpg
+      - https://i.ytimg.com/vi/iaKEN-srGbw/hqdefault.jpg
+      - https://i.ytimg.com/vi/AAXJXReDGa4/hqdefault.jpg
+    - name: viewsCount
+      type: int64
+      samples:
+      - 596495
+      - 77978
+      - 275024
+    - name: likesCount
+      type: int64
+      samples:
+      - 43600
+      - 20070
+      - 9251
+    - name: commentCount
+      type: int64
+      samples:
+      - 3959
+      - 136
+      - 1219
+    - name: duration
+      type: int64
+      samples:
+      - 16
+      - 61
+      - 19
+    - name: unique_tags
+      type: object
+      samples:
+      - '[''art vlog painting'', ''paint with me'', ''art vlog aesthetic'', ''oil
+        painting techniques'', ''paintwithme'', ''cozy art vlog'', ''art studio'',
+        ''motivation'', ''how to draw'', ''artschool'', ''oil painting'', ''artvlog'',
+        ''art student'', ''painting'', ''inspiring vlog'', ''oil painting portrait'',
+        ''how to paint'', ''Art'', ''oilpainting'', ''art school'', ''motivational
+        video'', ''self improvement'', ''art vlog'', ''berlin art'', ''fineartschool'',
+        ''motivation vlog'', ''selfimprovement'', ''paint'']'
+      - '[''paint with me'', ''aesthetic vlog'', ''art blog'', ''gouache painting'',
+        ''paintwithme'', ''watercolor'', ''cozy art vlog'', ''photography'', ''artschool'',
+        ''art therapy'', ''oil painting'', ''artvlog'', ''art student'', ''painting'',
+        ''oil painting portrait'', ''portrait painting'', ''watercolor painting'',
+        ''gouache'', ''philosophy'', ''oilpainting'', ''painting vlog'', ''polychromos'',
+        ''art vlog'', ''portrait'', ''berlin art'', ''studio vlog'', ''motivation
+        vlog'', ''valerie lin'', ''artstudent vlog'', ''draw'', ''drawing'', ''portraiture'',
+        ''self taught'', ''fineartstudent'']'
+      - '[''paint with me'', ''aesthetic vlog'', ''magic of oil painting'', ''oil
+        painting techniques'', ''art studio'', ''oil painting tips'', ''bob ross'',
+        ''painting with oils'', ''art therapy'', ''oil painting'', ''painting'', ''oil
+        painting portrait'', ''portrait painting'', ''how to paint'', ''art process'',
+        ''painting process'', ''art vlog'', ''portrait painting oil'', ''painting
+        tips'', ''studio vlog'', ''valerie lin'', ''oil paint'', ''oil paint with
+        me'']'
+    - name: categoryId
+      type: int64
+      samples:
+      - 22
+      - 27
+      - 24
+    - name: most_used_categories
+      type: object
+      samples:
+      - '[(''Entertainment'', 1)]'
+      - '[(''Education'', 1)]'
+      - '[(''People & Blogs'', 1)]'
+
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ delete thumbnial url, return a dataframe
+
+Variable `dfs: list[pd.DataFrame]` is already declared.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+If you are asked to plot a chart, use "matplotlib" for charts, save as png.
+
+
+Generate python code and return full updated code:
+            
+2024-03-26 09:01:27 [INFO] Code generated:
+            ```
+            # TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+dfs[0].drop(columns=['thumbnail'], inplace=True)
+
+# Declare result var
+result = {
+    "type": "dataframe",
+    "value": dfs[0]
+}
+            ```
+            
+2024-03-26 09:01:27 [INFO] Executing Step 4: CachePopulation
+2024-03-26 09:01:27 [INFO] Executing Step 5: CodeExecution
+2024-03-26 09:01:27 [INFO] 
+Code running:
+```
+dfs[0].drop(columns=['thumbnail'], inplace=True)
+result = {'type': 'dataframe', 'value': dfs[0]}
+        ```
+2024-03-26 09:01:27 [INFO] Executing Step 6: ResultValidation
+2024-03-26 09:01:27 [INFO] Answer: {'type': 'dataframe', 'value':         videoId                                              title  ... categoryId     most_used_categories
+0   w4tF1YXJ9Uw                New cozy Art Vlog this Sunday! :)☀️  ...         24   [('Entertainment', 1)]
+1   zH9CcqhESZ4         Watercolor Painting for the new Art Vlog 🧙  ...         24   [('Entertainment', 1)]
+2   9XH-hTeHRUQ  A peaceful Watercolor Painting 🦋 Full Art Vlog...  ...         24   [('Entertainment', 1)]
+3   36AITkPVR_A  New Art Vlog tomorrow & Limited Prints availab...  ...         24   [('Entertainment', 1)]
+4   7EARaPiM_q4  Cinematography of the new Art Vlog✨ New prints...  ...         24   [('Entertainment', 1)]
+5   iaKEN-srGbw  A Canvas for a new Oil Painting 🥰 New Video so...  ...         24   [('Entertainment', 1)]
+6   LqGfq3uNw3g  Painting with golden Oil Color and Crystals ❄️...  ...         24   [('Entertainment', 1)]
+7   oqanU9zI7Vg  Why Phone Addiction ruins our Art & Life ☁️ He...  ...         24   [('Entertainment', 1)]
+8   uFoDD8baMnU  Happy new year everyone🤍New Video tomorrow :) ...  ...         24   [('Entertainment', 1)]
+9   49dzCqKeybI  Accepting & Rising with the Ups and Downs of L...  ...         24   [('Entertainment', 1)]
+10  Y3NkndXL0-0  Painting so much that I injure my hand 🌻 Cozy ...  ...         24   [('Entertainment', 1)]
+11  RbhgeonuPMk  Learn to Let Go and Evolve as an Artist 💔🌱 Spe...  ...         24   [('Entertainment', 1)]
+12  ohchWUG7gx8  Learning rare & old Craftsmanship 💫 Gilding Ma...  ...         24   [('Entertainment', 1)]
+13  pTy-zpZXJmA  Getting the best out of being Alone ⭐ Klimt Mu...  ...         24   [('Entertainment', 1)]
+14  cZAfcDCQnC4  How to know what to do? 💫Watercolor Painting, ...  ...         24   [('Entertainment', 1)]
+15  NGQsngZ_AeA  How to strengthen your Inner Voice 🍃 Living Al...  ...         24   [('Entertainment', 1)]
+16  rsuIU4ch-7U  Productive and Motivated during Online Art Sch...  ...         24   [('Entertainment', 1)]
+17  HgzRcOIZ_ec  Why your life is not short ⏳ Draw & Paint with...  ...         24   [('Entertainment', 1)]
+18  iflmiiXmzQg  Importance of Balance and keeping Dreams to Yo...  ...         27       [('Education', 1)]
+19  tx1TsN8lOqg  Make Life feel less like a bad Loop 🙂 Aquarium...  ...         24   [('Entertainment', 1)]
+20  LL8A1qF6KOU  Overcome Fear of the Blank Page 🤍 Hometown vis...  ...         24   [('Entertainment', 1)]
+21  25iX4DvkhGM  How to Change your Life ✨ Cozy Art Studio move...  ...         24   [('Entertainment', 1)]
+22  nrMvJfOSBf4  Why I spend so much time alone 🌴 Museum visit,...  ...         24   [('Entertainment', 1)]
+23  i7A3CEUuHzM  Master Studies improved my Art 🤝 Painting with...  ...         24   [('Entertainment', 1)]
+24  Bnb-HRoeDNk  Dealing with Existential Crisis & Anxiety 🌱 Ma...  ...         24   [('Entertainment', 1)]
+25  jZ4tOL8FB_g  Find Inspiration for your Art ✨Botanical Garde...  ...         24   [('Entertainment', 1)]
+26  DUz9ZM-j8iw  screen printing at art school 🌷 Cute Art Schoo...  ...         24   [('Entertainment', 1)]
+27  GPt4wzG13Ck  The Secret why you´re always Tired ⭐️ Plane Mu...  ...         24   [('Entertainment', 1)]
+28  uFhusrnYtR4  A whole week of painting at Artschool 🌸 Cozy A...  ...         22  [('People & Blogs', 1)]
+29  -VJ4rkSNHBM  Teach yourself Anything 🧙🏻 Building a PC, Wate...  ...         24   [('Entertainment', 1)]
+30  XcvI-0Mk0xg  Cultivate a Mind to Mastery & Full Potential ☀...  ...         24   [('Entertainment', 1)]
+31  AAXJXReDGa4  Thoughts about a Clear Mind 🌞 Oil Painting and...  ...         24   [('Entertainment', 1)]
+32  9nmlWGt_054  Transform your Life through Thoughts & Creatio...  ...         24   [('Entertainment', 1)]
+33  qKrVMM_I3y4  Keys to Happiness & High Performance ☀️ Painti...  ...         24   [('Entertainment', 1)]
+34  FfSFvlIvGz0  Make Perfection your Strength🙏🏼 Oil Painting o...  ...         24   [('Entertainment', 1)]
+35  HHuI2ok8wmM  Peaceful & Inspiring Ambient Music to draw, re...  ...         24   [('Entertainment', 1)]
+36  UgXNbRbvkNQ  How your Fears will help you grow 🕳️🐇 Leaving ...  ...         24   [('Entertainment', 1)]
+37  fR-37iygzsY  Loneliness improved my Art and Mindset 🌱 Fores...  ...         24   [('Entertainment', 1)]
+38  VhBiSC2WP4g  How Fascination leads to your Authentic Self 🕯...  ...         24   [('Entertainment', 1)]
+39  PBLX5LUN-VY  Building a Canvas and making an Oil painting 🎨...  ...         24   [('Entertainment', 1)]
+40  8jAZzDCMAqM  Magic Art Studio Makeover 🦋 Art Museum visit +...  ...         24   [('Entertainment', 1)]
+41  yFBIsJeYaX8  Things I learned about Healthy Relationships ❤...  ...         24   [('Entertainment', 1)]
+42  FHiQIfb5gOc  Why we Suffer and what we learn from Dark days...  ...         24   [('Entertainment', 1)]
+43  WxN3tkPkAvw  Peaceful & Inspiring Ambient Music to draw, re...  ...         24   [('Entertainment', 1)]
+
+[44 rows x 11 columns]}
+2024-03-26 09:01:27 [INFO] Executing Step 7: ResultParsing
+2024-03-26 09:38:43 [INFO] Question: delete thumbnial url, change publishedAt to year month day columns, return a dataframe
+2024-03-26 09:38:43 [INFO] Running PandasAI with openai LLM...
+2024-03-26 09:38:43 [INFO] Prompt ID: 7cfe230e-75b6-4731-8eba-f474b6568e12
+2024-03-26 09:38:43 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-03-26 09:38:43 [INFO] Executing Step 0: ValidatePipelineInput
+2024-03-26 09:38:43 [INFO] Executing Step 1: CacheLookup
+2024-03-26 09:38:43 [INFO] Executing Step 2: PromptGeneration
+2024-03-26 09:38:43 [INFO] Using prompt: dfs[0]:
+  name: null
+  description: null
+  type: pd.DataFrame
+  rows: 44
+  columns: 12
+  schema:
+    fields:
+    - name: videoId
+      type: object
+      samples:
+      - ohchWUG7gx8
+      - 7EARaPiM_q4
+      - zH9CcqhESZ4
+    - name: title
+      type: object
+      samples:
+      - "How your Fears will help you grow \U0001F573\uFE0F\U0001F407 Leaving Berlin\
+        \ and Oil Paint with me \U0001F98B Cozy Art Vlog"
+      - "screen printing at art school \U0001F337 Cute Art School Vlog \u2B50art student\
+        \ life + screen print process"
+      - "Productive and Motivated during Online Art School \U0001F3A8 Plant & Apple\
+        \ Store\U0001F331 Cozy Art Vlog"
+    - name: description
+      type: object
+      samples:
+      - "Procrastinated a golden Oilpainting for a long time. But super happy about\
+        \ the result of this Painting :) Paint with me and I will be also talking\
+        \ about the importance of balance in your life and why you should keep your\
+        \ dreams to yourself  \u2665\uFE0F\n\n\n\U0001F3BCAll Music from : https://www.epidemicsound.com/referral/depurf\n\
+        (Get a free month with my referral link)\n\n\U0001F338 More Content and Videos\
+        \ on:\nIntsa:    https://www.instagram.com/itsvalerielin/\nTik Tok: https://www.tiktok.com/@itsvalerielin?\n\
+        \n\U0001F3A8Art supplies:\n-Polychromos Color Pencils Set: https://amzn.to/2Uohgop\n\
+        (I began with the set of 24)\n-Archers Drawing Paper: https://amzn.to/3wOY56h\n\
+        -Oil Paint from Old Holland, 40ml Tubes: https://bit.ly/3EoVN0t\n-Schmincke\
+        \ Horadam Gouache, 15ml Tubes: https://bit.ly/3GspU93\n-Paper for Gouache\
+        \ or Watercolor: https://amzn.to/3ovRRnZ \n(I have different sizes and cut\
+        \ them also in smaller rectangles)\n-kneaded eraser: https://amzn.to/3xMD5ML\n\
+        -Blending stump set (eraser included) https://amzn.to/3gNZUKD\n-Luminescent\
+        \ Watercolor: https://amzn.to/3kwraPN\n-Washitape, in a color you like :)\
+        \ I use it so my watercolorpaper stays flat.\n-Filbert and Flat brushes in\
+        \ various sizes from cheap to really expensive\n-Gouache from Schminke Horadam\
+        \ (most pigmented for professionell use)\n-Oil colors from Old Holland ( its\
+        \ oil color for advanced painters, make sure to be familiar with anatomy,\
+        \ proportions, value etc before using it :)\n-H- Frame Easel(similar) https://bit.ly/3Bn0oOP\
+        \ (mine is thrifted)\n-Tabletop Easel (similar): https://bit.ly/3GvBVun\n\n\
+        \U0001F3AC Video equipment:\n-Camera: https://amzn.to/2S7OTKk  (Body only)\n\
+        -Lens: https://amzn.to/3uZlCjd\n-Smartphone Holder: https://amzn.to/3tXwRHF\
+        \ \n-Portable External Harddrive\n-Editing program: Adobe Premiere Pro \n\
+        -Thumbnails in Photoshop\n-Animations After Effects\n\n\n\U0001F4DABooks,\
+        \ Lets get smart:\n-Impressionism https://amzn.to/2Yeg0GP\n-A Garden Eden;\
+        \ Botanical Illustrations https://amzn.to/3nkvoM7\n-Sargent: Portraits of\
+        \ Artists and Friends https://amzn.to/3gVQqM3\n-Klimt (Basic art Series) https://amzn.to/2SpQcEU\n\
+        -Anatomy books: \nI have a german one by Gottfried Bammes, \u201Edie Gestalt\
+        \ des Menschen\u201C but there are also some others books by Andrew Loomis\
+        \ for example which are great too!  I am Selftaught and we don\xB4t learn\
+        \ painting techniques etc at our school. As I said in some of my videos, I\
+        \ have my knowledge from books and the Web. Most of them are free :)\n\n(Links\
+        \ to products are affiliate Links)"
+      - .nan
+      - "Let us have a rare and detailed insight into the Workshop of a professional\
+        \ Framer and Gilding Master, an artist who covers things with gold. After\
+        \ that I will tap into the world of imaginative painting with my tiny gouache\
+        \ palette and share a looot of knowledge through out the whole video. Enjoy!\
+        \ :)\U0001F375\n\n\U0001F4AB Mr. B\xFClow\xB4s Workshop: https://www.vergolderhandwerk.de\
+        \ \n\n\u2B50 My Print Shop & Newsletter: https://www.valerielin.com\n\n\U0001F338\
+        \ Support me on Patreon and get access to Podcasts & more: https://www.patreon.com/valerielin\n\
+        \n\U0001F3A8 Painting Demo: https://valerielin.gumroad.com/l/cp2woe\n\n\U0001F3BB\
+        \ Vlog Music: https://www.epidemicsound.com/referral/depurf\n\n\U0001F9F8\
+        \ Amazon Storefront with my art supplies: \nhttps://www.amazon.com/shop/valerielin\
+        \ https://www.amazon.de/shop/valerielin\n\n( Some links are affiliate links\
+        \ to support my work )"
+    - name: publishedAt
+      type: object
+      samples:
+      - '2024-01-14T17:43:55Z'
+      - '2022-06-07T14:00:10Z'
+      - '2023-10-01T13:02:13Z'
+    - name: thumbnail
+      type: object
+      samples:
+      - https://i.ytimg.com/vi/RbhgeonuPMk/hqdefault.jpg
+      - https://i.ytimg.com/vi/rsuIU4ch-7U/hqdefault.jpg
+      - https://i.ytimg.com/vi/AAXJXReDGa4/hqdefault.jpg
+    - name: viewsCount
+      type: int64
+      samples:
+      - 206622
+      - 143012
+      - 275024
+    - name: likesCount
+      type: int64
+      samples:
+      - 22176
+      - 3580
+      - 20511
+    - name: commentCount
+      type: int64
+      samples:
+      - 960
+      - 65
+      - 1704
+    - name: duration
+      type: int64
+      samples:
+      - 3
+      - 31
+      - 28
+    - name: unique_tags
+      type: object
+      samples:
+      - '[''paint with me'', ''aesthetic vlog'', ''instagram detox'', ''art blog'',
+        ''paintwithme'', ''tiktok detox'', ''art therapy'', ''oil painting'', ''artvlog'',
+        ''art student'', ''personal growth'', ''peaceful mind'', ''painting'', ''peaceful
+        vlog'', ''cozy vlog'', ''philosophy'', ''inspirational video'', ''calm vlog'',
+        ''painting vlog'', ''living alone diaries'', ''art vlog'', ''depression'',
+        ''mental health awareness'', ''phone addiction'', ''studio vlog'', ''mental
+        health'', ''art'', ''motivation vlog'', ''social media detox'', ''dopamine
+        detox'', ''social media'', ''paint'']'
+      - '[''oil painting'', ''fine art'', ''art restoration'', ''peaceful'', ''paint
+        with me'', ''oil painting portrait'', ''painting restoration'', ''art vlog'',
+        ''canvas'', ''calm'', ''art conservation'', ''asmr'', ''art'']'
+      - '[''paint with me'', ''aesthetic vlog'', ''art blog'', ''paintwithme'', ''cozy
+        art vlog'', ''cozy fall vlog'', ''art therapy'', ''oil painting'', ''artvlog'',
+        ''art student'', ''painting'', ''oil painting portrait'', ''portrait painting'',
+        ''cozy vlog'', ''oilpainting'', ''art school'', ''painting vlog'', ''art vlogs'',
+        ''polychromos'', ''art vlog'', ''studio vlog'', ''motivation vlog'', ''valerie
+        lin'', ''painting ideas'', ''artstudent vlog'', ''drawing'']'
+    - name: categoryId
+      type: int64
+      samples:
+      - 24
+      - 22
+      - 27
+    - name: most_used_categories
+      type: object
+      samples:
+      - '[(''Education'', 1)]'
+      - '[(''People & Blogs'', 1)]'
+      - '[(''Entertainment'', 1)]'
+
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ delete thumbnial url, change publishedAt to year month day columns, return a dataframe
+
+Variable `dfs: list[pd.DataFrame]` is already declared.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+If you are asked to plot a chart, use "matplotlib" for charts, save as png.
+
+
+Generate python code and return full updated code:
+2024-03-26 09:38:43 [INFO] Executing Step 3: CodeGenerator
+2024-03-26 09:38:48 [INFO] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-03-26 09:38:48 [INFO] Prompt used:
+            dfs[0]:
+  name: null
+  description: null
+  type: pd.DataFrame
+  rows: 44
+  columns: 12
+  schema:
+    fields:
+    - name: videoId
+      type: object
+      samples:
+      - ohchWUG7gx8
+      - 7EARaPiM_q4
+      - zH9CcqhESZ4
+    - name: title
+      type: object
+      samples:
+      - "How your Fears will help you grow \U0001F573\uFE0F\U0001F407 Leaving Berlin\
+        \ and Oil Paint with me \U0001F98B Cozy Art Vlog"
+      - "screen printing at art school \U0001F337 Cute Art School Vlog \u2B50art student\
+        \ life + screen print process"
+      - "Productive and Motivated during Online Art School \U0001F3A8 Plant & Apple\
+        \ Store\U0001F331 Cozy Art Vlog"
+    - name: description
+      type: object
+      samples:
+      - "Procrastinated a golden Oilpainting for a long time. But super happy about\
+        \ the result of this Painting :) Paint with me and I will be also talking\
+        \ about the importance of balance in your life and why you should keep your\
+        \ dreams to yourself  \u2665\uFE0F\n\n\n\U0001F3BCAll Music from : https://www.epidemicsound.com/referral/depurf\n\
+        (Get a free month with my referral link)\n\n\U0001F338 More Content and Videos\
+        \ on:\nIntsa:    https://www.instagram.com/itsvalerielin/\nTik Tok: https://www.tiktok.com/@itsvalerielin?\n\
+        \n\U0001F3A8Art supplies:\n-Polychromos Color Pencils Set: https://amzn.to/2Uohgop\n\
+        (I began with the set of 24)\n-Archers Drawing Paper: https://amzn.to/3wOY56h\n\
+        -Oil Paint from Old Holland, 40ml Tubes: https://bit.ly/3EoVN0t\n-Schmincke\
+        \ Horadam Gouache, 15ml Tubes: https://bit.ly/3GspU93\n-Paper for Gouache\
+        \ or Watercolor: https://amzn.to/3ovRRnZ \n(I have different sizes and cut\
+        \ them also in smaller rectangles)\n-kneaded eraser: https://amzn.to/3xMD5ML\n\
+        -Blending stump set (eraser included) https://amzn.to/3gNZUKD\n-Luminescent\
+        \ Watercolor: https://amzn.to/3kwraPN\n-Washitape, in a color you like :)\
+        \ I use it so my watercolorpaper stays flat.\n-Filbert and Flat brushes in\
+        \ various sizes from cheap to really expensive\n-Gouache from Schminke Horadam\
+        \ (most pigmented for professionell use)\n-Oil colors from Old Holland ( its\
+        \ oil color for advanced painters, make sure to be familiar with anatomy,\
+        \ proportions, value etc before using it :)\n-H- Frame Easel(similar) https://bit.ly/3Bn0oOP\
+        \ (mine is thrifted)\n-Tabletop Easel (similar): https://bit.ly/3GvBVun\n\n\
+        \U0001F3AC Video equipment:\n-Camera: https://amzn.to/2S7OTKk  (Body only)\n\
+        -Lens: https://amzn.to/3uZlCjd\n-Smartphone Holder: https://amzn.to/3tXwRHF\
+        \ \n-Portable External Harddrive\n-Editing program: Adobe Premiere Pro \n\
+        -Thumbnails in Photoshop\n-Animations After Effects\n\n\n\U0001F4DABooks,\
+        \ Lets get smart:\n-Impressionism https://amzn.to/2Yeg0GP\n-A Garden Eden;\
+        \ Botanical Illustrations https://amzn.to/3nkvoM7\n-Sargent: Portraits of\
+        \ Artists and Friends https://amzn.to/3gVQqM3\n-Klimt (Basic art Series) https://amzn.to/2SpQcEU\n\
+        -Anatomy books: \nI have a german one by Gottfried Bammes, \u201Edie Gestalt\
+        \ des Menschen\u201C but there are also some others books by Andrew Loomis\
+        \ for example which are great too!  I am Selftaught and we don\xB4t learn\
+        \ painting techniques etc at our school. As I said in some of my videos, I\
+        \ have my knowledge from books and the Web. Most of them are free :)\n\n(Links\
+        \ to products are affiliate Links)"
+      - .nan
+      - "Let us have a rare and detailed insight into the Workshop of a professional\
+        \ Framer and Gilding Master, an artist who covers things with gold. After\
+        \ that I will tap into the world of imaginative painting with my tiny gouache\
+        \ palette and share a looot of knowledge through out the whole video. Enjoy!\
+        \ :)\U0001F375\n\n\U0001F4AB Mr. B\xFClow\xB4s Workshop: https://www.vergolderhandwerk.de\
+        \ \n\n\u2B50 My Print Shop & Newsletter: https://www.valerielin.com\n\n\U0001F338\
+        \ Support me on Patreon and get access to Podcasts & more: https://www.patreon.com/valerielin\n\
+        \n\U0001F3A8 Painting Demo: https://valerielin.gumroad.com/l/cp2woe\n\n\U0001F3BB\
+        \ Vlog Music: https://www.epidemicsound.com/referral/depurf\n\n\U0001F9F8\
+        \ Amazon Storefront with my art supplies: \nhttps://www.amazon.com/shop/valerielin\
+        \ https://www.amazon.de/shop/valerielin\n\n( Some links are affiliate links\
+        \ to support my work )"
+    - name: publishedAt
+      type: object
+      samples:
+      - '2024-01-14T17:43:55Z'
+      - '2022-06-07T14:00:10Z'
+      - '2023-10-01T13:02:13Z'
+    - name: thumbnail
+      type: object
+      samples:
+      - https://i.ytimg.com/vi/RbhgeonuPMk/hqdefault.jpg
+      - https://i.ytimg.com/vi/rsuIU4ch-7U/hqdefault.jpg
+      - https://i.ytimg.com/vi/AAXJXReDGa4/hqdefault.jpg
+    - name: viewsCount
+      type: int64
+      samples:
+      - 206622
+      - 143012
+      - 275024
+    - name: likesCount
+      type: int64
+      samples:
+      - 22176
+      - 3580
+      - 20511
+    - name: commentCount
+      type: int64
+      samples:
+      - 960
+      - 65
+      - 1704
+    - name: duration
+      type: int64
+      samples:
+      - 3
+      - 31
+      - 28
+    - name: unique_tags
+      type: object
+      samples:
+      - '[''paint with me'', ''aesthetic vlog'', ''instagram detox'', ''art blog'',
+        ''paintwithme'', ''tiktok detox'', ''art therapy'', ''oil painting'', ''artvlog'',
+        ''art student'', ''personal growth'', ''peaceful mind'', ''painting'', ''peaceful
+        vlog'', ''cozy vlog'', ''philosophy'', ''inspirational video'', ''calm vlog'',
+        ''painting vlog'', ''living alone diaries'', ''art vlog'', ''depression'',
+        ''mental health awareness'', ''phone addiction'', ''studio vlog'', ''mental
+        health'', ''art'', ''motivation vlog'', ''social media detox'', ''dopamine
+        detox'', ''social media'', ''paint'']'
+      - '[''oil painting'', ''fine art'', ''art restoration'', ''peaceful'', ''paint
+        with me'', ''oil painting portrait'', ''painting restoration'', ''art vlog'',
+        ''canvas'', ''calm'', ''art conservation'', ''asmr'', ''art'']'
+      - '[''paint with me'', ''aesthetic vlog'', ''art blog'', ''paintwithme'', ''cozy
+        art vlog'', ''cozy fall vlog'', ''art therapy'', ''oil painting'', ''artvlog'',
+        ''art student'', ''painting'', ''oil painting portrait'', ''portrait painting'',
+        ''cozy vlog'', ''oilpainting'', ''art school'', ''painting vlog'', ''art vlogs'',
+        ''polychromos'', ''art vlog'', ''studio vlog'', ''motivation vlog'', ''valerie
+        lin'', ''painting ideas'', ''artstudent vlog'', ''drawing'']'
+    - name: categoryId
+      type: int64
+      samples:
+      - 24
+      - 22
+      - 27
+    - name: most_used_categories
+      type: object
+      samples:
+      - '[(''Education'', 1)]'
+      - '[(''People & Blogs'', 1)]'
+      - '[(''Entertainment'', 1)]'
+
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ delete thumbnial url, change publishedAt to year month day columns, return a dataframe
+
+Variable `dfs: list[pd.DataFrame]` is already declared.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+If you are asked to plot a chart, use "matplotlib" for charts, save as png.
+
+
+Generate python code and return full updated code:
+            
+2024-03-26 09:38:48 [INFO] Code generated:
+            ```
+            # TODO: import the required dependencies
+import pandas as pd
+
+# Update the dataframe by deleting the 'thumbnail' column and converting the 'publishedAt' column to separate 'year', 'month', and 'day' columns
+dfs[0].drop(columns=['thumbnail'], inplace=True)
+dfs[0]['publishedAt'] = pd.to_datetime(dfs[0]['publishedAt'])
+dfs[0]['year'] = dfs[0]['publishedAt'].dt.year
+dfs[0]['month'] = dfs[0]['publishedAt'].dt.month
+dfs[0]['day'] = dfs[0]['publishedAt'].dt.day
+
+# Declare result variable
+result = {
+    "type": "dataframe",
+    "value": dfs[0]
+}
+            ```
+            
+2024-03-26 09:38:48 [INFO] Executing Step 4: CachePopulation
+2024-03-26 09:38:48 [INFO] Executing Step 5: CodeExecution
+2024-03-26 09:38:48 [INFO] 
+Code running:
+```
+dfs[0].drop(columns=['thumbnail'], inplace=True)
+dfs[0]['publishedAt'] = pd.to_datetime(dfs[0]['publishedAt'])
+dfs[0]['year'] = dfs[0]['publishedAt'].dt.year
+dfs[0]['month'] = dfs[0]['publishedAt'].dt.month
+dfs[0]['day'] = dfs[0]['publishedAt'].dt.day
+result = {'type': 'dataframe', 'value': dfs[0]}
+        ```
+2024-03-26 09:38:48 [INFO] Executing Step 6: ResultValidation
+2024-03-26 09:38:48 [INFO] Answer: {'type': 'dataframe', 'value':         videoId                                              title  ... month day
+0   w4tF1YXJ9Uw                New cozy Art Vlog this Sunday! :)☀️  ...     9  28
+1   zH9CcqhESZ4         Watercolor Painting for the new Art Vlog 🧙  ...     1  20
+2   9XH-hTeHRUQ  A peaceful Watercolor Painting 🦋 Full Art Vlog...  ...     2   7
+3   36AITkPVR_A  New Art Vlog tomorrow & Limited Prints availab...  ...     4   6
+4   7EARaPiM_q4  Cinematography of the new Art Vlog✨ New prints...  ...     8  17
+5   iaKEN-srGbw  A Canvas for a new Oil Painting 🥰 New Video so...  ...     2  21
+6   LqGfq3uNw3g  Painting with golden Oil Color and Crystals ❄️...  ...    12  16
+7   oqanU9zI7Vg  Why Phone Addiction ruins our Art & Life ☁️ He...  ...     2   5
+8   uFoDD8baMnU  Happy new year everyone🤍New Video tomorrow :) ...  ...     1  14
+9   49dzCqKeybI  Accepting & Rising with the Ups and Downs of L...  ...     3   8
+10  Y3NkndXL0-0  Painting so much that I injure my hand 🌻 Cozy ...  ...     4  29
+11  RbhgeonuPMk  Learn to Let Go and Evolve as an Artist 💔🌱 Spe...  ...     8  19
+12  ohchWUG7gx8  Learning rare & old Craftsmanship 💫 Gilding Ma...  ...    11  11
+13  pTy-zpZXJmA  Getting the best out of being Alone ⭐ Klimt Mu...  ...    10   1
+14  cZAfcDCQnC4  How to know what to do? 💫Watercolor Painting, ...  ...    10  12
+15  NGQsngZ_AeA  How to strengthen your Inner Voice 🍃 Living Al...  ...     2   7
+16  rsuIU4ch-7U  Productive and Motivated during Online Art Sch...  ...     5  20
+17  HgzRcOIZ_ec  Why your life is not short ⏳ Draw & Paint with...  ...    11  20
+18  iflmiiXmzQg  Importance of Balance and keeping Dreams to Yo...  ...     6  10
+19  tx1TsN8lOqg  Make Life feel less like a bad Loop 🙂 Aquarium...  ...     4  23
+20  LL8A1qF6KOU  Overcome Fear of the Blank Page 🤍 Hometown vis...  ...     1  11
+21  25iX4DvkhGM  How to Change your Life ✨ Cozy Art Studio move...  ...     1  15
+22  nrMvJfOSBf4  Why I spend so much time alone 🌴 Museum visit,...  ...     3  25
+23  i7A3CEUuHzM  Master Studies improved my Art 🤝 Painting with...  ...    10   1
+24  Bnb-HRoeDNk  Dealing with Existential Crisis & Anxiety 🌱 Ma...  ...     2  16
+25  jZ4tOL8FB_g  Find Inspiration for your Art ✨Botanical Garde...  ...     9   9
+26  DUz9ZM-j8iw  screen printing at art school 🌷 Cute Art Schoo...  ...     3  17
+27  GPt4wzG13Ck  The Secret why you´re always Tired ⭐️ Plane Mu...  ...     9   6
+28  uFhusrnYtR4  A whole week of painting at Artschool 🌸 Cozy A...  ...     4   7
+29  -VJ4rkSNHBM  Teach yourself Anything 🧙🏻 Building a PC, Wate...  ...     6   7
+30  XcvI-0Mk0xg  Cultivate a Mind to Mastery & Full Potential ☀...  ...     4   7
+31  AAXJXReDGa4  Thoughts about a Clear Mind 🌞 Oil Painting and...  ...    10  28
+32  9nmlWGt_054  Transform your Life through Thoughts & Creatio...  ...     1  24
+33  qKrVMM_I3y4  Keys to Happiness & High Performance ☀️ Painti...  ...     2  26
+34  FfSFvlIvGz0  Make Perfection your Strength🙏🏼 Oil Painting o...  ...     7   7
+35  HHuI2ok8wmM  Peaceful & Inspiring Ambient Music to draw, re...  ...     9   3
+36  UgXNbRbvkNQ  How your Fears will help you grow 🕳️🐇 Leaving ...  ...    12  10
+37  fR-37iygzsY  Loneliness improved my Art and Mindset 🌱 Fores...  ...     7  29
+38  VhBiSC2WP4g  How Fascination leads to your Authentic Self 🕯...  ...    11  13
+39  PBLX5LUN-VY  Building a Canvas and making an Oil painting 🎨...  ...     2   3
+40  8jAZzDCMAqM  Magic Art Studio Makeover 🦋 Art Museum visit +...  ...     7   8
+41  yFBIsJeYaX8  Things I learned about Healthy Relationships ❤...  ...     8   4
+42  FHiQIfb5gOc  Why we Suffer and what we learn from Dark days...  ...     8  14
+43  WxN3tkPkAvw  Peaceful & Inspiring Ambient Music to draw, re...  ...     5  21
+
+[44 rows x 14 columns]}
+2024-03-26 09:38:48 [INFO] Executing Step 7: ResultParsing
+2024-03-26 09:40:56 [INFO] Question: add a new column with the ratio of comment count to view count, return a dataframe
+2024-03-26 09:40:56 [INFO] Running PandasAI with openai LLM...
+2024-03-26 09:40:56 [INFO] Prompt ID: 848c2a30-a10e-4a99-95bc-1762c846039d
+2024-03-26 09:40:56 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-03-26 09:40:56 [INFO] Executing Step 0: ValidatePipelineInput
+2024-03-26 09:40:56 [INFO] Executing Step 1: CacheLookup
+2024-03-26 09:40:56 [INFO] Executing Step 2: PromptGeneration
+2024-03-26 09:40:56 [INFO] Using prompt: dfs[0]:
+  name: null
+  description: null
+  type: pd.DataFrame
+  rows: 44
+  columns: 12
+  schema:
+    fields:
+    - name: videoId
+      type: object
+      samples:
+      - qKrVMM_I3y4
+      - HgzRcOIZ_ec
+      - nrMvJfOSBf4
+    - name: title
+      type: object
+      samples:
+      - "Make Perfection your Strength\U0001F64F\U0001F3FC Oil Painting on Canvas\
+        \ + Library Visit \U0001F4DA Cozy Art Vlog"
+      - "Getting the best out of being Alone \u2B50 Klimt Museum, Watercolor Painting,\
+        \ Packing Prints \U0001FAE7 Art Vlog"
+      - "Watercolor Painting for the new Art Vlog \U0001F9D9"
+    - name: description
+      type: object
+      samples:
+      - .nan
+      - "Nothing wrong with being a Perfectionist :*\nIn this Art Vlog you will paint\
+        \ with me an Oil Painting and visit a gorgeous!!! Library :) and survive theses\
+        \ hot summer days \U0001F62E\u200D\U0001F4A8 Hopefully you will a have new\
+        \ mindset about Perfectionism too!\n\n\U0001F3BCMusic from: https://www.epidemicsound.com/referral/depurf\n\
+        (Get a free month with my referral link, videos won \xB4t get demonetized)\
+        \ \n\n\U0001F338 More Content and Videos on:\nIntsa:  https://www.instagram.com/itsvalerielin/\n\
+        Tik Tok: https://www.tiktok.com/@itsvalerielin?\n\n\U0001F3A8 Art supplies:\n\
+        -Desk Easel: https://amzn.to/3qSZtDp\n-Arches Watercolor Paper, Cold/ Hot\
+        \ pressed 300g 7x10 in: \n https://amzn.to/3y4hrHB or https://bit.ly/3kfOqAf\n\
+        -Cheaper Watercolor Paper I used before: https://amzn.to/3ovRRnZ \n(I have\
+        \ different sizes and cut them also in smaller rectangles)\n-Archers Drawing\
+        \ Paper: https://amzn.to/3wOY56h\n-Polychromos Color Pencils Set: https://amzn.to/2Uohgop\n\
+        (I began with the set of 24)\n-Oil Paint from Old Holland, 40ml Tubes: https://bit.ly/3EoVN0t\n\
+        -Schmincke Horadam Gouache, 15ml Tubes: https://bit.ly/3GspU93\n-kneaded eraser:\
+        \ https://amzn.to/3xMD5ML\n-Blending stump set (eraser included) https://amzn.to/3gNZUKD\n\
+        -Luminescent Watercolor: https://amzn.to/3kwraPN\n-Washitape, in a color you\
+        \ like :) I use it so my watercolorpaper stays flat.\n-Filbert and Flat brushes\
+        \ in various sizes from cheap to really expensive\n-H- Frame Easel(similar)\
+        \ https://bit.ly/3Bn0oOP (mine is thrifted)\n-Tabletop Easel (similar): https://bit.ly/3GvBVun\n\
+        \n\U0001F3AC Video equipment:\n-Camera: https://amzn.to/2S7OTKk  (Body only)\n\
+        -Lens: https://amzn.to/3uZlCjd\n-Microphone: https://amzn.to/3LcGyvd\n-Smartphone\
+        \ Holder: https://amzn.to/3tXwRHF \n\n\U0001F4DABooks, Lets get smart:\n-The\
+        \ world of Ornament: https://amzn.to/3DAcUMU\n-Impressionism https://amzn.to/2Yeg0GP\n\
+        -A Garden Eden; Botanical Illustrations https://amzn.to/3nkvoM7\n-Sargent:\
+        \ Portraits of Artists and Friends https://amzn.to/3gVQqM3\n-Klimt (Basic\
+        \ art Series) https://amzn.to/2SpQcEU\n(Links to products are affiliate links)"
+      - "Yes, I really destroy an Oil painting. I want to show you that letting go\
+        \ can be a relieve and is sometimes necessary. What is holding you back to\
+        \ evolve as an Artist or Human Being? This time it will be about why letting\
+        \ go is so important, learn to move on to become more skilled and confident\
+        \ at whatever you do! I want to show you an example with this cozy fairy tale\
+        \ inspired Art Vlog. The example therefore will be an Oil painting. I hired\
+        \ a voice actor too this time \U0001F970 \nAll the videos are filmed and edited\
+        \ by myself.\n\n\U0001F338 More Content and Videos on:\nIntsa:    https://www.instagram.com/itsvalerielin/\n\
+        Tik Tok: https://www.tiktok.com/@itsvalerielin?\n\n\U0001F3BC All music from\
+        \ : https://www.epidemicsound.com/referral/depurf/\n(Get a free month with\
+        \ my referral link, your uploaded Videos for that month will be whitelisted=\
+        \ No demonitization)\n\n\n\U0001F3A8Art supplies:\n-Tombow Mono Eraser 2,3\
+        \ mm: https://amzn.to/2UwCr8r\n-Luminescent Watercolor: https://amzn.to/3kwraPN\n\
+        -Polychromos Color Pencils Set: https://amzn.to/2Uohgop\n(I own the Set of\
+        \ 24)\n-Paper for Gouache or Watercolor: https://amzn.to/3ovRRnZ \n(I have\
+        \ different sizes and cut them also in smaller rectangles, tested so many\
+        \ it\xB4s my most favourite )\n-kneaded eraser https://amzn.to/3xMD5ML\n-Blending\
+        \ stump set (eraser included) https://amzn.to/3gNZUKD\n-Washitape, in a color\
+        \ you like :) I use it so my watercolorpaper stays flat.\n-Filbert and Flat\
+        \ brushes in various sizes from cheap to really expensive\n-Gouache from Schminke\
+        \ Horadam (most pigmented for professionell use)\n-Oil colors from Old Holland\
+        \ ( its oilcolor for advanced painters, make sure to be familiar with anatomy,\
+        \ proportions, value etc before using it :)\n-Easel big (similar) https://amzn.to/3zQMKnq\n\
+        -Easel small (similar) https://amzn.to/2SVFJkI\n\n\n\U0001F4DABooks, Lets\
+        \ get smart:\n-Sargent: Portraits of Artists and Friends https://amzn.to/3gVQqM3\n\
+        -Klimt (Basic art Series) https://amzn.to/2SpQcEU\n-The World of Ornament\
+        \ https://amzn.to/3d4Q2tA\n-Jewelry from Renessaince to Art Deco it\xB4s a\
+        \ japanese book I found on the street, sadly I can\xB4t find it online\n-Anatomy\
+        \ books: \nI have a german one by Gottfried Bammes, \u201Edie Gestalt des\
+        \ Menschen\u201C but there are also some american books by Andrew Loomis for\
+        \ example which are great too! I am Selftaught and we don\xB4t learn painting\
+        \ techniques etc at our school. As I said in the last videos, I have my knowledge\
+        \ from books and the Web. Most of them are free :)\nInspiring book:\n-Mastery,\
+        \ Robert Greene https://amzn.to/3j3ZQaV\n-Listen to podcasts, audiobooks while\
+        \ painting. Time flys while you create. And it makes the first steps of sitting\
+        \ down and beginning to create easier and you get even smarter\nHere is something\
+        \ I recommend so you understand how focus works:\nAbout Cognitive Control/\
+        \ Focus : https://www.youtube.com/watch?v=b9yRmpcXKjY\n\nI take my notes in\
+        \ a Moleskine cahier, set of 3, Pocket/ A6, in pastell colors for notes :)\
+        \ or the dotted version\n\n\U0001F3AC Video equipment:\n-Camera: https://amzn.to/2S7OTKk\
+        \ (Body only)\n-Lens: https://amzn.to/3uZlCjd \n-Smartphone Holder: https://amzn.to/3tXwRHF\n\
+        -Portable External Harddrive\n-Editing program: Adobe Premiere Pro \n-Thumbnails\
+        \ in Photoshop\n-Animations After Effects\n\n(Links to products are affiliate\
+        \ Links)\n\n\nAbout me: I\xB4m Valerie and I moved almost two years ago to\
+        \ Berlin to study Finearts. I love creating and I want to share my progress\
+        \ of becoming an artist with you guys. Also I like to give you good vibes\
+        \ :) Much love, Valerie \U0001F338"
+    - name: publishedAt
+      type: object
+      samples:
+      - '2022-02-26T13:57:34Z'
+      - '2022-02-05T14:00:19Z'
+      - '2023-02-03T14:37:50Z'
+    - name: thumbnail
+      type: object
+      samples:
+      - https://i.ytimg.com/vi/Bnb-HRoeDNk/hqdefault.jpg
+      - https://i.ytimg.com/vi/VhBiSC2WP4g/hqdefault.jpg
+      - https://i.ytimg.com/vi/qKrVMM_I3y4/hqdefault.jpg
+    - name: viewsCount
+      type: int64
+      samples:
+      - 438827
+      - 198174
+      - 87969
+    - name: likesCount
+      type: int64
+      samples:
+      - 19674
+      - 43600
+      - 22176
+    - name: commentCount
+      type: int64
+      samples:
+      - 454
+      - 876
+      - 75
+    - name: duration
+      type: int64
+      samples:
+      - 17
+      - 19
+      - 7
+    - name: unique_tags
+      type: object
+      samples:
+      - '[''cottagecore'', ''ghibli'', ''painting'', ''dark academia'', ''watercolor
+        painting'', ''art vlog'', ''gouache painting'', ''light academia'', ''art'']'
+      - '[''paint with me'', ''aesthetic vlog'', ''instagram detox'', ''art blog'',
+        ''paintwithme'', ''tiktok detox'', ''art therapy'', ''oil painting'', ''artvlog'',
+        ''art student'', ''personal growth'', ''peaceful mind'', ''painting'', ''peaceful
+        vlog'', ''cozy vlog'', ''philosophy'', ''inspirational video'', ''calm vlog'',
+        ''painting vlog'', ''living alone diaries'', ''art vlog'', ''depression'',
+        ''mental health awareness'', ''phone addiction'', ''studio vlog'', ''mental
+        health'', ''art'', ''motivation vlog'', ''social media detox'', ''dopamine
+        detox'', ''social media'', ''paint'']'
+      - '[''paint with me'', ''aesthetic vlog'', ''art blog'', ''paintwithme'', ''cozy
+        art vlog'', ''cozy fall vlog'', ''art therapy'', ''oil painting'', ''artvlog'',
+        ''art student'', ''painting'', ''oil painting portrait'', ''portrait painting'',
+        ''cozy vlog'', ''oilpainting'', ''art school'', ''painting vlog'', ''art vlogs'',
+        ''polychromos'', ''art vlog'', ''studio vlog'', ''motivation vlog'', ''valerie
+        lin'', ''painting ideas'', ''artstudent vlog'', ''drawing'']'
+    - name: categoryId
+      type: int64
+      samples:
+      - 22
+      - 27
+      - 24
+    - name: most_used_categories
+      type: object
+      samples:
+      - '[(''Education'', 1)]'
+      - '[(''People & Blogs'', 1)]'
+      - '[(''Entertainment'', 1)]'
+
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ add a new column with the ratio of comment count to view count, return a dataframe
+
+Variable `dfs: list[pd.DataFrame]` is already declared.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+If you are asked to plot a chart, use "matplotlib" for charts, save as png.
+
+
+Generate python code and return full updated code:
+2024-03-26 09:40:56 [INFO] Executing Step 3: CodeGenerator
+2024-03-26 09:41:00 [INFO] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-03-26 09:41:00 [INFO] Prompt used:
+            dfs[0]:
+  name: null
+  description: null
+  type: pd.DataFrame
+  rows: 44
+  columns: 12
+  schema:
+    fields:
+    - name: videoId
+      type: object
+      samples:
+      - qKrVMM_I3y4
+      - HgzRcOIZ_ec
+      - nrMvJfOSBf4
+    - name: title
+      type: object
+      samples:
+      - "Make Perfection your Strength\U0001F64F\U0001F3FC Oil Painting on Canvas\
+        \ + Library Visit \U0001F4DA Cozy Art Vlog"
+      - "Getting the best out of being Alone \u2B50 Klimt Museum, Watercolor Painting,\
+        \ Packing Prints \U0001FAE7 Art Vlog"
+      - "Watercolor Painting for the new Art Vlog \U0001F9D9"
+    - name: description
+      type: object
+      samples:
+      - .nan
+      - "Nothing wrong with being a Perfectionist :*\nIn this Art Vlog you will paint\
+        \ with me an Oil Painting and visit a gorgeous!!! Library :) and survive theses\
+        \ hot summer days \U0001F62E\u200D\U0001F4A8 Hopefully you will a have new\
+        \ mindset about Perfectionism too!\n\n\U0001F3BCMusic from: https://www.epidemicsound.com/referral/depurf\n\
+        (Get a free month with my referral link, videos won \xB4t get demonetized)\
+        \ \n\n\U0001F338 More Content and Videos on:\nIntsa:  https://www.instagram.com/itsvalerielin/\n\
+        Tik Tok: https://www.tiktok.com/@itsvalerielin?\n\n\U0001F3A8 Art supplies:\n\
+        -Desk Easel: https://amzn.to/3qSZtDp\n-Arches Watercolor Paper, Cold/ Hot\
+        \ pressed 300g 7x10 in: \n https://amzn.to/3y4hrHB or https://bit.ly/3kfOqAf\n\
+        -Cheaper Watercolor Paper I used before: https://amzn.to/3ovRRnZ \n(I have\
+        \ different sizes and cut them also in smaller rectangles)\n-Archers Drawing\
+        \ Paper: https://amzn.to/3wOY56h\n-Polychromos Color Pencils Set: https://amzn.to/2Uohgop\n\
+        (I began with the set of 24)\n-Oil Paint from Old Holland, 40ml Tubes: https://bit.ly/3EoVN0t\n\
+        -Schmincke Horadam Gouache, 15ml Tubes: https://bit.ly/3GspU93\n-kneaded eraser:\
+        \ https://amzn.to/3xMD5ML\n-Blending stump set (eraser included) https://amzn.to/3gNZUKD\n\
+        -Luminescent Watercolor: https://amzn.to/3kwraPN\n-Washitape, in a color you\
+        \ like :) I use it so my watercolorpaper stays flat.\n-Filbert and Flat brushes\
+        \ in various sizes from cheap to really expensive\n-H- Frame Easel(similar)\
+        \ https://bit.ly/3Bn0oOP (mine is thrifted)\n-Tabletop Easel (similar): https://bit.ly/3GvBVun\n\
+        \n\U0001F3AC Video equipment:\n-Camera: https://amzn.to/2S7OTKk  (Body only)\n\
+        -Lens: https://amzn.to/3uZlCjd\n-Microphone: https://amzn.to/3LcGyvd\n-Smartphone\
+        \ Holder: https://amzn.to/3tXwRHF \n\n\U0001F4DABooks, Lets get smart:\n-The\
+        \ world of Ornament: https://amzn.to/3DAcUMU\n-Impressionism https://amzn.to/2Yeg0GP\n\
+        -A Garden Eden; Botanical Illustrations https://amzn.to/3nkvoM7\n-Sargent:\
+        \ Portraits of Artists and Friends https://amzn.to/3gVQqM3\n-Klimt (Basic\
+        \ art Series) https://amzn.to/2SpQcEU\n(Links to products are affiliate links)"
+      - "Yes, I really destroy an Oil painting. I want to show you that letting go\
+        \ can be a relieve and is sometimes necessary. What is holding you back to\
+        \ evolve as an Artist or Human Being? This time it will be about why letting\
+        \ go is so important, learn to move on to become more skilled and confident\
+        \ at whatever you do! I want to show you an example with this cozy fairy tale\
+        \ inspired Art Vlog. The example therefore will be an Oil painting. I hired\
+        \ a voice actor too this time \U0001F970 \nAll the videos are filmed and edited\
+        \ by myself.\n\n\U0001F338 More Content and Videos on:\nIntsa:    https://www.instagram.com/itsvalerielin/\n\
+        Tik Tok: https://www.tiktok.com/@itsvalerielin?\n\n\U0001F3BC All music from\
+        \ : https://www.epidemicsound.com/referral/depurf/\n(Get a free month with\
+        \ my referral link, your uploaded Videos for that month will be whitelisted=\
+        \ No demonitization)\n\n\n\U0001F3A8Art supplies:\n-Tombow Mono Eraser 2,3\
+        \ mm: https://amzn.to/2UwCr8r\n-Luminescent Watercolor: https://amzn.to/3kwraPN\n\
+        -Polychromos Color Pencils Set: https://amzn.to/2Uohgop\n(I own the Set of\
+        \ 24)\n-Paper for Gouache or Watercolor: https://amzn.to/3ovRRnZ \n(I have\
+        \ different sizes and cut them also in smaller rectangles, tested so many\
+        \ it\xB4s my most favourite )\n-kneaded eraser https://amzn.to/3xMD5ML\n-Blending\
+        \ stump set (eraser included) https://amzn.to/3gNZUKD\n-Washitape, in a color\
+        \ you like :) I use it so my watercolorpaper stays flat.\n-Filbert and Flat\
+        \ brushes in various sizes from cheap to really expensive\n-Gouache from Schminke\
+        \ Horadam (most pigmented for professionell use)\n-Oil colors from Old Holland\
+        \ ( its oilcolor for advanced painters, make sure to be familiar with anatomy,\
+        \ proportions, value etc before using it :)\n-Easel big (similar) https://amzn.to/3zQMKnq\n\
+        -Easel small (similar) https://amzn.to/2SVFJkI\n\n\n\U0001F4DABooks, Lets\
+        \ get smart:\n-Sargent: Portraits of Artists and Friends https://amzn.to/3gVQqM3\n\
+        -Klimt (Basic art Series) https://amzn.to/2SpQcEU\n-The World of Ornament\
+        \ https://amzn.to/3d4Q2tA\n-Jewelry from Renessaince to Art Deco it\xB4s a\
+        \ japanese book I found on the street, sadly I can\xB4t find it online\n-Anatomy\
+        \ books: \nI have a german one by Gottfried Bammes, \u201Edie Gestalt des\
+        \ Menschen\u201C but there are also some american books by Andrew Loomis for\
+        \ example which are great too! I am Selftaught and we don\xB4t learn painting\
+        \ techniques etc at our school. As I said in the last videos, I have my knowledge\
+        \ from books and the Web. Most of them are free :)\nInspiring book:\n-Mastery,\
+        \ Robert Greene https://amzn.to/3j3ZQaV\n-Listen to podcasts, audiobooks while\
+        \ painting. Time flys while you create. And it makes the first steps of sitting\
+        \ down and beginning to create easier and you get even smarter\nHere is something\
+        \ I recommend so you understand how focus works:\nAbout Cognitive Control/\
+        \ Focus : https://www.youtube.com/watch?v=b9yRmpcXKjY\n\nI take my notes in\
+        \ a Moleskine cahier, set of 3, Pocket/ A6, in pastell colors for notes :)\
+        \ or the dotted version\n\n\U0001F3AC Video equipment:\n-Camera: https://amzn.to/2S7OTKk\
+        \ (Body only)\n-Lens: https://amzn.to/3uZlCjd \n-Smartphone Holder: https://amzn.to/3tXwRHF\n\
+        -Portable External Harddrive\n-Editing program: Adobe Premiere Pro \n-Thumbnails\
+        \ in Photoshop\n-Animations After Effects\n\n(Links to products are affiliate\
+        \ Links)\n\n\nAbout me: I\xB4m Valerie and I moved almost two years ago to\
+        \ Berlin to study Finearts. I love creating and I want to share my progress\
+        \ of becoming an artist with you guys. Also I like to give you good vibes\
+        \ :) Much love, Valerie \U0001F338"
+    - name: publishedAt
+      type: object
+      samples:
+      - '2022-02-26T13:57:34Z'
+      - '2022-02-05T14:00:19Z'
+      - '2023-02-03T14:37:50Z'
+    - name: thumbnail
+      type: object
+      samples:
+      - https://i.ytimg.com/vi/Bnb-HRoeDNk/hqdefault.jpg
+      - https://i.ytimg.com/vi/VhBiSC2WP4g/hqdefault.jpg
+      - https://i.ytimg.com/vi/qKrVMM_I3y4/hqdefault.jpg
+    - name: viewsCount
+      type: int64
+      samples:
+      - 438827
+      - 198174
+      - 87969
+    - name: likesCount
+      type: int64
+      samples:
+      - 19674
+      - 43600
+      - 22176
+    - name: commentCount
+      type: int64
+      samples:
+      - 454
+      - 876
+      - 75
+    - name: duration
+      type: int64
+      samples:
+      - 17
+      - 19
+      - 7
+    - name: unique_tags
+      type: object
+      samples:
+      - '[''cottagecore'', ''ghibli'', ''painting'', ''dark academia'', ''watercolor
+        painting'', ''art vlog'', ''gouache painting'', ''light academia'', ''art'']'
+      - '[''paint with me'', ''aesthetic vlog'', ''instagram detox'', ''art blog'',
+        ''paintwithme'', ''tiktok detox'', ''art therapy'', ''oil painting'', ''artvlog'',
+        ''art student'', ''personal growth'', ''peaceful mind'', ''painting'', ''peaceful
+        vlog'', ''cozy vlog'', ''philosophy'', ''inspirational video'', ''calm vlog'',
+        ''painting vlog'', ''living alone diaries'', ''art vlog'', ''depression'',
+        ''mental health awareness'', ''phone addiction'', ''studio vlog'', ''mental
+        health'', ''art'', ''motivation vlog'', ''social media detox'', ''dopamine
+        detox'', ''social media'', ''paint'']'
+      - '[''paint with me'', ''aesthetic vlog'', ''art blog'', ''paintwithme'', ''cozy
+        art vlog'', ''cozy fall vlog'', ''art therapy'', ''oil painting'', ''artvlog'',
+        ''art student'', ''painting'', ''oil painting portrait'', ''portrait painting'',
+        ''cozy vlog'', ''oilpainting'', ''art school'', ''painting vlog'', ''art vlogs'',
+        ''polychromos'', ''art vlog'', ''studio vlog'', ''motivation vlog'', ''valerie
+        lin'', ''painting ideas'', ''artstudent vlog'', ''drawing'']'
+    - name: categoryId
+      type: int64
+      samples:
+      - 22
+      - 27
+      - 24
+    - name: most_used_categories
+      type: object
+      samples:
+      - '[(''Education'', 1)]'
+      - '[(''People & Blogs'', 1)]'
+      - '[(''Entertainment'', 1)]'
+
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ add a new column with the ratio of comment count to view count, return a dataframe
+
+Variable `dfs: list[pd.DataFrame]` is already declared.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+If you are asked to plot a chart, use "matplotlib" for charts, save as png.
+
+
+Generate python code and return full updated code:
+            
+2024-03-26 09:41:00 [INFO] Code generated:
+            ```
+            # TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+dfs[0]['commentToViewRatio'] = dfs[0]['commentCount'] / dfs[0]['viewsCount']
+
+# Declare result var
+result = {"type": "dataframe", "value": dfs[0]}
+            ```
+            
+2024-03-26 09:41:00 [INFO] Executing Step 4: CachePopulation
+2024-03-26 09:41:00 [INFO] Executing Step 5: CodeExecution
+2024-03-26 09:41:00 [INFO] 
+Code running:
+```
+dfs[0]['commentToViewRatio'] = dfs[0]['commentCount'] / dfs[0]['viewsCount']
+result = {'type': 'dataframe', 'value': dfs[0]}
+        ```
+2024-03-26 09:41:00 [INFO] Executing Step 6: ResultValidation
+2024-03-26 09:41:00 [INFO] Answer: {'type': 'dataframe', 'value':         videoId                                              title  ...     most_used_categories commentToViewRatio
+0   w4tF1YXJ9Uw                New cozy Art Vlog this Sunday! :)☀️  ...   [('Entertainment', 1)]           0.002418
+1   zH9CcqhESZ4         Watercolor Painting for the new Art Vlog 🧙  ...   [('Entertainment', 1)]           0.000699
+2   9XH-hTeHRUQ  A peaceful Watercolor Painting 🦋 Full Art Vlog...  ...   [('Entertainment', 1)]           0.001513
+3   36AITkPVR_A  New Art Vlog tomorrow & Limited Prints availab...  ...   [('Entertainment', 1)]           0.001226
+4   7EARaPiM_q4  Cinematography of the new Art Vlog✨ New prints...  ...   [('Entertainment', 1)]           0.001514
+5   iaKEN-srGbw  A Canvas for a new Oil Painting 🥰 New Video so...  ...   [('Entertainment', 1)]           0.001704
+6   LqGfq3uNw3g  Painting with golden Oil Color and Crystals ❄️...  ...   [('Entertainment', 1)]           0.003717
+7   oqanU9zI7Vg  Why Phone Addiction ruins our Art & Life ☁️ He...  ...   [('Entertainment', 1)]           0.002571
+8   uFoDD8baMnU  Happy new year everyone🤍New Video tomorrow :) ...  ...   [('Entertainment', 1)]           0.003613
+9   49dzCqKeybI  Accepting & Rising with the Ups and Downs of L...  ...   [('Entertainment', 1)]           0.003629
+10  Y3NkndXL0-0  Painting so much that I injure my hand 🌻 Cozy ...  ...   [('Entertainment', 1)]           0.001639
+11  RbhgeonuPMk  Learn to Let Go and Evolve as an Artist 💔🌱 Spe...  ...   [('Entertainment', 1)]           0.003040
+12  ohchWUG7gx8  Learning rare & old Craftsmanship 💫 Gilding Ma...  ...   [('Entertainment', 1)]           0.004377
+13  pTy-zpZXJmA  Getting the best out of being Alone ⭐ Klimt Mu...  ...   [('Entertainment', 1)]           0.002291
+14  cZAfcDCQnC4  How to know what to do? 💫Watercolor Painting, ...  ...   [('Entertainment', 1)]           0.002167
+15  NGQsngZ_AeA  How to strengthen your Inner Voice 🍃 Living Al...  ...   [('Entertainment', 1)]           0.002915
+16  rsuIU4ch-7U  Productive and Motivated during Online Art Sch...  ...   [('Entertainment', 1)]           0.002287
+17  HgzRcOIZ_ec  Why your life is not short ⏳ Draw & Paint with...  ...   [('Entertainment', 1)]           0.001972
+18  iflmiiXmzQg  Importance of Balance and keeping Dreams to Yo...  ...       [('Education', 1)]           0.000986
+19  tx1TsN8lOqg  Make Life feel less like a bad Loop 🙂 Aquarium...  ...   [('Entertainment', 1)]           0.001921
+20  LL8A1qF6KOU  Overcome Fear of the Blank Page 🤍 Hometown vis...  ...   [('Entertainment', 1)]           0.003337
+21  25iX4DvkhGM  How to Change your Life ✨ Cozy Art Studio move...  ...   [('Entertainment', 1)]           0.003357
+22  nrMvJfOSBf4  Why I spend so much time alone 🌴 Museum visit,...  ...   [('Entertainment', 1)]           0.001292
+23  i7A3CEUuHzM  Master Studies improved my Art 🤝 Painting with...  ...   [('Entertainment', 1)]           0.001924
+24  Bnb-HRoeDNk  Dealing with Existential Crisis & Anxiety 🌱 Ma...  ...   [('Entertainment', 1)]           0.002904
+25  jZ4tOL8FB_g  Find Inspiration for your Art ✨Botanical Garde...  ...   [('Entertainment', 1)]           0.003385
+26  DUz9ZM-j8iw  screen printing at art school 🌷 Cute Art Schoo...  ...   [('Entertainment', 1)]           0.001137
+27  GPt4wzG13Ck  The Secret why you´re always Tired ⭐️ Plane Mu...  ...   [('Entertainment', 1)]           0.001868
+28  uFhusrnYtR4  A whole week of painting at Artschool 🌸 Cozy A...  ...  [('People & Blogs', 1)]           0.001042
+29  -VJ4rkSNHBM  Teach yourself Anything 🧙🏻 Building a PC, Wate...  ...   [('Entertainment', 1)]           0.000942
+30  XcvI-0Mk0xg  Cultivate a Mind to Mastery & Full Potential ☀...  ...   [('Entertainment', 1)]           0.002545
+31  AAXJXReDGa4  Thoughts about a Clear Mind 🌞 Oil Painting and...  ...   [('Entertainment', 1)]           0.002677
+32  9nmlWGt_054  Transform your Life through Thoughts & Creatio...  ...   [('Entertainment', 1)]           0.002825
+33  qKrVMM_I3y4  Keys to Happiness & High Performance ☀️ Painti...  ...   [('Entertainment', 1)]           0.001851
+34  FfSFvlIvGz0  Make Perfection your Strength🙏🏼 Oil Painting o...  ...   [('Entertainment', 1)]           0.002687
+35  HHuI2ok8wmM  Peaceful & Inspiring Ambient Music to draw, re...  ...   [('Entertainment', 1)]           0.001630
+36  UgXNbRbvkNQ  How your Fears will help you grow 🕳️🐇 Leaving ...  ...   [('Entertainment', 1)]           0.003028
+37  fR-37iygzsY  Loneliness improved my Art and Mindset 🌱 Fores...  ...   [('Entertainment', 1)]           0.001048
+38  VhBiSC2WP4g  How Fascination leads to your Authentic Self 🕯...  ...   [('Entertainment', 1)]           0.003342
+39  PBLX5LUN-VY  Building a Canvas and making an Oil painting 🎨...  ...   [('Entertainment', 1)]           0.002258
+40  8jAZzDCMAqM  Magic Art Studio Makeover 🦋 Art Museum visit +...  ...   [('Entertainment', 1)]           0.002044
+41  yFBIsJeYaX8  Things I learned about Healthy Relationships ❤...  ...   [('Entertainment', 1)]           0.003231
+42  FHiQIfb5gOc  Why we Suffer and what we learn from Dark days...  ...   [('Entertainment', 1)]           0.005374
+43  WxN3tkPkAvw  Peaceful & Inspiring Ambient Music to draw, re...  ...   [('Entertainment', 1)]           0.000873
+
+[44 rows x 13 columns]}
+2024-03-26 09:41:00 [INFO] Executing Step 7: ResultParsing
+2024-03-26 10:00:57 [INFO] Question: plot views histogram, first clear the previous plt, convert the graph image to base64 value such as (data:image/png;base64,iVBORw0KGgo...) and print only the Base64 value, do not save the photo
+2024-03-26 10:00:58 [INFO] Running PandasAI with openai LLM...
+2024-03-26 10:00:58 [INFO] Prompt ID: cd24c528-acbf-4e0b-9c2b-149f148f59cf
+2024-03-26 10:00:58 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-03-26 10:00:58 [INFO] Executing Step 0: ValidatePipelineInput
+2024-03-26 10:00:58 [INFO] Executing Step 1: CacheLookup
+2024-03-26 10:00:58 [INFO] Executing Step 2: PromptGeneration
+2024-03-26 10:00:58 [INFO] Using prompt: dfs[0]:
+  name: null
+  description: null
+  type: pd.DataFrame
+  rows: 44
+  columns: 12
+  schema:
+    fields:
+    - name: videoId
+      type: object
+      samples:
+      - w4tF1YXJ9Uw
+      - VhBiSC2WP4g
+      - yFBIsJeYaX8
+    - name: title
+      type: object
+      samples:
+      - "Find Inspiration for your Art \u2728Botanical Garden, Paint with me \U0001F338\
+        Cozy Art Vlog | Overcome Art block"
+      - "Why your life is not short \u23F3 Draw & Paint with me, Ikea + Books \u2B50\
+        \uFE0F Cozy Art Vlog"
+      - "Magic Art Studio Makeover \U0001F98B Art Museum visit + Week in my Life \U0001F338\
+        \ Cozy Art Vlog"
+    - name: description
+      type: object
+      samples:
+      - "What? Master Studies are so unoriginal? No, no, no... it\xB4s about learning,\
+        \ improving and standing on the shoulders of giants \U0001F331 I will make\
+        \ a Master Study / Master Copy by two famous Painters: Edgar Degas and Edouard\
+        \ Manet. One of the paintings is called \u201EIn the Conservatory\u201C which\
+        \ hangs in the alte Nationalgalerie ( Old National Gallery ) in Berlin. And\
+        \ of course, I will take you to that Museum too to see the painting! My master\
+        \ studies will be done in Watercolor / Gouache. As always a cozy Art Vlog\
+        \ with struggle, motivation, inspiration wrapped as a story aaaand the narrator\
+        \ is back too \u263A\uFE0F Enjoy!\u2728\n\n\n\U0001F4DA Book in Video: Impressionism\
+        \ https://amzn.to/2Yeg0GP\n\n\U0001F3AC More Videos related to this Series\n\
+        The Art of Evolving:\nLetting go: https://bit.ly/3F0Mc0S\nThe Art of finding\
+        \ your inner Voice:\nLoneliness: https://bit.ly/3uu7kYq\nInspiration: https://bit.ly/39SpB8D\n\
+        \n\U0001F338 More Content and Videos on:\nIntsa:    https://www.instagram.com/itsvalerielin/\n\
+        Tik Tok: https://www.tiktok.com/@itsvalerielin?\n\n\U0001F3BC Music from :\
+        \ https://www.epidemicsound.com/referra... \n(Get a free month with my referral\
+        \ link)\n\n\U0001F3A8Art supplies:\n-Polychromos Color Pencils Set: https://amzn.to/2Uohgop\n\
+        (I own the Set of 24)\n-Paper for Gouache or Watercolor: https://amzn.to/3ovRRnZ\
+        \ \n(I have different sizes and cut them also in smaller rectangles, tested\
+        \ so many it\xB4s my most favourite )\n-kneaded eraser https://amzn.to/3xMD5ML\n\
+        \ -Blending stump set (eraser included) https://amzn.to/3gNZUKD\n-Luminescent\
+        \ Watercolor: https://amzn.to/3kwraPN\n-Washitape, in a color you like :)\
+        \ I use it so my watercolorpaper stays flat.\n-Filbert and Flat brushes in\
+        \ various sizes from cheap to really expensive\n-Gouache from Schmincke Horadam\
+        \ (most pigmented for professionell use)\n-Oil colors from Old Holland ( it\xB4\
+        s oilcolor for advanced painters, make sure to be familiar with anatomy, proportions,\
+        \ value etc before using it :)\n-Easel big (similar) https://amzn.to/3zQMKnq\n\
+        -Easel small (similar) https://amzn.to/2SVFJkI\n\n\U0001F3AC Tech equipment:\n\
+        -Camera: https://amzn.to/2S7OTKk (Body only)\n-Lens: https://amzn.to/3uZlCjd\
+        \ \n-Smartphone Holder: https://amzn.to/3tXwRHF \n-Portable External Harddrive:\
+        \ https://amzn.to/3AnlH28\n-Editing program: Adobe Premiere Pro \n-Thumbnails\
+        \ in Photoshop\n-Animations After Effects\n-I film, edit etc. everything on\
+        \ my own\n- My AirPods: https://amzn.to/30bUljn\n\n\n\U0001F4DABooks, Lets\
+        \ get smart:\n-A Garden Eden; Botanical Illustrations https://amzn.to/3nkvoM7\n\
+        -Sargent: Portraits of Artists and Friends https://amzn.to/3gVQqM3\n-Klimt\
+        \ (Basic art Series) https://amzn.to/2SpQcEU\n-The World of Ornament https://amzn.to/3d4Q2tA\n\
+        -Anatomy books: \nI have a german one by Gottfried Bammes, \u201Edie Gestalt\
+        \ des Menschen\u201C but there are also some others books by Andrew Loomis\
+        \ for example which are great too! I am Selftaught and we don\xB4t learn painting\
+        \ techniques etc at our school. As I said in some of my videos, I have my\
+        \ knowledge from books and the Web. Most of them are free :)\n\n\n\U0001F34C\
+        \ Banana Bread Recipe:\n3 Bananas\n120 ml oil\n80 ml (vegan) milk\n1 package\
+        \ vanillesugar\n1 teaspoon baking powder\n90g  sugar\n190g flour\nA pinch\
+        \ of salt\nAdd nuts or chocolate chips if you want to\nPut in oven by 180*\
+        \ Celsius for 45 minutes\n\n(Links to products are affiliate Links)"
+      - "I hope all of you find many many reasons to be alive!\n\n\U0001F320Gumroad:\
+        \ https://valerielin.gumroad.com/l/cp2woe\n\n\U0001F3A0 Limited Print Edition:\
+        \ https://valerielin.com\n\n\U0001F9F8 Amazon Storefront: https://www.amazon.com/shop/valerielin\n\
+        \                                          https://www.amazon.de/shop/valerielin\n\
+        \nIn this Art Vlog I will make a Gouache / Watercolor Painting and then build\
+        \ my own Canvas and create an Oil Painting! Finally again after 6 or 7 months!\
+        \ I missed it so much! \U0001F972 I also had to buy some new art supplies.\
+        \ Most importantly I will share with you more of my Story.\n\n\U0001F3BB Music\
+        \ I use in my Videos: https://www.epidemicsound.com/referral/depurf(free month\
+        \ with my link for your own content, videos won \xB4t get demonetized \U0001F60E\
+        ) \n\n\U0001F338 Stay in touch with me!!! :] \U0001F338\nInsta:  https://www.instagram.com/itsvalerielin/\n\
+        Tik Tok: https://www.tiktok.com/@itsvalerielin?\nPatreon: https://www.patreon.com/valerielin\n\
+        \n(Some links to products are affiliate links)"
+      - .nan
+    - name: publishedAt
+      type: object
+      samples:
+      - '2024-02-07T12:55:53Z'
+      - '2022-11-13T13:00:10Z'
+      - '2023-12-10T13:59:50Z'
+    - name: thumbnail
+      type: object
+      samples:
+      - https://i.ytimg.com/vi/UgXNbRbvkNQ/hqdefault.jpg
+      - https://i.ytimg.com/vi/cZAfcDCQnC4/hqdefault.jpg
+      - https://i.ytimg.com/vi/FfSFvlIvGz0/hqdefault.jpg
+    - name: viewsCount
+      type: int64
+      samples:
+      - 735216
+      - 383172
+      - 241782
+    - name: likesCount
+      type: int64
+      samples:
+      - 16247
+      - 89160
+      - 43600
+    - name: commentCount
+      type: int64
+      samples:
+      - 967
+      - 133
+      - 612
+    - name: duration
+      type: int64
+      samples:
+      - 1
+      - 7
+      - 21
+    - name: unique_tags
+      type: object
+      samples:
+      - '[''art vlog painting'', ''paint with me'', ''aesthetic vlog'', ''art blog'',
+        ''paintwithme'', ''fear of blank page'', ''cozy art vlog'', ''how to draw'',
+        ''art therapy'', ''oil painting'', ''artvlog'', ''art student'', ''painting'',
+        ''portrait painting'', ''how to overcome fear of failure'', ''painting ideas
+        easy'', ''how to paint'', ''cozy vlog'', ''philosophy'', ''art school'', ''painting
+        vlog'', ''art vlogs'', ''polychromos'', ''art vlog'', ''paint with me real
+        time'', ''studio vlog'', ''motivation vlog'', ''painting ideas'', ''polychromos
+        colored pencils'', ''art tips'', ''drawing'']'
+      - '[''oil painting'', ''fine art'', ''art restoration'', ''peaceful'', ''paint
+        with me'', ''oil painting portrait'', ''painting restoration'', ''art vlog'',
+        ''canvas'', ''calm'', ''art conservation'', ''asmr'', ''art'']'
+      - '[''paint with me'', ''aesthetic vlog'', ''instagram detox'', ''art blog'',
+        ''paintwithme'', ''tiktok detox'', ''art therapy'', ''oil painting'', ''artvlog'',
+        ''art student'', ''personal growth'', ''peaceful mind'', ''painting'', ''peaceful
+        vlog'', ''cozy vlog'', ''philosophy'', ''inspirational video'', ''calm vlog'',
+        ''painting vlog'', ''living alone diaries'', ''art vlog'', ''depression'',
+        ''mental health awareness'', ''phone addiction'', ''studio vlog'', ''mental
+        health'', ''art'', ''motivation vlog'', ''social media detox'', ''dopamine
+        detox'', ''social media'', ''paint'']'
+    - name: categoryId
+      type: int64
+      samples:
+      - 27
+      - 24
+      - 22
+    - name: most_used_categories
+      type: object
+      samples:
+      - '[(''Education'', 1)]'
+      - '[(''People & Blogs'', 1)]'
+      - '[(''Entertainment'', 1)]'
+
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ plot views histogram, first clear the previous plt, convert the graph image to base64 value such as (data:image/png;base64,iVBORw0KGgo...) and print only the Base64 value, do not save the photo
+
+Variable `dfs: list[pd.DataFrame]` is already declared.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+If you are asked to plot a chart, use "matplotlib" for charts, save as png.
+
+
+Generate python code and return full updated code:
+2024-03-26 10:00:58 [INFO] Executing Step 3: CodeGenerator
+2024-03-26 10:01:03 [INFO] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-03-26 10:01:03 [INFO] Prompt used:
+            dfs[0]:
+  name: null
+  description: null
+  type: pd.DataFrame
+  rows: 44
+  columns: 12
+  schema:
+    fields:
+    - name: videoId
+      type: object
+      samples:
+      - w4tF1YXJ9Uw
+      - VhBiSC2WP4g
+      - yFBIsJeYaX8
+    - name: title
+      type: object
+      samples:
+      - "Find Inspiration for your Art \u2728Botanical Garden, Paint with me \U0001F338\
+        Cozy Art Vlog | Overcome Art block"
+      - "Why your life is not short \u23F3 Draw & Paint with me, Ikea + Books \u2B50\
+        \uFE0F Cozy Art Vlog"
+      - "Magic Art Studio Makeover \U0001F98B Art Museum visit + Week in my Life \U0001F338\
+        \ Cozy Art Vlog"
+    - name: description
+      type: object
+      samples:
+      - "What? Master Studies are so unoriginal? No, no, no... it\xB4s about learning,\
+        \ improving and standing on the shoulders of giants \U0001F331 I will make\
+        \ a Master Study / Master Copy by two famous Painters: Edgar Degas and Edouard\
+        \ Manet. One of the paintings is called \u201EIn the Conservatory\u201C which\
+        \ hangs in the alte Nationalgalerie ( Old National Gallery ) in Berlin. And\
+        \ of course, I will take you to that Museum too to see the painting! My master\
+        \ studies will be done in Watercolor / Gouache. As always a cozy Art Vlog\
+        \ with struggle, motivation, inspiration wrapped as a story aaaand the narrator\
+        \ is back too \u263A\uFE0F Enjoy!\u2728\n\n\n\U0001F4DA Book in Video: Impressionism\
+        \ https://amzn.to/2Yeg0GP\n\n\U0001F3AC More Videos related to this Series\n\
+        The Art of Evolving:\nLetting go: https://bit.ly/3F0Mc0S\nThe Art of finding\
+        \ your inner Voice:\nLoneliness: https://bit.ly/3uu7kYq\nInspiration: https://bit.ly/39SpB8D\n\
+        \n\U0001F338 More Content and Videos on:\nIntsa:    https://www.instagram.com/itsvalerielin/\n\
+        Tik Tok: https://www.tiktok.com/@itsvalerielin?\n\n\U0001F3BC Music from :\
+        \ https://www.epidemicsound.com/referra... \n(Get a free month with my referral\
+        \ link)\n\n\U0001F3A8Art supplies:\n-Polychromos Color Pencils Set: https://amzn.to/2Uohgop\n\
+        (I own the Set of 24)\n-Paper for Gouache or Watercolor: https://amzn.to/3ovRRnZ\
+        \ \n(I have different sizes and cut them also in smaller rectangles, tested\
+        \ so many it\xB4s my most favourite )\n-kneaded eraser https://amzn.to/3xMD5ML\n\
+        \ -Blending stump set (eraser included) https://amzn.to/3gNZUKD\n-Luminescent\
+        \ Watercolor: https://amzn.to/3kwraPN\n-Washitape, in a color you like :)\
+        \ I use it so my watercolorpaper stays flat.\n-Filbert and Flat brushes in\
+        \ various sizes from cheap to really expensive\n-Gouache from Schmincke Horadam\
+        \ (most pigmented for professionell use)\n-Oil colors from Old Holland ( it\xB4\
+        s oilcolor for advanced painters, make sure to be familiar with anatomy, proportions,\
+        \ value etc before using it :)\n-Easel big (similar) https://amzn.to/3zQMKnq\n\
+        -Easel small (similar) https://amzn.to/2SVFJkI\n\n\U0001F3AC Tech equipment:\n\
+        -Camera: https://amzn.to/2S7OTKk (Body only)\n-Lens: https://amzn.to/3uZlCjd\
+        \ \n-Smartphone Holder: https://amzn.to/3tXwRHF \n-Portable External Harddrive:\
+        \ https://amzn.to/3AnlH28\n-Editing program: Adobe Premiere Pro \n-Thumbnails\
+        \ in Photoshop\n-Animations After Effects\n-I film, edit etc. everything on\
+        \ my own\n- My AirPods: https://amzn.to/30bUljn\n\n\n\U0001F4DABooks, Lets\
+        \ get smart:\n-A Garden Eden; Botanical Illustrations https://amzn.to/3nkvoM7\n\
+        -Sargent: Portraits of Artists and Friends https://amzn.to/3gVQqM3\n-Klimt\
+        \ (Basic art Series) https://amzn.to/2SpQcEU\n-The World of Ornament https://amzn.to/3d4Q2tA\n\
+        -Anatomy books: \nI have a german one by Gottfried Bammes, \u201Edie Gestalt\
+        \ des Menschen\u201C but there are also some others books by Andrew Loomis\
+        \ for example which are great too! I am Selftaught and we don\xB4t learn painting\
+        \ techniques etc at our school. As I said in some of my videos, I have my\
+        \ knowledge from books and the Web. Most of them are free :)\n\n\n\U0001F34C\
+        \ Banana Bread Recipe:\n3 Bananas\n120 ml oil\n80 ml (vegan) milk\n1 package\
+        \ vanillesugar\n1 teaspoon baking powder\n90g  sugar\n190g flour\nA pinch\
+        \ of salt\nAdd nuts or chocolate chips if you want to\nPut in oven by 180*\
+        \ Celsius for 45 minutes\n\n(Links to products are affiliate Links)"
+      - "I hope all of you find many many reasons to be alive!\n\n\U0001F320Gumroad:\
+        \ https://valerielin.gumroad.com/l/cp2woe\n\n\U0001F3A0 Limited Print Edition:\
+        \ https://valerielin.com\n\n\U0001F9F8 Amazon Storefront: https://www.amazon.com/shop/valerielin\n\
+        \                                          https://www.amazon.de/shop/valerielin\n\
+        \nIn this Art Vlog I will make a Gouache / Watercolor Painting and then build\
+        \ my own Canvas and create an Oil Painting! Finally again after 6 or 7 months!\
+        \ I missed it so much! \U0001F972 I also had to buy some new art supplies.\
+        \ Most importantly I will share with you more of my Story.\n\n\U0001F3BB Music\
+        \ I use in my Videos: https://www.epidemicsound.com/referral/depurf(free month\
+        \ with my link for your own content, videos won \xB4t get demonetized \U0001F60E\
+        ) \n\n\U0001F338 Stay in touch with me!!! :] \U0001F338\nInsta:  https://www.instagram.com/itsvalerielin/\n\
+        Tik Tok: https://www.tiktok.com/@itsvalerielin?\nPatreon: https://www.patreon.com/valerielin\n\
+        \n(Some links to products are affiliate links)"
+      - .nan
+    - name: publishedAt
+      type: object
+      samples:
+      - '2024-02-07T12:55:53Z'
+      - '2022-11-13T13:00:10Z'
+      - '2023-12-10T13:59:50Z'
+    - name: thumbnail
+      type: object
+      samples:
+      - https://i.ytimg.com/vi/UgXNbRbvkNQ/hqdefault.jpg
+      - https://i.ytimg.com/vi/cZAfcDCQnC4/hqdefault.jpg
+      - https://i.ytimg.com/vi/FfSFvlIvGz0/hqdefault.jpg
+    - name: viewsCount
+      type: int64
+      samples:
+      - 735216
+      - 383172
+      - 241782
+    - name: likesCount
+      type: int64
+      samples:
+      - 16247
+      - 89160
+      - 43600
+    - name: commentCount
+      type: int64
+      samples:
+      - 967
+      - 133
+      - 612
+    - name: duration
+      type: int64
+      samples:
+      - 1
+      - 7
+      - 21
+    - name: unique_tags
+      type: object
+      samples:
+      - '[''art vlog painting'', ''paint with me'', ''aesthetic vlog'', ''art blog'',
+        ''paintwithme'', ''fear of blank page'', ''cozy art vlog'', ''how to draw'',
+        ''art therapy'', ''oil painting'', ''artvlog'', ''art student'', ''painting'',
+        ''portrait painting'', ''how to overcome fear of failure'', ''painting ideas
+        easy'', ''how to paint'', ''cozy vlog'', ''philosophy'', ''art school'', ''painting
+        vlog'', ''art vlogs'', ''polychromos'', ''art vlog'', ''paint with me real
+        time'', ''studio vlog'', ''motivation vlog'', ''painting ideas'', ''polychromos
+        colored pencils'', ''art tips'', ''drawing'']'
+      - '[''oil painting'', ''fine art'', ''art restoration'', ''peaceful'', ''paint
+        with me'', ''oil painting portrait'', ''painting restoration'', ''art vlog'',
+        ''canvas'', ''calm'', ''art conservation'', ''asmr'', ''art'']'
+      - '[''paint with me'', ''aesthetic vlog'', ''instagram detox'', ''art blog'',
+        ''paintwithme'', ''tiktok detox'', ''art therapy'', ''oil painting'', ''artvlog'',
+        ''art student'', ''personal growth'', ''peaceful mind'', ''painting'', ''peaceful
+        vlog'', ''cozy vlog'', ''philosophy'', ''inspirational video'', ''calm vlog'',
+        ''painting vlog'', ''living alone diaries'', ''art vlog'', ''depression'',
+        ''mental health awareness'', ''phone addiction'', ''studio vlog'', ''mental
+        health'', ''art'', ''motivation vlog'', ''social media detox'', ''dopamine
+        detox'', ''social media'', ''paint'']'
+    - name: categoryId
+      type: int64
+      samples:
+      - 27
+      - 24
+      - 22
+    - name: most_used_categories
+      type: object
+      samples:
+      - '[(''Education'', 1)]'
+      - '[(''People & Blogs'', 1)]'
+      - '[(''Entertainment'', 1)]'
+
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ plot views histogram, first clear the previous plt, convert the graph image to base64 value such as (data:image/png;base64,iVBORw0KGgo...) and print only the Base64 value, do not save the photo
+
+Variable `dfs: list[pd.DataFrame]` is already declared.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+If you are asked to plot a chart, use "matplotlib" for charts, save as png.
+
+
+Generate python code and return full updated code:
+            
+2024-03-26 10:01:03 [INFO] Code generated:
+            ```
+            # TODO: import the required dependencies
+import pandas as pd
+import matplotlib.pyplot as plt
+import io
+import base64
+
+# Write code here
+views_data = dfs[0]['viewsCount']
+
+plt.figure(figsize=(10, 6))
+plt.hist(views_data, bins=10, color='skyblue', edgecolor='black')
+plt.xlabel('Views Count')
+plt.ylabel('Frequency')
+plt.title('Histogram of Views Count')
+
+# Convert plot to base64
+buffer = io.BytesIO()
+plt.savefig(buffer, format='png')
+buffer.seek(0)
+plot_base64 = base64.b64encode(buffer.read()).decode('utf-8')
+
+# Clear the plot
+plt.clf()
+
+# Declare result var
+result = {
+    "type": "string",
+    "value": plot_base64
+}
+            ```
+            
+2024-03-26 10:01:03 [INFO] Executing Step 4: CachePopulation
+2024-03-26 10:01:03 [INFO] Executing Step 5: CodeExecution
+2024-03-26 10:01:03 [INFO] 
+Code running:
+```
+views_data = dfs[0]['viewsCount']
+plt.figure(figsize=(10, 6))
+plt.hist(views_data, bins=10, color='skyblue', edgecolor='black')
+plt.xlabel('Views Count')
+plt.ylabel('Frequency')
+plt.title('Histogram of Views Count')
+buffer = io.BytesIO()
+plt.savefig(buffer, format='png')
+buffer.seek(0)
+plot_base64 = base64.b64encode(buffer.read()).decode('utf-8')
+plt.clf()
+result = {'type': 'string', 'value': plot_base64}
+        ```
+2024-03-26 10:01:04 [INFO] Executing Step 6: ResultValidation
+2024-03-26 10:01:04 [INFO] Answer: {'type': 'string', 'value': 'iVBORw0KGgoAAAANSUhEUgAAA+gAAAJYCAYAAADxHswlAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjcuMSwgaHR0cHM6Ly9tYXRwbG90bGliLm9yZy/bCgiHAAAACXBIWXMAAA9hAAAPYQGoP6dpAABE/ElEQVR4nO3de/zX8/0//tuL6t1B5ZBOSkLFFpHmkFOkpmgb9psdTMjnw9qMxcfE9pHNak597DPD9pkV+8yYOc2MCZU5tIkwJIdFoZYcKiGq5+8P394f71VE73o931yvl8vzwvPxfDyfr/vz0aPD7f08vCpFURQBAAAAqmqDahcAAAAACOgAAABQCgI6AAAAlICADgAAACUgoAMAAEAJCOgAAABQAgI6AAAAlICADgAAACUgoAMAAEAJCOgAAABQAgI6AAAAlICADgAAACUgoAMAAEAJCOgAAABQAgI6AAAAlICADgAAACUgoAMAAEAJCOgAAABQAgI6AAAAlICADgAAACUgoAMAAEAJCOgAAABQAgI6AAAAlICADgAAACUgoAMAAEAJCOgAAABQAgI6AAAAlICADgAAACUgoAMAAEAJCOgAAABQAgI6AAAAlICADgAAACUgoAMAAEAJCOgAAABQAgI6AAAAlICADgAAACUgoAMAAEAJCOgAAABQAgI6AAAAlICADgAAACUgoAMAAEAJCOgAAABQAgI6AAAAlICADgAAACUgoAMAAEAJCOgAAABQAgI6AAAAlICADgAAACUgoAMAAEAJCOgAAABQAgI6AAAAlICADkC9GT9+fCqVSqZOnbrK7QcffHC22mqrOm1bbbVVjjrqqA/1Offee29GjRqV11577aMV+gl09dVX59Of/nSaNWuWSqWShx56aKU+3/nOd1KpVPLEE0+s9jhnnHFGKpVKHnzwwUyaNCmVSiWTJk1ad4XXs5tuuilDhgxJu3bt0qRJk2y66abp379/fvOb3+Sdd96pdnlJktGjR+eGG26odhkAVIGADkBVXX/99fn+97//ofa59957c9ZZZwnoa+ill17K17/+9WyzzTa59dZbc99996V79+4r9Rs2bFiS5Fe/+tUqj7N8+fJcccUV2WmnndK7d+/07t079913X3r37r1O668PRVHk6KOPzuc+97ksX748Y8eOze23357LL788vXr1yvDhw3PxxRdXu8wkAjrAJ1mjahcAwCfbzjvvXO0SPrR33nknlUoljRo1jL9Gn3zyybzzzjs54ogjsu+++662X8+ePbPrrrvm17/+dUaPHr3S+d122215/vnn893vfjdJ0qpVq+y+++7rtPb6ct5552X8+PE566yz8p//+Z91tg0ZMiSnnnpqnn766SpVBwDvcgUdgKr611vcly9fnrPPPjs9evRIs2bNsvHGG2fHHXfMT37ykyTJqFGj8h//8R9Jkq5du6ZSqdS5zXr58uU599xzs91226WmpiZt27bNkUcemeeff77O5xZFkdGjR6dLly5p2rRp+vTpkwkTJqRfv37p169fbb8Vt3H/+te/zsknn5wtttgiNTU1efrpp/PSSy9l+PDh+dSnPpWNNtoobdu2zf7775+//OUvdT7r2WefTaVSyXnnnZdzzjknW221VZo1a5Z+/frVhufTTjstHTt2TOvWrXPIIYdk3rx5azR+f/jDH7LHHnukefPmadmyZQYMGJD77ruvdvtRRx2VvfbaK0ly+OGHp1Kp1Dm/fzVs2LDMnTs3t9xyy0rbxo0bl5qamnzta1+rMzb/eov71KlT87nPfS6bbrppmjZtmp133jm/+93varcvXLgwjRo1ynnnnVfbNn/+/GywwQZp3bp1li5dWtv+7W9/O5tvvnmKokiSTJs2LQcffHDatm2bmpqadOzYMQcddNBKv77v9c477+Scc87Jdtttt9q7Ndq3b187TknyyiuvZPjw4dliiy3SpEmTbL311jnjjDOyZMmS2j4rfl3Hjx+/0vEqlUpGjRpVuz5q1KhUKpU89thj+cpXvpLWrVunXbt2OeaYY7JgwYI6+y1evDiXX3557dx+v18vAD5eBHQA6t2yZcuydOnSlZYVIev9nHvuuRk1alS+8pWv5Oabb87VV1+dYcOG1d7Ofuyxx+aEE05Iklx33XW577776txm/Y1vfCPf/e53M2DAgPzhD3/ID3/4w9x6663p27dv5s+fX/s5Z5xxRs4444wceOCBufHGG3P88cfn2GOPzZNPPrnKukaOHJlZs2bl0ksvzU033ZS2bdvmlVdeSZKceeaZufnmmzNu3LhsvfXW6dev3yqfy/7Zz36We+65Jz/72c/yy1/+Mk888USGDBmSYcOG5aWXXsqvfvWrnHvuubn99ttz7LHHfuBYXXnllfn85z+fVq1a5be//W0uu+yyvPrqq+nXr1/uvvvuJMn3v//9/OxnP0vy7q3T99133/veyv2Vr3wlzZs3X+k291dffTU33nhjDjnkkGyyySar3X/ixInZc88989prr+XSSy/NjTfemJ122imHH354bZBt1apVPvOZz+T222+v3e+OO+5ITU1NFi1alL/97W+17bfffnv233//2uA6YMCA/POf/8zPfvazTJgwIRdeeGG23HLLLFq0aLU1TZ06Na+88ko+//nPp1KprH5A/5+33nor++23X6644oqMGDEiN998c4444oice+65OfTQQz9w//dz2GGHpXv37rn22mtz2mmn5corr8x3vvOd2u333XdfmjVrlsGDB9fO7bLceg/AelAAQD0ZN25ckeR9ly5dutTZp0uXLsXQoUNr1w8++OBip512et/POe+884okxcyZM+u0T58+vUhSDB8+vE77X//61yJJcfrppxdFURSvvPJKUVNTUxx++OF1+t13331FkmLfffetbZs4cWKRpNhnn30+8PyXLl1avPPOO0X//v2LQw45pLZ95syZRZKiV69exbJly2rbL7zwwiJJ8bnPfa7OcU466aQiSbFgwYLVftayZcuKjh07FjvssEOdYy5atKho27Zt0bdv35XO4ZprrvnAcyiKohg6dGjRuHHj4p///Gdt209/+tMiSTFhwoSVjjtx4sTatu22267Yeeedi3feeafOMQ8++OCiQ4cOtbV+73vfK5o1a1a89dZbRVEUxbHHHlsceOCBxY477licddZZRVEUxQsvvFAkKX7xi18URVEUU6dOLZIUN9xwwxqdxwpXXXVVkaS49NJL16j/pZdeWiQpfve739VpP+ecc4okxW233VYUxf/9uo4bN26lYyQpzjzzzNr1M888s0hSnHvuuXX6DR8+vGjatGmxfPny2rYWLVrU+T0BwCeHK+gA1Lsrrrgi999//0rLe28hXp1dd901Dz/8cIYPH54///nPWbhw4Rp/7sSJE5NkpbfC77rrrtl+++1zxx13JEmmTJmSJUuW5Etf+lKdfrvvvvtKb5lf4bDDDltl+6WXXprevXunadOmadSoURo3bpw77rgj06dPX6nv4MGDs8EG//dX7/bbb58kOeigg+r0W9E+a9as1ZxpMmPGjLz44ov5+te/XueYG220UQ477LBMmTIlb7zxxmr3fz/Dhg3LO++8k1//+te1bePGjUuXLl3Sv3//1e739NNP54knnqi9Bf69d08MHjw4c+bMyYwZM5Ik/fv3z5tvvpl77703ybtXygcMGJADDjggEyZMqG1LkgMOOCBJsu2222aTTTbJd7/73Vx66aV5/PHHP9L5fZA777wzLVq0yBe/+MU67Svm1Yp59FF87nOfq7O+44475q233lrjRxoA+HgT0AGod9tvv3369Omz0tK6desP3HfkyJE5//zzM2XKlAwaNCibbbZZ+vfvv9qvbnuvl19+OUnSoUOHlbZ17NixdvuK/7Zr126lfqtqW90xx44dm2984xvZbbfdcu2112bKlCm5//77c+CBB+bNN99cqf+mm25aZ71Jkybv2/7WW2+tspb3nsPqznX58uV59dVXV7v/+9l7773TvXv3jBs3LknyyCOP5MEHH8zRRx/9vreI//Of/0ySnHLKKWncuHGdZfjw4UlS+5hB375907x589x+++15+umn8+yzz9YG9L/+9a95/fXXc/vtt2frrbdO165dkyStW7fO5MmTs9NOO+X000/Ppz/96XTs2DFnnnnm+35F2pZbbpkkmTlz5hqd/8svv5z27duvdK5t27ZNo0aNasf+o9hss83qrNfU1CTJKucLAJ88DeP1swB8YjRq1CgjRozIiBEj8tprr+X222/P6aefns9+9rOZPXt2mjdvvtp9V4SfOXPmpFOnTnW2vfjii2nTpk2dfisC5XvNnTt3lVfRVxVM//d//zf9+vXLJZdcUqf9/Z6Hri/vPdd/9eKLL2aDDTZ432fFP8gxxxyT0047LX/7299y5ZVXZoMNNvjA76tfMb4jR45c7bPaPXr0SPLuDyH22muv3H777enUqVPat2+fHXbYIVtvvXWSd19Ad8cdd+Tggw+us/8OO+yQq666KkVR5JFHHsn48ePzgx/8IM2aNctpp522ys/s06dPNt1009x4440ZM2bMBz6Hvtlmm+Wvf/1riqKo03fevHlZunRp7Xk2bdo0Seq8OC7JWgV4AD7ZXEEHoLQ23njjfPGLX8w3v/nNvPLKK3n22WeTrP6q4/7775/k3eD8Xvfff3+mT59ee3v2brvtlpqamlx99dV1+k2ZMiXPPffcGtdXqVRqa1nhkUceqfMW9XWlR48e2WKLLXLllVfWefne4sWLc+2119a+2f2jGjp0aBo1apSf//zn+c1vfpP+/funS5cuH1hTt27d8vDDD6/yDoo+ffqkZcuWtf0POOCAPPDAA7n22mtrb2Nv0aJFdt999/z0pz/Niy++WNv+ryqVSnr16pX/+q//ysYbb5wHH3xwtXU1btw43/3ud/PEE0/khz/84Sr7zJs3L/fcc0+Sd2+/f/3111f6LvIrrriidnvy7t0WTZs2zSOPPFKn34033vg+o/TBampqXFEH+IRyBR2AUhkyZEh69uyZPn36ZPPNN89zzz2XCy+8MF26dEm3bt2SvHsVNUl+8pOfZOjQoWncuHF69OiRHj165N///d/z05/+NBtssEEGDRqUZ599Nt///vfTuXPn2rdlb7rpphkxYkTGjBmTTTbZJIccckief/75nHXWWenQoUOdZ7rfz8EHH5wf/vCHOfPMM7PvvvtmxowZ+cEPfpCuXbvW+aqwdWGDDTbIueeem6997Ws5+OCDc9xxx2XJkiU577zz8tprr+XHP/7xWh2/ffv2GTx4cMaNG5eiKDJs2LA12u/nP/95Bg0alM9+9rM56qijssUWW+SVV17J9OnT8+CDD+aaa66p7du/f/8sW7Ysd9xxRy6//PLa9gMOOCBnnnlmKpVK7Q9dkuSPf/xjLr744nzhC1/I1ltvnaIoct111+W1117LgAED3reu//iP/8j06dNz5pln5m9/+1u++tWvpnPnzlmwYEHuuuuu/OIXv8hZZ52VPffcM0ceeWR+9rOfZejQoXn22Wezww475O67787o0aMzePDg2h8aVCqVHHHEEfnVr36VbbbZJr169aq942Bt7LDDDpk0aVJuuummdOjQIS1btqy98wCAj7mqvqIOgI+VFW9xv//++1e5/aCDDvrAt7hfcMEFRd++fYs2bdoUTZo0Kbbccsti2LBhxbPPPltnv5EjRxYdO3YsNthggzpvEl+2bFlxzjnnFN27dy8aN25ctGnTpjjiiCOK2bNn19l/+fLlxdlnn1106tSpaNKkSbHjjjsWf/zjH4tevXrVeQP7+70BfcmSJcUpp5xSbLHFFkXTpk2L3r17FzfccEMxdOjQOue54m3f5513Xp39V3fsDxrH97rhhhuK3XbbrWjatGnRokWLon///sU999yzRp/zQW688cYiSbHpppvWvm19Vcd971vci6IoHn744eJLX/pS0bZt26Jx48ZF+/bti/3333+lt6gvX768aNOmTZGkeOGFF2rb77nnniJJ0bt37zr9n3jiieIrX/lKsc022xTNmjUrWrduXey6667F+PHjP9Q5HXTQQcXmm29eNGrUqNhkk02K/fbbr7j00kuLJUuW1PZ7+eWXi+OPP77o0KFD0ahRo6JLly7FyJEjVxqHBQsWFMcee2zRrl27okWLFsWQIUOKZ599drVvcX/ppZfq7L/i1/q930jw0EMPFXvuuWfRvHnzlb5VAICPt0pRrMGX0gLAJ8DMmTOz3Xbb5cwzz8zpp59e7XIAgE8YAR2AT6SHH344v/3tb9O3b9+0atUqM2bMyLnnnpuFCxfm0UcfXe3b3AEA1hXPoAPwidSiRYtMnTo1l112WV577bW0bt06/fr1y49+9CPhHACoClfQAQAAoAR8zRoAAACUgIAOAAAAJSCgAwAAQAl4SdwnzPLly/Piiy+mZcuWqVQq1S4HAACokqIosmjRonTs2DEbbODabRkI6J8wL774Yjp37lztMgAAgJKYPXt2OnXqVO0yiID+idOyZcsk7/4mbNWqVZWrAQAAqmXhwoXp3LlzbUag+gT0T5gVt7W3atVKQAcAADz6WiIeNAAAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBBpVuwA+2WbNmpX58+dXu4xSatOmTbbccstqlwEAAKwnAjpVM2vWrGy3/fZ58403ql1KKTVr3jxPTJ8upAMAwCeEgE7VzJ8/P2++8Ua+dPYladu1W7XLKZV5M5/K7773jcyfP19ABwCATwgBnapr27Vbtti+V7XLAAAAqCoviQMAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBvUQuueSS7LjjjmnVqlVatWqVPfbYI7fcckvt9qIoMmrUqHTs2DHNmjVLv3798thjj1WxYgAAAOqLgF4inTp1yo9//ONMnTo1U6dOzf7775/Pf/7ztSH83HPPzdixY3PRRRfl/vvvT/v27TNgwIAsWrSoypUDAACwtgT0EhkyZEgGDx6c7t27p3v37vnRj36UjTbaKFOmTElRFLnwwgtzxhln5NBDD03Pnj1z+eWX54033siVV15Z7dIBAABYSwJ6SS1btixXXXVVFi9enD322CMzZ87M3LlzM3DgwNo+NTU12XfffXPvvfeu9jhLlizJwoUL6ywAAACUj4BeMn//+9+z0UYbpaamJscff3yuv/76fOpTn8rcuXOTJO3atavTv127drXbVmXMmDFp3bp17dK5c+d1Wj8AAAAfjYBeMj169MhDDz2UKVOm5Bvf+EaGDh2axx9/vHZ7pVKp078oipXa3mvkyJFZsGBB7TJ79ux1VjsAAAAfXaNqF0BdTZo0ybbbbpsk6dOnT+6///785Cc/yXe/+90kydy5c9OhQ4fa/vPmzVvpqvp71dTUpKamZt0WDQAAwFpzBb3kiqLIkiVL0rVr17Rv3z4TJkyo3fb2229n8uTJ6du3bxUrBAAAoD64gl4ip59+egYNGpTOnTtn0aJFueqqqzJp0qTceuutqVQqOemkkzJ69Oh069Yt3bp1y+jRo9O8efN89atfrXbpAAAArCUBvUT++c9/5utf/3rmzJmT1q1bZ8cdd8ytt96aAQMGJElOPfXUvPnmmxk+fHheffXV7LbbbrntttvSsmXLKlcOAADA2hLQS+Syyy573+2VSiWjRo3KqFGj1k9BAAAArDeeQQcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQC+RMWPG5DOf+UxatmyZtm3b5gtf+EJmzJhRp89RRx2VSqVSZ9l9992rVDEAAAD1RUAvkcmTJ+eb3/xmpkyZkgkTJmTp0qUZOHBgFi9eXKffgQcemDlz5tQuf/rTn6pUMQAAAPWlUbUL4P/ceuutddbHjRuXtm3b5oEHHsg+++xT215TU5P27duv7/IAAABYh1xBL7EFCxYkSTbddNM67ZMmTUrbtm3TvXv3/Nu//VvmzZu32mMsWbIkCxcurLMAAABQPgJ6SRVFkREjRmSvvfZKz549a9sHDRqU3/zmN7nzzjtzwQUX5P7778/++++fJUuWrPI4Y8aMSevWrWuXzp07r69TAAAA4ENwi3tJfetb38ojjzySu+++u0774YcfXvv/PXv2TJ8+fdKlS5fcfPPNOfTQQ1c6zsiRIzNixIja9YULFwrpAAAAJSSgl9AJJ5yQP/zhD7nrrrvSqVOn9+3boUOHdOnSJU899dQqt9fU1KSmpmZdlAkAAEA9EtBLpCiKnHDCCbn++uszadKkdO3a9QP3efnllzN79ux06NBhPVQIAADAuuIZ9BL55je/mf/93//NlVdemZYtW2bu3LmZO3du3nzzzSTJ66+/nlNOOSX33Xdfnn322UyaNClDhgxJmzZtcsghh1S5egAAANaGK+glcskllyRJ+vXrV6d93LhxOeqoo7Lhhhvm73//e6644oq89tpr6dChQ/bbb79cffXVadmyZRUqBgAAoL4I6CVSFMX7bm/WrFn+/Oc/r6dqAAAAWJ/c4g4AAAAlIKADAABACQjoAAAAUAICOgAAAJSAgA4AAAAlIKADAABACQjoAAAAUAICOgAAAJSAgA4AAAAlIKADAABACQjoAAAAUAICOgAAAJSAgA4AAAAlIKADAABACQjoAAAAUAICOgAAAJSAgA4AAAAlIKADAABACQjoAAAAUAICOgAAAJSAgA4AAAAlIKADAABACQjoAAAAUAICOgAAAJSAgA4AAAAlIKADAABACQjoAAAAUAICOgAAAJSAgA4AAAAlIKADAABACQjoAAAAUAICOgAAAJSAgA4AAAAlIKADAABACQjoAAAAUAICOgAAAJSAgA4AAAAlIKADAABACQjoAAAAUAICOgAAAJSAgA4AAAAlIKADAABACQjoAAAAUAICOgAAAJSAgA4AAAAlIKADAABACQjoAAAAUAICOgAAAJSAgA4AAAAlIKADAABACQjoAAAAUAICOgAAAJSAgA4AAAAlIKADAABACQjoAAAAUAICOgAAAJSAgA4AAAAlIKADAABACQjoAAAAUAICOgAAAJSAgF4iY8aMyWc+85m0bNkybdu2zRe+8IXMmDGjTp+iKDJq1Kh07NgxzZo1S79+/fLYY49VqWIAAADqi4BeIpMnT843v/nNTJkyJRMmTMjSpUszcODALF68uLbPueeem7Fjx+aiiy7K/fffn/bt22fAgAFZtGhRFSsHAABgbTWqdgH8n1tvvbXO+rhx49K2bds88MAD2WeffVIURS688MKcccYZOfTQQ5Mkl19+edq1a5crr7wyxx13XDXKBgAAoB64gl5iCxYsSJJsuummSZKZM2dm7ty5GThwYG2fmpqa7Lvvvrn33ntXeYwlS5Zk4cKFdRYAAADKR0AvqaIoMmLEiOy1117p2bNnkmTu3LlJknbt2tXp265du9pt/2rMmDFp3bp17dK5c+d1WzgAAAAfiYBeUt/61rfyyCOP5Le//e1K2yqVSp31oihWalth5MiRWbBgQe0ye/bsdVIvAAAAa8cz6CV0wgkn5A9/+EPuuuuudOrUqba9ffv2Sd69kt6hQ4fa9nnz5q10VX2Fmpqa1NTUrNuCAQAAWGuuoJdIURT51re+leuuuy533nlnunbtWmd7165d0759+0yYMKG27e23387kyZPTt2/f9V0uAAAA9cgV9BL55je/mSuvvDI33nhjWrZsWftceevWrdOsWbNUKpWcdNJJGT16dLp165Zu3bpl9OjRad68eb761a9WuXoAAADWhoBeIpdcckmSpF+/fnXax40bl6OOOipJcuqpp+bNN9/M8OHD8+qrr2a33XbLbbfdlpYtW67nagEAAKhPAnqJFEXxgX0qlUpGjRqVUaNGrfuCAAAAWG88gw4AAAAlIKADAABACQjoAAAAUAICOgAAAJSAgA4AAAAlIKADAABACQjoAAAAUAICOgAAAJSAgA4AAAAlIKADAABACQjoAAAAUAICOgAAAJSAgA4AAAAlIKDXg5kzZ1a7BAAAABo4Ab0ebLvtttlvv/3yv//7v3nrrbeqXQ4AAAANkIBeDx5++OHsvPPOOfnkk9O+ffscd9xx+dvf/lbtsgAAAGhABPR60LNnz4wdOzYvvPBCxo0bl7lz52avvfbKpz/96YwdOzYvvfRStUsEAACg5AT0etSoUaMccsgh+d3vfpdzzjknzzzzTE455ZR06tQpRx55ZObMmVPtEgEAACgpAb0eTZ06NcOHD0+HDh0yduzYnHLKKXnmmWdy55135oUXXsjnP//5apcIAABASTWqdgEfB2PHjs24ceMyY8aMDB48OFdccUUGDx6cDTZ49+cfXbt2zc9//vNst912Va4UAACAshLQ68Ell1ySY445JkcffXTat2+/yj5bbrllLrvssvVcGQAAAA2FgF4PnnrqqQ/s06RJkwwdOnQ9VAMAAEBD5Bn0ejBu3Lhcc801K7Vfc801ufzyy6tQEQAAAA2NgF4PfvzjH6dNmzYrtbdt2zajR4+uQkUAAAA0NAJ6PXjuuefStWvXldq7dOmSWbNmVaEiAAAAGhoBvR60bds2jzzyyErtDz/8cDbbbLMqVAQAAEBDI6DXgy9/+cv59re/nYkTJ2bZsmVZtmxZ7rzzzpx44on58pe/XO3yAAAAaAC8xb0enH322XnuuefSv3//NGr07pAuX748Rx55pGfQAQAAWCMCej1o0qRJrr766vzwhz/Mww8/nGbNmmWHHXZIly5dql0aAAAADYSAXo+6d++e7t27V7sMAAAAGiABvR4sW7Ys48ePzx133JF58+Zl+fLldbbfeeedVaoMAACAhkJArwcnnnhixo8fn4MOOig9e/ZMpVKpdkkAAAA0MAJ6Pbjqqqvyu9/9LoMHD652KQAAADRQvmatHjRp0iTbbrtttcsAAACgARPQ68HJJ5+cn/zkJymKotqlAAAA0EC5xb0e3H333Zk4cWJuueWWfPrTn07jxo3rbL/uuuuqVBkAAAANhYBeDzbeeOMccsgh1S4DAACABkxArwfjxo2rdgkAAAA0cJ5BrydLly7N7bffnp///OdZtGhRkuTFF1/M66+/XuXKAAAAaAhcQa8Hzz33XA488MDMmjUrS5YsyYABA9KyZcuce+65eeutt3LppZdWu0QAAABKzhX0enDiiSemT58+efXVV9OsWbPa9kMOOSR33HFHFSsDAACgoXAFvR7cfffdueeee9KkSZM67V26dMkLL7xQpaoAAABoSFxBrwfLly/PsmXLVmp//vnn07JlyypUBAAAQEMjoNeDAQMG5MILL6xdr1Qqef3113PmmWdm8ODB1SsMAACABsMt7vXgv/7rv7LffvvlU5/6VN5666189atfzVNPPZU2bdrkt7/9bbXLAwAAoAEQ0OtBx44d89BDD+W3v/1tHnzwwSxfvjzDhg3L1772tTovjQMAAIDVEdDrSbNmzXLMMcfkmGOOqXYpAAAANEACej244oor3nf7kUceuZ4qAQAAoKES0OvBiSeeWGf9nXfeyRtvvJEmTZqkefPmAjoAAAAfyFvc68Grr75aZ3n99dczY8aM7LXXXl4SBwAAwBoR0NeRbt265cc//vFKV9cBAABgVQT0dWjDDTfMiy++WO0yAAAAaAA8g14P/vCHP9RZL4oic+bMyUUXXZQ999yzSlUBAADQkAjo9eALX/hCnfVKpZLNN988+++/fy644ILqFAUAAECDIqDXg+XLl1e7BAAAABo4z6ADAABACbiCXg9GjBixxn3Hjh27DisBAACgoRLQ68G0adPy4IMPZunSpenRo0eS5Mknn8yGG26Y3r171/arVCrVKhEAAICSE9DrwZAhQ9KyZctcfvnl2WSTTZIkr776ao4++ujsvffeOfnkk6tcIQAAAGXnGfR6cMEFF2TMmDG14TxJNtlkk5x99tne4g4AAMAaEdDrwcKFC/PPf/5zpfZ58+Zl0aJFa3ycu+66K0OGDEnHjh1TqVRyww031Nl+1FFHpVKp1Fl23333tS0fAACAEhDQ68EhhxySo48+Or///e/z/PPP5/nnn8/vf//7DBs2LIceeugaH2fx4sXp1atXLrrootX2OfDAAzNnzpza5U9/+lN9nAIAAABV5hn0enDppZfmlFNOyRFHHJF33nknSdKoUaMMGzYs55133hofZ9CgQRk0aND79qmpqUn79u3Xql4AAADKR0CvB82bN8/FF1+c8847L88880yKosi2226bFi1a1PtnTZo0KW3bts3GG2+cfffdNz/60Y/Stm3b1fZfsmRJlixZUru+cOHCeq8JAACAtecW93q04rbz7t27p0WLFimKol6PP2jQoPzmN7/JnXfemQsuuCD3339/9t9//zoB/F+NGTMmrVu3rl06d+5crzUBAABQPwT0evDyyy+nf//+6d69ewYPHpw5c+YkSY499th6/Yq1ww8/PAcddFB69uyZIUOG5JZbbsmTTz6Zm2++ebX7jBw5MgsWLKhdZs+eXW/1AAAAUH8E9Hrwne98J40bN86sWbPSvHnz2vbDDz88t9566zr73A4dOqRLly556qmnVtunpqYmrVq1qrMAAABQPp5Brwe33XZb/vznP6dTp0512rt165bnnntunX3uyy+/nNmzZ6dDhw7r7DMAAABYPwT0erB48eI6V85XmD9/fmpqatb4OK+//nqefvrp2vWZM2fmoYceyqabbppNN900o0aNymGHHZYOHTrk2Wefzemnn542bdrkkEMOqZfzAAAAoHrc4l4P9tlnn1xxxRW165VKJcuXL895552X/fbbb42PM3Xq1Oy8887ZeeedkyQjRozIzjvvnP/8z//MhhtumL///e/5/Oc/n+7du2fo0KHp3r177rvvvrRs2bLezwkAAID1yxX0enDeeeelX79+mTp1at5+++2ceuqpeeyxx/LKK6/knnvuWePj9OvX733f/P7nP/+5PsoFAACghFxBrwef+tSn8sgjj2TXXXfNgAEDsnjx4hx66KGZNm1attlmm2qXBwAAQAPgCvpaeueddzJw4MD8/Oc/z1lnnVXtcgAAAGigXEFfS40bN86jjz6aSqVS7VIAAABowAT0enDkkUfmsssuq3YZAAAANGBuca8Hb7/9dn75y19mwoQJ6dOnT1q0aFFn+9ixY6tUGQAAAA2FgL4W/vGPf2SrrbbKo48+mt69eydJnnzyyTp93PoOAADAmhDQ10K3bt0yZ86cTJw4MUly+OGH57//+7/Trl27KlcGAABAQ+MZ9LXwr99Zfsstt2Tx4sVVqgYAAICGTECvR/8a2AEAAGBNCehroVKprPSMuWfOAQAA+Cg8g74WiqLIUUcdlZqamiTJW2+9leOPP36lt7hfd9111SgPAACABkRAXwtDhw6ts37EEUdUqRIAAAAaOgF9LYwbN67aJQAAAPAx4Rl0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQAcAAIASENBL5K677sqQIUPSsWPHVCqV3HDDDXW2F0WRUaNGpWPHjmnWrFn69euXxx57rDrFAgAAUK8E9BJZvHhxevXqlYsuumiV288999yMHTs2F110Ue6///60b98+AwYMyKJFi9ZzpQAAANS3RtUugP8zaNCgDBo0aJXbiqLIhRdemDPOOCOHHnpokuTyyy9Pu3btcuWVV+a4445bn6UCAABQzwT0BmLmzJmZO3duBg4cWNtWU1OTfffdN/fee+9qA/qSJUuyZMmS2vWFCxeu81qpP9OnT692CaXTpk2bbLnlltUuAwAA6p2A3kDMnTs3SdKuXbs67e3atctzzz232v3GjBmTs846a53WRv1bNP+fqWywQY444ohql1I6zZo3zxPTpwvpAAB87AjoDUylUqmzXhTFSm3vNXLkyIwYMaJ2feHChencufM6q4/68eaihSmWL8+Xzr4kbbt2q3Y5pTFv5lP53fe+kfnz5wvoAAB87AjoDUT79u2TvHslvUOHDrXt8+bNW+mq+nvV1NSkpqZmndfHutG2a7dssX2vapcBAACsB97i3kB07do17du3z4QJE2rb3n777UyePDl9+/atYmUAAADUB1fQS+T111/P008/Xbs+c+bMPPTQQ9l0002z5ZZb5qSTTsro0aPTrVu3dOvWLaNHj07z5s3z1a9+tYpVAwAAUB8E9BKZOnVq9ttvv9r1Fc+ODx06NOPHj8+pp56aN998M8OHD8+rr76a3XbbLbfddltatmxZrZIBAACoJwJ6ifTr1y9FUax2e6VSyahRozJq1Kj1VxQAAADrhWfQAQAAoAQEdAAAACgBAR0AAABKQEAHAACAEhDQAQAAoAQEdAAAACgBAR0AAABKQEAHAACAEhDQAQAAoAQEdAAAACgBAR0AAABKQEAHAACAEhDQAQAAoAQEdAAAACgBAR0AAABKQEAHAACAEhDQAQAAoAQEdAAAACgBAR0AAABKQEAHAACAEhDQAQAAoAQEdAAAACgBAR0AAABKQEAHAACAEhDQAQAAoAQEdAAAACgBAR0AAABKQEAHAACAEhDQAQAAoAQEdAAAACgBAR0AAABKQEAHAACAEhDQAQAAoAQEdAAAACgBAR0AAABKQEAHAACAEhDQAQAAoAQEdAAAACgBAR0AAABKQEAHAACAEhDQAQAAoAQEdAAAACgBAR0AAABKQEAHAACAEhDQAQAAoAQEdAAAACgBAR0AAABKQEAHAACAEhDQAQAAoAQEdAAAACgBAR0AAABKQEAHAACAEhDQAQAAoAQEdAAAACgBAR0AAABKQEAHAACAEhDQAQAAoAQEdAAAACgBAR0AAABKQEAHAACAEhDQG5BRo0alUqnUWdq3b1/tsgAAAKgHjapdAB/Opz/96dx+++216xtuuGEVqwEAAKC+COgNTKNGjVw1BwAA+Bhyi3sD89RTT6Vjx47p2rVrvvzlL+cf//jH+/ZfsmRJFi5cWGcBAACgfAT0BmS33XbLFVdckT//+c/5n//5n8ydOzd9+/bNyy+/vNp9xowZk9atW9cunTt3Xo8VAwAAsKYE9AZk0KBBOeyww7LDDjvkgAMOyM0335wkufzyy1e7z8iRI7NgwYLaZfbs2eurXAAAAD4Ez6A3YC1atMgOO+yQp556arV9ampqUlNTsx6rAgAA4KNwBb0BW7JkSaZPn54OHTpUuxQAAADWkoDegJxyyimZPHlyZs6cmb/+9a/54he/mIULF2bo0KHVLg0AAIC15Bb3BuT555/PV77ylcyfPz+bb755dt9990yZMiVdunSpdmkAAACsJQG9AbnqqquqXQIAAADriFvcAQAAoAQEdAAAACgBAR0AAABKQEAHAACAEhDQAQAAoAQEdAAAACgBAR0AAABKQEAHAACAEhDQAQAAoAQEdAAAACgBAR0AAABKQEAHAACAEhDQAQAAoAQEdAAAACgBAR0AAABKQEAHAACAEhDQAQAAoAQEdAAAACgBAR0AAABKQEAHAACAEhDQAQAAoAQEdAAAACgBAR0AAABKQEAHAACAEhDQAQAAoAQEdAAAACgBAR0AAABKQEAHAACAEhDQAQAAoAQEdAAAACgBAR0AAABKQEAHAACAEhDQAQAAoAQEdAAAACgBAR0AAABKoFG1CwCAdWnWrFmZP39+tcsopTZt2mTLLbesdhkAwP8joAPwsTVr1qxst/32efONN6pdSik1a948T0yfLqQDQEkI6AB8bM2fPz9vvvFGvnT2JWnbtVu1yymVeTOfyu++943Mnz9fQAeAkhDQAfjYa9u1W7bYvle1ywAAeF9eEgcAAAAlIKADAABACQjoAAAAUAICOgAAAJSAgA4AAAAlIKADAABACQjoAAAAUAICOgAAAJSAgA4AAAAlIKADAABACTSqdgEAAMDHz6xZszJ//vxql1FKbdq0yZZbblntMighAR0AAKhXs2bNynbbb58333ij2qWUUrPmzfPE9OlCOisR0AEAgHo1f/78vPnGG/nS2Zekbddu1S6nVObNfCq/+943Mn/+fAGdlQjoAADAOtG2a7dssX2vapcBDYaXxAEAAEAJCOgAAABQAgI6AAAAlICADgAAACUgoAMAAEAJCOgAAABQAgI6AAAAlICA3gBdfPHF6dq1a5o2bZpddtklf/nLX6pdEgAAAGtJQG9grr766px00kk544wzMm3atOy9994ZNGhQZs2aVe3SAAAAWAsCegMzduzYDBs2LMcee2y23377XHjhhencuXMuueSSapcGAADAWmhU7QJYc2+//XYeeOCBnHbaaXXaBw4cmHvvvXeV+yxZsiRLliypXV+wYEGSZOHCheuu0DX0+uuvJ0lemP5I3n5jcZWrKZeXnn0qibH5Vy8990yS5IEHHqidP/yfDTbYIMuXL692GaUyY8aMJH4vrYrfT6vn99KqGZfVMzYr8+fv6q348/f111+v+r/JV3x+URRVrYP/Uyn8ajQYL774YrbYYovcc8896du3b2376NGjc/nll9f+Qfheo0aNyllnnbU+ywQAABqQ2bNnp1OnTtUug7iC3iBVKpU660VRrNS2wsiRIzNixIja9eXLl+eVV17JZpttttp91pWFCxemc+fOmT17dlq1arVeP/uTzLhXh3Ff/4x5dRj36jDu1WHcq8O4rztFUWTRokXp2LFjtUvh/xHQG5A2bdpkww03zNy5c+u0z5s3L+3atVvlPjU1NampqanTtvHGG6+rEtdIq1at/OFaBca9Ooz7+mfMq8O4V4dxrw7jXh3Gfd1o3bp1tUvgPbwkrgFp0qRJdtlll0yYMKFO+4QJE+rc8g4AAEDD4wp6AzNixIh8/etfT58+fbLHHnvkF7/4RWbNmpXjjz++2qUBAACwFgT0Bubwww/Pyy+/nB/84AeZM2dOevbsmT/96U/p0qVLtUv7QDU1NTnzzDNXuuWedcu4V4dxX/+MeXUY9+ow7tVh3KvDuPNJ4i3uAAAAUAKeQQcAAIASENABAACgBAR0AAAAKAEBHQAAAEpAQKdeXXzxxenatWuaNm2aXXbZJX/5y1/et//kyZOzyy67pGnTptl6661z6aWXrqdKPz4+zJhPmjQplUplpeWJJ55YjxU3fHfddVeGDBmSjh07plKp5IYbbvjAfcz1tfdhx918X3tjxozJZz7zmbRs2TJt27bNF77whcyYMeMD9zPf185HGXfzfe1dcskl2XHHHdOqVau0atUqe+yxR2655Zb33cdcX3sfdtzNdT7uBHTqzdVXX52TTjopZ5xxRqZNm5a99947gwYNyqxZs1bZf+bMmRk8eHD23nvvTJs2Laeffnq+/e1v59prr13PlTdcH3bMV5gxY0bmzJlTu3Tr1m09VfzxsHjx4vTq1SsXXXTRGvU31+vHhx33Fcz3j27y5Mn55je/mSlTpmTChAlZunRpBg4cmMWLF692H/N97X2UcV/BfP/oOnXqlB//+MeZOnVqpk6dmv333z+f//zn89hjj62yv7lePz7suK9grvOxVUA92XXXXYvjjz++Ttt2221XnHbaaavsf+qppxbbbbddnbbjjjuu2H333ddZjR83H3bMJ06cWCQpXn311fVQ3SdDkuL6669/3z7mev1bk3E33+vfvHnziiTF5MmTV9vHfK9/azLu5vu6sckmmxS//OUvV7nNXF933m/czXU+7lxBp168/fbbeeCBBzJw4MA67QMHDsy99967yn3uu+++lfp/9rOfzdSpU/POO++ss1o/Lj7KmK+w8847p0OHDunfv38mTpy4Lssk5nq1me/1Z8GCBUmSTTfddLV9zPf6tybjvoL5Xj+WLVuWq666KosXL84ee+yxyj7mev1bk3FfwVzn40pAp17Mnz8/y5YtS7t27eq0t2vXLnPnzl3lPnPnzl1l/6VLl2b+/PnrrNaPi48y5h06dMgvfvGLXHvttbnuuuvSo0eP9O/fP3fdddf6KPkTy1yvDvO9fhVFkREjRmSvvfZKz549V9vPfK9fazru5nv9+Pvf/56NNtooNTU1Of7443P99dfnU5/61Cr7muv158OMu7nOx12jahfAx0ulUqmzXhTFSm0f1H9V7azehxnzHj16pEePHrXre+yxR2bPnp3zzz8/++yzzzqt85POXF//zPf69a1vfSuPPPJI7r777g/sa77XnzUdd/O9fvTo0SMPPfRQXnvttVx77bUZOnRoJk+evNqwaK7Xjw8z7uY6H3euoFMv2rRpkw033HClK7fz5s1b6afLK7Rv336V/Rs1apTNNttsndX6cfFRxnxVdt999zz11FP1XR7vYa6Xh/n+0Zxwwgn5wx/+kIkTJ6ZTp07v29d8rz8fZtxXxXz/8Jo0aZJtt902ffr0yZgxY9KrV6/85Cc/WWVfc73+fJhxXxVznY8TAZ160aRJk+yyyy6ZMGFCnfYJEyakb9++q9xnjz32WKn/bbfdlj59+qRx48brrNaPi48y5qsybdq0dOjQob7L4z3M9fIw3z+coijyrW99K9ddd13uvPPOdO3a9QP3Md/X3kcZ91Ux39deURRZsmTJKreZ6+vO+437qpjrfKxU5910fBxdddVVRePGjYvLLrusePzxx4uTTjqpaNGiRfHss88WRVEUp512WvH1r3+9tv8//vGPonnz5sV3vvOd4vHHHy8uu+yyonHjxsXvf//7ap1Cg/Nhx/y//uu/iuuvv7548skni0cffbQ47bTTiiTFtddeW61TaJAWLVpUTJs2rZg2bVqRpBg7dmwxbdq04rnnniuKwlxfVz7suJvva+8b3/hG0bp162LSpEnFnDlzapc33nijto/5Xv8+yrib72tv5MiRxV133VXMnDmzeOSRR4rTTz+92GCDDYrbbrutKApzfV35sONurvNxJ6BTr372s58VXbp0KZo0aVL07t27zlfCDB06tNh3333r9J80aVKx8847F02aNCm22mqr4pJLLlnPFTd8H2bMzznnnGKbbbYpmjZtWmyyySbFXnvtVdx8881VqLphW/EVL/+6DB06tCgKc31d+bDjbr6vvVWNd5Ji3LhxtX3M9/r3UcbdfF97xxxzTO3fp5tvvnnRv3//2pBYFOb6uvJhx91c5+OuUhT/720WAAAAQNV4Bh0AAABKQEAHAACAEhDQAQAAoAQEdAAAACgBAR0AAABKQEAHAACAEhDQAQAAoAQEdACoglGjRmWnnXaqdhkAlNhdd92VIUOGpGPHjqlUKrnhhhs+9DGKosj555+f7t27p6amJp07d87o0aPrv1jqhYAOAPVoyJAhOeCAA1a57b777kulUsmDDz6YU045JXfcccd6ru79XXvttenXr19at26djTbaKDvuuGN+8IMf5JVXXlmvdfjhBcC7Fi9enF69euWiiy76yMc48cQT88tf/jLnn39+nnjiidx0003Zdddd67FK6pOADgD1aNiwYbnzzjvz3HPPrbTtV7/6VXbaaaf07t07G220UTbbbLMqVLhqZ5xxRg4//PB85jOfyS233JJHH300F1xwQR5++OH8+te/rnZ5AJ9IgwYNytlnn51DDz10ldvffvvtnHrqqdliiy3SokWL7Lbbbpk0aVLt9unTp+eSSy7JjTfemM997nPp2rVrdtppp9X+IJnqE9ABoB4dfPDBadu2bcaPH1+n/Y033sjVV1+dYcOGJVn1VeJx48Zl++23T9OmTbPddtvl4osvrt122GGH5YQTTqhdP+mkk1KpVPLYY48lSZYuXZqWLVvmz3/+c5Lk97//fXbYYYc0a9Ysm222WQ444IAsXrx4lTX/7W9/y+jRo3PBBRfkvPPOS9++fbPVVltlwIABufbaazN06NDavpdcckm22WabNGnSJD169KgT3p999tlUKpU89NBDtW2vvfZaKpVK7T8YJ02alEqlkjvuuCN9+vRJ8+bN07dv38yYMSNJMn78+Jx11ll5+OGHU6lUUqlUVhpLAN519NFH55577slVV12VRx55JP/f//f/5cADD8xTTz2VJLnpppuy9dZb549//GO6du2arbbaKscee+x6vzOKNSegA0A9atSoUY488siMHz8+RVHUtl9zzTV5++2387WvfW2V+/3P//xPzjjjjPzoRz/K9OnTM3r06Hz/+9/P5ZdfniTp169fnasikydPTps2bTJ58uQkyf3335+33nore+65Z+bMmZOvfOUrOeaYYzJ9+vRMmjQphx56aJ163us3v/lNNtpoowwfPnyV2zfeeOMkyfXXX58TTzwxJ598ch599NEcd9xxOfroozNx4sQPO0w544wzcsEFF2Tq1Klp1KhRjjnmmCTJ4YcfnpNPPjmf/vSnM2fOnMyZMyeHH374hz4+wMfdM888k9/+9re55pprsvfee2ebbbbJKaeckr322ivjxo1LkvzjH//Ic889l2uuuSZXXHFFxo8fnwceeCBf/OIXq1w9q9Oo2gUAwMfNMccck/POOy+TJk3Kfvvtl+Td29sPPfTQbLLJJqvc54c//GEuuOCC2tsYu3btmscffzw///nPM3To0PTr1y8nnnhi5s+fnw033DCPPfZYzjzzzEyaNCnDhw/PpEmTsssuu2SjjTbKk08+maVLl+bQQw9Nly5dkiQ77LDDaut96qmnsvXWW6dx48bve17nn39+jjrqqNogP2LEiEyZMiXnn39+7XmuqR/96EfZd999kySnnXZaDjrooLz11ltp1qxZNtpoozRq1Cjt27f/UMcE+CR58MEHUxRFunfvXqd9yZIltY9QLV++PEuWLMkVV1xR2++yyy7LLrvskhkzZqRHjx7rvW7en4AOAPVsu+22S9++ffOrX/0q++23X5555pn85S9/yW233bbK/i+99FJmz56dYcOG5d/+7d9q25cuXZrWrVsnSXr27JnNNtsskydPTuPGjdOrV6987nOfy3//938neffW8RWBt1evXunfv3922GGHfPazn83AgQPzxS9+cbU/HCiKIpVK5QPPa/r06fn3f//3Om177rlnfvKTn3zwoPyLHXfcsfb/O3TokCSZN29ettxyyw99LIBPouXLl2fDDTfMAw88kA033LDOto022ijJu3++NmrUqE6I33777ZMks2bNEtBLyC3uALAODBs2LNdee20WLlyYcePGpUuXLunfv/8q+y5fvjzJu7e5P/TQQ7XLo48+milTpiRJKpVK9tlnn0yaNCmTJ09Ov3790rNnzyxbtix///vfc++996Zfv35Jkg033DATJkzILbfckk996lP56U9/mh49emTmzJmr/Pzu3bvnmWeeyTvvvPOB5/WvQf694X6DDTaobVthdcd879X6FfuvGAcAPtjOO++cZcuWZd68edl2223rLCvuQNpzzz2zdOnSPPPMM7X7Pfnkk0lSe4cV5SKgA8A68KUvfSkbbrhhrrzyylx++eU5+uijV3uVul27dtliiy3yj3/8Y6V/ZHXt2rW234rn0CdNmpR+/fqlUqlk7733zvnnn58333wze+65Z23fSqWSPffcM2eddVamTZuWJk2a5Prrr1/l53/1q1/N66+/XueldO/12muvJXn3qsvdd99dZ9u9995bezVm8803T5LMmTOndvt7Xxi3ppo0aZJly5Z96P0APm5ef/312h/aJsnMmTPz0EMPZdasWenevXu+9rWv5cgjj8x1112XmTNn5v77788555yTP/3pT0mSAw44IL17984xxxyTadOm5YEHHshxxx2XAQMGrHRrPOXgFncAWAc22mijHH744Tn99NOzYMGCHHXUUe/bf9SoUfn2t7+dVq1aZdCgQVmyZEmmTp2aV199NSNGjEiS2ufQGzVqlL333ru27eSTT07v3r3TqlWrJMlf//rX3HHHHRk4cGDatm2bv/71r3nppZdqg/S/2m233XLqqafm5JNPzgsvvJBDDjkkHTt2zNNPP51LL700e+21V0488cT8x3/8R770pS+ld+/e6d+/f2666aZcd911uf3225MkzZo1y+67754f//jH2WqrrTJ//vx873vf+9Bjt9VWW9X+I7RTp05p2bJlampqPvRxABq6qVOn1nnHx4q/D4YOHZrx48dn3LhxOfvss2v//N5ss82yxx57ZPDgwUnevbPppptuygknnJB99tknLVq0yKBBg3LBBRdU5XxYAwUAsE7ce++9RZJi4MCBK20788wzi169etVp+81vflPstNNORZMmTYpNNtmk2GeffYrrrruudvvy5cuLzTffvOjTp09t27Rp04okxSmnnFLb9vjjjxef/exni80337yoqakpunfvXvz0pz/9wHqvvvrqYp999ilatmxZtGjRothxxx2LH/zgB8Wrr75a2+fiiy8utt5666Jx48ZF9+7diyuuuKLOMR5//PFi9913L5o1a1bstNNOxW233VYkKSZOnFgURVFMnDixSFLnmCvOYebMmUVRFMVbb71VHHbYYcXGG29cJCnGjRv3gbUDwMdBpShW850rAAAAwHrjGXQAAAAoAQEdAAAASkBABwAAgBIQ0AEAAKAEBHQAAAAoAQEdAAAASkBABwAAgBIQ0AEAAKAEBHQAAAAoAQEdAAAASkBABwAAgBIQ0AEAAKAEBHQAAAAoAQEdAAAASkBABwAAgBIQ0AEAAKAEBHQAAAAoAQEdAAAASkBABwAAgBIQ0AEAAKAEBHQAAAAoAQEdAAAASkBABwAAgBIQ0AEAAKAEBHQAAAAogf8f6iW7wDj3mBAAAAAASUVORK5CYII='}
+2024-03-26 10:01:04 [INFO] Executing Step 7: ResultParsing
+2024-03-26 22:32:12 [INFO] Question: delete likes column, return a dataframe
+2024-03-26 22:32:13 [INFO] Running PandasAI with openai LLM...
+2024-03-26 22:32:13 [INFO] Prompt ID: 40344412-bcf3-4b40-83c5-11ad8cf875c0
+2024-03-26 22:32:13 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-03-26 22:32:13 [INFO] Executing Step 0: ValidatePipelineInput
+2024-03-26 22:32:13 [INFO] Executing Step 1: CacheLookup
+2024-03-26 22:32:13 [INFO] Executing Step 2: PromptGeneration
+2024-03-26 22:32:13 [INFO] Using prompt: dfs[0]:
+  name: null
+  description: null
+  type: pd.DataFrame
+  rows: 44
+  columns: 12
+  schema:
+    fields:
+    - name: videoId
+      type: object
+      samples:
+      - cZAfcDCQnC4
+      - FHiQIfb5gOc
+      - WxN3tkPkAvw
+    - name: title
+      type: object
+      samples:
+      - "New cozy Art Vlog this Sunday! :)\u2600\uFE0F"
+      - "A whole week of painting at Artschool \U0001F338 Cozy Art Vlog"
+      - "New Art Vlog tomorrow & Limited Prints available on valerielin.com \u2728"
+    - name: description
+      type: object
+      samples:
+      - "The Law of Cause and effect is the most essential rule in life to see change\
+        \ happening and to create new opportunities for yourself. Like a Magician.\
+        \ In this video we will move into our new studio and I will teach you my most\
+        \ three helpful habits which helped me the most to get closer to my goals\
+        \ and a higher Version of myself. I hope I can inspire many of you with this\
+        \ video.\n\n\u2B50 Prints : https://www.valerielin.com\n\n\U0001F338 Patreon\
+        \ (Podcast, Discord etc): https://www.patreon.com/valerielin\n\n\U0001F3A8\
+        \ Painting Demo: https://valerielin.gumroad.com/l/cp2woe\n\n\U0001F3BB Vlog\
+        \ Music: https://www.epidemicsound.com/referral/depurf\n\n\U0001F9F8 Amazon\
+        \ Storefront with my Art Supplies: \nhttps://www.amazon.com/shop/valerielin\
+        \ \nhttps://www.amazon.de/shop/valerielin\n\n( Some links are affiliate links\
+        \ to support my work )"
+      - .nan
+      - "In this Art Vlog you will see the whole screen print process of these cute\
+        \ multiple color screen prints. Follow me along being at art school and visting\
+        \ other art students during my break. Hope you will enjoy this art school\
+        \ Vlog! \n\n\n\u2728Follow me on Instagram for more content\u2728\nIntsa:\
+        \    https://www.instagram.com/itsvalerielin/\nTik Tok: https://www.tiktok.com/@itsvalerielin?\n\
+        \n\n\U0001F338Antonias Instagram: \n https://www.instagram.com/_mxrxxe\n\n\
+        \U0001F3B5Music:\nDontcry - Redbone\nIG: https://www.instagram.com/dontcry.beats/\n\
+        Spotify: https://open.spotify.com/artist/3vzJueN7TkCtYpz1myVmDU\n\nLukrembo\
+        \ - Rudolph\nInstagram : https://www.instagram.com/lukrembo\nSpotify:https://open.spotify.com/artist/2mvFGnu3tPO49WSrFZ4zVR\n\
+        \n\n\U0001F9C3My vlogging equipment:\n\U0001F3AC Video equipment:\n-Camera:\
+        \ https://amzn.to/2S7OTKk  (Body only)\n-Lens: https://amzn.to/3uZlCjd\n-Smartphone\
+        \ Holder: https://amzn.to/3tXwRHF \n-Portable External Harddrive\n-Editing\
+        \ program: Adobe Premiere Pro \n-Thumbnails in Photoshop\n-Animations After\
+        \ Effects\n-I film, edit etc everything on my own\n\nThis Video was recorded\
+        \ last year \n(Links to products are affiliate Links)\n______________________________________________________________________________________________\n\
+        \nHey everyone, I\xB4m Valerie and moved almost two years ago to Berlin to\
+        \ study Fine arts. I love creating and I want to share my progress of becoming\
+        \ an artist with you guys. Also I like to give you good and cozy vibes :)\
+        \ Much love, Valerie \U0001F338"
+    - name: publishedAt
+      type: object
+      samples:
+      - '2023-08-17T15:05:34Z'
+      - '2021-08-19T16:00:18Z'
+      - '2021-11-20T11:11:52Z'
+    - name: thumbnail
+      type: object
+      samples:
+      - https://i.ytimg.com/vi/8jAZzDCMAqM/hqdefault.jpg
+      - https://i.ytimg.com/vi/7EARaPiM_q4/hqdefault.jpg
+      - https://i.ytimg.com/vi/36AITkPVR_A/hqdefault.jpg
+    - name: viewsCount
+      type: int64
+      samples:
+      - 481729
+      - 253836
+      - 199195
+    - name: likesCount
+      type: int64
+      samples:
+      - 33712
+      - 43600
+      - 4718
+    - name: commentCount
+      type: int64
+      samples:
+      - 151
+      - 612
+      - 85
+    - name: duration
+      type: int64
+      samples:
+      - 24
+      - 13
+      - 10
+    - name: unique_tags
+      type: object
+      samples:
+      - '[''Artstudent'', ''room transformation ideas'', ''art studio room makeover'',
+        ''art studio'', ''artstudio'', ''studio tour'', ''studio makeover'', ''artvlog'',
+        ''art student'', ''room makeover 2021'', ''artist vlog'', ''oilpainting'',
+        ''a week in my life vlog'', ''room transformation aesthetic'', ''art student
+        vlogs'', ''Art Vlog'', ''home studio setup'', ''Studio makeover'', ''room
+        makeover ideas'', ''studio vlog'', ''room tour'', ''artmuseum'', ''a week
+        in my life aesthetic'', ''art studio tour'', ''room makeover aesthetic'',
+        ''art studio vlog'', ''homestudio'']'
+      - '[]'
+      - '[''paint with me'', ''aesthetic vlog'', ''instagram detox'', ''art blog'',
+        ''paintwithme'', ''tiktok detox'', ''art therapy'', ''oil painting'', ''artvlog'',
+        ''art student'', ''personal growth'', ''peaceful mind'', ''painting'', ''peaceful
+        vlog'', ''cozy vlog'', ''philosophy'', ''inspirational video'', ''calm vlog'',
+        ''painting vlog'', ''living alone diaries'', ''art vlog'', ''depression'',
+        ''mental health awareness'', ''phone addiction'', ''studio vlog'', ''mental
+        health'', ''art'', ''motivation vlog'', ''social media detox'', ''dopamine
+        detox'', ''social media'', ''paint'']'
+    - name: categoryId
+      type: int64
+      samples:
+      - 22
+      - 27
+      - 24
+    - name: most_used_categories
+      type: object
+      samples:
+      - '[(''Entertainment'', 1)]'
+      - '[(''People & Blogs'', 1)]'
+      - '[(''Education'', 1)]'
+
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ delete likes column, return a dataframe
+
+Variable `dfs: list[pd.DataFrame]` is already declared.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+If you are asked to plot a chart, use "matplotlib" for charts, save as png.
+
+
+Generate python code and return full updated code:
+2024-03-26 22:32:13 [INFO] Executing Step 3: CodeGenerator
+2024-03-26 22:32:17 [INFO] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-03-26 22:32:17 [INFO] Prompt used:
+            dfs[0]:
+  name: null
+  description: null
+  type: pd.DataFrame
+  rows: 44
+  columns: 12
+  schema:
+    fields:
+    - name: videoId
+      type: object
+      samples:
+      - cZAfcDCQnC4
+      - FHiQIfb5gOc
+      - WxN3tkPkAvw
+    - name: title
+      type: object
+      samples:
+      - "New cozy Art Vlog this Sunday! :)\u2600\uFE0F"
+      - "A whole week of painting at Artschool \U0001F338 Cozy Art Vlog"
+      - "New Art Vlog tomorrow & Limited Prints available on valerielin.com \u2728"
+    - name: description
+      type: object
+      samples:
+      - "The Law of Cause and effect is the most essential rule in life to see change\
+        \ happening and to create new opportunities for yourself. Like a Magician.\
+        \ In this video we will move into our new studio and I will teach you my most\
+        \ three helpful habits which helped me the most to get closer to my goals\
+        \ and a higher Version of myself. I hope I can inspire many of you with this\
+        \ video.\n\n\u2B50 Prints : https://www.valerielin.com\n\n\U0001F338 Patreon\
+        \ (Podcast, Discord etc): https://www.patreon.com/valerielin\n\n\U0001F3A8\
+        \ Painting Demo: https://valerielin.gumroad.com/l/cp2woe\n\n\U0001F3BB Vlog\
+        \ Music: https://www.epidemicsound.com/referral/depurf\n\n\U0001F9F8 Amazon\
+        \ Storefront with my Art Supplies: \nhttps://www.amazon.com/shop/valerielin\
+        \ \nhttps://www.amazon.de/shop/valerielin\n\n( Some links are affiliate links\
+        \ to support my work )"
+      - .nan
+      - "In this Art Vlog you will see the whole screen print process of these cute\
+        \ multiple color screen prints. Follow me along being at art school and visting\
+        \ other art students during my break. Hope you will enjoy this art school\
+        \ Vlog! \n\n\n\u2728Follow me on Instagram for more content\u2728\nIntsa:\
+        \    https://www.instagram.com/itsvalerielin/\nTik Tok: https://www.tiktok.com/@itsvalerielin?\n\
+        \n\n\U0001F338Antonias Instagram: \n https://www.instagram.com/_mxrxxe\n\n\
+        \U0001F3B5Music:\nDontcry - Redbone\nIG: https://www.instagram.com/dontcry.beats/\n\
+        Spotify: https://open.spotify.com/artist/3vzJueN7TkCtYpz1myVmDU\n\nLukrembo\
+        \ - Rudolph\nInstagram : https://www.instagram.com/lukrembo\nSpotify:https://open.spotify.com/artist/2mvFGnu3tPO49WSrFZ4zVR\n\
+        \n\n\U0001F9C3My vlogging equipment:\n\U0001F3AC Video equipment:\n-Camera:\
+        \ https://amzn.to/2S7OTKk  (Body only)\n-Lens: https://amzn.to/3uZlCjd\n-Smartphone\
+        \ Holder: https://amzn.to/3tXwRHF \n-Portable External Harddrive\n-Editing\
+        \ program: Adobe Premiere Pro \n-Thumbnails in Photoshop\n-Animations After\
+        \ Effects\n-I film, edit etc everything on my own\n\nThis Video was recorded\
+        \ last year \n(Links to products are affiliate Links)\n______________________________________________________________________________________________\n\
+        \nHey everyone, I\xB4m Valerie and moved almost two years ago to Berlin to\
+        \ study Fine arts. I love creating and I want to share my progress of becoming\
+        \ an artist with you guys. Also I like to give you good and cozy vibes :)\
+        \ Much love, Valerie \U0001F338"
+    - name: publishedAt
+      type: object
+      samples:
+      - '2023-08-17T15:05:34Z'
+      - '2021-08-19T16:00:18Z'
+      - '2021-11-20T11:11:52Z'
+    - name: thumbnail
+      type: object
+      samples:
+      - https://i.ytimg.com/vi/8jAZzDCMAqM/hqdefault.jpg
+      - https://i.ytimg.com/vi/7EARaPiM_q4/hqdefault.jpg
+      - https://i.ytimg.com/vi/36AITkPVR_A/hqdefault.jpg
+    - name: viewsCount
+      type: int64
+      samples:
+      - 481729
+      - 253836
+      - 199195
+    - name: likesCount
+      type: int64
+      samples:
+      - 33712
+      - 43600
+      - 4718
+    - name: commentCount
+      type: int64
+      samples:
+      - 151
+      - 612
+      - 85
+    - name: duration
+      type: int64
+      samples:
+      - 24
+      - 13
+      - 10
+    - name: unique_tags
+      type: object
+      samples:
+      - '[''Artstudent'', ''room transformation ideas'', ''art studio room makeover'',
+        ''art studio'', ''artstudio'', ''studio tour'', ''studio makeover'', ''artvlog'',
+        ''art student'', ''room makeover 2021'', ''artist vlog'', ''oilpainting'',
+        ''a week in my life vlog'', ''room transformation aesthetic'', ''art student
+        vlogs'', ''Art Vlog'', ''home studio setup'', ''Studio makeover'', ''room
+        makeover ideas'', ''studio vlog'', ''room tour'', ''artmuseum'', ''a week
+        in my life aesthetic'', ''art studio tour'', ''room makeover aesthetic'',
+        ''art studio vlog'', ''homestudio'']'
+      - '[]'
+      - '[''paint with me'', ''aesthetic vlog'', ''instagram detox'', ''art blog'',
+        ''paintwithme'', ''tiktok detox'', ''art therapy'', ''oil painting'', ''artvlog'',
+        ''art student'', ''personal growth'', ''peaceful mind'', ''painting'', ''peaceful
+        vlog'', ''cozy vlog'', ''philosophy'', ''inspirational video'', ''calm vlog'',
+        ''painting vlog'', ''living alone diaries'', ''art vlog'', ''depression'',
+        ''mental health awareness'', ''phone addiction'', ''studio vlog'', ''mental
+        health'', ''art'', ''motivation vlog'', ''social media detox'', ''dopamine
+        detox'', ''social media'', ''paint'']'
+    - name: categoryId
+      type: int64
+      samples:
+      - 22
+      - 27
+      - 24
+    - name: most_used_categories
+      type: object
+      samples:
+      - '[(''Entertainment'', 1)]'
+      - '[(''People & Blogs'', 1)]'
+      - '[(''Education'', 1)]'
+
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ delete likes column, return a dataframe
+
+Variable `dfs: list[pd.DataFrame]` is already declared.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+If you are asked to plot a chart, use "matplotlib" for charts, save as png.
+
+
+Generate python code and return full updated code:
+            
+2024-03-26 22:32:17 [INFO] Code generated:
+            ```
+            # TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+dfs[0] = dfs[0].drop(columns=['likesCount'])
+
+# Declare result var
+result = {
+    "type": "dataframe",
+    "value": dfs[0]
+}
+            ```
+            
+2024-03-26 22:32:17 [INFO] Executing Step 4: CachePopulation
+2024-03-26 22:32:17 [INFO] Executing Step 5: CodeExecution
+2024-03-26 22:32:17 [INFO] 
+Code running:
+```
+dfs[0] = dfs[0].drop(columns=['likesCount'])
+result = {'type': 'dataframe', 'value': dfs[0]}
+        ```
+2024-03-26 22:32:17 [INFO] Executing Step 6: ResultValidation
+2024-03-26 22:32:17 [INFO] Answer: {'type': 'dataframe', 'value':         videoId                                              title  ... categoryId     most_used_categories
+0   w4tF1YXJ9Uw                New cozy Art Vlog this Sunday! :)☀️  ...         24   [('Entertainment', 1)]
+1   zH9CcqhESZ4         Watercolor Painting for the new Art Vlog 🧙  ...         24   [('Entertainment', 1)]
+2   9XH-hTeHRUQ  A peaceful Watercolor Painting 🦋 Full Art Vlog...  ...         24   [('Entertainment', 1)]
+3   36AITkPVR_A  New Art Vlog tomorrow & Limited Prints availab...  ...         24   [('Entertainment', 1)]
+4   7EARaPiM_q4  Cinematography of the new Art Vlog✨ New prints...  ...         24   [('Entertainment', 1)]
+5   iaKEN-srGbw  A Canvas for a new Oil Painting 🥰 New Video so...  ...         24   [('Entertainment', 1)]
+6   LqGfq3uNw3g  Painting with golden Oil Color and Crystals ❄️...  ...         24   [('Entertainment', 1)]
+7   oqanU9zI7Vg  Why Phone Addiction ruins our Art & Life ☁️ He...  ...         24   [('Entertainment', 1)]
+8   uFoDD8baMnU  Happy new year everyone🤍New Video tomorrow :) ...  ...         24   [('Entertainment', 1)]
+9   49dzCqKeybI  Accepting & Rising with the Ups and Downs of L...  ...         24   [('Entertainment', 1)]
+10  Y3NkndXL0-0  Painting so much that I injure my hand 🌻 Cozy ...  ...         24   [('Entertainment', 1)]
+11  RbhgeonuPMk  Learn to Let Go and Evolve as an Artist 💔🌱 Spe...  ...         24   [('Entertainment', 1)]
+12  ohchWUG7gx8  Learning rare & old Craftsmanship 💫 Gilding Ma...  ...         24   [('Entertainment', 1)]
+13  pTy-zpZXJmA  Getting the best out of being Alone ⭐ Klimt Mu...  ...         24   [('Entertainment', 1)]
+14  cZAfcDCQnC4  How to know what to do? 💫Watercolor Painting, ...  ...         24   [('Entertainment', 1)]
+15  NGQsngZ_AeA  How to strengthen your Inner Voice 🍃 Living Al...  ...         24   [('Entertainment', 1)]
+16  rsuIU4ch-7U  Productive and Motivated during Online Art Sch...  ...         24   [('Entertainment', 1)]
+17  HgzRcOIZ_ec  Why your life is not short ⏳ Draw & Paint with...  ...         24   [('Entertainment', 1)]
+18  iflmiiXmzQg  Importance of Balance and keeping Dreams to Yo...  ...         27       [('Education', 1)]
+19  tx1TsN8lOqg  Make Life feel less like a bad Loop 🙂 Aquarium...  ...         24   [('Entertainment', 1)]
+20  LL8A1qF6KOU  Overcome Fear of the Blank Page 🤍 Hometown vis...  ...         24   [('Entertainment', 1)]
+21  25iX4DvkhGM  How to Change your Life ✨ Cozy Art Studio move...  ...         24   [('Entertainment', 1)]
+22  nrMvJfOSBf4  Why I spend so much time alone 🌴 Museum visit,...  ...         24   [('Entertainment', 1)]
+23  i7A3CEUuHzM  Master Studies improved my Art 🤝 Painting with...  ...         24   [('Entertainment', 1)]
+24  Bnb-HRoeDNk  Dealing with Existential Crisis & Anxiety 🌱 Ma...  ...         24   [('Entertainment', 1)]
+25  jZ4tOL8FB_g  Find Inspiration for your Art ✨Botanical Garde...  ...         24   [('Entertainment', 1)]
+26  DUz9ZM-j8iw  screen printing at art school 🌷 Cute Art Schoo...  ...         24   [('Entertainment', 1)]
+27  GPt4wzG13Ck  The Secret why you´re always Tired ⭐️ Plane Mu...  ...         24   [('Entertainment', 1)]
+28  uFhusrnYtR4  A whole week of painting at Artschool 🌸 Cozy A...  ...         22  [('People & Blogs', 1)]
+29  -VJ4rkSNHBM  Teach yourself Anything 🧙🏻 Building a PC, Wate...  ...         24   [('Entertainment', 1)]
+30  XcvI-0Mk0xg  Cultivate a Mind to Mastery & Full Potential ☀...  ...         24   [('Entertainment', 1)]
+31  AAXJXReDGa4  Thoughts about a Clear Mind 🌞 Oil Painting and...  ...         24   [('Entertainment', 1)]
+32  9nmlWGt_054  Transform your Life through Thoughts & Creatio...  ...         24   [('Entertainment', 1)]
+33  qKrVMM_I3y4  Keys to Happiness & High Performance ☀️ Painti...  ...         24   [('Entertainment', 1)]
+34  FfSFvlIvGz0  Make Perfection your Strength🙏🏼 Oil Painting o...  ...         24   [('Entertainment', 1)]
+35  HHuI2ok8wmM  Peaceful & Inspiring Ambient Music to draw, re...  ...         24   [('Entertainment', 1)]
+36  UgXNbRbvkNQ  How your Fears will help you grow 🕳️🐇 Leaving ...  ...         24   [('Entertainment', 1)]
+37  fR-37iygzsY  Loneliness improved my Art and Mindset 🌱 Fores...  ...         24   [('Entertainment', 1)]
+38  VhBiSC2WP4g  How Fascination leads to your Authentic Self 🕯...  ...         24   [('Entertainment', 1)]
+39  PBLX5LUN-VY  Building a Canvas and making an Oil painting 🎨...  ...         24   [('Entertainment', 1)]
+40  8jAZzDCMAqM  Magic Art Studio Makeover 🦋 Art Museum visit +...  ...         24   [('Entertainment', 1)]
+41  yFBIsJeYaX8  Things I learned about Healthy Relationships ❤...  ...         24   [('Entertainment', 1)]
+42  FHiQIfb5gOc  Why we Suffer and what we learn from Dark days...  ...         24   [('Entertainment', 1)]
+43  WxN3tkPkAvw  Peaceful & Inspiring Ambient Music to draw, re...  ...         24   [('Entertainment', 1)]
+
+[44 rows x 11 columns]}
+2024-03-26 22:32:17 [INFO] Executing Step 7: ResultParsing
+2024-03-26 22:39:18 [INFO] Question: delete likes column, return a dataframe
+2024-03-26 22:39:18 [INFO] Running PandasAI with openai LLM...
+2024-03-26 22:39:18 [INFO] Prompt ID: c5f319da-1b4c-45c3-8d34-f05abc87dc49
+2024-03-26 22:39:18 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-03-26 22:39:18 [INFO] Executing Step 0: ValidatePipelineInput
+2024-03-26 22:39:18 [INFO] Executing Step 1: CacheLookup
+2024-03-26 22:39:18 [INFO] Using cached response
+2024-03-26 22:39:18 [INFO] Executing Step 2: PromptGeneration
+2024-03-26 22:39:18 [INFO] Executing Step 2: Skipping...
+2024-03-26 22:39:18 [INFO] Executing Step 3: CodeGenerator
+2024-03-26 22:39:18 [INFO] Executing Step 3: Skipping...
+2024-03-26 22:39:18 [INFO] Executing Step 4: CachePopulation
+2024-03-26 22:39:18 [INFO] Executing Step 4: Skipping...
+2024-03-26 22:39:18 [INFO] Executing Step 5: CodeExecution
+2024-03-26 22:39:18 [INFO] 
+Code running:
+```
+dfs[0] = dfs[0].drop(columns=['likesCount'])
+result = {'type': 'dataframe', 'value': dfs[0]}
+        ```
+2024-03-26 22:39:18 [INFO] Executing Step 6: ResultValidation
+2024-03-26 22:39:18 [INFO] Answer: {'type': 'dataframe', 'value':         videoId                                              title  ... categoryId     most_used_categories
+0   w4tF1YXJ9Uw                New cozy Art Vlog this Sunday! :)☀️  ...         24   [('Entertainment', 1)]
+1   zH9CcqhESZ4         Watercolor Painting for the new Art Vlog 🧙  ...         24   [('Entertainment', 1)]
+2   9XH-hTeHRUQ  A peaceful Watercolor Painting 🦋 Full Art Vlog...  ...         24   [('Entertainment', 1)]
+3   36AITkPVR_A  New Art Vlog tomorrow & Limited Prints availab...  ...         24   [('Entertainment', 1)]
+4   7EARaPiM_q4  Cinematography of the new Art Vlog✨ New prints...  ...         24   [('Entertainment', 1)]
+5   iaKEN-srGbw  A Canvas for a new Oil Painting 🥰 New Video so...  ...         24   [('Entertainment', 1)]
+6   LqGfq3uNw3g  Painting with golden Oil Color and Crystals ❄️...  ...         24   [('Entertainment', 1)]
+7   oqanU9zI7Vg  Why Phone Addiction ruins our Art & Life ☁️ He...  ...         24   [('Entertainment', 1)]
+8   uFoDD8baMnU  Happy new year everyone🤍New Video tomorrow :) ...  ...         24   [('Entertainment', 1)]
+9   49dzCqKeybI  Accepting & Rising with the Ups and Downs of L...  ...         24   [('Entertainment', 1)]
+10  Y3NkndXL0-0  Painting so much that I injure my hand 🌻 Cozy ...  ...         24   [('Entertainment', 1)]
+11  RbhgeonuPMk  Learn to Let Go and Evolve as an Artist 💔🌱 Spe...  ...         24   [('Entertainment', 1)]
+12  ohchWUG7gx8  Learning rare & old Craftsmanship 💫 Gilding Ma...  ...         24   [('Entertainment', 1)]
+13  pTy-zpZXJmA  Getting the best out of being Alone ⭐ Klimt Mu...  ...         24   [('Entertainment', 1)]
+14  cZAfcDCQnC4  How to know what to do? 💫Watercolor Painting, ...  ...         24   [('Entertainment', 1)]
+15  NGQsngZ_AeA  How to strengthen your Inner Voice 🍃 Living Al...  ...         24   [('Entertainment', 1)]
+16  rsuIU4ch-7U  Productive and Motivated during Online Art Sch...  ...         24   [('Entertainment', 1)]
+17  HgzRcOIZ_ec  Why your life is not short ⏳ Draw & Paint with...  ...         24   [('Entertainment', 1)]
+18  iflmiiXmzQg  Importance of Balance and keeping Dreams to Yo...  ...         27       [('Education', 1)]
+19  tx1TsN8lOqg  Make Life feel less like a bad Loop 🙂 Aquarium...  ...         24   [('Entertainment', 1)]
+20  LL8A1qF6KOU  Overcome Fear of the Blank Page 🤍 Hometown vis...  ...         24   [('Entertainment', 1)]
+21  25iX4DvkhGM  How to Change your Life ✨ Cozy Art Studio move...  ...         24   [('Entertainment', 1)]
+22  nrMvJfOSBf4  Why I spend so much time alone 🌴 Museum visit,...  ...         24   [('Entertainment', 1)]
+23  i7A3CEUuHzM  Master Studies improved my Art 🤝 Painting with...  ...         24   [('Entertainment', 1)]
+24  Bnb-HRoeDNk  Dealing with Existential Crisis & Anxiety 🌱 Ma...  ...         24   [('Entertainment', 1)]
+25  jZ4tOL8FB_g  Find Inspiration for your Art ✨Botanical Garde...  ...         24   [('Entertainment', 1)]
+26  DUz9ZM-j8iw  screen printing at art school 🌷 Cute Art Schoo...  ...         24   [('Entertainment', 1)]
+27  GPt4wzG13Ck  The Secret why you´re always Tired ⭐️ Plane Mu...  ...         24   [('Entertainment', 1)]
+28  uFhusrnYtR4  A whole week of painting at Artschool 🌸 Cozy A...  ...         22  [('People & Blogs', 1)]
+29  -VJ4rkSNHBM  Teach yourself Anything 🧙🏻 Building a PC, Wate...  ...         24   [('Entertainment', 1)]
+30  XcvI-0Mk0xg  Cultivate a Mind to Mastery & Full Potential ☀...  ...         24   [('Entertainment', 1)]
+31  AAXJXReDGa4  Thoughts about a Clear Mind 🌞 Oil Painting and...  ...         24   [('Entertainment', 1)]
+32  9nmlWGt_054  Transform your Life through Thoughts & Creatio...  ...         24   [('Entertainment', 1)]
+33  qKrVMM_I3y4  Keys to Happiness & High Performance ☀️ Painti...  ...         24   [('Entertainment', 1)]
+34  FfSFvlIvGz0  Make Perfection your Strength🙏🏼 Oil Painting o...  ...         24   [('Entertainment', 1)]
+35  HHuI2ok8wmM  Peaceful & Inspiring Ambient Music to draw, re...  ...         24   [('Entertainment', 1)]
+36  UgXNbRbvkNQ  How your Fears will help you grow 🕳️🐇 Leaving ...  ...         24   [('Entertainment', 1)]
+37  fR-37iygzsY  Loneliness improved my Art and Mindset 🌱 Fores...  ...         24   [('Entertainment', 1)]
+38  VhBiSC2WP4g  How Fascination leads to your Authentic Self 🕯...  ...         24   [('Entertainment', 1)]
+39  PBLX5LUN-VY  Building a Canvas and making an Oil painting 🎨...  ...         24   [('Entertainment', 1)]
+40  8jAZzDCMAqM  Magic Art Studio Makeover 🦋 Art Museum visit +...  ...         24   [('Entertainment', 1)]
+41  yFBIsJeYaX8  Things I learned about Healthy Relationships ❤...  ...         24   [('Entertainment', 1)]
+42  FHiQIfb5gOc  Why we Suffer and what we learn from Dark days...  ...         24   [('Entertainment', 1)]
+43  WxN3tkPkAvw  Peaceful & Inspiring Ambient Music to draw, re...  ...         24   [('Entertainment', 1)]
+
+[44 rows x 11 columns]}
+2024-03-26 22:39:18 [INFO] Executing Step 7: ResultParsing
+2024-03-26 22:42:24 [INFO] Question: delete likes column, return a dataframe
+2024-03-26 22:42:24 [INFO] Running PandasAI with openai LLM...
+2024-03-26 22:42:24 [INFO] Prompt ID: 61cdcfa8-00d7-45ee-8d60-2c69762fe435
+2024-03-26 22:42:24 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-03-26 22:42:24 [INFO] Executing Step 0: ValidatePipelineInput
+2024-03-26 22:42:24 [INFO] Executing Step 1: CacheLookup
+2024-03-26 22:42:24 [INFO] Using cached response
+2024-03-26 22:42:24 [INFO] Executing Step 2: PromptGeneration
+2024-03-26 22:42:24 [INFO] Executing Step 2: Skipping...
+2024-03-26 22:42:24 [INFO] Executing Step 3: CodeGenerator
+2024-03-26 22:42:24 [INFO] Executing Step 3: Skipping...
+2024-03-26 22:42:24 [INFO] Executing Step 4: CachePopulation
+2024-03-26 22:42:24 [INFO] Executing Step 4: Skipping...
+2024-03-26 22:42:24 [INFO] Executing Step 5: CodeExecution
+2024-03-26 22:42:24 [INFO] 
+Code running:
+```
+dfs[0] = dfs[0].drop(columns=['likesCount'])
+result = {'type': 'dataframe', 'value': dfs[0]}
+        ```
+2024-03-26 22:42:24 [INFO] Executing Step 6: ResultValidation
+2024-03-26 22:42:24 [INFO] Answer: {'type': 'dataframe', 'value':         videoId                                              title  ... categoryId     most_used_categories
+0   w4tF1YXJ9Uw                New cozy Art Vlog this Sunday! :)☀️  ...         24   [('Entertainment', 1)]
+1   zH9CcqhESZ4         Watercolor Painting for the new Art Vlog 🧙  ...         24   [('Entertainment', 1)]
+2   9XH-hTeHRUQ  A peaceful Watercolor Painting 🦋 Full Art Vlog...  ...         24   [('Entertainment', 1)]
+3   36AITkPVR_A  New Art Vlog tomorrow & Limited Prints availab...  ...         24   [('Entertainment', 1)]
+4   7EARaPiM_q4  Cinematography of the new Art Vlog✨ New prints...  ...         24   [('Entertainment', 1)]
+5   iaKEN-srGbw  A Canvas for a new Oil Painting 🥰 New Video so...  ...         24   [('Entertainment', 1)]
+6   LqGfq3uNw3g  Painting with golden Oil Color and Crystals ❄️...  ...         24   [('Entertainment', 1)]
+7   oqanU9zI7Vg  Why Phone Addiction ruins our Art & Life ☁️ He...  ...         24   [('Entertainment', 1)]
+8   uFoDD8baMnU  Happy new year everyone🤍New Video tomorrow :) ...  ...         24   [('Entertainment', 1)]
+9   49dzCqKeybI  Accepting & Rising with the Ups and Downs of L...  ...         24   [('Entertainment', 1)]
+10  Y3NkndXL0-0  Painting so much that I injure my hand 🌻 Cozy ...  ...         24   [('Entertainment', 1)]
+11  RbhgeonuPMk  Learn to Let Go and Evolve as an Artist 💔🌱 Spe...  ...         24   [('Entertainment', 1)]
+12  ohchWUG7gx8  Learning rare & old Craftsmanship 💫 Gilding Ma...  ...         24   [('Entertainment', 1)]
+13  pTy-zpZXJmA  Getting the best out of being Alone ⭐ Klimt Mu...  ...         24   [('Entertainment', 1)]
+14  cZAfcDCQnC4  How to know what to do? 💫Watercolor Painting, ...  ...         24   [('Entertainment', 1)]
+15  NGQsngZ_AeA  How to strengthen your Inner Voice 🍃 Living Al...  ...         24   [('Entertainment', 1)]
+16  rsuIU4ch-7U  Productive and Motivated during Online Art Sch...  ...         24   [('Entertainment', 1)]
+17  HgzRcOIZ_ec  Why your life is not short ⏳ Draw & Paint with...  ...         24   [('Entertainment', 1)]
+18  iflmiiXmzQg  Importance of Balance and keeping Dreams to Yo...  ...         27       [('Education', 1)]
+19  tx1TsN8lOqg  Make Life feel less like a bad Loop 🙂 Aquarium...  ...         24   [('Entertainment', 1)]
+20  LL8A1qF6KOU  Overcome Fear of the Blank Page 🤍 Hometown vis...  ...         24   [('Entertainment', 1)]
+21  25iX4DvkhGM  How to Change your Life ✨ Cozy Art Studio move...  ...         24   [('Entertainment', 1)]
+22  nrMvJfOSBf4  Why I spend so much time alone 🌴 Museum visit,...  ...         24   [('Entertainment', 1)]
+23  i7A3CEUuHzM  Master Studies improved my Art 🤝 Painting with...  ...         24   [('Entertainment', 1)]
+24  Bnb-HRoeDNk  Dealing with Existential Crisis & Anxiety 🌱 Ma...  ...         24   [('Entertainment', 1)]
+25  jZ4tOL8FB_g  Find Inspiration for your Art ✨Botanical Garde...  ...         24   [('Entertainment', 1)]
+26  DUz9ZM-j8iw  screen printing at art school 🌷 Cute Art Schoo...  ...         24   [('Entertainment', 1)]
+27  GPt4wzG13Ck  The Secret why you´re always Tired ⭐️ Plane Mu...  ...         24   [('Entertainment', 1)]
+28  uFhusrnYtR4  A whole week of painting at Artschool 🌸 Cozy A...  ...         22  [('People & Blogs', 1)]
+29  -VJ4rkSNHBM  Teach yourself Anything 🧙🏻 Building a PC, Wate...  ...         24   [('Entertainment', 1)]
+30  XcvI-0Mk0xg  Cultivate a Mind to Mastery & Full Potential ☀...  ...         24   [('Entertainment', 1)]
+31  AAXJXReDGa4  Thoughts about a Clear Mind 🌞 Oil Painting and...  ...         24   [('Entertainment', 1)]
+32  9nmlWGt_054  Transform your Life through Thoughts & Creatio...  ...         24   [('Entertainment', 1)]
+33  qKrVMM_I3y4  Keys to Happiness & High Performance ☀️ Painti...  ...         24   [('Entertainment', 1)]
+34  FfSFvlIvGz0  Make Perfection your Strength🙏🏼 Oil Painting o...  ...         24   [('Entertainment', 1)]
+35  HHuI2ok8wmM  Peaceful & Inspiring Ambient Music to draw, re...  ...         24   [('Entertainment', 1)]
+36  UgXNbRbvkNQ  How your Fears will help you grow 🕳️🐇 Leaving ...  ...         24   [('Entertainment', 1)]
+37  fR-37iygzsY  Loneliness improved my Art and Mindset 🌱 Fores...  ...         24   [('Entertainment', 1)]
+38  VhBiSC2WP4g  How Fascination leads to your Authentic Self 🕯...  ...         24   [('Entertainment', 1)]
+39  PBLX5LUN-VY  Building a Canvas and making an Oil painting 🎨...  ...         24   [('Entertainment', 1)]
+40  8jAZzDCMAqM  Magic Art Studio Makeover 🦋 Art Museum visit +...  ...         24   [('Entertainment', 1)]
+41  yFBIsJeYaX8  Things I learned about Healthy Relationships ❤...  ...         24   [('Entertainment', 1)]
+42  FHiQIfb5gOc  Why we Suffer and what we learn from Dark days...  ...         24   [('Entertainment', 1)]
+43  WxN3tkPkAvw  Peaceful & Inspiring Ambient Music to draw, re...  ...         24   [('Entertainment', 1)]
+
+[44 rows x 11 columns]}
+2024-03-26 22:42:24 [INFO] Executing Step 7: ResultParsing
+2024-03-26 22:43:29 [INFO] Question: plot comments counts distrpution, first clear the previous plt, convert the graph image to base64 value such as (data:image/png;base64,iVBORw0KGgo...) and print only the Base64 value, do not save the photo
+2024-03-26 22:43:29 [INFO] Running PandasAI with openai LLM...
+2024-03-26 22:43:29 [INFO] Prompt ID: 7f39290d-1fb0-4174-a08a-fb30d3c2b1c3
+2024-03-26 22:43:29 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-03-26 22:43:29 [INFO] Executing Step 0: ValidatePipelineInput
+2024-03-26 22:43:29 [INFO] Executing Step 1: CacheLookup
+2024-03-26 22:43:29 [INFO] Executing Step 2: PromptGeneration
+2024-03-26 22:43:29 [INFO] Using prompt: dfs[0]:
+  name: null
+  description: null
+  type: pd.DataFrame
+  rows: 44
+  columns: 12
+  schema:
+    fields:
+    - name: videoId
+      type: object
+      samples:
+      - GPt4wzG13Ck
+      - PBLX5LUN-VY
+      - yFBIsJeYaX8
+    - name: title
+      type: object
+      samples:
+      - "Watercolor Painting for the new Art Vlog \U0001F9D9"
+      - "Overcome Fear of the Blank Page \U0001F90D Hometown visit + Draw & Paint\
+        \ with me \U0001F98B Art Vlog"
+      - "Dealing with Existential Crisis & Anxiety \U0001F331 Making Colors for Painting\
+        \ | Part 1 \U0001F3A8"
+    - name: description
+      type: object
+      samples:
+      - "Let\xB4s paint my walls in pastell colors, shop together for super cute home\
+        \ decor and a room makeover/ art studio makeover, art supplies and I will\
+        \ also show you how stressed I get sometimes cuz there is so much to do as\
+        \ an art student, like my part-time job and art history lessons but overall\
+        \ this Art Vlog is packed in a magic theme, cozy vibes to calm your nerves,\
+        \ inspire and motivate you \u2B50\uFE0F I hope you enjoy this week in my life\
+        \ art vlog \u2763\uFE0F\n\n\U0001F3BC All music from : https://www.epidemicsound.com/referral/depurf/\n\
+        (Get a free month with my referral link)\n\n\U0001F338 More Content and Videos\
+        \ on:\nInsta:    https://www.instagram.com/itsvalerielin/\nTik Tok: https://www.tiktok.com/@itsvalerielin?\n\
+        \n\n\U0001F3A8Art supplies:\n-Polychromos Color Pencils Set: https://amzn.to/2Uohgop\n\
+        (I own the Set of 24)\n-Paper for Gouache or Watercolor: https://amzn.to/3ovRRnZ\n\
+        (I have different sizes and cut them also in smaller rectangles, tested so\
+        \ many it\xB4s my most favourite )\n-kneaded eraser https://amzn.to/3xMD5ML\n\
+        -Blending stump set (eraser included) https://amzn.to/3gNZUKD\n-Washitape,\
+        \ in a color you like :) I use it so my watercolorpaper stays flat.\n-Filbert\
+        \ and Flat brushes in various sizes from cheap to really expensive\n-Gouache\
+        \ from Schminke Horadam (most pigmented for professionell use)\n-Oil colors\
+        \ from Old Holland ( its oilcolor for advanced painters, make sure to be familiar\
+        \ with anatomy, proportions, value etc before using it :)\n-Easel big (similar)\
+        \ https://amzn.to/3zQMKnq\n-Easel small (similar) https://amzn.to/2SVFJkI\n\
+        \n\U0001F4DABooks, Lets get smart:\n-Sargent: Portraits of Artists and Friends\
+        \ https://amzn.to/3gVQqM3\n-Klimt (Basic art Series) https://amzn.to/2SpQcEU\n\
+        -The World of Ornament https://amzn.to/3d4Q2tA\n-Jewelry from Renessaince\
+        \ to Art Deco it\xB4s a japanese book I found on the street, sadly I can\xB4\
+        t find it online\n-Anatomy books: \nI have a german one by Gottfried Bammes,\
+        \ \u201Edie Gestalt des Menschen\u201C but there are also some american books\
+        \ by Andrew Loomis for example which are great too! I am Selftaught and we\
+        \ don\xB4t learn painting techniques etc at our school. As I said in the last\
+        \ videos, I have my knowledge from books and the Web. Most of them are free\
+        \ :)\nInspiring books:\n-Mastery, Robert Greene https://amzn.to/3j3ZQaV\n\
+        -Listen to podcasts, audiobooks while painting. Time flys while you create.\
+        \ And it makes the first steps of sitting down and beginning to create easier\
+        \ :) and you get even smarter +1\nHere is something I listened to last week:\n\
+        About Cognitive Control/ Focus : https://www.youtube.com/watch?v=b9yRmpcXKjY\n\
+        \nI take my notes in a Moleskine cahier, set of 3, Pocket/ A6, in pastell\
+        \ colors for notes :) or the dotted version\n\n\U0001F3AC Video equipment:\n\
+        -Camera: https://amzn.to/2S7OTKk (Body only)\n-Lens: https://amzn.to/3uZlCjd\n\
+        -Smartphone Holder: https://amzn.to/3tXwRHF\n-Portable External Harddrive\n\
+        -Editing program: Adobe Premiere Pro \n-Thumbnails in Photoshop\n-Animations\
+        \ After Effects\n\n\n(Links to products are affiliate Links)\n\n\nAbout me:\
+        \ I\xB4m Valerie and I moved almost two years ago to Berlin to study Finearts.\
+        \ I love creating and I want to share my progress of becoming an artist with\
+        \ you guys. Also I like to give you good vibes :) Much love, Val \U0001F338"
+      - "Nothing wrong with being a Perfectionist :*\nIn this Art Vlog you will paint\
+        \ with me an Oil Painting and visit a gorgeous!!! Library :) and survive theses\
+        \ hot summer days \U0001F62E\u200D\U0001F4A8 Hopefully you will a have new\
+        \ mindset about Perfectionism too!\n\n\U0001F3BCMusic from: https://www.epidemicsound.com/referral/depurf\n\
+        (Get a free month with my referral link, videos won \xB4t get demonetized)\
+        \ \n\n\U0001F338 More Content and Videos on:\nIntsa:  https://www.instagram.com/itsvalerielin/\n\
+        Tik Tok: https://www.tiktok.com/@itsvalerielin?\n\n\U0001F3A8 Art supplies:\n\
+        -Desk Easel: https://amzn.to/3qSZtDp\n-Arches Watercolor Paper, Cold/ Hot\
+        \ pressed 300g 7x10 in: \n https://amzn.to/3y4hrHB or https://bit.ly/3kfOqAf\n\
+        -Cheaper Watercolor Paper I used before: https://amzn.to/3ovRRnZ \n(I have\
+        \ different sizes and cut them also in smaller rectangles)\n-Archers Drawing\
+        \ Paper: https://amzn.to/3wOY56h\n-Polychromos Color Pencils Set: https://amzn.to/2Uohgop\n\
+        (I began with the set of 24)\n-Oil Paint from Old Holland, 40ml Tubes: https://bit.ly/3EoVN0t\n\
+        -Schmincke Horadam Gouache, 15ml Tubes: https://bit.ly/3GspU93\n-kneaded eraser:\
+        \ https://amzn.to/3xMD5ML\n-Blending stump set (eraser included) https://amzn.to/3gNZUKD\n\
+        -Luminescent Watercolor: https://amzn.to/3kwraPN\n-Washitape, in a color you\
+        \ like :) I use it so my watercolorpaper stays flat.\n-Filbert and Flat brushes\
+        \ in various sizes from cheap to really expensive\n-H- Frame Easel(similar)\
+        \ https://bit.ly/3Bn0oOP (mine is thrifted)\n-Tabletop Easel (similar): https://bit.ly/3GvBVun\n\
+        \n\U0001F3AC Video equipment:\n-Camera: https://amzn.to/2S7OTKk  (Body only)\n\
+        -Lens: https://amzn.to/3uZlCjd\n-Microphone: https://amzn.to/3LcGyvd\n-Smartphone\
+        \ Holder: https://amzn.to/3tXwRHF \n\n\U0001F4DABooks, Lets get smart:\n-The\
+        \ world of Ornament: https://amzn.to/3DAcUMU\n-Impressionism https://amzn.to/2Yeg0GP\n\
+        -A Garden Eden; Botanical Illustrations https://amzn.to/3nkvoM7\n-Sargent:\
+        \ Portraits of Artists and Friends https://amzn.to/3gVQqM3\n-Klimt (Basic\
+        \ art Series) https://amzn.to/2SpQcEU\n(Links to products are affiliate links)"
+      - .nan
+    - name: publishedAt
+      type: object
+      samples:
+      - '2022-11-13T13:00:10Z'
+      - '2021-12-16T13:40:45Z'
+      - '2021-09-09T16:00:16Z'
+    - name: thumbnail
+      type: object
+      samples:
+      - https://i.ytimg.com/vi/-VJ4rkSNHBM/hqdefault.jpg
+      - https://i.ytimg.com/vi/RbhgeonuPMk/hqdefault.jpg
+      - https://i.ytimg.com/vi/AAXJXReDGa4/hqdefault.jpg
+    - name: viewsCount
+      type: int64
+      samples:
+      - 526072
+      - 198174
+      - 104537
+    - name: likesCount
+      type: int64
+      samples:
+      - 20511
+      - 7490
+      - 14215
+    - name: commentCount
+      type: int64
+      samples:
+      - 985
+      - 916
+      - 46
+    - name: duration
+      type: int64
+      samples:
+      - 61
+      - 3
+      - 21
+    - name: unique_tags
+      type: object
+      samples:
+      - '[''alchemy'', ''existentialism'', ''paint with me'', ''existential crisis
+        playlist'', ''aestheitc vlog'', ''bob ross'', ''ghibli lofi'', ''restoration
+        videos'', ''art therapy'', ''oil painting'', ''painting'', ''water color painting'',
+        ''existential crisis'', ''philosophy'', ''art vlog'', ''alchemist'', ''artist'',
+        ''ghibli ambience'', ''art'', ''aesthetic videos'', ''anxiety'', ''art restoration'']'
+      - '[''paint with me'', ''aesthetic vlog'', ''magic of oil painting'', ''oil
+        painting techniques'', ''art studio'', ''oil painting tips'', ''bob ross'',
+        ''painting with oils'', ''art therapy'', ''oil painting'', ''painting'', ''oil
+        painting portrait'', ''portrait painting'', ''how to paint'', ''art process'',
+        ''painting process'', ''art vlog'', ''portrait painting oil'', ''painting
+        tips'', ''studio vlog'', ''valerie lin'', ''oil paint'', ''oil paint with
+        me'']'
+      - '[''motivation vlog'', ''oil painting'', ''artvlog'', ''art student'', ''artstudent
+        vlog'', ''painting'', ''paint with me'', ''golden oilcolor'', ''art vlog'',
+        ''fineartschool'', ''gouache portrait'', ''gouache painting'', ''paintwithme'',
+        ''gold oilpaint'', ''oilpainting'', ''berlin art'', ''fineartstudent'', ''artschool'']'
+    - name: categoryId
+      type: int64
+      samples:
+      - 24
+      - 27
+      - 22
+    - name: most_used_categories
+      type: object
+      samples:
+      - '[(''Education'', 1)]'
+      - '[(''People & Blogs'', 1)]'
+      - '[(''Entertainment'', 1)]'
+
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ plot comments counts distrpution, first clear the previous plt, convert the graph image to base64 value such as (data:image/png;base64,iVBORw0KGgo...) and print only the Base64 value, do not save the photo
+
+Variable `dfs: list[pd.DataFrame]` is already declared.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+If you are asked to plot a chart, use "matplotlib" for charts, save as png.
+
+
+Generate python code and return full updated code:
+2024-03-26 22:43:29 [INFO] Executing Step 3: CodeGenerator
+2024-03-26 22:43:37 [INFO] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2024-03-26 22:43:38 [INFO] Prompt used:
+            dfs[0]:
+  name: null
+  description: null
+  type: pd.DataFrame
+  rows: 44
+  columns: 12
+  schema:
+    fields:
+    - name: videoId
+      type: object
+      samples:
+      - GPt4wzG13Ck
+      - PBLX5LUN-VY
+      - yFBIsJeYaX8
+    - name: title
+      type: object
+      samples:
+      - "Watercolor Painting for the new Art Vlog \U0001F9D9"
+      - "Overcome Fear of the Blank Page \U0001F90D Hometown visit + Draw & Paint\
+        \ with me \U0001F98B Art Vlog"
+      - "Dealing with Existential Crisis & Anxiety \U0001F331 Making Colors for Painting\
+        \ | Part 1 \U0001F3A8"
+    - name: description
+      type: object
+      samples:
+      - "Let\xB4s paint my walls in pastell colors, shop together for super cute home\
+        \ decor and a room makeover/ art studio makeover, art supplies and I will\
+        \ also show you how stressed I get sometimes cuz there is so much to do as\
+        \ an art student, like my part-time job and art history lessons but overall\
+        \ this Art Vlog is packed in a magic theme, cozy vibes to calm your nerves,\
+        \ inspire and motivate you \u2B50\uFE0F I hope you enjoy this week in my life\
+        \ art vlog \u2763\uFE0F\n\n\U0001F3BC All music from : https://www.epidemicsound.com/referral/depurf/\n\
+        (Get a free month with my referral link)\n\n\U0001F338 More Content and Videos\
+        \ on:\nInsta:    https://www.instagram.com/itsvalerielin/\nTik Tok: https://www.tiktok.com/@itsvalerielin?\n\
+        \n\n\U0001F3A8Art supplies:\n-Polychromos Color Pencils Set: https://amzn.to/2Uohgop\n\
+        (I own the Set of 24)\n-Paper for Gouache or Watercolor: https://amzn.to/3ovRRnZ\n\
+        (I have different sizes and cut them also in smaller rectangles, tested so\
+        \ many it\xB4s my most favourite )\n-kneaded eraser https://amzn.to/3xMD5ML\n\
+        -Blending stump set (eraser included) https://amzn.to/3gNZUKD\n-Washitape,\
+        \ in a color you like :) I use it so my watercolorpaper stays flat.\n-Filbert\
+        \ and Flat brushes in various sizes from cheap to really expensive\n-Gouache\
+        \ from Schminke Horadam (most pigmented for professionell use)\n-Oil colors\
+        \ from Old Holland ( its oilcolor for advanced painters, make sure to be familiar\
+        \ with anatomy, proportions, value etc before using it :)\n-Easel big (similar)\
+        \ https://amzn.to/3zQMKnq\n-Easel small (similar) https://amzn.to/2SVFJkI\n\
+        \n\U0001F4DABooks, Lets get smart:\n-Sargent: Portraits of Artists and Friends\
+        \ https://amzn.to/3gVQqM3\n-Klimt (Basic art Series) https://amzn.to/2SpQcEU\n\
+        -The World of Ornament https://amzn.to/3d4Q2tA\n-Jewelry from Renessaince\
+        \ to Art Deco it\xB4s a japanese book I found on the street, sadly I can\xB4\
+        t find it online\n-Anatomy books: \nI have a german one by Gottfried Bammes,\
+        \ \u201Edie Gestalt des Menschen\u201C but there are also some american books\
+        \ by Andrew Loomis for example which are great too! I am Selftaught and we\
+        \ don\xB4t learn painting techniques etc at our school. As I said in the last\
+        \ videos, I have my knowledge from books and the Web. Most of them are free\
+        \ :)\nInspiring books:\n-Mastery, Robert Greene https://amzn.to/3j3ZQaV\n\
+        -Listen to podcasts, audiobooks while painting. Time flys while you create.\
+        \ And it makes the first steps of sitting down and beginning to create easier\
+        \ :) and you get even smarter +1\nHere is something I listened to last week:\n\
+        About Cognitive Control/ Focus : https://www.youtube.com/watch?v=b9yRmpcXKjY\n\
+        \nI take my notes in a Moleskine cahier, set of 3, Pocket/ A6, in pastell\
+        \ colors for notes :) or the dotted version\n\n\U0001F3AC Video equipment:\n\
+        -Camera: https://amzn.to/2S7OTKk (Body only)\n-Lens: https://amzn.to/3uZlCjd\n\
+        -Smartphone Holder: https://amzn.to/3tXwRHF\n-Portable External Harddrive\n\
+        -Editing program: Adobe Premiere Pro \n-Thumbnails in Photoshop\n-Animations\
+        \ After Effects\n\n\n(Links to products are affiliate Links)\n\n\nAbout me:\
+        \ I\xB4m Valerie and I moved almost two years ago to Berlin to study Finearts.\
+        \ I love creating and I want to share my progress of becoming an artist with\
+        \ you guys. Also I like to give you good vibes :) Much love, Val \U0001F338"
+      - "Nothing wrong with being a Perfectionist :*\nIn this Art Vlog you will paint\
+        \ with me an Oil Painting and visit a gorgeous!!! Library :) and survive theses\
+        \ hot summer days \U0001F62E\u200D\U0001F4A8 Hopefully you will a have new\
+        \ mindset about Perfectionism too!\n\n\U0001F3BCMusic from: https://www.epidemicsound.com/referral/depurf\n\
+        (Get a free month with my referral link, videos won \xB4t get demonetized)\
+        \ \n\n\U0001F338 More Content and Videos on:\nIntsa:  https://www.instagram.com/itsvalerielin/\n\
+        Tik Tok: https://www.tiktok.com/@itsvalerielin?\n\n\U0001F3A8 Art supplies:\n\
+        -Desk Easel: https://amzn.to/3qSZtDp\n-Arches Watercolor Paper, Cold/ Hot\
+        \ pressed 300g 7x10 in: \n https://amzn.to/3y4hrHB or https://bit.ly/3kfOqAf\n\
+        -Cheaper Watercolor Paper I used before: https://amzn.to/3ovRRnZ \n(I have\
+        \ different sizes and cut them also in smaller rectangles)\n-Archers Drawing\
+        \ Paper: https://amzn.to/3wOY56h\n-Polychromos Color Pencils Set: https://amzn.to/2Uohgop\n\
+        (I began with the set of 24)\n-Oil Paint from Old Holland, 40ml Tubes: https://bit.ly/3EoVN0t\n\
+        -Schmincke Horadam Gouache, 15ml Tubes: https://bit.ly/3GspU93\n-kneaded eraser:\
+        \ https://amzn.to/3xMD5ML\n-Blending stump set (eraser included) https://amzn.to/3gNZUKD\n\
+        -Luminescent Watercolor: https://amzn.to/3kwraPN\n-Washitape, in a color you\
+        \ like :) I use it so my watercolorpaper stays flat.\n-Filbert and Flat brushes\
+        \ in various sizes from cheap to really expensive\n-H- Frame Easel(similar)\
+        \ https://bit.ly/3Bn0oOP (mine is thrifted)\n-Tabletop Easel (similar): https://bit.ly/3GvBVun\n\
+        \n\U0001F3AC Video equipment:\n-Camera: https://amzn.to/2S7OTKk  (Body only)\n\
+        -Lens: https://amzn.to/3uZlCjd\n-Microphone: https://amzn.to/3LcGyvd\n-Smartphone\
+        \ Holder: https://amzn.to/3tXwRHF \n\n\U0001F4DABooks, Lets get smart:\n-The\
+        \ world of Ornament: https://amzn.to/3DAcUMU\n-Impressionism https://amzn.to/2Yeg0GP\n\
+        -A Garden Eden; Botanical Illustrations https://amzn.to/3nkvoM7\n-Sargent:\
+        \ Portraits of Artists and Friends https://amzn.to/3gVQqM3\n-Klimt (Basic\
+        \ art Series) https://amzn.to/2SpQcEU\n(Links to products are affiliate links)"
+      - .nan
+    - name: publishedAt
+      type: object
+      samples:
+      - '2022-11-13T13:00:10Z'
+      - '2021-12-16T13:40:45Z'
+      - '2021-09-09T16:00:16Z'
+    - name: thumbnail
+      type: object
+      samples:
+      - https://i.ytimg.com/vi/-VJ4rkSNHBM/hqdefault.jpg
+      - https://i.ytimg.com/vi/RbhgeonuPMk/hqdefault.jpg
+      - https://i.ytimg.com/vi/AAXJXReDGa4/hqdefault.jpg
+    - name: viewsCount
+      type: int64
+      samples:
+      - 526072
+      - 198174
+      - 104537
+    - name: likesCount
+      type: int64
+      samples:
+      - 20511
+      - 7490
+      - 14215
+    - name: commentCount
+      type: int64
+      samples:
+      - 985
+      - 916
+      - 46
+    - name: duration
+      type: int64
+      samples:
+      - 61
+      - 3
+      - 21
+    - name: unique_tags
+      type: object
+      samples:
+      - '[''alchemy'', ''existentialism'', ''paint with me'', ''existential crisis
+        playlist'', ''aestheitc vlog'', ''bob ross'', ''ghibli lofi'', ''restoration
+        videos'', ''art therapy'', ''oil painting'', ''painting'', ''water color painting'',
+        ''existential crisis'', ''philosophy'', ''art vlog'', ''alchemist'', ''artist'',
+        ''ghibli ambience'', ''art'', ''aesthetic videos'', ''anxiety'', ''art restoration'']'
+      - '[''paint with me'', ''aesthetic vlog'', ''magic of oil painting'', ''oil
+        painting techniques'', ''art studio'', ''oil painting tips'', ''bob ross'',
+        ''painting with oils'', ''art therapy'', ''oil painting'', ''painting'', ''oil
+        painting portrait'', ''portrait painting'', ''how to paint'', ''art process'',
+        ''painting process'', ''art vlog'', ''portrait painting oil'', ''painting
+        tips'', ''studio vlog'', ''valerie lin'', ''oil paint'', ''oil paint with
+        me'']'
+      - '[''motivation vlog'', ''oil painting'', ''artvlog'', ''art student'', ''artstudent
+        vlog'', ''painting'', ''paint with me'', ''golden oilcolor'', ''art vlog'',
+        ''fineartschool'', ''gouache portrait'', ''gouache painting'', ''paintwithme'',
+        ''gold oilpaint'', ''oilpainting'', ''berlin art'', ''fineartstudent'', ''artschool'']'
+    - name: categoryId
+      type: int64
+      samples:
+      - 24
+      - 27
+      - 22
+    - name: most_used_categories
+      type: object
+      samples:
+      - '[(''Education'', 1)]'
+      - '[(''People & Blogs'', 1)]'
+      - '[(''Entertainment'', 1)]'
+
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ plot comments counts distrpution, first clear the previous plt, convert the graph image to base64 value such as (data:image/png;base64,iVBORw0KGgo...) and print only the Base64 value, do not save the photo
+
+Variable `dfs: list[pd.DataFrame]` is already declared.
+
+At the end, declare "result" variable as a dictionary of type and value.
+
+If you are asked to plot a chart, use "matplotlib" for charts, save as png.
+
+
+Generate python code and return full updated code:
+            
+2024-03-26 22:43:38 [INFO] Code generated:
+            ```
+            # TODO: import the required dependencies
+import pandas as pd
+import matplotlib.pyplot as plt
+import base64
+import io
+
+# Write code here
+df = dfs[0]
+
+# Plot comments counts distribution
+plt.figure(figsize=(10, 6))
+plt.hist(df['commentCount'], bins=20, color='skyblue', edgecolor='black')
+plt.xlabel('Comment Count')
+plt.ylabel('Frequency')
+plt.title('Comments Counts Distribution')
+plt.grid(True)
+plt.show()
+
+# Convert the plot to base64
+buffer = io.BytesIO()
+plt.savefig(buffer, format='png')
+buffer.seek(0)
+base64_image = base64.b64encode(buffer.read()).decode('utf-8')
+
+# Declare result var
+result = {
+    "type": "string",
+    "value": base64_image
+}
+            ```
+            
+2024-03-26 22:43:38 [INFO] Executing Step 4: CachePopulation
+2024-03-26 22:43:38 [INFO] Executing Step 5: CodeExecution
+2024-03-26 22:43:38 [INFO] 
+Code running:
+```
+df = dfs[0]
+plt.figure(figsize=(10, 6))
+plt.hist(df['commentCount'], bins=20, color='skyblue', edgecolor='black')
+plt.xlabel('Comment Count')
+plt.ylabel('Frequency')
+plt.title('Comments Counts Distribution')
+plt.grid(True)
+plt.show()
+buffer = io.BytesIO()
+plt.savefig(buffer, format='png')
+buffer.seek(0)
+base64_image = base64.b64encode(buffer.read()).decode('utf-8')
+result = {'type': 'string', 'value': base64_image}
+        ```
+2024-03-26 22:43:40 [INFO] Executing Step 6: ResultValidation
+2024-03-26 22:43:40 [INFO] Answer: {'type': 'string', 'value': 'iVBORw0KGgoAAAANSUhEUgAAA+gAAAJYCAYAAADxHswlAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjcuMSwgaHR0cHM6Ly9tYXRwbG90bGliLm9yZy/bCgiHAAAACXBIWXMAAA9hAAAPYQGoP6dpAABK3ElEQVR4nO3deXxU9bk/8GcCISQYkH2RVQVEEaxgrVpRqrjvrctFK251t6Jor1qr4IbLlYu2dastaltcWqWlWlEUlFppXRDcKFJFEAURVKIGMZDz+6O/5BoT9snMib7fr1de7XzP95zzzDMng5+cM2cySZIkAQAAAORVQb4LAAAAAAR0AAAASAUBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcgXn755TjxxBOjR48e0bRp09hss81ixx13jOuvvz4+/PDDfJeXCs8++2yMHDkyPv7446xut7KyMn7729/G3nvvHW3atInCwsJo165dHHTQQfGXv/wlKisrs7q/jVFeXh4jR46Mp556KmvbvOuuuyKTyVT/NG3aNDp06BCDBw+O0aNHx5IlS2qtM3LkyMhkMhu0n42tva59de/ePQ466KAN2s66jB8/PsaOHVvnskwmEyNHjszq/gBINwEd4BvuV7/6VQwYMCCef/75uPDCC2PSpEkxYcKEOPLII+O2226Lk08+Od8lpsKzzz4bo0aNympA//zzz+OAAw6IYcOGRbt27eLWW2+NKVOmxG233RadOnWKI488Mv7yl79kbX8bq7y8PEaNGpXVgF5l3LhxMX369Jg8eXL88pe/jB122CGuu+666NOnTzzxxBM15p5yyikxffr0Ddr+xta+MfvaGGsL6NOnT49TTjml3msAID0a57sAAPJn+vTpccYZZ8SQIUPiT3/6UxQVFVUvGzJkSIwYMSImTZqUxwq/3s4///x47LHH4u67747jjz++xrIjjjgiLrzwwlixYkWeqsuNvn37xsCBA6sff//734/zzjsvvvvd78YRRxwRc+fOjfbt20dEROfOnaNz5871Wk95eXmUlJTkZF/r8p3vfCev+wcg95xBB/gGu+aaayKTycQdd9xRI5xXadKkSRxyyCHVjysrK+P666+PbbbZJoqKiqJdu3Zx/PHHx8KFC2ust+eee0bfvn1j+vTpseuuu0ZxcXF07949xo0bFxERjzzySOy4445RUlIS22+/fa0/AlRdXvzyyy/HkUceGS1atIhWrVrF+eefH6tWrYo5c+bEfvvtF6WlpdG9e/e4/vrra9VeVlYWF1xwQfTo0SOaNGkSW2yxRQwfPjw+++yzGvMymUycffbZ8dvf/jb69OkTJSUl0b9//3j44Ydr1HPhhRdGRESPHj2qL8uuOis7ZcqU2HPPPaN169ZRXFwcXbt2je9///tRXl6+xt4vXrw47rzzzth3331rhfMqPXv2jH79+lU/XrBgQRx33HHRrl27KCoqij59+sSNN95Y4zL4p556qkZtVd5+++3IZDJx1113VY+dcMIJsdlmm8W///3vOOCAA2KzzTaLLl26xIgRI2LlypXV67Vt2zYiIkaNGlX93E844YSIiPjggw/i1FNPjS5dukRRUVG0bds2dtttt1pnvzdE165d48Ybb4xPPvkkbr/99urxui47X1vv11V71fZmzJgRP/jBD6Jly5ax1VZbrXFfVSZMmBD9+vWLpk2bxpZbbhk333xzjeVVl++//fbbNca/+trsueee8cgjj8T8+fNrXO5fpa5L3F999dU49NBDo2XLltG0adPYYYcd4u67765zP/fee2/89Kc/jU6dOkXz5s1j7733jjlz5qy58QDknTPoAN9Qq1evjilTpsSAAQOiS5cu67XOGWecEXfccUecffbZcdBBB8Xbb78dP/vZz+Kpp56KGTNmRJs2barnLl68OE488cT4yU9+Ep07d46f//zncdJJJ8U777wTf/zjH+OSSy6JFi1axBVXXBGHHXZYvPXWW9GpU6ca+zvqqKPiuOOOi9NOOy0mT54c119/fVRUVMQTTzwRZ555ZlxwwQUxfvz4+O///u/Yeuut44gjjoiI/5wF3WOPPWLhwoVxySWXRL9+/eK1116Lyy67LF555ZV44oknagShRx55JJ5//vm44oorYrPNNovrr78+Dj/88JgzZ05sueWWccopp8SHH34YP//5z+Ohhx6Kjh07RkTEtttuG2+//XYceOCBsfvuu8dvfvOb2HzzzePdd9+NSZMmxRdffBElJSV19nLq1KlRUVERhx122Hr1/oMPPohdd901vvjii7jyyiuje/fu8fDDD8cFF1wQb775Ztxyyy3rtZ2vqqioiEMOOSROPvnkGDFiREybNi2uvPLKaNGiRVx22WXRsWPHmDRpUuy3335x8sknV19yXRV8f/jDH8aMGTPi6quvjl69esXHH38cM2bMiGXLlm1UPVUOOOCAaNSoUUybNm2Nc9bV+3XVXuWII46IY445Jk4//fRaf8D5qpkzZ8bw4cNj5MiR0aFDh/j9738f5557bnzxxRdxwQUXbNBzvOWWW+LUU0+NN998MyZMmLDO+XPmzIldd9012rVrFzfffHO0bt06fve738UJJ5wQ77//fvzkJz+pMf+SSy6J3XbbLe68884oKyuL//7v/46DDz44Zs+eHY0aNdqgWgHIkQSAb6TFixcnEZEcc8wx6zV/9uzZSUQkZ555Zo3xf/7zn0lEJJdcckn12B577JFERPLCCy9Ujy1btixp1KhRUlxcnLz77rvV4zNnzkwiIrn55purxy6//PIkIpIbb7yxxr522GGHJCKShx56qHqsoqIiadu2bXLEEUdUj40ePTopKChInn/++Rrr//GPf0wiIvnrX/9aPRYRSfv27ZOysrIavSkoKEhGjx5dPXbDDTckEZHMmzevzm3OnDmz7satwbXXXptERDJp0qT1mn/RRRclEZH885//rDF+xhlnJJlMJpkzZ06SJEkyderUJCKSqVOn1pg3b968JCKScePGVY8NGzYsiYjkgQceqDH3gAMOSHr37l39+IMPPkgiIrn88str1bXZZpslw4cPX6/n8GXjxo1LIqLWa/Rl7du3T/r06VP9uOq4qLI+vV9b7VXbu+yyy9a47Mu6deuWZDKZWvsbMmRI0rx58+Szzz6r8dy+eqzU9doceOCBSbdu3eqs/at1H3PMMUlRUVGyYMGCGvP233//pKSkJPn4449r7OeAAw6oMe+BBx5IIiKZPn16nfsDIP9c4g7Aepk6dWpERPXlwVW+/e1vR58+feLJJ5+sMd6xY8cYMGBA9eNWrVpFu3btYocddqhxprxPnz4RETF//vxa+/zqHbP79OkTmUwm9t9//+qxxo0bx9Zbb11j/Ycffjj69u0bO+ywQ6xatar6Z999963z8u/BgwdHaWlp9eP27dtHu3bt6qzpq3bYYYdo0qRJnHrqqXH33XfHW2+9tc51NsaUKVNi2223jW9/+9s1xk844YRIkiSmTJmyUdvNZDJx8MEH1xjr16/fej33iP+8/nfddVdcddVV8Y9//CMqKio2qo66JEmy1uXZ6v33v//99Z673XbbRf/+/WuMDR06NMrKymLGjBkbtf/1NWXKlNhrr71qXfFywgknRHl5ea2b2n354ykRUf1xifV9bQHIPQEd4BuqTZs2UVJSEvPmzVuv+VWXLFdd3v1lnTp1qnVJc6tWrWrNa9KkSa3xJk2aRMR/7mj+VXXNLSkpiaZNm9Ya//L677//frz88stRWFhY46e0tDSSJImlS5fWWL9169a19l1UVLReN2jbaqut4oknnoh27drFWWedFVtttVVstdVWcdNNN611va5du0ZEbFD/19T7quUbo65+FhUV1fl61OX++++PYcOGxZ133hm77LJLtGrVKo4//vhYvHjxRtVT5bPPPotly5bV+tjDl21s77+qrr6uSYcOHdY4tqmX9a/Lhh4DXz2uq+4z8XW/8SBAQ+Yz6ADfUI0aNYq99torHn300Vi4cOE671hd9R/7ixYtqjX3vffeq/H583xr06ZNFBcXx29+85s1Ls+m3XffPXbfffdYvXp1vPDCC/Hzn/88hg8fHu3bt49jjjmmznUGDx4chYWF8ac//SlOP/30de6jdevWsWjRolrj7733XkT833OqCttVN3mr8tU/SmRLmzZtYuzYsTF27NhYsGBBTJw4MS666KJYsmTJJn0DwCOPPBKrV6+OPffcc63zNqb3X7Uh361e1x8eqsaqfkfq6zVY32MAgIbLGXSAb7CLL744kiSJH/3oR/HFF1/UWl5RUVH9Pdzf+973IiLid7/7XY05zz//fMyePTv22muv+i94PR100EHx5ptvRuvWrWPgwIG1frp3777B21yfs4+NGjWKnXfeOX75y19GRKz1kucOHTrEKaecEo899ljcc889dc5588034+WXX46IiL322itef/31Wtu85557IpPJxODBgyMiqp9b1XpVJk6cuJZnt3bre+a1a9eucfbZZ8eQIUM26XLvBQsWxAUXXBAtWrSI0047bb3WWVPvs33W+LXXXotZs2bVGBs/fnyUlpbGjjvuGBEb9hqs75UaEf85BqZMmVIdyKvcc889UVJS4mvZAL4GnEEH+AbbZZdd4tZbb40zzzwzBgwYEGeccUZst912UVFRES+99FLccccd0bdv3zj44IOjd+/eceqpp8bPf/7zKCgoiP3337/6Lu5dunSJ8847L99Pp9rw4cPjwQcfjEGDBsV5550X/fr1i8rKyliwYEE8/vjjMWLEiNh55503aJvbb799RETcdNNNMWzYsCgsLIzevXvH73//+5gyZUoceOCB0bVr1/j888+rz9zvvffea93mmDFj4q233ooTTjghHnvssTj88MOjffv2sXTp0pg8eXKMGzcu7rvvvujXr1+cd955cc8998SBBx4YV1xxRXTr1i0eeeSRuOWWW+KMM86IXr16RcR/gv/ee+8do0ePjpYtW0a3bt3iySefjIceemgjOvkfpaWl0a1bt/jzn/8ce+21V7Rq1SratGkTLVu2jMGDB8fQoUNjm222idLS0nj++edj0qRJ1XfUX5dXX321+h4BS5Ysib/97W8xbty4aNSoUUyYMKHWHde/7Lbbbltn79dU+8b8kSbiP5eTH3LIITFy5Mjo2LFj/O53v4vJkyfHddddV33H/p122il69+4dF1xwQaxatSpatmwZEyZMiGeeeabW9rbffvt46KGH4tZbb40BAwZEQUFBje+F/7LLL788Hn744Rg8eHBcdtll0apVq/j9738fjzzySFx//fXRokWLjXpOAKRIfu9RB0AazJw5Mxk2bFjStWvXpEmTJkmzZs2Sb33rW8lll12WLFmypHre6tWrk+uuuy7p1atXUlhYmLRp0yY57rjjknfeeafG9vbYY49ku+22q7Wfbt26JQceeGCt8YhIzjrrrOrHVXfQ/uCDD2rMGzZsWNKsWbNa69e1v08//TS59NJLk969eydNmjRJWrRokWy//fbJeeedlyxevHiN+/5yrcOGDasxdvHFFyedOnVKCgoKqu/GPX369OTwww9PunXrlhQVFSWtW7dO9thjj2TixIm1tlmXVatWJXfffXfyve99L2nVqlXSuHHjpG3btsn++++fjB8/Plm9enX13Pnz5ydDhw5NWrdunRQWFia9e/dObrjhhhpzkiRJFi1alPzgBz9IWrVqlbRo0SI57rjjkhdeeKHOu7jX1c+67mD+xBNPJN/61reSoqKiJCKSYcOGJZ9//nly+umnJ/369UuaN2+eFBcXJ717904uv/zy6juar0nVnc6rfpo0aZK0a9cu2WOPPZJrrrmmxnG3prrWt/d11f7l7X31OFtTD6qO3z/+8Y/JdtttlzRp0iTp3r17MmbMmFrrv/HGG8k+++yTNG/ePGnbtm1yzjnnJI888kitu7h/+OGHyQ9+8INk8803TzKZTI19Rh13n3/llVeSgw8+OGnRokXSpEmTpH///jVe0yT5v7u4/+EPf6gxXted/AFIl0ySrOMWqQAAAEC98xl0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFKgcb4LILcqKyvjvffei9LS0shkMvkuBwAAyJMkSeKTTz6JTp06RUGBc7dpIKB/w7z33nvRpUuXfJcBAACkxDvvvBOdO3fOdxmEgP6NU1paGhH/+SVs3rx5TvZZUVERjz/+eOyzzz5RWFiYk31+0+hxbuhzbuhzbuhzbuhz/dPj3NDn3Mh1n8vKyqJLly7VGYH8E9C/Yaoua2/evHlOA3pJSUk0b97cG3o90ePc0Ofc0Ofc0Ofc0Of6p8e5oc+5ka8+++hrevigAQAAAKSAgA4AAAApIKADAABACgjoAAAAkAICOgAAAKSAgA4AAAApIKADAABACgjoAAAAkAICOgAAAKSAgA4AAAApIKADAABACgjoAAAAkAICOgAAAKSAgA4AAAApIKADAABACgjoAAAAkAICOgAAAKSAgA4AAAAp0DjfBQB1W7BgQSxdunS95lZWVkZExKxZs6KgIPt/d2vTpk107do169sFAAD+j4AOKbRgwYLYpk+fWFFevl7zi4uL4957741BgwbFihUrsl5PcUlJ/Gv2bCEdAADqkYAOKbR06dJYUV4eR111a7Tr0XOd8xtFEhGfxal3TozVkclqLUvmzY0HLj0jli5dKqADAEA9EtAhxdr16Blb9Om/znkFlasiFv4zOvXuG5UFfq0BAKAhcpM4AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBPUWmTZsWBx98cHTq1CkymUz86U9/qrE8SZIYOXJkdOrUKYqLi2PPPfeM1157LT/FAgAAkFUCeop89tln0b9///jFL35R5/Lrr78+xowZE7/4xS/i+eefjw4dOsSQIUPik08+yXGlAAAAZFvjfBfA/9l///1j//33r3NZkiQxduzY+OlPfxpHHHFERETcfffd0b59+xg/fnycdtppuSwVAACALBPQG4h58+bF4sWLY5999qkeKyoqij322COeffbZNQb0lStXxsqVK6sfl5WVRURERUVFVFRU1G/R/1/VfnK1v6+DysrKKC4ujkaRREHlqnXOr5qzPnM3VKNIori4OCorK7/xr6FjOTf0OTf0OTf0uf7pcW7oc27kus9ez/TJJEmS5LsIastkMjFhwoQ47LDDIiLi2Wefjd122y3efffd6NSpU/W8U089NebPnx+PPfZYndsZOXJkjBo1qtb4+PHjo6SkpF5qBwAA0q+8vDyGDh0ay5cvj+bNm+e7HMIZ9AYnk8nUeJwkSa2xL7v44ovj/PPPr35cVlYWXbp0iX322Sdnv4QVFRUxefLkGDJkSBQWFuZknw3drFmzYtCgQXHqnROjU+++65xfULkqer73YsztNCAqC7L7a/3enFfjjlMOiWnTpkX//v2zuu2GxrGcG/qcG/qcG/pc//Q4N/Q5N3Ld56qra0kPAb2B6NChQ0RELF68ODp27Fg9vmTJkmjfvv0a1ysqKoqioqJa44WFhTl/c83HPhuqgoKCWLFiRayOzAYF7sqCxlkP6KsjEytWrIiCggKv3//nWM4Nfc4Nfc4Nfa5/epwb+pwbueqz1zJ93MW9gejRo0d06NAhJk+eXD32xRdfxNNPPx277rprHisDAAAgG5xBT5FPP/00/v3vf1c/njdvXsycOTNatWoVXbt2jeHDh8c111wTPXv2jJ49e8Y111wTJSUlMXTo0DxWDQAAQDYI6CnywgsvxODBg6sfV312fNiwYXHXXXfFT37yk1ixYkWceeaZ8dFHH8XOO+8cjz/+eJSWluarZAAAALJEQE+RPffcM9Z2U/1MJhMjR46MkSNH5q4oAAAAcsJn0AEAACAFBHQAAABIAQEdAAAAUkBABwAAgBQQ0AEAACAFBHQAAABIAQEdAAAAUkBABwAAgBQQ0AEAACAFBHQAAABIAQEdAAAAUkBABwAAgBQQ0AEAACAFBHQAAABIAQEdAAAAUkBABwAAgBQQ0AEAACAFBHQAAABIAQEdAAAAUkBABwAAgBQQ0AEAACAFBHQAAABIAQEdAAAAUkBABwAAgBQQ0AEAACAFBHQAAABIAQEdAAAAUkBABwAAgBQQ0AEAACAFBHQAAABIAQEdAAAAUkBABwAAgBRonO8C+GZbsGBBLF26NN9lREREmzZtomvXrvkuAwAA+IYS0MmbBQsWxDZ9+sSK8vJ8lxIREcUlJfGv2bOFdAAAIC8EdPJm6dKlsaK8PI666tZo16NnXmtZMm9uPHDpGbF06VIBHQAAyAsBnbxr16NnbNGnf77LAAAAyCs3iQMAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENAbkFWrVsWll14aPXr0iOLi4thyyy3jiiuuiMrKynyXBgAAwCZqnO8CWH/XXXdd3HbbbXH33XfHdtttFy+88EKceOKJ0aJFizj33HPzXR4AAACbQEBvQKZPnx6HHnpoHHjggRER0b1797j33nvjhRdeyHNlAAAAbCoBvQH57ne/G7fddlu88cYb0atXr5g1a1Y888wzMXbs2DWus3Llyli5cmX147KysoiIqKioiIqKivouuXpfX/7fKpWVlVFcXByNIomCylU5qWVNGkUSxcXFUVlZmbO+rM2G9qZqTn30MW29WbhwYSxbtiwv+676OMlLL70UBQUF0bp16+jcuXNeavk6W9N7Btmlz7mhz/VPj3NDn3Mj1332eqZPJkmSJN9FsH6SJIlLLrkkrrvuumjUqFGsXr06rr766rj44ovXuM7IkSNj1KhRtcbHjx8fJSUl9VkuAACQYuXl5TF06NBYvnx5NG/ePN/lEAJ6g3LffffFhRdeGDfccENst912MXPmzBg+fHiMGTMmhg0bVuc6dZ1B79KlSyxdujRnv4QVFRUxefLkGDJkSBQWFlaPz5o1KwYNGhSn3jkxOvXum5Na1uS9Oa/GHaccEtOmTYv+/fvntZaIDe9NQeWq6PneizG304CoLMjuhTFp6k1VXw7/2f9G225b5Xz/jSKJQc3KY9pnJbF4/lsx4crzUtGXr5s1vWeQXfqcG/pc//Q4N/Q5N3Ld57KysmjTpo2AniIucW9ALrzwwrjooovimGOOiYiI7bffPubPnx+jR49eY0AvKiqKoqKiWuOFhYU5f3P96j4LCgpixYoVsToyWQ+VG2p1ZGLFihVRUFCQin90NrY3lQWNs97LNPWmqi+tum0dHfrkPhQXVK6KWPjPaN97+/giClLTl6+rfLxPfRPpc27oc/3T49zQ59zIVZ+9lunja9YakPLy8igoqPmSNWrUyNesAQAAfA04g96AHHzwwXH11VdH165dY7vttouXXnopxowZEyeddFK+SwMAAGATCegNyM9//vP42c9+FmeeeWYsWbIkOnXqFKeddlpcdtll+S4NAACATSSgNyClpaUxduzYtX6tGgAAAA2Tz6ADAABACgjoAAAAkAICOgAAAKSAgA4AAAApIKADAABACgjoAAAAkAICOgAAAKSAgA4AAAApIKADAABACgjoAAAAkAICOgAAAKSAgA4AAAApIKADAABACgjoAAAAkAICOgAAAKSAgA4AAAApIKADAABACgjoAAAAkAICOgAAAKSAgA4AAAApIKADAABACgjoAAAAkAICOgAAAKSAgA4AAAApIKADAABACgjoAAAAkAICOgAAAKSAgA4AAAApIKADAABACgjoAAAAkAICOgAAAKSAgA4AAAApIKADAABACgjoAAAAkAICOgAAAKSAgA4AAAApIKADAABACgjoAAAAkAICOgAAAKSAgA4AAAApIKADAABACgjoAAAAkAICOgAAAKSAgA4AAAApIKADAABACgjoAAAAkAICOgAAAKSAgA4AAAApIKADAABACgjoWTBv3rx8lwAAAEADJ6BnwdZbbx2DBw+O3/3ud/H555/nuxwAAAAaIAE9C2bNmhXf+ta3YsSIEdGhQ4c47bTT4rnnnst3WQAAADQgAnoW9O3bN8aMGRPvvvtujBs3LhYvXhzf/e53Y7vttosxY8bEBx98kO8SAQAASDkBPYsaN24chx9+eDzwwANx3XXXxZtvvhkXXHBBdO7cOY4//vhYtGhRvksEAAAgpQT0LHrhhRfizDPPjI4dO8aYMWPiggsuiDfffDOmTJkS7777bhx66KH5LhEAAICUapzvAr4OxowZE+PGjYs5c+bEAQccEPfcc08ccMABUVDwn79/9OjRI26//fbYZptt8lwpAAAAaSWgZ8Gtt94aJ510Upx44onRoUOHOud07do1fv3rX+e4MgAAABoKAT0L5s6du845TZo0iWHDhuWgGgAAABoin0HPgnHjxsUf/vCHWuN/+MMf4u67785DRQAAADQ0AnoWXHvttdGmTZta4+3atYtrrrkmDxUBAADQ0AjoWTB//vzo0aNHrfFu3brFggUL8lARAAAADY2AngXt2rWLl19+udb4rFmzonXr1nmoCAAAgIZGQM+CY445Jn784x/H1KlTY/Xq1bF69eqYMmVKnHvuuXHMMcfkuzwAAAAaAHdxz4Krrroq5s+fH3vttVc0bvyfllZWVsbxxx/vM+gAAACsFwE9C5o0aRL3339/XHnllTFr1qwoLi6O7bffPrp165bv0gAAAGggBPQs6tWrV/Tq1SvfZQAAANAACehZsHr16rjrrrviySefjCVLlkRlZWWN5VOmTMlTZQAAADQUAnoWnHvuuXHXXXfFgQceGH379o1MJpPvkgAAAGhgBPQsuO++++KBBx6IAw44IN+lAAAA0ED5mrUsaNKkSWy99dY52de7774bxx13XLRu3TpKSkpihx12iBdffDEn+wYAAKD+COhZMGLEiLjpppsiSZJ63c9HH30Uu+22WxQWFsajjz4ar7/+etx4442x+eab1+t+AQAAqH8ucc+CZ555JqZOnRqPPvpobLfddlFYWFhj+UMPPZSV/Vx33XXRpUuXGDduXPVY9+7ds7JtAAAA8ktAz4LNN988Dj/88Hrfz8SJE2PfffeNI488Mp5++unYYost4swzz4wf/ehHa1xn5cqVsXLlyurHZWVlERFRUVERFRUV9V5z1b6+/L9VKisro7i4OBpFEgWVq3JSy5o0iiSKi4ujsrIyZ31Zmw3tTdWc+uhjmnqT72Pmy31OU1++btb0nkF26XNu6HP90+Pc0OfcyHWfvZ7pk0nq+7pssqZp06YREXH++efHkUceGc8991wMHz48br/99jj++OPrXGfkyJExatSoWuPjx4+PkpKSeq0XAABIr/Ly8hg6dGgsX748mjdvnu9yCAE9a1atWhVPPfVUvPnmmzF06NAoLS2N9957L5o3bx6bbbZZVvbRpEmTGDhwYDz77LPVYz/+8Y/j+eefj+nTp9e5Tl1n0Lt06RJLly7N2S9hRUVFTJ48OYYMGVLj8v9Zs2bFoEGD4tQ7J0an3n1zUsuavDfn1bjjlENi2rRp0b9//7zWErHhvSmoXBU933sx5nYaEJUF2b0wJk29yfcx8+U+L5z7r9T05etmTe8ZZJc+54Y+1z89zg19zo1c97msrCzatGkjoKeIS9yzYP78+bHffvvFggULYuXKlTFkyJAoLS2N66+/Pj7//PO47bbbsrKfjh07xrbbbltjrE+fPvHggw+ucZ2ioqIoKiqqNV5YWJjzN9ev7rOgoCBWrFgRqyOT9VC5oVZHJlasWBEFBQWp+EdnY3tTWdA4671MU2/ScsxUFjROVV++rvLxPvVNpM+5oc/1T49zQ59zI1d99lqmj7u4Z8G5554bAwcOjI8++iiKi4urxw8//PB48skns7af3XbbLebMmVNj7I033ohu3bplbR8AAADkhzPoWfDMM8/E3//+92jSpEmN8W7dusW7776btf2cd955seuuu8Y111wTRx11VDz33HNxxx13xB133JG1fQAAAJAfzqBnQWVlZaxevbrW+MKFC6O0tDRr+9lpp51iwoQJce+990bfvn3jyiuvjLFjx8axxx6btX0AAACQH86gZ8GQIUNi7Nix1WeyM5lMfPrpp3H55ZfHAQcckNV9HXTQQXHQQQdldZsAAADkn4CeBf/7v/8bgwcPjm233TY+//zzGDp0aMydOzfatGkT9957b77LAwAAoAEQ0LOgU6dOMXPmzLj33ntjxowZUVlZGSeffHIce+yxNW4aBwAAAGsioGdJcXFxnHTSSXHSSSfluxQAAAAaIAE9C+655561Lj/++ONzVAkAAAANlYCeBeeee26NxxUVFVFeXh5NmjSJkpISAR0AAIB18jVrWfDRRx/V+Pn0009jzpw58d3vftdN4gAAAFgvAno96dmzZ1x77bW1zq4DAABAXQT0etSoUaN477338l0GAAAADYDPoGfBxIkTazxOkiQWLVoUv/jFL2K33XbLU1UAAAA0JAJ6Fhx22GE1HmcymWjbtm1873vfixtvvDE/RQEAANCgCOhZUFlZme8SAAAAaOB8Bh0AAABSwBn0LDj//PPXe+6YMWPqsRIAAAAaKgE9C1566aWYMWNGrFq1Knr37h0REW+88UY0atQodtxxx+p5mUwmXyUCAACQcgJ6Fhx88MFRWload999d7Rs2TIiIj766KM48cQTY/fdd48RI0bkuUIAAADSzmfQs+DGG2+M0aNHV4fziIiWLVvGVVdd5S7uAAAArBcBPQvKysri/fffrzW+ZMmS+OSTT/JQEQAAAA2NgJ4Fhx9+eJx44onxxz/+MRYuXBgLFy6MP/7xj3HyySfHEUccke/yAAAAaAB8Bj0LbrvttrjgggviuOOOi4qKioiIaNy4cZx88slxww035Lk6AAAAGgIBPQtKSkrilltuiRtuuCHefPPNSJIktt5662jWrFm+SwMAAKCBcIl7Fi1atCgWLVoUvXr1imbNmkWSJPkuCQAAgAZCQM+CZcuWxV577RW9evWKAw44IBYtWhQREaeccoqvWAMAAGC9COhZcN5550VhYWEsWLAgSkpKqsePPvromDRpUh4rAwAAoKHwGfQsePzxx+Oxxx6Lzp071xjv2bNnzJ8/P09VAQAA0JA4g54Fn332WY0z51WWLl0aRUVFeagIAACAhkZAz4JBgwbFPffcU/04k8lEZWVl3HDDDTF48OA8VgYAAEBD4RL3LLjhhhtizz33jBdeeCG++OKL+MlPfhKvvfZafPjhh/H3v/893+UBAADQADiDngXbbrttvPzyy/Htb387hgwZEp999lkcccQR8dJLL8VWW22V7/IAAABoAJxB30QVFRWxzz77xO233x6jRo3KdzkAAAA0UM6gb6LCwsJ49dVXI5PJ5LsUAAAAGjABPQuOP/74+PWvf53vMgAAAGjAXOKeBV988UXceeedMXny5Bg4cGA0a9asxvIxY8bkqTIAAAAaCgF9E7z11lvRvXv3ePXVV2PHHXeMiIg33nijxhyXvvN1MXv27HyXkIoaAACgvgjom6Bnz56xaNGimDp1akREHH300XHzzTdH+/bt81wZZM8nS9+PTEFBHHfccfkuBQAAvtYE9E2QJEmNx48++mh89tlneaoG6seKT8oiqayMo666Ndr16JnXWub8/cmYfMvovNYAAAD1RUDPoq8Gdvg6adejZ2zRp39ea1gyb25e9w8AAPXJXdw3QSaTqfUZc585BwAAYGM4g74JkiSJE044IYqKiiIi4vPPP4/TTz+91l3cH3rooXyUBwAAQAMioG+CYcOG1XjsJloAAABsLAF9E4wbNy7fJQAAAPA14TPoAAAAkAICOgAAAKSAgA4AAAApIKADAABACgjoAAAAkAICOgAAAKSAgA4AAAApIKADAABACgjoAAAAkAICOgAAAKSAgA4AAAApIKADAABACgjoAAAAkAICOgAAAKSAgA4AAAApIKADAABACgjoAAAAkAICOgAAAKSAgA4AAAApIKADAABACgjoAAAAkAICOgAAAKSAgA4AAAApIKADAABACgjoAAAAkAICOgAAAKSAgA4AAAApIKADAABACgjoAAAAkAICegM2evToyGQyMXz48HyXAgAAwCYS0Buo559/Pu64447o169fvksBAAAgCwT0BujTTz+NY489Nn71q19Fy5Yt810OAAAAWdA43wWw4c4666w48MADY++9946rrrpqrXNXrlwZK1eurH5cVlYWEREVFRVRUVFRr3VWqdrPV/dXWVkZxcXF0SiSKKhclZNa1qRRJFFcXByzZ8+OysrKvNYSETFnzpwN6k3VnProY+OCTGpep3zX8uU+Vx0zlZWVOftd+qZY03sG2aXPuaHP9U+Pc0OfcyPXffZ6pk8mSZIk30Ww/u677764+uqr4/nnn4+mTZvGnnvuGTvssEOMHTu2zvkjR46MUaNG1RofP358lJSU1HO1AABAWpWXl8fQoUNj+fLl0bx583yXQwjoDco777wTAwcOjMcffzz69+8fEbHOgF7XGfQuXbrE0qVLc/ZLWFFREZMnT44hQ4ZEYWFh9fisWbNi0KBBceqdE6NT7745qWVNZj3+55hw5Xlx+M/+N9p22yqvtUREzP3H0zH1zhvXuzcFlaui53svxtxOA6KyILsXxlT1Jk2vU75q+XKfF879V9xxyiExbdq06t9HsmNN7xlklz7nhj7XPz3ODX3OjVz3uaysLNq0aSOgp4hL3BuQF198MZYsWRIDBgyoHlu9enVMmzYtfvGLX8TKlSujUaNGNdYpKiqKoqKiWtsqLCzM+ZvrV/dZUFAQK1asiNWRyXqo3FCrKpNYsWJFtOq2dXTok/+wtWjevzeqN5UFjbPey6repOl1ynctlQWNY3VkYsWKFVFQUOA/VOpJPt6nvon0OTf0uf7pcW7oc27kqs9ey/QR0BuQvfbaK1555ZUaYyeeeGJss8028d///d+1wjkAAAANh4DegJSWlkbfvjUv623WrFm0bt261jgAAAANi69ZAwAAgBRwBr2Be+qpp/JdAgAAAFngDDoAAACkgIAOAAAAKSCgAwAAQAoI6AAAAJACAjoAAACkgIAOAAAAKSCgAwAAQAoI6AAAAJACAjoAAACkgIAOAAAAKSCgAwAAQAoI6AAAAJACAjoAAACkgIAOAAAAKSCgAwAAQAoI6AAAAJACAjoAAACkgIAOAAAAKSCgAwAAQAoI6AAAAJACAjoAAACkgIAOAAAAKSCgAwAAQAoI6AAAAJACAjoAAACkgIAOAAAAKSCgAwAAQAoI6AAAAJACAjoAAACkgIAOAAAAKSCgAwAAQAoI6AAAAJACAjoAAACkgIAOAAAAKSCgAwAAQAoI6AAAAJACAjoAAACkgIAOAAAAKSCgAwAAQAoI6AAAAJACAjoAAACkgIAOAAAAKSCgAwAAQAoI6AAAAJACAjoAAACkgIAOAAAAKSCgAwAAQAoI6AAAAJACAjoAAACkgIAOAAAAKSCgAwAAQAoI6AAAAJACAjoAAACkgIAOAAAAKSCgAwAAQAoI6AAAAJACAjoAAACkgIAOAAAAKSCgAwAAQAoI6AAAAJACAjoAAACkgIAOAAAAKSCgAwAAQAoI6AAAAJACAjoAAACkgIAOAAAAKSCgAwAAQAoI6AAAAJACAjoAAACkgIDegIwePTp22mmnKC0tjXbt2sVhhx0Wc+bMyXdZAAAAZIGA3oA8/fTTcdZZZ8U//vGPmDx5cqxatSr22Wef+Oyzz/JdGgAAAJuocb4LYP1NmjSpxuNx48ZFu3bt4sUXX4xBgwblqSoAAACyQUBvwJYvXx4REa1atVrjnJUrV8bKlSurH5eVlUVEREVFRVRUVNRvgf9f1X6+ur/KysooLi6ORpFEQeWqnNSyJo0LMqmpZWPqqZpTH7WnqTf5ruXLfW4USRQXF0dlZWXOfpfWZeHChbFs2bJ8lxEREa1bt47OnTtv1Lpres/YWF+XvmRbtvtM3fS5/ulxbuhzbuS6z17P9MkkSZLkuwg2XJIkceihh8ZHH30Uf/vb39Y4b+TIkTFq1Kha4+PHj4+SkpL6LBEAAEix8vLyGDp0aCxfvjyaN2+e73IIAb3BOuuss+KRRx6JZ555Zq1nY+o6g96lS5dYunRpzn4JKyoqYvLkyTFkyJAoLCysHp81a1YMGjQoTr1zYnTq3TcntazJrMf/HBOuPC8VtWxMPQWVq6Lney/G3E4DorIguxfGpKk3+a7ly31eOPdfcccph8S0adOif//+Oa/lq6p+nw7/2f9G225b5bWWD+a/GROuPG+je7Om94yN8XXqS7Zls8+smT7XPz3ODX3OjVz3uaysLNq0aSOgp4hL3Bugc845JyZOnBjTpk1b56WSRUVFUVRUVGu8sLAw52+uX91nQUFBrFixIlZHJuuhckOtqkxSU8um1FNZ0Djr9aepN2mppbKgcayOTKxYsSIKCgpS8R8qVb9PrbptHR365Df8Zas32Xif+jr2Jdvy8e/BN5E+1z89zg19zo1c9dlrmT75TyKstyRJ4pxzzokJEybEU089FT169Mh3SQAAAGSJgN6AnHXWWTF+/Pj485//HKWlpbF48eKIiGjRokUUFxfnuToAAAA2he9Bb0BuvfXWWL58eey5557RsWPH6p/7778/36UBAACwiZxBb0Dczw8AAODryxl0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBQR0AAAASAEBHQAAAFJAQAcAAIAUENABAAAgBRrnuwCAhmz27Nn5LiEi0lPHl21sTZWVlRERMWvWrCgo2LS/I6exLwDkx4IFC2Lp0qX5LiMiItq0aRNdu3bNdxmkkIAOsBE+Wfp+ZAoK4rjjjst3Kamzqb0pLi6Oe++9NwYNGhQrVqzIcnUAfBMtWLAgtunTJ1aUl+e7lIiIKC4piX/Nni2kU4uADrARVnxSFkllZRx11a3RrkfPfJcTc/7+ZEy+ZXS+y4iITe9No0gi4rM49c6JsToym1RLmvoCQP4sXbo0VpSXp+Lf7SXz5sYDl54RS5cuFdCpRUAH2ATtevSMLfr0z3cZsWTe3HyXUMvG9qagclXEwn9Gp959o7Jg0/6ZSmNfAMiftPy7DWviJnEAAACQAgI6AAAApICADgAAACkgoAMAAEAKCOgAAACQAgI6AAAApICADgAAACkgoAMAAEAKCOgAAACQAgI6AAAApICADgAAACkgoAMAAEAKCOgAAACQAgI6AAAApICADgAAACkgoAMAAEAKCOgAAACQAgI6AAAApICADgAAACkgoAMAAEAKCOgAAACQAgI6AAAApICADgAAACkgoAMAAEAKCOgAAACQAgI6AAAApICADgAAACkgoAMAAEAKCOgAAACQAgI6AAAApICADgAAACkgoAMAAEAKCOgAAACQAgJ6A3TLLbdEjx49omnTpjFgwID429/+lu+SAAAA2EQCegNz//33x/Dhw+OnP/1pvPTSS7H77rvH/vvvHwsWLMh3aQAAAGwCAb2BGTNmTJx88slxyimnRJ8+fWLs2LHRpUuXuPXWW/NdGgAAAJugcb4LYP198cUX8eKLL8ZFF11UY3yfffaJZ599ts51Vq5cGStXrqx+vHz58oiI+PDDD6OioqL+iv2SioqKKC8vj2XLlkVhYWH1eFlZWTRt2jTen/NKrCr/NCe1rMlH77yVmlo2pp5GkUSXZitiwUv/iNWRyWst9SnftXy5z/mu5avSVM+m1pLN4zlNfVn2zrxo2rRpvPjii1FWVpbXWiIiKisro7y8PP72t79FQUH+/15fUFAQlZWV+S4jIrJby6b2+eval2yoqicNx3KaelNftWxMn9PUl7lz56bu34OysrJYtmxZjWVr+u/m+vLJJ59ERESSJPW+L9ZPJvFqNBjvvfdebLHFFvH3v/89dt111+rxa665Ju6+++6YM2dOrXVGjhwZo0aNymWZAABAA/LOO+9E586d810G4Qx6g5TJ1DyjlCRJrbEqF198cZx//vnVjysrK+PDDz+M1q1br3GdbCsrK4suXbrEO++8E82bN8/JPr9p9Dg39Dk39Dk39Dk39Ln+6XFu6HNu5LrPSZLEJ598Ep06dar3fbF+BPQGpE2bNtGoUaNYvHhxjfElS5ZE+/bt61ynqKgoioqKaoxtvvnm9VXiWjVv3twbej3T49zQ59zQ59zQ59zQ5/qnx7mhz7mRyz63aNEiJ/th/eT/Q2estyZNmsSAAQNi8uTJNcYnT55c45J3AAAAGh5n0BuY888/P374wx/GwIEDY5dddok77rgjFixYEKeffnq+SwMAAGATCOgNzNFHHx3Lli2LK664IhYtWhR9+/aNv/71r9GtW7d8l7ZGRUVFcfnll9e61J7s0ePc0Ofc0Ofc0Ofc0Of6p8e5oc+5oc+4izsAAACkgM+gAwAAQAoI6AAAAJACAjoAAACkgIAOAAAAKSCgU69uueWW6NGjRzRt2jQGDBgQf/vb3/JdUoMxcuTIyGQyNX46dOhQvTxJkhg5cmR06tQpiouLY88994zXXnutxjZWrlwZ55xzTrRp0yaaNWsWhxxySCxcuDDXTyVVpk2bFgcffHB06tQpMplM/OlPf6qxPFt9/eijj+KHP/xhtGjRIlq0aBE//OEP4+OPP67nZ5ce6+rzCSecUOv4/s53vlNjjj6v3ejRo2OnnXaK0tLSaNeuXRx22GExZ86cGnMcz5tuffrseN50t956a/Tr1y+aN28ezZs3j1122SUeffTR6uWO5exYV58dy9k3evToyGQyMXz48OoxxzNrlUA9ue+++5LCwsLkV7/6VfL6668n5557btKsWbNk/vz5+S6tQbj88suT7bbbLlm0aFH1z5IlS6qXX3vttUlpaWny4IMPJq+88kpy9NFHJx07dkzKysqq55x++unJFltskUyePDmZMWNGMnjw4KR///7JqlWr8vGUUuGvf/1r8tOf/jR58MEHk4hIJkyYUGN5tvq63377JX379k2effbZ5Nlnn0369u2bHHTQQbl6mnm3rj4PGzYs2W+//Woc38uWLasxR5/Xbt99903GjRuXvPrqq8nMmTOTAw88MOnatWvy6aefVs9xPG+69emz43nTTZw4MXnkkUeSOXPmJHPmzEkuueSSpLCwMHn11VeTJHEsZ8u6+uxYzq7nnnsu6d69e9KvX7/k3HPPrR53PLM2Ajr15tvf/nZy+umn1xjbZpttkosuuihPFTUsl19+edK/f/86l1VWViYdOnRIrr322uqxzz//PGnRokVy2223JUmSJB9//HFSWFiY3HfffdVz3n333aSgoCCZNGlSvdbeUHw1OGarr6+//noSEck//vGP6jnTp09PIiL517/+Vc/PKn3WFNAPPfTQNa6jzxtuyZIlSUQkTz/9dJIkjuf68tU+J4njub60bNkyufPOOx3L9ayqz0niWM6mTz75JOnZs2cyefLkZI899qgO6I5n1sUl7tSLL774Il588cXYZ599aozvs88+8eyzz+apqoZn7ty50alTp+jRo0ccc8wx8dZbb0VExLx582Lx4sU1+ltUVBR77LFHdX9ffPHFqKioqDGnU6dO0bdvX6/BGmSrr9OnT48WLVrEzjvvXD3nO9/5TrRo0ULvv+Spp56Kdu3aRa9eveJHP/pRLFmypHqZPm+45cuXR0REq1atIsLxXF++2ucqjufsWb16ddx3333x2WefxS677OJYridf7XMVx3J2nHXWWXHggQfG3nvvXWPc8cy6NM53AXw9LV26NFavXh3t27evMd6+fftYvHhxnqpqWHbeeee45557olevXvH+++/HVVddFbvuumu89tpr1T2sq7/z58+PiIjFixdHkyZNomXLlrXmeA3qlq2+Ll68ONq1a1dr++3atdP7/2///fePI488Mrp16xbz5s2Ln/3sZ/G9730vXnzxxSgqKtLnDZQkSZx//vnx3e9+N/r27RsRjuf6UFefIxzP2fLKK6/ELrvsEp9//nlsttlmMWHChNh2222rw4ZjOTvW1OcIx3K23HfffTFjxox4/vnnay3z3sy6COjUq0wmU+NxkiS1xqjb/vvvX/3/t99++9hll11iq622irvvvrv6hi0b01+vwbplo691zdf7/3P00UdX//++ffvGwIEDo1u3bvHII4/EEUccscb19LluZ599drz88svxzDPP1FrmeM6eNfXZ8ZwdvXv3jpkzZ8bHH38cDz74YAwbNiyefvrp6uWO5exYU5+33XZbx3IWvPPOO3HuuefG448/Hk2bNl3jPMcza+ISd+pFmzZtolGjRrX+grdkyZJafzFk/TRr1iy23377mDt3bvXd3NfW3w4dOsQXX3wRH3300RrnUFO2+tqhQ4d4//33a23/gw8+0Ps16NixY3Tr1i3mzp0bEfq8Ic4555yYOHFiTJ06NTp37lw97njOrjX1uS6O543TpEmT2HrrrWPgwIExevTo6N+/f9x0002O5SxbU5/r4ljecC+++GIsWbIkBgwYEI0bN47GjRvH008/HTfffHM0bty4ugeOZ9ZEQKdeNGnSJAYMGBCTJ0+uMT558uTYdddd81RVw7Zy5cqYPXt2dOzYMXr06BEdOnSo0d8vvvginn766er+DhgwIAoLC2vMWbRoUbz66qtegzXIVl932WWXWL58eTz33HPVc/75z3/G8uXL9X4Nli1bFu+880507NgxIvR5fSRJEmeffXY89NBDMWXKlOjRo0eN5Y7n7FhXn+vieM6OJEli5cqVjuV6VtXnujiWN9xee+0Vr7zySsycObP6Z+DAgXHsscfGzJkzY8stt3Q8s3Y5uhkd30BVX7P261//Onn99deT4cOHJ82aNUvefvvtfJfWIIwYMSJ56qmnkrfeeiv5xz/+kRx00EFJaWlpdf+uvfbapEWLFslDDz2UvPLKK8l//dd/1fkVHZ07d06eeOKJZMaMGcn3vve9b/zXrH3yySfJSy+9lLz00ktJRCRjxoxJXnrppeqv/8tWX/fbb7+kX79+yfTp05Pp06cn22+//Tfqq0/W1udPPvkkGTFiRPLss88m8+bNS6ZOnZrssssuyRZbbKHPG+CMM85IWrRokTz11FM1vhKpvLy8eo7jedOtq8+O5+y4+OKLk2nTpiXz5s1LXn755eSSSy5JCgoKkscffzxJEsdytqytz47l+vPlu7gnieOZtRPQqVe//OUvk27duiVNmjRJdtxxxxpfS8PaVX0nZmFhYdKpU6fkiCOOSF577bXq5ZWVlcnll1+edOjQISkqKkoGDRqUvPLKKzW2sWLFiuTss89OWrVqlRQXFycHHXRQsmDBglw/lVSZOnVqEhG1foYNG5YkSfb6umzZsuTYY49NSktLk9LS0uTYY49NPvrooxw9y/xbW5/Ly8uTffbZJ2nbtm1SWFiYdO3aNRk2bFitHurz2tXV34hIxo0bVz3H8bzp1tVnx3N2nHTSSdX/vdC2bdtkr732qg7nSeJYzpa19dmxXH++GtAdz6xNJkmSJHfn6wEAAIC6+Aw6AAAApICADgAAACkgoAMAAEAKCOgAAACQAgI6AAAApICADgAAACkgoAMAAEAKCOgAAACQAgI6AKzF4sWL45xzzoktt9wyioqKokuXLnHwwQfHk08+me/S6s1TTz0VmUwmPv7443XOTZIk7rjjjth5551js802i8033zwGDhwYY8eOjfLy8vov9ktOOOGEOOyww3K6TwDIpsb5LgAA0urtt9+O3XbbLTbffPO4/vrro1+/flFRURGPPfZYnHXWWfGvf/0r3yXm3Q9/+MN46KGH4tJLL41f/OIX0bZt25g1a1aMHTs2unfvLjADwAZwBh0A1uDMM8+MTCYTzz33XPzgBz+IXr16xXbbbRfnn39+/OMf/6iet2DBgjj00ENjs802i+bNm8dRRx0V77//fvXykSNHxg477BC/+c1vomvXrrHZZpvFGWecEatXr47rr78+OnToEO3atYurr766xv4zmUzcfvvtcdBBB0VJSUn06dMnpk+fHv/+979jzz33jGbNmsUuu+wSb775Zo31/vKXv8SAAQOiadOmseWWW8aoUaNi1apVNbZ75513xuGHHx4lJSXRs2fPmDhxYkT8548SgwcPjoiIli1bRiaTiRNOOKHO/jzwwAPx+9//Pu6999645JJLYqeddoru3bvHoYceGlOmTKneTmVlZVxxxRXRuXPnKCoqih122CEmTZpUvZ26ztjPnDkzMplMvP322xERcdddd8Xmm28ejz32WPTp0yc222yz2G+//WLRokXVPb777rvjz3/+c2QymchkMvHUU0+tx6sMAOkhoANAHT788MOYNGlSnHXWWdGsWbNayzfffPOI+M8l3ocddlh8+OGH8fTTT8fkyZPjzTffjKOPPrrG/DfffDMeffTRmDRpUtx7773xm9/8Jg488MBYuHBhPP3003HdddfFpZdeWiP4R0RceeWVcfzxx8fMmTNjm222iaFDh8Zpp50WF198cbzwwgsREXH22WdXz3/sscfiuOOOix//+Mfx+uuvx+233x533XVXrfA/atSoOOqoo+Lll1+OAw44II499tj48MMPo0uXLvHggw9GRMScOXNi0aJFcdNNN9XZo9///vfRu3fvOPTQQ2sty2Qy0aJFi4iIuOmmm+LGG2+M//mf/4mXX3459t133zjkkENi7ty5a3sJaikvL4//+Z//id/+9rcxbdq0WLBgQVxwwQUREXHBBRfEUUcdVR3aFy1aFLvuuusGbR8A8i4BAGr55z//mURE8tBDD6113uOPP540atQoWbBgQfXYa6+9lkRE8txzzyVJkiSXX355UlJSkpSVlVXP2XfffZPu3bsnq1evrh7r3bt3Mnr06OrHEZFceuml1Y+nT5+eRETy61//unrs3nvvTZo2bVr9ePfdd0+uueaaGjX+9re/TTp27LjG7X766adJJpNJHn300SRJkmTq1KlJRCQfffTRWp97nz59kkMOOWStc5IkSTp16pRcffXVNcZ22mmn5Mwzz1zj/l566aUkIpJ58+YlSZIk48aNSyIi+fe//10955e//GXSvn376sfDhg1LDj300HXWAwBp5TPoAFCHJEki4j9ngtdm9uzZ0aVLl+jSpUv12Lbbbhubb755zJ49O3baaaeIiOjevXuUlpZWz2nfvn00atQoCgoKaowtWbKkxvb79etXY3lExPbbb19j7PPPP4+ysrJo3rx5vPjii/H888/XOGO+evXq+Pzzz6O8vDxKSkpqbbdZs2ZRWlpaa9/rkiTJOvtTVlYW7733Xuy22241xnfbbbeYNWvWBu2vpKQkttpqq+rHHTt23OCaASDNBHQAqEPPnj0jk8nE7Nmz13qjszWF1K+OFxYW1lieyWTqHKusrKwx9uU5Vdura6xqvcrKyhg1alQcccQRtWpq2rTpWuv56r7XpVevXjF79uz1mvvVHn25P1V/pKj6o0hEREVFRa1t1FXzl9cBgIbOZ9ABoA6tWrWKfffdN375y1/GZ599Vmt51Q3Ntt1221iwYEG888471ctef/31WL58efTp0ydX5VbbcccdY86cObH11lvX+vny2fq1adKkSUT858z72gwdOjTeeOON+POf/1xrWZIksXz58mjevHl06tQpnnnmmRrLn3322er+tG3bNiKi+oZvEf+5SdyGatKkyTprBoA0E9ABYA1uueWWWL16dXz729+OBx98MObOnRuzZ8+Om2++OXbZZZeIiNh7772jX79+ceyxx8aMGTPiueeei+OPPz722GOPGDhwYM5rvuyyy+Kee+6JkSNHxmuvvRazZ8+O+++/Py699NL13ka3bt0ik8nEww8/HB988EF8+umndc476qij4uijj47/+q//itGjR8cLL7wQ8+fPj4cffjj23nvvmDp1akREXHjhhXHdddfF/fffH3PmzImLLrooZs6cGeeee25ERGy99dbRpUuXGDlyZLzxxhvxyCOPxI033rjBz7179+7x8ssvx5w5c2Lp0qV1noUHgDQT0AFgDXr06BEzZsyIwYMHx4gRI6Jv374xZMiQePLJJ+PWW2+NiP9cZv2nP/0pWrZsGYMGDYq99947ttxyy7j//vvzUvO+++4bDz/8cEyePDl22mmn+M53vhNjxoyJbt26rfc2tthiixg1alRcdNFF0b59+xp3if+yTCYT48ePjzFjxsSECRNijz32iH79+sXIkSPj0EMPjX333TciIn784x/HiBEjYsSIEbH99tvHpEmTYuLEidGzZ8+I+M+l6/fee2/861//iv79+8d1110XV1111QY/9x/96EfRu3fvGDhwYLRt2zb+/ve/b/A2ACCfMokPbwEAAEDeOYMOAAAAKSCgAwAAQAoI6AAAAJACAjoAAACkgIAOAAAAKSCgAwAAQAoI6AAAAJACAjoAAACkgIAOAAAAKSCgAwAAQAoI6AAAAJACAjoAAACkgIAOAAAAKSCgAwAAQAoI6AAAAJACAjoAAACkgIAOAAAAKSCgAwAAQAoI6AAAAJACAjoAAACkgIAOAAAAKSCgAwAAQAoI6AAAAJACAjoAAACkgIAOAAAAKfD/AC+yVu3YoocSAAAAAElFTkSuQmCC'}
+2024-03-26 22:43:40 [INFO] Executing Step 7: ResultParsing

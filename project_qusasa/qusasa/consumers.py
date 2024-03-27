@@ -16,7 +16,7 @@ from pandasai.llm.openai import OpenAI
 import os
 
 openai_api_key = os.environ.get("OPENAI_API_KEY")
-openai_api_key = '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'
+openai_api_key = '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'
 
 
 def chat_with_csv(df,prompt):
@@ -168,7 +168,7 @@ class EchoModifyConsumer(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data)
         msg = text_data_json['message']
         csv_data = text_data_json.get('csvData', '')
-        
+        dataset_name = text_data_json['dataset_name']
 
 
         
@@ -193,7 +193,8 @@ class EchoModifyConsumer(AsyncWebsocketConsumer):
             # Send back the HTML and CSV as JSON
             await self.send(text_data=json.dumps({
                 'preview': preview_html,
-                'csv': response_csv
+                'csv': response_csv,
+                'dataset_name': dataset_name
             }))
         
 
