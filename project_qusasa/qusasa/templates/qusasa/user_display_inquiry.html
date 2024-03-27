@@ -257,7 +257,7 @@
 
                   <h1>{{history.title}}</h1>
                   <div class="inquery-el" style="margin-top: 3rem;">
-                    <p><strong>Inquery Text:</strong> </p >
+                    <p><strong>Previous Inquery Messages:</strong> </p >
                       {% for update in updates %}
                       <div class="inquery-box" style="width: 100%">
                         {{update}}
@@ -310,14 +310,14 @@
                         <br>
                         {%if history.status == 'WAITING'%}
                         <div class="inquery-el" style="margin-top: 0rem;">
-                            <p><strong>Response text:</strong> </p >
+                            <p><strong>Response Message:</strong> </p >
                             <div class="inquery-box" style="width: 100%">
                               No respone yet
                             </div>
                           </div>
                         {% else%}
                         <div class="inquery-el" style="margin-top: 0rem;">
-                          <p><strong>Response text:</strong> </p >
+                          <p><strong>Response Message:</strong> </p >
                           <div class="inquery-box" style="width: 100%">
                             {{history.RepContent}}
                           </div>

@@ -129,6 +129,35 @@
       font-family: 'Raleway';
       
       }
+      .controls-container {
+        display: flex;
+        justify-content: space-between; /* This will push the button and the filter to opposite ends */
+        align-items: center; /* This will align them vertically */
+        padding: 0 20px; /* Replace with actual padding you need */
+    }
+    
+    .add-inquiry-button {
+        /* Your styles for the button */
+    }
+    
+    .filter-by-status {
+        /* Your styles for the filter container, if any */
+    }
+    
+    /* Make sure to add styles for label and select if needed */
+    .status-filter {
+      margin-bottom: 20px;
+  }
+  
+  .status-filter label {
+      margin-right: 10px;
+  }
+  
+  .status-filter select {
+      padding: 5px 10px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+  }    
     </style>
 </head>
 <body> 
@@ -164,10 +193,18 @@
 
         <div class="history">
         <article class="media content-section">
+          <div class="controls-container">
 
 
-
-         <!-- <div class="media-body">
+          <div class="status-filter">
+            <label for="statusFilter">Filter by status:</label>
+            <select id="statusFilter" onchange="filterStatus()">
+                <option value="all">All</option>
+                <option value="WAITING">Waiting</option>
+                <option value="RESOLVED">Resolved</option>
+            </select>
+          </div>
+        <!-- <div class="media-body">
             <div class="article-metadata">
               <a class="mr-2" href="#">{{ post.author }}</a>
               <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
@@ -186,24 +223,28 @@
               </li>
             </div>
             <br>
-            
+          </div>        </div>
+
             <table id="result_list">
               <thead>
                 <tr>
+                  <th scope="col">ID</th>
                   <th scope="col">Title</th>
                   <th scope="col">Date Posted</th>
                   <th scope="col">Author</th>
                   <th scope="col">Inquiry Content</th>
+                  <th scope="col">Status</th>
                 </tr>
               </thead>
               <tbody>
                 {% for post in posts %}
                 <tr>
-
+                  <td>{{ post.id}}</td>
                   <td><a href="{% url 'user_display_inquiry' post.id %}" style="color: blue; text-decoration: underline;">{{ post.title }}</a></td>
                   <td>{{ post.date_posted|date:"F d, Y" }}</td>
                   <td>{{ post.author }}</td>
                   <td>{{ post.InqContent }}</td>
+                  <td>{{ post.status }}</td>
 
                 </tr>
                 {% endfor %}
@@ -214,7 +255,27 @@
         </article>
         </div>
     </div>
-
+    <script>
+      function filterStatus() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("statusFilter");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("result_list"); // Use the correct ID for your table
+        tr = table.getElementsByTagName("tr");
+      
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[5]; // Index of 'Status' column in your table
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (filter === "ALL" || txtValue.toUpperCase() === filter) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }       
+        }
+      }
+      </script>
 
    
 

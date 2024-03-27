@@ -12,7 +12,36 @@
     <link rel="shortcut icon" href="{% static 'qusasa/images/Qusasa end.png' %}" type="image/png">
 
     <script src="https://kit.fontawesome.com/b50b47369c.js" crossorigin="anonymous"></script>
-</head>
+
+<style>
+  .controls-container {
+    display: flex;
+    justify-content: space-between; /* This will push the button and the filter to opposite ends */
+    align-items: center; /* This will align them vertically */
+    padding: 0 20px; /* Replace with actual padding you need */
+}
+
+.add-inquiry-button {
+}
+
+.filter-by-status {
+}
+
+.status-filter {
+  margin-bottom: 20px;
+}
+
+.status-filter label {
+  margin-right: 10px;
+}
+
+.status-filter select {
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}    
+
+</style>  </head>
 <body> 
     <!-- <img class="polygon" src="{% static 'qusasa/images/Frame 2.png'%}" alt="Description of Image" class="full-size-absolute"> -->
     
@@ -47,23 +76,38 @@
       {% if posts %}
         <article class="media content-section">
           <div class="results">
+            <div class="controls-container">
+
+<div class="status-filter">
+  <label for="statusFilter">Filter by status:</label>
+  <select id="statusFilter" onchange="filterStatus()">
+      <option value="all">All</option>
+      <option value="WAITING">Waiting</option>
+      <option value="RESOLVED">Resolved</option>
+  </select>
+</div>
+</div>
+
             <table id="result_list">
               <thead>
                 <tr>
+                  <th scope="col">ID</th>
                   <th scope="col">Title</th>
                   <th scope="col">Date Posted</th>
                   <th scope="col">Author</th>
                   <th scope="col">Inquiry Content</th>
+                  <th scope="col">Status</th>
                 </tr>
               </thead>
               <tbody>
                 {% for post in posts %}
                 <tr>
-
+                  <td>{{ post.id }}</td>
                   <td><a href="{% url 'display_inquiry' post.id %}" style="color: blue; text-decoration: underline;">{{ post.title }}</a></td>
                   <td>{{ post.date_posted|date:"F d, Y" }}</td>
                   <td>{{ post.author }}</td>
                   <td>{{ post.InqContent }}</td>
+                  <td>{{ post.status }}</td>
 
                 </tr>
                 {% endfor %}
@@ -82,7 +126,27 @@
     </div>
 
 
-   
+    <script>
+      function filterStatus() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("statusFilter");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("result_list"); // Use the correct ID for your table
+        tr = table.getElementsByTagName("tr");
+      
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[5]; // Index of 'Status' column in your table
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (filter === "ALL" || txtValue.toUpperCase() === filter) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }       
+        }
+      }
+      </script>
 
     <!-- Linking JS at the bottom for better performance -->
     <script src="{% static 'qusasa/js/script.js' %}"></script>
