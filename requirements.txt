@@ -1,1 +1,20 @@
+beautifulsoup4==4.12.3
+channels==4.1.0
+Django==5.0.4
+django_formtools==2.5.1
+docx==0.2.4
+google_api_python_client==2.126.0
+instagrapi==2.1.1
+keybert==0.8.4
+openai==1.23.6
+openai_whisper==20231117
+pandas==1.5.3
+pandasai==2.0.36
+python_dateutil==2.8.2
+python_docx==1.1.0
+pytube==15.0.0
+Requests==2.31.0
+torch==2.3.0
+transformers==4.39.3
+whisper==1.1.10
 
